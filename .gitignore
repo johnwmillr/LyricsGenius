@@ -3,3 +3,6 @@
 
 # Genius API credentials
 credentials.ini
+
+# May not want to commit lyrics text files
+*.txt
