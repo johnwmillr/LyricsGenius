@@ -6,3 +6,6 @@ credentials.ini
 
 # May not want to commit lyrics text files
 *.txt
+
+# Jupyter
+.ipynb_checkpoints/
