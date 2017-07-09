@@ -129,20 +129,28 @@ def write_lyrics_to_file(lyrics,artist=''):
 
 def main(): 
     t = time.time()
-    artist_name = sys.argv[1].translate(None,"\'\"")
-    print('Starting search for {0} lyrics.'.format(artist_name))
-    
-    # Get list of Genius API IDs for all songs by artist
-    all_song_ids = get_artist_song_ids(artist_name)
 
-    # Write out a file containing the lyrics for all of the artist's songs
-    print('\nWriting lyrics to file...')
-    for i in range(len(all_song_ids)):
-        print('Writing song {0} of {1}.'.format(i+1,len(all_song_ids)))
-        lyrics = scrape_lyrics_from_song_api(all_song_ids[i])
-        write_lyrics_to_file(lyrics,artist_name)
+    # Usage: python getSongLyrics.py 'song name' 'artist name'
+    song_name = sys.argv[1].translate(None,"\'\"")
+    artist_name = sys.argv[2].translate(None,"\'\"")    
+    if len(sys.argv)==4:
+        save_file = int(sys.argv[3].translate(None,"\'\""))
+    else:
+        save_file = 0
 
-    print('Done. Total time: %0.1f minutes.' % ((time.time()-t)/60.0))
+    # Get the Genius API number for the specified song
+    song_api_path, artist_api_path = get_song_and_artist_ids(song_name, artist_name)   
+
+    # Scrape lyrics from the song specified in song_api_path
+    lyrics = scrape_lyrics_from_song_api(song_api_path)   
+    print(lyrics)
+
+    # Write out a file containing the lyrics for all of the artist's songs    
+    if save_file==1:
+        print('\nWriting lyrics to file...')        
+        write_lyrics_to_file(lyrics,song_name)    
+
+    print('\nDone.')
 
 if __name__ == '__main__':
     main()
