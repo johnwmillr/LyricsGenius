@@ -9,3 +9,4 @@ credentials.ini
 
 # Jupyter
 .ipynb_checkpoints/
+scratch/
