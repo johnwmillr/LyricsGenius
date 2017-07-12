@@ -117,7 +117,7 @@ def scrape_lyrics_from_song_api(song_api_path):
     lyrics = html.find("div", class_="lyrics").get_text().encode('ascii','ignore').decode('ascii')
     lyrics = re.sub('\[.*\]','',lyrics) # Remove [Verse] and [Bridge] stuff
     lyrics = re.sub('\n{2}','',lyrics)  # Remove gaps between verses
-    return str(lyrics)
+    return str(lyrics).strip('\n')
 
 def write_lyrics_to_file(lyrics,artist=''):   
     if artist!='':
@@ -127,7 +127,18 @@ def write_lyrics_to_file(lyrics,artist=''):
     with open(filename, "a") as text_file:
         text_file.write('\n' + lyrics)
 
-def main(): 
+def search_for_song(song_name, artist_name):
+    # I don't think this is the correct way to do this, but I need a single
+    # function that performs all of the tasks within this python file
+
+    # Get the Genius API number for the specified song
+    song_api_path, artist_api_path = get_song_and_artist_ids(song_name, artist_name)   
+
+    # Scrape lyrics from the song specified in song_api_path
+    return scrape_lyrics_from_song_api(song_api_path)
+
+
+def main():
     t = time.time()
 
     # Usage: python getSongLyrics.py 'song name' 'artist name'
