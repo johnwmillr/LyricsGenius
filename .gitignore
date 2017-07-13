@@ -10,3 +10,6 @@ credentials.ini
 # Jupyter
 .ipynb_checkpoints/
 scratch/
+
+# Python module things
+*.pyc
