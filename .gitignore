@@ -11,5 +11,6 @@ credentials.ini
 .ipynb_checkpoints/
 scratch/
 
+
 # Python module things
 *.pyc
