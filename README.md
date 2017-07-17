@@ -1,6 +1,6 @@
 # Scraping song lyrics from Genius.com
 
-## Intro and setup
+## Setup
 This repository is intended to provide an easy interface for programatically accessing the song information stored on [Genius.com](https://www.genius.com). Start by cloning this repo:
 
 ```bash
