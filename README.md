@@ -18,16 +18,26 @@ I'm most interested in a simple interface for pulling song lyrics from the websi
 
 Genius doesn't actually provide a way to access the lyrics using their API directly ([they have to pay royalties on the lyrics](https://www.nytimes.com/2014/05/07/business/media/rap-genius-website-agrees-to-license-with-music-publishers.html?ref=oembed&_r=0)), but it doesn't take much more work to scrape the HTML after finding the song URLs we're interested in. The python functions below both start by using the Genius API to search for a song's URL and then scraping that URL for lyrics using [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/).
 
-### Lyrics from a single song
+## Usage
+### Python module
 ```python
-save_file = 0 # Change to 1 to write lrics to .txt file
-python getSongLyrics.py 'Begin Again' 'Andy Shauf' save_file
+from genius import Genius
+G = Genius()
+
+artist = G.search_artist('Andy Shauf',max_songs=5)
+print(artist)
+
+song = G.search_song('To You',artist.name)
+artist.add_song(song)
+
+print(artist)
+print(artist.songs[-1])
 ```
 
-### All lyrics from an artist
+### Command line
+```
+python genius.py --search_song 'Begin Again' 'Andy Shauf'
 
-```python
-python getArtistLyrics.py 'Common'
-
+python genius.py --search_artist 'Common'
 ```
 
