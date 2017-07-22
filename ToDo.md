@@ -6,7 +6,7 @@
   3. Automatically identify texts downloaded from Genius that aren't actually song lyrics (they include interviews and stuff and still call them songs.).
   4. Find a list online that identifies the genre of songs I download
   5. Add a function to save an artist or song artist to disk (stored as .txt file)
-  6. Write a GeniusAPI.py module containing the API and Song, Artist, classes
+  6. Write a GeniusAPI.py module containing the API and Song, Artist, classes -- ** done! **    
 
     -- Maybe the class definitions would be separate files eventually        
     -- The GeniusAPI module should retain script functionality, e.g. "python GeniusAPI.py --search_song 'Yesterday' 'The Beatles'
