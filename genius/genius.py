@@ -21,13 +21,13 @@ __description__  = 'A Python wrapper around the Genius.com API'
 #
 #    python genius.py --search_artist Common
 
-
 import re
+from string import punctuation
 import requests
-import json
 from bs4 import BeautifulSoup
 import urllib2
 import socket
+import json
 
 class _GeniusAPI(object):
     # This is a superclass that Genius() inherits from. Not sure if this makes any sense, but it
@@ -98,7 +98,7 @@ class _GeniusAPI(object):
                 print("Timeout raised and caught")
                 continue
             break
-
+                                
         return json.loads(raw)['response']
         
     def _format_api_request(self, term_and_type, page=1):
@@ -143,11 +143,14 @@ class Genius(_GeniusAPI):
         # Loop through search results, stopping as soon as title and artist of result match request
         n_hits = min(10,len(json_search['hits']))
         for i in range(n_hits):
-            search_hit   = json_search['hits'][i]['result']
-            found_title  = str(search_hit['title']).translate(None,' ').lower()
-            found_artist = str(search_hit['primary_artist']['name']).translate(None,' ').lower()
-
-            if found_title == song_title.translate(None,' ').lower() and (found_artist == artist_name.translate(None,' ').lower() or artist_name==''):
+            search_hit   = json_search['hits'][i]['result']                                                            
+            
+            found_title  = str(search_hit['title'].encode('ascii', errors='ignore')).lower().translate(None, punctuation)
+            found_artist = str(search_hit['primary_artist']['name'].encode('ascii', errors='ignore')).lower().translate(None, punctuation)
+                                    
+            # Download song from Genius.com if title and artist match the request
+            if found_title == song_title.lower().translate(None, punctuation) and \
+              (found_artist == artist_name.translate(None, punctuation).lower() or artist_name==''):
                 # Found correct song, accessing API ID
                 json_song = self._make_api_request((search_hit['id'],'song'))
                 
@@ -156,6 +159,7 @@ class Genius(_GeniusAPI):
 
                 # Create the Song object
                 song = Song(json_song, lyrics)
+                                
                 print('Done.\n')        
                 return song
         
@@ -170,9 +174,10 @@ class Genius(_GeniusAPI):
     
         # Perform a Genius API search for the artist                
         json_search = self._make_api_request((artist_name,'search'))                        
-        for hit in json_search['hits']:                                          
-            if str(hit['result']['primary_artist']['name']).lower()==artist_name.lower():                
-                artist_id = str(hit['result']['primary_artist']['id'])                                                                
+        for hit in json_search['hits']:
+            found_artist = hit['result']['primary_artist']
+            if str(found_artist['name'].encode('ascii',errors='ignore')).lower()==artist_name.lower():                
+                artist_id = found_artist['id']
                 break
             else:                                                            
                 artist_id = None                                                                                        
@@ -221,7 +226,7 @@ class Genius(_GeniusAPI):
             print('Found {n_songs} songs.\n'.format(n_songs=artist.num_songs))
 
         print('Done.\n')
-        return artist                    
+        return artist                
     
 
 class Song():    
@@ -239,17 +244,17 @@ class Song():
         try: self._body = json_dict['song']
         except: self._body = json_dict
         self._body['lyrics'] = lyrics
-        self._url      = str(self._body['url'])
-        self._api_path = str(self._body['api_path'])
-        self._id       = str(self._body['id'])  
+        self._url      = self._body['url']
+        self._api_path = self._body['api_path']
+        self._id       = self._body['id']
                                                         
     @property
     def title(self):
-        return str(self._body['title'])
+        return str(self._body['title'].encode('ascii',errors='ignore'))
 
     @property
     def artist(self):
-        return str(self._body['primary_artist']['name'])
+        return str(self._body['primary_artist']['name'].encode('ascii',errors='ignore'))
 
     @property
     def lyrics(self):
@@ -257,24 +262,24 @@ class Song():
         
     @property
     def album(self):
-        try: return str(self._body['album']['name'])
+        try: return self._body['album']['name']
         except: return ''
             
     @property
     def year(self):
-        return str(self._body['release_date'])
+        return self._body['release_date']
     
     @property
     def url(self):
-        return str(self._body['url'])
+        return self._body['url']
     
     @property
     def album_url(self):
-        return str(self._body['album']['url'])
+        return self._body['album']['url']
     
     @property
     def featured_artists(self):
-        return str(self._body['featured_artists'])
+        return self._body['featured_artists']
     
     @property
     def media(self):
@@ -285,14 +290,13 @@ class Song():
     @property
     def writer_artists(self):
         """List of artists credited as writers"""
-        writers = []
-        [writers.append((str(writer['name']),str(writer['id']),str(writer['url'])))\
-                        for writer in self._body['writer_artists']]
+        writers = []                
+        [writers.append((writer['name'], writer['id'], writer['url'])) for writer in self._body['writer_artists']]
         return writers
     
     @property
     def song_art_image_url(self):
-        return str(self._body['song_art_image_url'])
+        return self._body['song_art_image_url']
 
     def __str__(self):
         """Return a string representation of the Song object."""
@@ -323,19 +327,19 @@ class Artist():
     def __init__(self, json_dict):
         """Populate the Artist object with the data from *json_dict*"""
         self._body = json_dict['artist']
-        self._url      = str(self._body['url'])
-        self._api_path = str(self._body['api_path'])
-        self._id       = str(self._body['id']) 
+        self._url      = self._body['url']
+        self._api_path = self._body['api_path']
+        self._id       = self._body['id']
         self._songs = []
         self._num_songs = len(self._songs)
         
     @property
-    def name(self):
-        return str(self._body['name'])
+    def name(self):            
+        return str(self._body['name'].encode('ascii',errors='ignore'))
                     
     @property
     def image_url(self):
-        return str(self._body['image_url'])        
+        return self._body['image_url']
     
     @property
     def songs(self):
@@ -373,9 +377,7 @@ class Artist():
             return '{0}, {1} songs'.format(self.name,self._num_songs)
     
     def __repr__(self):
-        return repr((self.name, '{0} songs'.format(self._num_songs)))  
-
-
+        return repr((self.name, '{0} songs'.format(self._num_songs))) 
 
 
 # --------------------------------------------------------------------
@@ -402,15 +404,6 @@ if __name__ == "__main__":
         print(artist)    
         
     print('\n')
-    
-         
-    
-    
-    
-    
-    
-    
-    
-    
+                 
     
     
