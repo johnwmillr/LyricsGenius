@@ -350,6 +350,7 @@ class Artist():
         
         if any([song.title==newsong.title for song in self._songs]):
             print('{newsong.title} already in {self.name}, not adding song.'.format(newsong=newsong,self=self))
+            return 1 # Failure
         if newsong.artist == self.name:
             self._songs.append(newsong)
             self._num_songs += 1
