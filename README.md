@@ -21,9 +21,9 @@ Genius doesn't actually provide a way to access the lyrics using their API direc
 ## Usage
 ### Python module
 ```python
->>>import genius
->>>api = genius.Genius()
->>>artist = api.search_artist('Andy Shauf',max_songs=5)
+>>> import genius
+>>> api = genius.Genius()
+>>> artist = api.search_artist('Andy Shauf',max_songs=5)
 Searching for Andy Shauf...
 
 Song 1: "Alexander All Alone"
@@ -34,24 +34,24 @@ Reached user-specified song limit (3).
 Found 3 songs.
 
 Done.
->>>print(artist)
+>>> print(artist)
 Andy Shauf, 3 songs
->>>song = api.search_song('To You',artist.name)
+>>> song = api.search_song('To You',artist.name)
 Searching for "To You" by Andy Shauf...
 Done.
->>>print(song)
+>>> print(song)
 "To You" by Andy Shauf:
     Jeremy can we talk a minute?
     I've got some things that I need to
     Get off of my chestI know that we h...
->>>artist.add_song(song)
->>>print(artist)
+>>> artist.add_song(song)
+>>> print(artist)
 Andy Shauf, 4 songs
 ```
 
 ### Command line
 ```
->>>python genius/api.py --search_song 'Begin Again' 'Andy Shauf'
+$ python genius/api.py --search_song 'Begin Again' 'Andy Shauf'
 Searching for "Begin Again" by Andy Shauf...
 Done.
 "Begin Again" by Andy Shauf:
@@ -60,7 +60,7 @@ Done.
     Its quite an act you put on
     Wait til the cameras roll...
 
->>>python genius/api.py --search_artist 'Lupe Fiasco'
+$ python genius/api.py --search_artist 'Lupe Fiasco'
 Searching for Lupe Fiasco...
 
 Song 1: "1st & 15th"
