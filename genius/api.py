@@ -1,8 +1,3 @@
-"""A library that provides a Python interface to the Genius.com API"""
-__author__       = 'John W. Miller'
-__url__          = 'https://github.com/johnwmillr/GeniusAPI'
-__description__  = 'A Python wrapper around the Genius.com API'
-
 #  -------------
 #  Module usage:
 #    from genius import Genius
@@ -28,6 +23,9 @@ from bs4 import BeautifulSoup
 import urllib2
 import socket
 import json
+
+from song import Song
+from artist import Artist
 
 class _GeniusAPI(object):
     # This is a superclass that Genius() inherits from. Not sure if this makes any sense, but it
@@ -58,7 +56,7 @@ class _GeniusAPI(object):
         
     def _load_credentials(self):
         """Load the Genius.com API authorization information from the 'credentials.ini' file"""        
-        lines = [str(line.rstrip('\n')) for line in open('../credentials.ini')]        
+        lines = [str(line.rstrip('\n')) for line in open('credentials.ini')]        
         for line in lines:
             if "client_id" in line:
                 client_id = line.split(": ")[1]
@@ -160,7 +158,7 @@ class Genius(_GeniusAPI):
                 # Create the Song object
                 song = Song(json_song, lyrics)
                                 
-                print('Done.\n')        
+                print('Done.')
                 return song
         
         print('Specified song was not first result :(')
@@ -225,16 +223,16 @@ class Genius(_GeniusAPI):
 
             print('Found {n_songs} songs.\n'.format(n_songs=artist.num_songs))
 
-        print('Done.\n')
+        print('Done.')
         return artist                
                     
 # --------------------------------------------------------------------
 # Command line script functionality
 #
 #  Usage:
-#    python genius.py --search_song Yesterday 'The Beatles'
+#    >>>python genius/api.py --search_song 'Begin Again' 'Andy Shauf'
+#    >>>python genius/api.py --search_artist 'Lupe Fiasco'
 #
-#    python genius.py --search_artist Common
 
 if __name__ == "__main__":
     import sys    
@@ -246,12 +244,8 @@ if __name__ == "__main__":
             song = G.search_song(sys.argv[2],sys.argv[3])
         elif len(sys.argv) == 3:
             song = G.search_song(sys.argv[2])                                
-        print(song)
+        print('"{title}" by {artist}:\n    {lyrics}'.format(title=song.title,artist=song.artist,lyrics=song.lyrics.replace('\n','\n    ')))        
     elif sys.argv[1] == '--search_artist':
-        artist = G.search_artist(sys.argv[2],get_songs=True,max_songs=10)
-        print(artist)    
-        
-    print('\n')
-                 
-    
-    
+        artist = G.search_artist(sys.argv[2],get_songs=True,max_songs=5)
+        print(artist)
+

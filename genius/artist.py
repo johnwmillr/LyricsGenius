@@ -47,8 +47,9 @@ class Artist(object):
             return 1 # Failure        
             
     def get_song(self, song_name):
-        """Search Genius.com for *song_name* and add it to artist"""
-        song = Genius().search_song(song_name,self.name)
+        """Search Genius.com for *song_name* and add it to artist"""        
+        raise NotImplementedError("I need to figure out how to allow Artist() to access search_song().")
+        song = Genius.search_song(song_name,self.name)
         self.add_song(song)
         return
 
