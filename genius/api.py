@@ -1,8 +1,3 @@
-"""A library that provides a Python interface to the Genius.com API"""
-__author__       = 'John W. Miller'
-__url__          = 'https://github.com/johnwmillr/GeniusAPI'
-__description__  = 'A Python wrapper around the Genius.com API'
-
 #  -------------
 #  Module usage:
 #    from genius import Genius
@@ -29,6 +24,9 @@ import urllib2
 import socket
 import json
 
+from song import Song
+from artist import Artist
+
 class _GeniusAPI(object):
     # This is a superclass that Genius() inherits from. Not sure if this makes any sense, but it
     # seemed like a good idea to have this class (more removed from user) handle the lower-level
@@ -52,7 +50,7 @@ class _GeniusAPI(object):
     _API_REQUEST_TYPES =\
         {'song': 'songs/', 'artist': 'artists/', 'artist-songs': 'artists/songs/','search': 'search?q='}
     
-    def __init__(self):
+    def __init__(self):        
         self._CLIENT_ACCESS_TOKEN = self._load_credentials()
         self._HEADER_AUTHORIZATION = 'Bearer ' + self._CLIENT_ACCESS_TOKEN        
         
@@ -160,7 +158,7 @@ class Genius(_GeniusAPI):
                 # Create the Song object
                 song = Song(json_song, lyrics)
                                 
-                print('Done.\n')        
+                print('Done.')
                 return song
         
         print('Specified song was not first result :(')
@@ -225,168 +223,16 @@ class Genius(_GeniusAPI):
 
             print('Found {n_songs} songs.\n'.format(n_songs=artist.num_songs))
 
-        print('Done.\n')
+        print('Done.')
         return artist                
-    
-
-class Song():    
-    """A song from the Genius.com database.
-    
-    Attributes:
-        title:  (str) Title of the song.
-        artist: (str) Primary artist on the song.
-        lyrcis: (str) Full set of song lyrics.
-        album:  (str) Name of the album the song is on.
-        year:   (int) Year the song was released.        
-    """
-                         
-    def __init__(self, json_dict, lyrics=''):
-        try: self._body = json_dict['song']
-        except: self._body = json_dict
-        self._body['lyrics'] = lyrics
-        self._url      = self._body['url']
-        self._api_path = self._body['api_path']
-        self._id       = self._body['id']
-                                                        
-    @property
-    def title(self):
-        return str(self._body['title'].encode('ascii',errors='ignore'))
-
-    @property
-    def artist(self):
-        return str(self._body['primary_artist']['name'].encode('ascii',errors='ignore'))
-
-    @property
-    def lyrics(self):
-        return self._body['lyrics']
-        
-    @property
-    def album(self):
-        try: return self._body['album']['name']
-        except: return ''
-            
-    @property
-    def year(self):
-        return self._body['release_date']
-    
-    @property
-    def url(self):
-        return self._body['url']
-    
-    @property
-    def album_url(self):
-        return self._body['album']['url']
-    
-    @property
-    def featured_artists(self):
-        return self._body['featured_artists']
-    
-    @property
-    def media(self):
-        m = {}
-        [m.__setitem__(p['provider'],p['url']) for p in self._body['media']]
-        return m
-    
-    @property
-    def writer_artists(self):
-        """List of artists credited as writers"""
-        writers = []                
-        [writers.append((writer['name'], writer['id'], writer['url'])) for writer in self._body['writer_artists']]
-        return writers
-    
-    @property
-    def song_art_image_url(self):
-        return self._body['song_art_image_url']
-
-    def __str__(self):
-        """Return a string representation of the Song object."""
-        if len(self.lyrics) > 100:
-            lyr = self.lyrics[:100] + "..."
-        else: lyr = self.lyrics[:100]            
-        return '"{title}" by {artist}:\n    {lyrics}'.format(title=self.title,artist=self.artist,lyrics=lyr.replace('\n','\n    '))       
-    
-    def __repr__(self):
-        return repr((self.title, self.artist))
-    
-    def __cmp__(self, other):                        
-        return cmp(self.title, other.title) and cmp(self.artist, other.artist) and cmp(self.lyrics, other.lyrics)
-    
-    def __list__(self):
-        # How do I do this?
-        return
-                
-class Artist():
-    """An artist from the Genius.com database.
-    
-    Attributes:
-        name: (str) Artist name.
-        num_songs: (int) Total number of songs listed on Genius.com
-    
-    """                            
-
-    def __init__(self, json_dict):
-        """Populate the Artist object with the data from *json_dict*"""
-        self._body = json_dict['artist']
-        self._url      = self._body['url']
-        self._api_path = self._body['api_path']
-        self._id       = self._body['id']
-        self._songs = []
-        self._num_songs = len(self._songs)
-        
-    @property
-    def name(self):            
-        return str(self._body['name'].encode('ascii',errors='ignore'))
                     
-    @property
-    def image_url(self):
-        return self._body['image_url']
-    
-    @property
-    def songs(self):
-        return self._songs
-    
-    @property
-    def num_songs(self):
-        return self._num_songs          
-        
-    def add_song(self, newsong):
-        """Add a Song object to the Artist object"""
-        
-        if any([song.title==newsong.title for song in self._songs]):
-            print('{newsong.title} already in {self.name}, not adding song.'.format(newsong=newsong,self=self))
-            return 1 # Failure
-        if newsong.artist == self.name:
-            self._songs.append(newsong)
-            self._num_songs += 1
-            return 0 # Success
-        else:
-            print("Can't add song by {newsong.artist}, artist must be {self.name}.".format(newsong=newsong,self=self))
-            return 1 # Failure        
-            
-    def get_song(self, song_name):
-        """Search Genius.com for *song_name* and add it to artist"""
-        song = Genius().search_song(song_name,self.name)
-        self.add_song(song)
-        return
-
-    def __str__(self):
-        """Return a string representation of the Artist object."""                        
-        if self._num_songs == 1:
-            return '{0}, {1} song'.format(self.name,self._num_songs)
-        else:
-            return '{0}, {1} songs'.format(self.name,self._num_songs)
-    
-    def __repr__(self):
-        return repr((self.name, '{0} songs'.format(self._num_songs))) 
-
-
 # --------------------------------------------------------------------
 # Command line script functionality
 #
 #  Usage:
-#    python genius.py --search_song Yesterday 'The Beatles'
+#    >>>python genius/api.py --search_song 'Begin Again' 'Andy Shauf'
+#    >>>python genius/api.py --search_artist 'Lupe Fiasco'
 #
-#    python genius.py --search_artist Common
 
 if __name__ == "__main__":
     import sys    
@@ -398,12 +244,8 @@ if __name__ == "__main__":
             song = G.search_song(sys.argv[2],sys.argv[3])
         elif len(sys.argv) == 3:
             song = G.search_song(sys.argv[2])                                
-        print(song)
+        print('"{title}" by {artist}:\n    {lyrics}'.format(title=song.title,artist=song.artist,lyrics=song.lyrics.replace('\n','\n    ')))        
     elif sys.argv[1] == '--search_artist':
-        artist = G.search_artist(sys.argv[2],get_songs=True,max_songs=10)
-        print(artist)    
-        
-    print('\n')
-                 
-    
-    
+        artist = G.search_artist(sys.argv[2],get_songs=True,max_songs=5)
+        print(artist)
+
