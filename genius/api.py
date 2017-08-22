@@ -82,12 +82,13 @@ class _GeniusAPI(object):
         """        
         
         #The API request URL must be formatted according to the desired request type"""
-        api_request = self._format_api_request(request_term_and_type,page=page)                
+        api_request = self._format_api_request(request_term_and_type,page=page)        
         
         # Add the necessary headers to the request
         request = urllib2.Request(api_request)        
         request.add_header("Authorization",self._HEADER_AUTHORIZATION)
-        request.add_header("User-Agent","curl/7.9.8 (i686-pc-linux-gnu) libcurl 7.9.8 (OpnSSL 0.9.6b) (ipv6 enabled)")
+        # request.add_header("User-Agent","curl/7.9.8 (i686-pc-linux-gnu) libcurl 7.9.8 (OpnSSL 0.9.6b) (ipv6 enabled)")
+        request.add_header("User-Agent","")
         while True:
             try:
                 response = urllib2.urlopen(request, timeout=4) #timeout set to 4 seconds; automatically retries if times out
