@@ -8,6 +8,7 @@
 *.txt
 
 # Jupyter
+/Notebooks
 .ipynb_checkpoints/
 
 # Python module things
