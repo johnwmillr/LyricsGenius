@@ -11,5 +11,8 @@
 /Notebooks
 .ipynb_checkpoints/
 
+# Test files
+test_*.py
+
 # Python module things
 *.pyc

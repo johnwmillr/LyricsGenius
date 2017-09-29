@@ -1,20 +1,20 @@
-#  -------------
 #  Module usage:
-#    from genius import Genius
-#    G = Genius()
-#    artist = G.search_artist('Andy Shauf',max_songs=5)
+#    import genius
+#    api = genius.Genius()
+#    artist = api.search_artist('Andy Shauf',max_songs=5)
 #    print(artist)
 #
-#    song = G.search_song('To You',artist.name)
+#    song = api.search_song('To You',artist.name)
 #    artist.add_song(song)
 #    print(artist)
 #    print(artist.songs[-1])
 #
-#  -------------------
-#  Command line usage:
-#    python genius.py --search_song Yesterday 'The Beatles'
 #
-#    python genius.py --search_artist Common
+# Command line script functionality
+#
+#  Usage:
+#    $python genius/api.py --search_song 'Begin Again' 'Andy Shauf'
+#    $python genius/api.py --search_artist 'Lupe Fiasco'
 
 import re
 from string import punctuation
@@ -27,7 +27,7 @@ import json
 from song import Song
 from artist import Artist
 
-class _GeniusAPI(object):
+class _API(object):
     # This is a superclass that Genius() inherits from. Not sure if this makes any sense, but it
     # seemed like a good idea to have this class (more removed from user) handle the lower-level
     # interaction with the Genius API, and then Genius() has the more user-friendly search
@@ -117,18 +117,19 @@ class _GeniusAPI(object):
         html = BeautifulSoup(page.text, "html.parser")
         
         # Scrape the song lyrics from the HTML
-        lyrics = html.find("div", class_="lyrics").get_text().encode('ascii','ignore').decode('ascii')
+        lyrics = html.find("div", class_="lyrics").get_text().encode('ascii','ignore').decode('ascii')                
         lyrics = re.sub('\[.*\]','',lyrics) # Remove [Verse] and [Bridge] stuff
-        lyrics = re.sub('\n{2}','',lyrics)  # Remove gaps between verses        
+        lyrics = re.sub('\n{2}','\n',lyrics)  # Remove gaps between verses        
         lyrics = str(lyrics).strip('\n')
         
         return lyrics    
         
 
-class Genius(_GeniusAPI):
+class Genius(_API):
     """User-level interface with the Genius.com API. User can search for songs (getting lyrics) and artists (getting songs)"""    
     
     def search_song(self, song_title, artist_name=''):
+        # TODO: Should search_song() be a @classmethod?
         """Search Genius.com for *song_title* by *artist_name*"""                
                     
         # Perform a Genius API search for the song
@@ -197,6 +198,7 @@ class Genius(_GeniusAPI):
             next_page = 0; n=0            
             while keep_searching:            
                 for json_song in artist_search_results['songs']:
+                    # TODO: Shouldn't I use self.search_song() here?
                     # Scrape song lyrics from the song's HTML
                     lyrics = self._scrape_song_lyrics_from_url(json_song['url'])            
 
@@ -225,14 +227,22 @@ class Genius(_GeniusAPI):
             print('Found {n_songs} songs.\n'.format(n_songs=artist.num_songs))
 
         print('Done.')
-        return artist                
+        return artist
+
+    def write_artist_lyrics(self, artist):
+        n_songs = artist.num_songs
+        filename = "Lyrics_" + artist.name.replace(" ","") + ".txt"                        
+        with open(filename,'w') as lyrics_file:
+            [lyrics_file.write(s.lyrics + 5*'\n') for s in artist.songs]
+        print('Wrote lyrics for {} songs.'.format(n_songs))
+
                     
 # --------------------------------------------------------------------
 # Command line script functionality
 #
 #  Usage:
-#    >>>python genius/api.py --search_song 'Begin Again' 'Andy Shauf'
-#    >>>python genius/api.py --search_artist 'Lupe Fiasco'
+#    $python genius/api.py --search_song 'Begin Again' 'Andy Shauf'
+#    $python genius/api.py --search_artist 'Lupe Fiasco'
 #
 
 if __name__ == "__main__":
