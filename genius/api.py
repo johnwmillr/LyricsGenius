@@ -229,7 +229,7 @@ class Genius(_API):
         print('Done.')
         return artist
 
-    def write_artist_lyrics(self, artist):
+    def save_artist_lyrics(self, artist):
         n_songs = artist.num_songs
         filename = "Lyrics_" + artist.name.replace(" ","") + ".txt"                        
         with open(filename,'w') as lyrics_file:
