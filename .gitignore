@@ -12,7 +12,7 @@
 .ipynb_checkpoints/
 
 # Test files
-test_*.py
+.cache/
 
 # Python module things
 *.pyc

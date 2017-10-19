@@ -1,0 +1,14 @@
+language: python
+python:
+ - "2.7"
+before_install:
+- openssl aes-256-cbc -K $encrypted_e334385ab253_key -iv $encrypted_e334385ab253_iv
+  -in credentials.ini.enc -out credentials.ini -d
+
+install: pip install -r requirements.txt
+
+script: python -m unittest discover
+
+notifications:
+  email:
+    - john.w.millr@gmail.com
