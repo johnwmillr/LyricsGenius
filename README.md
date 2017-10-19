@@ -1,5 +1,7 @@
 # Scraping song lyrics from Genius.com
 
+[![Build Status](https://travis-ci.org/johnwmillr/GeniusAPI.svg?branch=master)](https://travis-ci.org/johnwmillr/GeniusAPI)
+
 ## Setup
 This repository is intended to provide an easy interface for programatically accessing the song information stored on [Genius.com](https://www.genius.com). Check out [my blog post](http://www.johnwmillr.com/blog/2017/scraping-genius-lyrics) for a more thorough description of the package and its usage.
 
