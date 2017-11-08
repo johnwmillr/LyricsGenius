@@ -166,7 +166,7 @@ class Genius(_API):
         print('Specified song was not first result :(')
         return None
         
-    def search_artist(self, artist_name, get_songs=True, verbose=True, max_songs=None):
+    def search_artist(self, artist_name, verbose=True, max_songs=None):
         """Allow user to search for an artist on the Genius.com database by supplying an artist name.
         Returns an Artist() object containing all songs for that particular artist."""
                                 
@@ -189,7 +189,7 @@ class Genius(_API):
         # Create the Artist object
         artist = Artist(json_artist);
         
-        if get_songs == True:            
+        if max_songs > 0 or max_songs == None:
             # Access the api_path found by searching
             artist_search_results = self._make_api_request((artist_id, 'artist-songs'))        
 
@@ -257,6 +257,6 @@ if __name__ == "__main__":
             song = G.search_song(sys.argv[2])                                
         print('"{title}" by {artist}:\n    {lyrics}'.format(title=song.title,artist=song.artist,lyrics=song.lyrics.replace('\n','\n    ')))        
     elif sys.argv[1] == '--search_artist':
-        artist = G.search_artist(sys.argv[2],get_songs=True,max_songs=5)
+        artist = G.search_artist(sys.argv[2],max_songs=5)
         print(artist)
 
