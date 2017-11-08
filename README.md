@@ -11,8 +11,13 @@ Start by cloning this repo:
 git clone https://github.com/johnwmillr/GeniusAPI.git
 ```
 
-To use the Genius API you'll need to sign up for a (free) client that authorizes you to [access their API](http://genius.com/api-clients). Fill out the ```credentials.ini``` file using the API client info you were assigned.
-
+To use the Genius API you'll need to sign up for a (free) client that authorizes you to [access their API](http://genius.com/api-clients). The `genius` module will look for a `credentials.ini` file in the `GeniusAPI` directory cloned from this repository. The `credentials.ini` file is just a text file in the following format with your Genius.com API credentials filled in:
+```
+# credentials.ini
+client_id: your-client-id
+client_secret: your-client-secret
+client_access_token: your-access-token
+```
 
 You can read through the [Genius API docs](https://docs.genius.com/), but I've found it more helpful to start by looking at code folks have already written for the API. I found [this post](https://bigishdata.com/2016/09/27/getting-song-lyrics-from-geniuss-api-scraping) from @jackschultz and [this repository](https://github.com/jasonqng/genius-lyrics-search) from @JasonQNg real helpful while getting started, check their work out.
 
