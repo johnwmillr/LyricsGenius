@@ -85,3 +85,5 @@ Done.
 Lupe Fiasco, 5 songs
 ```
 
+## Contributing
+Please contribute! I'd love to have collaborators on this project. If you want to add features, suggest improvements, or have other comments, just make a pull request or raise an issue.
