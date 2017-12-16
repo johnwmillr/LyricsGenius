@@ -16,16 +16,20 @@
 #    $python genius/api.py --search_song 'Begin Again' 'Andy Shauf'
 #    $python genius/api.py --search_artist 'Lupe Fiasco'
 
+import sys
 import re
 from string import punctuation
-import requests
+try: 
+    from urllib2 import Request, urlopen, quote # Python 2    
+except ImportError:
+    from urllib.request import Request, urlopen, quote # Python 3
 from bs4 import BeautifulSoup
-import urllib2
+import requests
 import socket
 import json
 
-from song import Song
-from artist import Artist
+from .song import Song
+from .artist import Artist
 
 class _API(object):
     # This is a superclass that Genius() inherits from. Not sure if this makes any sense, but it
@@ -85,13 +89,13 @@ class _API(object):
         api_request = self._format_api_request(request_term_and_type,page=page)        
         
         # Add the necessary headers to the request
-        request = urllib2.Request(api_request)        
+        request = Request(api_request)        
         request.add_header("Authorization",self._HEADER_AUTHORIZATION)
         # request.add_header("User-Agent","curl/7.9.8 (i686-pc-linux-gnu) libcurl 7.9.8 (OpnSSL 0.9.6b) (ipv6 enabled)")
         request.add_header("User-Agent","")
         while True:
             try:
-                response = urllib2.urlopen(request, timeout=4) #timeout set to 4 seconds; automatically retries if times out
+                response = urlopen(request, timeout=4) #timeout set to 4 seconds; automatically retries if times out
                 raw = response.read()
             except socket.timeout:
                 print("Timeout raised and caught")
@@ -107,9 +111,9 @@ class _API(object):
         
         # TODO - Clean this up (might not need separate returns)
         if request_type=='artist-songs':                        
-            return self._API_URL + 'artists/' + urllib2.quote(request_term) + '/songs?per_page=50&page=' + str(page)
+            return self._API_URL + 'artists/' + quote(request_term) + '/songs?per_page=50&page=' + str(page)
         else:        
-            return self._API_URL + self._API_REQUEST_TYPES[request_type] + urllib2.quote(request_term)
+            return self._API_URL + self._API_REQUEST_TYPES[request_type] + quote(request_term)
     
     def _scrape_song_lyrics_from_url(self, URL):
         """Use BeautifulSoup to scrape song info off of a Genius song URL"""                                
@@ -123,7 +127,14 @@ class _API(object):
         lyrics = str(lyrics).strip('\n')
         
         return lyrics    
-        
+
+    def _clean_string(self, s):
+        s = str(s.encode("utf-8", errors='ignore').decode("utf-8")).lower()
+        if sys.version_info[0] == 2:
+            return s.translate(None, punctuation)
+        else:
+            translator = str.maketrans('','',punctuation)
+            return s.translate(translator)
 
 class Genius(_API):
     """User-level interface with the Genius.com API. User can search for songs (getting lyrics) and artists (getting songs)"""    
@@ -143,14 +154,12 @@ class Genius(_API):
         # Loop through search results, stopping as soon as title and artist of result match request
         n_hits = min(10,len(json_search['hits']))
         for i in range(n_hits):
-            search_hit   = json_search['hits'][i]['result']                                                            
-            
-            found_title  = str(search_hit['title'].encode('ascii', errors='ignore')).lower().translate(None, punctuation)
-            found_artist = str(search_hit['primary_artist']['name'].encode('ascii', errors='ignore')).lower().translate(None, punctuation)
+            search_hit   = json_search['hits'][i]['result']
+            found_title = self._clean_string(search_hit['title'])
+            found_artist = self._clean_string(search_hit['primary_artist']['name'])
                                     
             # Download song from Genius.com if title and artist match the request
-            if found_title == song_title.lower().translate(None, punctuation) and \
-              (found_artist == artist_name.translate(None, punctuation).lower() or artist_name==''):
+            if found_title == self._clean_string(song_title) and found_artist == self._clean_string(artist_name) or artist_name=='':
                 # Found correct song, accessing API ID
                 json_song = self._make_api_request((search_hit['id'],'song'))
                 
@@ -176,7 +185,7 @@ class Genius(_API):
         json_search = self._make_api_request((artist_name,'search'))                        
         for hit in json_search['hits']:
             found_artist = hit['result']['primary_artist']
-            if str(found_artist['name'].encode('ascii',errors='ignore')).lower()==artist_name.lower():                
+            if self._clean_string(found_artist['name']) == artist_name.lower():                
                 artist_id = found_artist['id']
                 break
             else:                                                            

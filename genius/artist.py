@@ -18,7 +18,7 @@ class Artist(object):
         
     @property
     def name(self):            
-        return str(self._body['name'].encode('ascii',errors='ignore'))
+        return str(self._body['name'].encode("utf-8", errors='ignore').decode("utf-8"))
                     
     @property
     def image_url(self):

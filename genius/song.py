@@ -19,11 +19,11 @@ class Song(object):
                                                         
     @property
     def title(self):
-        return str(self._body['title'].encode('ascii',errors='ignore'))
+        return str(self._body['title'].encode("utf-8", errors='ignore').decode("utf-8"))
 
     @property
     def artist(self):
-        return str(self._body['primary_artist']['name'].encode('ascii',errors='ignore'))
+        return str(self._body['primary_artist']['name'].encode("utf-8", errors='ignore').decode("utf-8"))
 
     @property
     def lyrics(self):
