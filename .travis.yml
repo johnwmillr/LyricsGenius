@@ -11,7 +11,3 @@ before_install:
 install: pip install -r requirements.txt
 
 script: python -m unittest discover
-
-notifications:
-  email:
-    - john.w.millr@gmail.com
