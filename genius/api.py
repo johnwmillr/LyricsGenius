@@ -96,7 +96,7 @@ class _API(object):
         while True:
             try:
                 response = urlopen(request, timeout=4) #timeout set to 4 seconds; automatically retries if times out
-                raw = response.read()
+                raw = response.read().decode('utf-8')
             except socket.timeout:
                 print("Timeout raised and caught")
                 continue
