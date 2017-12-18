@@ -53,7 +53,8 @@ class Song(object):
     @property
     def media(self):
         m = {}
-        [m.__setitem__(p['provider'],p['url']) for p in self._body['media']]
+        if 'media' in self._body:
+            [m.__setitem__(p['provider'],p['url']) for p in self._body['media']]
         return m
     
     @property
