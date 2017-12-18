@@ -16,6 +16,7 @@
 #    $python genius/api.py --search_song 'Begin Again' 'Andy Shauf'
 #    $python genius/api.py --search_artist 'Lupe Fiasco'
 
+import os
 import sys
 import re
 from string import punctuation
@@ -54,12 +55,15 @@ class _API(object):
     _API_REQUEST_TYPES =\
         {'song': 'songs/', 'artist': 'artists/', 'artist-songs': 'artists/songs/','search': 'search?q='}
     
-    def __init__(self):        
-        self._CLIENT_ACCESS_TOKEN = self._load_credentials()
+    def __init__(self, client_access_token=''):        
+        if client_access_token=='':
+            self._CLIENT_ACCESS_TOKEN = self._load_credentials()
+        else:
+            self._CLIENT_ACCESS_TOKEN = client_access_token
         self._HEADER_AUTHORIZATION = 'Bearer ' + self._CLIENT_ACCESS_TOKEN        
         
     def _load_credentials(self):
-        """Load the Genius.com API authorization information from the 'credentials.ini' file"""        
+        """Load the Genius.com API authorization information from the 'credentials.ini' file"""                
         lines = [str(line.rstrip('\n')) for line in open('credentials.ini')]        
         for line in lines:
             if "client_id" in line:
