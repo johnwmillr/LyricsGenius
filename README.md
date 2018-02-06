@@ -1,6 +1,6 @@
 # Scraping song lyrics from Genius.com
 
-[![Build Status](https://travis-ci.org/johnwmillr/GeniusAPI.svg?branch=master)](https://travis-ci.org/johnwmillr/GeniusAPI)
+[![Build Status](https://travis-ci.org/johnwmillr/GeniusLyrics.svg?branch=master)](https://travis-ci.org/johnwmillr/GeniusLyrics)
 
 ## Setup
 This repository is intended to provide an easy interface for programatically accessing the song information stored on [Genius.com](https://www.genius.com). Check out [my blog post](http://www.johnwmillr.com/scraping-genius-lyrics/) for a more thorough description of the package and its usage.
@@ -8,10 +8,10 @@ This repository is intended to provide an easy interface for programatically acc
 Start by cloning this repo:
 
 ```bash
-git clone https://github.com/johnwmillr/GeniusAPI.git
+git clone https://github.com/johnwmillr/GeniusLyrics.git
 ```
 
-To use the Genius API you'll need to sign up for a (free) client that authorizes you to [access their API](http://genius.com/api-clients). The `genius` module will look for a `credentials.ini` file in the `GeniusAPI` directory cloned from this repository. The `credentials.ini` file is just a text file in the following format with your Genius.com API credentials filled in:
+To use the Genius API you'll need to sign up for a (free) client that authorizes you to [access their API](http://genius.com/api-clients). The `genius` module will look for a `credentials.ini` file in the `GeniusLyrics` directory cloned from this repository. The `credentials.ini` file is just a text file in the following format with your Genius.com API credentials filled in:
 ```
 # credentials.ini
 client_id: your-client-id
