@@ -79,5 +79,11 @@ Done.
 Lupe Fiasco, 5 songs
 ```
 
+## Example projects
+  
+  - [Textual analysis of popular country music](https://github.com/johnwmillr/song-lyrics-analysis)
+  
+  I'd love to have more examples to list here! Let me know if you've made use of this wrapper for one of your own projects, and I'll list it here.
+
 ## Contributing
 Please contribute! I'd love to have collaborators on this project. If you want to add features, suggest improvements, or have other comments, just make a pull request or raise an issue.
