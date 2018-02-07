@@ -26,7 +26,7 @@ You can read through the [Genius API docs](https://docs.genius.com/), but I've f
 ```python
 >>> import genius
 >>> api = genius.Genius()
->>> artist = api.search_artist('Andy Shauf',max_songs=5)
+>>> artist = api.search_artist('Andy Shauf', max_songs=3)
 Searching for Andy Shauf...
 
 Song 1: "Alexander All Alone"
