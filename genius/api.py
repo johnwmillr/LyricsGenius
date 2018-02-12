@@ -202,7 +202,7 @@ class Genius(_API):
         # Create the Artist object
         artist = Artist(json_artist);
         
-        if max_songs > 0 or max_songs == None:
+        if max_songs is None or max_songs > 0:
             # Access the api_path found by searching
             artist_search_results = self._make_api_request((artist_id, 'artist-songs'))        
 
