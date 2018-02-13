@@ -19,7 +19,15 @@ client_secret: your-client-secret
 client_access_token: your-access-token
 ```
 
-You can read through the [Genius API docs](https://docs.genius.com/), but I've found it more helpful to start by looking at code folks have already written for the API. I found [this post](https://bigishdata.com/2016/09/27/getting-song-lyrics-from-geniuss-api-scraping) from @jackschultz and [this repository](https://github.com/jasonqng/genius-lyrics-search) from @JasonQNg real helpful while getting started, check their work out.
+You can read through the [Genius API docs](https://docs.genius.com/), but I've found it more helpful to start by looking at code folks have already written for the API. I found [this post](https://bigishdata.com/2016/09/27/getting-song-lyrics-from-geniuss-api-scraping) from @jackschultz and [this repository](https://github.com/jasonqng/genius-lyrics-search) from @JasonQNg real helpful while getting started, check their work out.  
+
+## Installation
+1. Clone this repo:  
+`git clone https://github.com/johnwmillr/GeniusLyrics.git`
+2. Enter the directory created:  
+`cd GeniusLyrics`
+3. Install using pip:  
+`pip install .`
 
 ## Usage
 ### Python module
@@ -54,7 +62,7 @@ Andy Shauf, 4 songs
 
 ### Command line
 ```
-$ python genius/api.py --search_song 'Begin Again' 'Andy Shauf'
+$ python genius-api --search_song 'Begin Again' 'Andy Shauf'
 Searching for "Begin Again" by Andy Shauf...
 Done.
 "Begin Again" by Andy Shauf:
@@ -63,7 +71,7 @@ Done.
     Its quite an act you put on
     Wait til the cameras roll...
 
-$ python genius/api.py --search_artist 'Lupe Fiasco'
+$ python genius-api --search_artist 'Lupe Fiasco'
 Searching for Lupe Fiasco...
 
 Song 1: "1st & 15th"
