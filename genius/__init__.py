@@ -9,4 +9,4 @@ __url__ = 'https://github.com/johnwmillr/GeniusAPI'
 __description__ = 'A Python wrapper around the Genius API'
 __license__ = 'MIT'
 
-from genius.api import Genius
+from .api import Genius

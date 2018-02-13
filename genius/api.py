@@ -130,7 +130,7 @@ class _API(object):
 
 class Genius(_API):
     """User-level interface with the Genius.com API. User can search for songs (getting lyrics) and artists (getting songs)"""    
-    
+
     def search_song(self, song_title, artist_name=''):
         # TODO: Should search_song() be a @classmethod?
         """Search Genius.com for *song_title* by *artist_name*"""                
@@ -246,18 +246,30 @@ class Genius(_API):
 #    $python genius/api.py --search_artist 'Lupe Fiasco'
 #
 
-if __name__ == "__main__":
-    import sys    
-    G = Genius()    
+def usage(argv):
+    print('usage: genius-api --search_song <song_title>\n'
+          '(example: "genius-api --search_song \'Begin Again\' \'Andy Shauf\'")')
+    
+    sys.exit(1)
+
+
+def main(argv=sys.argv):
+    if len(argv) < 2:
+        usage(argv)
+
+    G = Genius('')  # 401 Unauthorized
                 
     # There must be a standard way to handle "--" inputs on the command line
-    if sys.argv[1] == '--search_song':            
-        if len(sys.argv) == 4:                        
-            song = G.search_song(sys.argv[2],sys.argv[3])
-        elif len(sys.argv) == 3:
-            song = G.search_song(sys.argv[2])                                
+    # TODO argparse module
+    print(len(argv))
+    print([i for i in argv])
+    if argv[1] == '--search_song':            
+        if len(argv) == 4:                        
+            song = G.search_song(argv[2],argv[3])
+        elif len(argv) == 3:
+            song = G.search_song(argv[2])                                
         print('"{title}" by {artist}:\n    {lyrics}'.format(title=song.title,artist=song.artist,lyrics=song.lyrics.replace('\n','\n    ')))        
-    elif sys.argv[1] == '--search_artist':
-        artist = G.search_artist(sys.argv[2],max_songs=5)
+    elif argv[1] == '--search_artist':
+        artist = G.search_artist(argv[2],max_songs=5)
         print(artist)
 
