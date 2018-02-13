@@ -25,7 +25,7 @@ You can read through the [Genius API docs](https://docs.genius.com/), but I've f
 ### Python module
 ```python
 >>> import genius
->>> api = genius.Genius()
+>>> api = genius.Genius('my_client_access_token_here')
 >>> artist = api.search_artist('Andy Shauf', max_songs=3)
 Searching for Andy Shauf...
 
