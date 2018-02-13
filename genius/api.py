@@ -55,26 +55,14 @@ class _API(object):
     _API_REQUEST_TYPES =\
         {'song': 'songs/', 'artist': 'artists/', 'artist-songs': 'artists/songs/','search': 'search?q='}
     
-    def __init__(self, client_access_token=''):        
-        if client_access_token=='':
-            self._CLIENT_ACCESS_TOKEN = self._load_credentials()
-        else:
-            self._CLIENT_ACCESS_TOKEN = client_access_token
-        self._HEADER_AUTHORIZATION = 'Bearer ' + self._CLIENT_ACCESS_TOKEN        
+    def __init__(self, client_access_token, client_secret='', client_id=''):        
+        self._CLIENT_ACCESS_TOKEN = client_access_token
+        self._HEADER_AUTHORIZATION = 'Bearer ' + self._CLIENT_ACCESS_TOKEN
+
         
-    def _load_credentials(self):
-        """Load the Genius.com API authorization information from the 'credentials.ini' file"""                
-        lines = [str(line.rstrip('\n')) for line in open('credentials.ini')]        
-        for line in lines:
-            if "client_id" in line:
-                client_id = line.split(": ")[1]
-            if "client_secret" in line:
-                client_secret = line.split(": ")[1]
-            #Currently only need access token to run, the other two perhaps for future implementation
-            if "client_access_token" in line:
-                client_access_token = line.split(": ")[1]
-                
-        return client_access_token
+    def _load_client(self):
+        """TODO Load the Genius.com API authorization information from the genius api"""
+        return
     
     def _make_api_request(self, request_term_and_type, page=1):
         """Send a request (song, artist, or search) to the Genius API, returning a json object
