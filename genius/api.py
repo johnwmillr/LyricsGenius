@@ -189,7 +189,7 @@ class Genius(_API):
         json_search = self._make_api_request((artist_name,'search'))                        
         for hit in json_search['hits']:
             found_artist = hit['result']['primary_artist']
-            if self._clean_string(found_artist['name']) == artist_name.lower():                
+            if self._clean_string(found_artist['name'].lower()) == self._clean_string(artist_name.lower()):
                 artist_id = found_artist['id']
                 break
             else:                                                            
