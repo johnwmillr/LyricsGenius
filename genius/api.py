@@ -71,11 +71,11 @@ class _API(object):
         """        
         
         #The API request URL must be formatted according to the desired request type"""
-        api_request = self._format_api_request(request_term_and_type,page=page)        
+        api_request = self._format_api_request(request_term_and_type, page=page)        
         
         # Add the necessary headers to the request
         request = Request(api_request)        
-        request.add_header("Authorization",self._HEADER_AUTHORIZATION)
+        request.add_header("Authorization", self._HEADER_AUTHORIZATION)
         # request.add_header("User-Agent","curl/7.9.8 (i686-pc-linux-gnu) libcurl 7.9.8 (OpnSSL 0.9.6b) (ipv6 enabled)")
         request.add_header("User-Agent","")
         while True:
@@ -168,14 +168,21 @@ class Genius(_API):
     
         # Perform a Genius API search for the artist                
         json_search = self._make_api_request((artist_name,'search'))                        
+
         for hit in json_search['hits']:
             found_artist = hit['result']['primary_artist']
-            if self._clean_string(found_artist['name'].lower()) == self._clean_string(artist_name.lower()):
-                artist_id = found_artist['id']
+            artist_id = found_artist['id']
+            if self._clean_string(found_artist['name'].lower()) == self._clean_string(artist_name.lower()):                
                 break
-            else:                                                            
-                artist_id = None                                                                                        
-        assert (not isinstance(artist_id,type(None))), "Could not find artist. Check spelling?"
+            else:                
+                # check for searched name in alternate artist names
+                json_artist = self._make_api_request((artist_id, 'artist'))['artist']            
+                if artist_name.lower() in [s.lower() for s in json_artist['alternate_names']]:
+                    print("Found alternate name. Changing name to {}.".format(json_artist['name']))
+                    artist_name = json_artist['name']
+                    break
+            artist_id = None                        
+        assert (not isinstance(artist_id, type(None))), "Could not find artist. Check spelling?"
         
         # Make Genius API request for the determined artist ID
         json_artist = self._make_api_request((artist_id,'artist'))
