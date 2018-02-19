@@ -1,10 +1,10 @@
-#  Module usage:
+#  Usage:
 #    import genius
-#    api = genius.Genius()
-#    artist = api.search_artist('Andy Shauf',max_songs=5)
+#    api = genius.Genius('my_client_access_token_here')
+#    artist = api.search_artist('Andy Shauf', max_songs=5)
 #    print(artist)
 #
-#    song = api.search_song('To You',artist.name)
+#    song = api.search_song('To You', artist.name)
 #    artist.add_song(song)
 #    print(artist)
 #    print(artist.songs[-1])
