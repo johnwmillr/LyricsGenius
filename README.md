@@ -30,7 +30,6 @@ You can read through the [Genius API docs](https://docs.genius.com/), but I've f
 `pip install .`
 
 ## Usage
-### Python module
 ```python
 >>> import genius
 >>> api = genius.Genius('my_client_access_token_here')
@@ -58,33 +57,6 @@ Done.
 >>> artist.add_song(song)
 >>> print(artist)
 Andy Shauf, 4 songs
-```
-
-### Command line
-```
-$ python genius-api --search_song 'Begin Again' 'Andy Shauf'
-Searching for "Begin Again" by Andy Shauf...
-Done.
-"Begin Again" by Andy Shauf:
-    Begin again
-    This time you should take a bow at the very end
-    Its quite an act you put on
-    Wait til the cameras roll...
-
-$ python genius-api --search_artist 'Lupe Fiasco'
-Searching for Lupe Fiasco...
-
-Song 1: "1st & 15th"
-Song 2: "4 Real"
-Song 3: "A Bathing Harry"
-Song 4: "Absolute Freestyle"
-Song 5: "Accept the Troubles"
-
-Reached user-specified song limit (5).
-Found 5 songs.
-
-Done.
-Lupe Fiasco, 5 songs
 ```
 
 ## Example projects
