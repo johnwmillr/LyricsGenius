@@ -1,8 +1,13 @@
+import os
 import unittest
 import genius
 from genius.song import Song
 from genius.artist import Artist
-api = genius.Genius()
+
+# Import client access token from environment variable
+client_access_token = os.environ.get("GENIUS_CLIENT_ACCESS_TOKEN", None)
+assert client_access_token is not None, "Must declare environment variable: GENIUS_CLIENT_ACCESS_TOKEN"
+api = genius.Genius(client_access_token)
 
 class TestArtist(unittest.TestCase):
 

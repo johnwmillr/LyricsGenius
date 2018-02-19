@@ -8,13 +8,6 @@
 #    artist.add_song(song)
 #    print(artist)
 #    print(artist.songs[-1])
-#
-#
-# Command line script functionality
-#
-#  Usage:
-#    $python genius/api.py --search_song 'Begin Again' 'Andy Shauf'
-#    $python genius/api.py --search_artist 'Lupe Fiasco'
 
 import os
 import sys
@@ -55,26 +48,14 @@ class _API(object):
     _API_REQUEST_TYPES =\
         {'song': 'songs/', 'artist': 'artists/', 'artist-songs': 'artists/songs/','search': 'search?q='}
     
-    def __init__(self, client_access_token=''):        
-        if client_access_token=='':
-            self._CLIENT_ACCESS_TOKEN = self._load_credentials()
-        else:
-            self._CLIENT_ACCESS_TOKEN = client_access_token
-        self._HEADER_AUTHORIZATION = 'Bearer ' + self._CLIENT_ACCESS_TOKEN        
+    def __init__(self, client_access_token, client_secret='', client_id=''):        
+        self._CLIENT_ACCESS_TOKEN = client_access_token
+        self._HEADER_AUTHORIZATION = 'Bearer ' + self._CLIENT_ACCESS_TOKEN
+
         
-    def _load_credentials(self):
-        """Load the Genius.com API authorization information from the 'credentials.ini' file"""                
-        lines = [str(line.rstrip('\n')) for line in open('credentials.ini')]        
-        for line in lines:
-            if "client_id" in line:
-                client_id = line.split(": ")[1]
-            if "client_secret" in line:
-                client_secret = line.split(": ")[1]
-            #Currently only need access token to run, the other two perhaps for future implementation
-            if "client_access_token" in line:
-                client_access_token = line.split(": ")[1]
-                
-        return client_access_token
+    def _load_client(self):
+        """TODO Load the Genius.com API authorization information from the genius api"""
+        return
     
     def _make_api_request(self, request_term_and_type, page=1):
         """Send a request (song, artist, or search) to the Genius API, returning a json object
@@ -142,7 +123,7 @@ class _API(object):
 
 class Genius(_API):
     """User-level interface with the Genius.com API. User can search for songs (getting lyrics) and artists (getting songs)"""    
-    
+
     def search_song(self, song_title, artist_name=''):
         # TODO: Should search_song() be a @classmethod?
         """Search Genius.com for *song_title* by *artist_name*"""                
@@ -248,28 +229,3 @@ class Genius(_API):
         with open(filename,'w') as lyrics_file:
             [lyrics_file.write(s.lyrics + 5*'\n') for s in artist.songs]
         print('Wrote lyrics for {} songs.'.format(n_songs))
-
-                    
-# --------------------------------------------------------------------
-# Command line script functionality
-#
-#  Usage:
-#    $python genius/api.py --search_song 'Begin Again' 'Andy Shauf'
-#    $python genius/api.py --search_artist 'Lupe Fiasco'
-#
-
-if __name__ == "__main__":
-    import sys    
-    G = Genius()    
-                
-    # There must be a standard way to handle "--" inputs on the command line
-    if sys.argv[1] == '--search_song':            
-        if len(sys.argv) == 4:                        
-            song = G.search_song(sys.argv[2],sys.argv[3])
-        elif len(sys.argv) == 3:
-            song = G.search_song(sys.argv[2])                                
-        print('"{title}" by {artist}:\n    {lyrics}'.format(title=song.title,artist=song.artist,lyrics=song.lyrics.replace('\n','\n    ')))        
-    elif sys.argv[1] == '--search_artist':
-        artist = G.search_artist(sys.argv[2],max_songs=5)
-        print(artist)
-

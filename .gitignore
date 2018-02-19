@@ -16,3 +16,7 @@
 
 # Python module things
 *.pyc
+
+# Python cache stuff
+*.egg-info
+__pycache__
