@@ -14,7 +14,8 @@ import sys
 import re
 from string import punctuation
 try: 
-    from urllib2 import Request, urlopen, quote # Python 2    
+    from urllib2 import Request, urlopen, quote # Python 2
+    input = raw_input
 except ImportError:
     from urllib.request import Request, urlopen, quote # Python 3
 from bs4 import BeautifulSoup
@@ -168,9 +169,11 @@ class Genius(_API):
     
         # Perform a Genius API search for the artist                
         json_search = self._make_api_request((artist_name,'search'))                        
-
-        for hit in json_search['hits']:
+        first_result = None
+        for hit in json_search['hits']:            
             found_artist = hit['result']['primary_artist']
+            if first_result is None:
+                first_result = found_artist
             artist_id = found_artist['id']
             if self._clean_string(found_artist['name'].lower()) == self._clean_string(artist_name.lower()):                
                 break
@@ -181,7 +184,11 @@ class Genius(_API):
                     print("Found alternate name. Changing name to {}.".format(json_artist['name']))
                     artist_name = json_artist['name']
                     break
-            artist_id = None                        
+                artist_id = None
+        
+        if verbose and artist_id is None:
+            if input("Couldn't find {}. Did you mean {}? (y/n): ".format(artist_name, first_result['name'])).lower() == 'y':
+                artist_name, artist_id = first_result['name'], first_result['id']
         assert (not isinstance(artist_id, type(None))), "Could not find artist. Check spelling?"
         
         # Make Genius API request for the determined artist ID
