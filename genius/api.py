@@ -8,13 +8,6 @@
 #    artist.add_song(song)
 #    print(artist)
 #    print(artist.songs[-1])
-#
-#
-# Command line script functionality
-#
-#  Usage:
-#    $python genius/api.py --search_song 'Begin Again' 'Andy Shauf'
-#    $python genius/api.py --search_artist 'Lupe Fiasco'
 
 import os
 import sys
@@ -236,40 +229,3 @@ class Genius(_API):
         with open(filename,'w') as lyrics_file:
             [lyrics_file.write(s.lyrics + 5*'\n') for s in artist.songs]
         print('Wrote lyrics for {} songs.'.format(n_songs))
-
-                    
-# --------------------------------------------------------------------
-# Command line script functionality
-#
-#  Usage:
-#    $python genius/api.py --search_song 'Begin Again' 'Andy Shauf'
-#    $python genius/api.py --search_artist 'Lupe Fiasco'
-#
-
-def usage(argv):
-    print('usage: genius-api --search_song <song_title>\n'
-          '(example: "genius-api --search_song \'Begin Again\' \'Andy Shauf\'")')
-    
-    sys.exit(1)
-
-
-def main(argv=sys.argv):
-    if len(argv) < 2:
-        usage(argv)
-
-    G = Genius('')  # 401 Unauthorized
-                
-    # There must be a standard way to handle "--" inputs on the command line
-    # TODO argparse module
-    print(len(argv))
-    print([i for i in argv])
-    if argv[1] == '--search_song':            
-        if len(argv) == 4:                        
-            song = G.search_song(argv[2],argv[3])
-        elif len(argv) == 3:
-            song = G.search_song(argv[2])                                
-        print('"{title}" by {artist}:\n    {lyrics}'.format(title=song.title,artist=song.artist,lyrics=song.lyrics.replace('\n','\n    ')))        
-    elif argv[1] == '--search_artist':
-        artist = G.search_artist(argv[2],max_songs=5)
-        print(artist)
-
