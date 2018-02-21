@@ -11,16 +11,16 @@ with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
 setup(
-    name='geniuslyrics',
-    version='0.0',
-    description='GeniusLyrics',
+    name='lyricsgenius',
+    version='0.1',
+    description='Download lyrics and metadata from Genius.com',
     long_description=README,
     classifiers=[
         'Programming Language :: Python', # TODO
     ],
     author='John W. Miller',
-    author_email='',
-    url='https://github.com/johnwmillr/GeniusAPI',
+    author_email='john.w.millr@gmail.com',
+    url='https://github.com/johnwmillr/lyricsgenius',
     keywords='genius api music lyrics artists albums songs',
     packages=find_packages(),
     include_package_data=True,
@@ -28,6 +28,6 @@ setup(
     install_requires=requirements,
     entry_points={
         'console_scripts': [
-            'genius-api = genius.api:main']
+            'lyricsgenius = lyricsgenius.__main__:main']
     },
 )
