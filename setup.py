@@ -1,7 +1,7 @@
 # http://peterdowns.com/posts/first-time-with-pypi.html
-# from setuptools import setup, find_packages
-from distutils.core import setup
 import os
+from setuptools import find_packages, setup
+# from distutils.core import setup
 
 here = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(here, 'README.md')) as f:
@@ -13,7 +13,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='lyricsgenius',
-    version='0.1',
+    version='0.1.2',
     description='Download lyrics and metadata from Genius.com',
     long_description=README,
     classifiers=[
