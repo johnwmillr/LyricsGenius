@@ -5,23 +5,20 @@
 ## Setup
 This repository is intended to provide an easy interface for programatically accessing the song information stored on [Genius.com](https://www.genius.com). Check out [my blog post](http://www.johnwmillr.com/scraping-genius-lyrics/) for a more thorough description of the package and its usage.
 
-Start by cloning this repo:
-
-```bash
-git clone https://github.com/johnwmillr/LyricsGenius.git
-```
-
 To use the Genius API you'll need to sign up for a (free) client that authorizes you to [access their API](http://genius.com/api-clients). You'll need to supply the `client_access_token` that Genius gives you when using this module. See [Usage](https://github.com/johnwmillr/LyricsGenius#usage) below for an example.
 
-You can read through the [Genius API docs](https://docs.genius.com/), but I've found it more helpful to start by looking at code folks have already written for the API. I found [this post](https://bigishdata.com/2016/09/27/getting-song-lyrics-from-geniuss-api-scraping) from @jackschultz and [this repository](https://github.com/jasonqng/genius-lyrics-search) from @JasonQNg real helpful while getting started, check their work out.  
-
 ## Installation
+The easiest way to use this package is to install it via [PyPI](https://pypi.python.org/pypi/lyricsgenius/0.2) using `pip`:
+
+`$pip install lyricsgenius`
+
+If you'd prefer to clone the repository and install it yourself, follow these steps:
 1. Clone this repo:  
-`git clone https://github.com/johnwmillr/LyricsGenius.git`
+`$git clone https://github.com/johnwmillr/LyricsGenius.git`
 2. Enter the directory created:  
-`cd LyricsGenius`
+`$cd LyricsGenius`
 3. Install using pip:  
-`pip install .`
+`$pip install .`
 
 ## Usage
 ```python
