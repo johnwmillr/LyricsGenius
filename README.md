@@ -8,24 +8,24 @@ This repository is intended to provide an easy interface for programatically acc
 Start by cloning this repo:
 
 ```bash
-git clone https://github.com/johnwmillr/GeniusLyrics.git
+git clone https://github.com/johnwmillr/LyricsGenius.git
 ```
 
-To use the Genius API you'll need to sign up for a (free) client that authorizes you to [access their API](http://genius.com/api-clients). You'll need to supply the `client_access_token` that Genius gives you when using this module. See [Usage](https://github.com/johnwmillr/GeniusLyrics#usage) below for an example.
+To use the Genius API you'll need to sign up for a (free) client that authorizes you to [access their API](http://genius.com/api-clients). You'll need to supply the `client_access_token` that Genius gives you when using this module. See [Usage](https://github.com/johnwmillr/LyricsGenius#usage) below for an example.
 
 You can read through the [Genius API docs](https://docs.genius.com/), but I've found it more helpful to start by looking at code folks have already written for the API. I found [this post](https://bigishdata.com/2016/09/27/getting-song-lyrics-from-geniuss-api-scraping) from @jackschultz and [this repository](https://github.com/jasonqng/genius-lyrics-search) from @JasonQNg real helpful while getting started, check their work out.  
 
 ## Installation
 1. Clone this repo:  
-`git clone https://github.com/johnwmillr/GeniusLyrics.git`
+`git clone https://github.com/johnwmillr/LyricsGenius.git`
 2. Enter the directory created:  
-`cd GeniusLyrics`
+`cd LyricsGenius`
 3. Install using pip:  
 `pip install .`
 
 ## Usage
 ```python
->>> import genius
+>>> import lyricsgenius as genius
 >>> api = genius.Genius('my_client_access_token_here')
 >>> artist = api.search_artist('Andy Shauf', max_songs=3)
 Searching for Andy Shauf...
@@ -51,6 +51,12 @@ Done.
 >>> artist.add_song(song)
 >>> print(artist)
 Andy Shauf, 4 songs
+```
+
+You can also call the package from the command line.
+```
+$python -m lyricsgenius --search_song 'Begin Again' 'Andy Shauf'
+$python -m lyricsgenius --search_artist 'Lupe Fiasco' 3
 ```
 
 ## Example projects
