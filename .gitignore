@@ -6,6 +6,7 @@
 
 # May not want to commit lyrics text files
 *.txt
+*.json
 
 # Jupyter
 /Notebooks

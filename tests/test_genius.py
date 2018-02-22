@@ -37,6 +37,51 @@ class TestArtist(unittest.TestCase):
 		self.artist.add_song(api.search_song("These Days","Jackson Browne"))
 		self.assertEqual(self.artist.num_songs, self.max_songs, msg)
 
+	def test_saving_json_file(self):
+		print('\n')		
+		format = 'json'
+		msg = "Could not save {} file.".format(format)
+		expected_filename = 'tests/lyrics_save_test_file.' + format
+		filename = expected_filename.split('.')[0]
+
+		# Remove the test file if it already exists
+		if os.path.isfile(expected_filename):
+			os.remove(expected_filename)
+
+		# Test saving json file
+		self.artist.save_lyrics(filename=filename, format=format)
+		self.assertTrue(os.path.isfile(expected_filename), msg)
+
+		# Test overwriting json file
+		try:
+			self.artist.save_lyrics(filename=filename, format=format, overwrite=True)
+			os.remove(expected_filename)
+		except:
+			self.fail("Failed {} overwrite test".format(format))
+			os.remove(expected_filename)
+
+	def test_saving_txt_file(self):
+		print('\n')
+		format = 'txt'
+		msg = "Could not save {} file.".format(format)
+		expected_filename = 'tests/lyrics_save_test_file.' + format
+		filename = expected_filename.split('.')[0]
+
+		# Remove the test file if it already exists
+		if os.path.isfile(expected_filename):
+			os.remove(expected_filename)
+
+		# Test saving txt file
+		self.artist.save_lyrics(filename=filename, format=format)
+		self.assertTrue(os.path.isfile(expected_filename), msg)
+
+		# Test overwriting txt file
+		try:
+			self.artist.save_lyrics(filename=filename, format=format, overwrite=True)
+			os.remove(expected_filename)
+		except:
+			self.fail("Failed {} overwrite test".format(format))
+			os.remove(expected_filename)
 
 class TestSong(unittest.TestCase):
 
