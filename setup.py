@@ -13,7 +13,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='lyricsgenius',
-    version='0.1.2',
+    version='0.2',
     description='Download lyrics and metadata from Genius.com',
     long_description=README,
     classifiers=[
