@@ -38,11 +38,10 @@ class TestArtist(unittest.TestCase):
 		self.assertEqual(self.artist.num_songs, self.max_songs, msg)
 
 	def test_saving_json_file(self):
-		raise NotImplementedError
 		print('\n')		
 		format = 'json'
 		msg = "Could not save {} file.".format(format)
-		expected_filename = 'lyrics_save_test_file.' + format
+		expected_filename = 'tests/lyrics_save_test_file.' + format
 		filename = expected_filename.split('.')[0]
 
 		# Remove the test file if it already exists
@@ -65,7 +64,7 @@ class TestArtist(unittest.TestCase):
 		print('\n')
 		format = 'txt'
 		msg = "Could not save {} file.".format(format)
-		expected_filename = 'lyrics_save_test_file.' + format
+		expected_filename = 'tests/lyrics_save_test_file.' + format
 		filename = expected_filename.split('.')[0]
 
 		# Remove the test file if it already exists

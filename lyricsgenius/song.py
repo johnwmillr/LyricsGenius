@@ -36,7 +36,10 @@ class Song(object):
             
     @property
     def year(self):
-        return self._body['release_date']
+        try:
+            return self._body['release_date']
+        except:
+            return None
     
     @property
     def url(self):
@@ -66,7 +69,10 @@ class Song(object):
     
     @property
     def song_art_image_url(self):
-        return self._body['song_art_image_url']
+        try:
+            return self._body['song_art_image_url']
+        except:
+            return None
 
     def __str__(self):
         """Return a string representation of the Song object."""
