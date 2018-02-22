@@ -31,8 +31,7 @@ class Song(object):
         
     @property
     def album(self):
-        try: return self._body['album']['name']
-        except: return ''
+        return self._body['album']['name']        
             
     @property
     def year(self):

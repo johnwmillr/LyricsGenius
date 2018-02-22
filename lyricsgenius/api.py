@@ -169,7 +169,7 @@ class Genius(_API):
     
         # Perform a Genius API search for the artist                
         json_search = self._make_api_request((artist_name,'search'))                        
-        first_result = None
+        first_result, artist_id = None, None
         for hit in json_search['hits']:            
             found_artist = hit['result']['primary_artist']
             if first_result is None:
@@ -186,7 +186,7 @@ class Genius(_API):
                     break
                 artist_id = None
         
-        if verbose and artist_id is None:
+        if first_result is not None and artist_id is None and verbose:
             if input("Couldn't find {}. Did you mean {}? (y/n): ".format(artist_name, first_result['name'])).lower() == 'y':
                 artist_name, artist_id = first_result['name'], first_result['id']
         assert (not isinstance(artist_id, type(None))), "Could not find artist. Check spelling?"
@@ -211,7 +211,7 @@ class Genius(_API):
                     lyrics = self._scrape_song_lyrics_from_url(json_song['url'])            
 
                     # Create song object for current song
-                    song = Song(json_song, lyrics)
+                    song = Song(self._make_api_request((json_song['id'], 'song')), lyrics)
                     if artist.add_song(song)==0:
                         n += 1
                         if verbose==True:
