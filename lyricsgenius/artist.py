@@ -1,3 +1,9 @@
+import json, os
+try:
+    input = raw_input # python 2
+except:
+    pass
+
 class Artist(object):
     """An artist from the Genius.com database.
     
@@ -52,6 +58,43 @@ class Artist(object):
         song = Genius.search_song(song_name,self.name)
         self.add_song(song)
         return
+
+    def save_lyrics(self, format='json', filename=None, overwrite=False):
+        """Allows user to save all lyrics within an Artist obejct to a .json or .txt file."""
+        assert (format == 'json') or (format == 'txt'), "Format must be json or txt"
+
+        # Determine the filename
+        if filename is None:
+            filename = "Lyrics_{}.{}".format(self.name.replace(" ",""), format)
+        else:
+            filename = filename.split('.')[0] + '.' + format
+            
+        # Check if file already exists    
+        write_file = False
+        if not os.path.isfile(filename):
+            write_file = True
+        elif overwrite:
+            write_file = True
+        else:
+            if input("{} already exists. Overwrite?\n(y/n): ".format(filename)).lower() == 'y':
+                write_file = True
+                
+        # Format lyrics in either .txt or .json format
+        if format == 'json':
+            raise NotImplementedError
+        else:
+            lyrics_to_write = " ".join([s.lyrics + 5*'\n' for s in self.songs])
+
+        # Write the lyrics to either a .json or .txt file
+        if write_file:
+            try:
+                with open(filename, 'w') as lyrics_file:
+                    lyrics_file.write(lyrics_to_write)
+                print('Wrote {} songs to {}.'.format(self.num_songs, filename))
+            except:
+                raise # TODO: Not sure if this how to do it
+        else:
+            print('Skipping file save.\n')
 
     def __str__(self):
         """Return a string representation of the Artist object."""                        
