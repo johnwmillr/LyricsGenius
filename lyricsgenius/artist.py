@@ -61,6 +61,8 @@ class Artist(object):
 
     def save_lyrics(self, format='json', filename=None, overwrite=False, skip_duplicates=True):
         """Allows user to save all lyrics within an Artist obejct to a .json or .txt file."""
+        if format[0] == '.':
+            format = format[1:]        
         assert (format == 'json') or (format == 'txt'), "Format must be json or txt"
 
         # We want to reject songs that have already been added to artist collection
@@ -96,7 +98,7 @@ class Artist(object):
                 
         # Format lyrics in either .txt or .json format
         if format == 'json':
-            lyrics_to_write = {'songs': [], 'name': self.name}
+            lyrics_to_write = {'songs': [], 'artist': self.name}
             for song in self.songs:
                 if skip_duplicates is False or not songInArtist(song): # This takes way too long! It's basically O(n^2), can I do better?
                     lyrics_to_write['songs'].append({})

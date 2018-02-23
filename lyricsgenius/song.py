@@ -1,3 +1,9 @@
+import json, os
+try:
+    input = raw_input # python 2
+except:
+    pass
+
 class Song(object):
     """A song from the Genius.com database.
     
@@ -72,6 +78,70 @@ class Song(object):
             return self._body['song_art_image_url']
         except:
             return None
+
+    def save_lyrics(self, filename=None, format='txt', overwrite=False):
+        # TODO: way too much repeated code between this and the Artist.save_lyrics method
+        """Allows user to save song lyrics from Song obejct to a .json or .txt file."""
+        if format[0] == '.':
+            format = format[1:]
+        assert (format == 'json') or (format == 'txt'), "Format must be json or txt"
+
+        # We want to reject songs that have already been added to artist collection
+        def songsAreSame(s1, s2):
+            from difflib import SequenceMatcher as sm # For comparing similarity of lyrics
+            # Idea credit: https://bigishdata.com/2016/10/25/talkin-bout-trucks-beer-and-love-in-country-songs-analyzing-genius-lyrics/
+            seqA = sm(None, s1.lyrics, s2['lyrics'])
+            seqB = sm(None, s2['lyrics'], s1.lyrics)
+            return seqA.ratio() > 0.5 or seqB.ratio() > 0.5
+
+        def songInArtist(new_song):    
+            # artist_lyrics is global (works in Jupyter notebook)
+            for song in lyrics_to_write['songs']:
+                if songsAreSame(new_song, song):
+                    return True
+            return False
+
+        # Determine the filename
+        if filename is None:
+            filename = "Lyrics_{}.{}".format(self.artist.replace(" ",""), format)
+        else:
+            filename = filename.split('.')[0] + '.' + format
+            
+        # Check if file already exists    
+        write_file = False
+        if not os.path.isfile(filename):
+            write_file = True
+        elif overwrite:
+            write_file = True
+        else:
+            if input("{} already exists. Overwrite?\n(y/n): ".format(filename)).lower() == 'y':
+                write_file = True
+                
+        # Format lyrics in either .txt or .json format
+        if format == 'json':
+            lyrics_to_write = {'songs': [], 'artist': self.artist}
+            lyrics_to_write['songs'].append({})
+            lyrics_to_write['songs'][-1]['title']  = self.title
+            lyrics_to_write['songs'][-1]['album']  = self.album
+            lyrics_to_write['songs'][-1]['year']   = self.year
+            lyrics_to_write['songs'][-1]['lyrics'] = self.lyrics                
+            lyrics_to_write['songs'][-1]['image']  = self.song_art_image_url
+            lyrics_to_write['songs'][-1]['artist'] = self.artist
+            lyrics_to_write['songs'][-1]['json']   = self._body
+        else:
+            lyrics_to_write = self.lyrics
+
+        # Write the lyrics to either a .json or .txt file
+        if write_file:
+            with open(filename, 'w') as lyrics_file:
+                if format == 'json':                    
+                    json.dump(lyrics_to_write, lyrics_file)
+                else:    
+                    lyrics_file.write(lyrics_to_write)
+            print('Wrote {} to {}.'.format(self.title, filename))
+        else:
+            print('Skipping file save.\n')    
+        return lyrics_to_write                
 
     def __str__(self):
         """Return a string representation of the Song object."""
