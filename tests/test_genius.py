@@ -122,3 +122,49 @@ class TestSong(unittest.TestCase):
 		msg = "The returned song does not have a media attribute."
 		self.assertTrue(hasattr(self.song, 'media'), msg)
 
+	def test_saving_json_file(self):
+		print('\n')		
+		format = 'json'
+		msg = "Could not save {} file.".format(format)
+		expected_filename = 'tests/lyrics_save_test_file.' + format
+		filename = expected_filename.split('.')[0]
+
+		# Remove the test file if it already exists
+		if os.path.isfile(expected_filename):
+			os.remove(expected_filename)
+
+		# Test saving json file
+		self.song.save_lyrics(filename=filename, format=format)
+		self.assertTrue(os.path.isfile(expected_filename), msg)
+
+		# Test overwriting json file
+		try:
+			self.song.save_lyrics(filename=filename, format=format, overwrite=True)
+			os.remove(expected_filename)
+		except:
+			self.fail("Failed {} overwrite test".format(format))
+			os.remove(expected_filename)
+
+	def test_saving_txt_file(self):
+		print('\n')
+		format = 'txt'
+		msg = "Could not save {} file.".format(format)
+		expected_filename = 'tests/lyrics_save_test_file.' + format
+		filename = expected_filename.split('.')[0]
+
+		# Remove the test file if it already exists
+		if os.path.isfile(expected_filename):
+			os.remove(expected_filename)
+
+		# Test saving txt file
+		self.song.save_lyrics(filename=filename, format=format)
+		self.assertTrue(os.path.isfile(expected_filename), msg)
+
+		# Test overwriting txt file
+		try:
+			self.song.save_lyrics(filename=filename, format=format, overwrite=True)
+			os.remove(expected_filename)
+		except:
+			self.fail("Failed {} overwrite test".format(format))
+			os.remove(expected_filename)		
+
