@@ -10,7 +10,7 @@ This repository is intended to provide an easy interface for programatically acc
 To use the Genius API you'll need to sign up for a (free) client that authorizes you to [access their API](http://genius.com/api-clients). You'll need to supply your `client_access_token` from Genius when using this module. See [Usage](https://github.com/johnwmillr/LyricsGenius#usage) below for an example.
 
 ## Installation
-Python 3.x is required to use this package.
+*LyricsGenius* requires Python 3.
 
 The easiest way to use this package is to install it via [PyPI](https://pypi.python.org/pypi/lyricsgenius) using `pip`:
 
