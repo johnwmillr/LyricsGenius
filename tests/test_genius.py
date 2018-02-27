@@ -15,8 +15,8 @@ class TestArtist(unittest.TestCase):
 	def setUpClass(cls):
 		print("\n---------------------\nSetting up Artist tests...\n")
 		cls.artist_name = "The Beatles"
-		cls.new_song = "We can work it out"
-		cls.max_songs = 3
+		cls.new_song = "Paperback Writer"
+		cls.max_songs = 2
 		cls.artist = api.search_artist(cls.artist_name, max_songs=cls.max_songs)
 
 	def test_artist(self):
@@ -29,7 +29,7 @@ class TestArtist(unittest.TestCase):
 
 	def test_add_song_from_same_artist(self):
 		msg = "The new song was not added to the artist object."
-		self.artist.add_song(api.search_song(self.new_song,self.artist_name))
+		self.artist.add_song(api.search_song(self.new_song, self.artist_name))
 		self.assertEqual(self.artist.num_songs, self.max_songs+1, msg)
 
 	def test_add_song_from_different_artist(self):
