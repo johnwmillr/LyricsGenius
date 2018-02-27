@@ -21,11 +21,11 @@ class Song(object):
                                                         
     @property
     def title(self):
-        return str(self._body['title'].encode("utf-8", errors='ignore').decode("utf-8"))
+        return self._body['title']
 
     @property
     def artist(self):
-        return str(self._body['primary_artist']['name'].encode("utf-8", errors='ignore').decode("utf-8"))
+        return self._body['primary_artist']['name']
 
     @property
     def lyrics(self):
@@ -33,8 +33,11 @@ class Song(object):
         
     @property
     def album(self):
-        return self._body['album']['name']        
-            
+        try:
+            return self._body['album']['name']
+        except:
+            return None
+
     @property
     def year(self):
         try:
@@ -44,15 +47,24 @@ class Song(object):
     
     @property
     def url(self):
-        return self._body['url']
+        try:
+            return self._body['url']
+        except:
+            return None
     
     @property
     def album_url(self):
-        return self._body['album']['url']
+        try:
+            return self._body['album']['url']
+        except:
+            return None
     
     @property
     def featured_artists(self):
-        return self._body['featured_artists']
+        try:
+            return self._body['featured_artists']
+        except:
+            return None
     
     @property
     def media(self):
@@ -153,5 +165,5 @@ class Song(object):
         return cmp(self.title, other.title) and cmp(self.artist, other.artist) and cmp(self.lyrics, other.lyrics)
     
     def __list__(self):
-        # How do I do this?
+        # TODO: How do I do this?
         return
