@@ -1,8 +1,4 @@
 import json, os
-try:
-    input = raw_input # python 2
-except:
-    pass
 
 class Song(object):
     """A song from the Genius.com database.
