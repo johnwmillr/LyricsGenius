@@ -1,6 +1,6 @@
 #  Command line usage:
-#    $python -m lyricsgenius --search_song 'Begin Again' 'Andy Shauf'
-#    $python -m lyricsgenius --search_artist 'Lupe Fiasco' 3
+#    $python3 -m lyricsgenius --search-song 'Begin Again' 'Andy Shauf'
+#    $python3 -m lyricsgenius --search-artist 'Lupe Fiasco' 3
 
 import sys
 import os

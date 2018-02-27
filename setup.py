@@ -1,7 +1,6 @@
 # http://peterdowns.com/posts/first-time-with-pypi.html
 import os
 from setuptools import find_packages, setup
-# from distutils.core import setup
 
 here = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(here, 'README.md')) as f:
@@ -13,7 +12,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='lyricsgenius',
-    version='0.3',
+    version='0.4',
     description='Download lyrics and metadata from Genius.com',
     long_description=README,
     classifiers=[
@@ -22,7 +21,7 @@ setup(
     author='John W. Miller',
     author_email='john.w.millr@gmail.com',
     url='https://github.com/johnwmillr/lyricsgenius',
-    download_url = "https://github.com/johnwmillr/LyricsGenius/archive/0.3.tar.gz",
+    download_url = "https://github.com/johnwmillr/LyricsGenius/archive/0.4.tar.gz",
     keywords='genius api music lyrics artists albums songs',
     packages=find_packages(),
     include_package_data=True,
