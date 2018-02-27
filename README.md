@@ -9,6 +9,8 @@ This repository is intended to provide an easy interface for programatically acc
 To use the Genius API you'll need to sign up for a (free) client that authorizes you to [access their API](http://genius.com/api-clients). You'll need to supply your `client_access_token` from Genius when using this module. See [Usage](https://github.com/johnwmillr/LyricsGenius#usage) below for an example.
 
 ## Installation
+Python 3.x is required to use this package.
+
 The easiest way to use this package is to install it via [PyPI](https://pypi.python.org/pypi/lyricsgenius) using `pip`:
 
 `$pip install lyricsgenius`
@@ -54,8 +56,8 @@ Andy Shauf, 4 songs
 You can also call the package from the command line. When ran from the command line, the package expects to find an environment variable with your Genius client access token.
 ```
 $export GENIUS_CLIENT_ACCESS_TOKEN="my_client_access_token_here"
-$python -m lyricsgenius --search_song 'Begin Again' 'Andy Shauf'
-$python -m lyricsgenius --search_artist 'Lupe Fiasco' 3
+$python3 -m lyricsgenius --search-song 'Begin Again' 'Andy Shauf'
+$python3 -m lyricsgenius --search-artist 'Lupe Fiasco' 3
 ```
 
 ## Example projects
