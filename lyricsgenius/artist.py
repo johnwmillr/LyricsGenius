@@ -20,11 +20,14 @@ class Artist(object):
         
     @property
     def name(self):            
-        return str(self._body['name'].encode("utf-8", errors='ignore').decode("utf-8"))
+        return self._body['name']
                     
     @property
     def image_url(self):
-        return self._body['image_url']
+        try:
+            return self._body['image_url']
+        except:
+            return None
     
     @property
     def songs(self):
