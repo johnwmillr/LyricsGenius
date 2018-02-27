@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/johnwmillr/LyricsGenius.svg?branch=master)](https://travis-ci.org/johnwmillr/LyricsGenius)
 [![PyPI version](https://badge.fury.io/py/lyricsgenius.svg)](https://pypi.python.org/pypi/lyricsgenius)
+[![Python version](https://img.shields.io/badge/python-3.x-brightgreen.svg)](https://pypi.python.org/pypi/lyricsgenius)
 
 ## Setup
 This repository is intended to provide an easy interface for programatically accessing the song information stored on [Genius.com](https://www.genius.com). Check out [my blog post](http://www.johnwmillr.com/scraping-genius-lyrics/) for a more thorough description of the package and its usage.
