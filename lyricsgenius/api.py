@@ -107,7 +107,7 @@ class _API(object):
         html = BeautifulSoup(page.text, "html.parser")
         
         # Scrape the song lyrics from the HTML
-        lyrics = html.find("div", class_="lyrics").get_text().encode('ascii','ignore').decode('ascii')                
+        lyrics = html.find("div", class_="lyrics").get_text()              
         lyrics = re.sub('\[.*\]','',lyrics) # Remove [Verse] and [Bridge] stuff
         lyrics = re.sub('\n{2}','\n',lyrics)  # Remove gaps between verses        
         lyrics = str(lyrics).strip('\n')
