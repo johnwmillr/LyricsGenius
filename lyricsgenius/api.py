@@ -9,19 +9,12 @@
 #    print(artist)
 #    print(artist.songs[-1])
 
-import os
 import sys
-import re
-from string import punctuation
-try: 
-    from urllib2 import Request, urlopen, quote # Python 2
-    input = raw_input
-except ImportError:
-    from urllib.request import Request, urlopen, quote # Python 3
+from urllib.request import Request, urlopen, quote # Python 3
+import os, re
+import requests, socket, json
 from bs4 import BeautifulSoup
-import requests
-import socket
-import json
+from string import punctuation
 
 from .song import Song
 from .artist import Artist
@@ -52,12 +45,7 @@ class _API(object):
     def __init__(self, client_access_token, client_secret='', client_id=''):        
         self._CLIENT_ACCESS_TOKEN = client_access_token
         self._HEADER_AUTHORIZATION = 'Bearer ' + self._CLIENT_ACCESS_TOKEN
-
-        
-    def _load_client(self):
-        """TODO Load the Genius.com API authorization information from the genius api"""
-        return
-    
+           
     def _make_api_request(self, request_term_and_type, page=1):
         """Send a request (song, artist, or search) to the Genius API, returning a json object
         
@@ -77,7 +65,6 @@ class _API(object):
         # Add the necessary headers to the request
         request = Request(api_request)        
         request.add_header("Authorization", self._HEADER_AUTHORIZATION)
-        # request.add_header("User-Agent","curl/7.9.8 (i686-pc-linux-gnu) libcurl 7.9.8 (OpnSSL 0.9.6b) (ipv6 enabled)")
         request.add_header("User-Agent","")
         while True:
             try:
@@ -92,11 +79,12 @@ class _API(object):
         
     def _format_api_request(self, term_and_type, page=1):
         """Format the request URL depending on the type of request"""            
+
         request_term, request_type = str(term_and_type[0]), term_and_type[1]                
-        assert (request_type in self._API_REQUEST_TYPES), "Unknown API request type"
+        assert request_type in self._API_REQUEST_TYPES, "Unknown API request type"
         
         # TODO - Clean this up (might not need separate returns)
-        if request_type=='artist-songs':                        
+        if request_type=='artist-songs':
             return self._API_URL + 'artists/' + quote(request_term) + '/songs?per_page=50&page=' + str(page)
         else:        
             return self._API_URL + self._API_REQUEST_TYPES[request_type] + quote(request_term)
@@ -107,45 +95,41 @@ class _API(object):
         html = BeautifulSoup(page.text, "html.parser")
         
         # Scrape the song lyrics from the HTML
-        lyrics = html.find("div", class_="lyrics").get_text().encode('ascii','ignore').decode('ascii')                
-        lyrics = re.sub('\[.*\]','',lyrics) # Remove [Verse] and [Bridge] stuff
-        lyrics = re.sub('\n{2}','\n',lyrics)  # Remove gaps between verses        
-        lyrics = str(lyrics).strip('\n')
-        
-        return lyrics    
+        lyrics = html.find("div", class_="lyrics").get_text()
+        lyrics = re.sub('\[.*\]',  '', lyrics) # Remove [Verse] and [Bridge] stuff
+        lyrics = re.sub('\n{2}', '\n', lyrics) # Remove gaps between verses
 
-    def _clean_string(self, s):
-        s = str(s.encode("utf-8", errors='ignore').decode("utf-8")).lower()
-        if sys.version_info[0] == 2:
-            return s.translate(None, punctuation)
-        else:
-            translator = str.maketrans('','',punctuation)
-            return s.translate(translator)
+        return lyrics.strip('\n')
+
+    def _clean(self, s):
+        return s.translate(str.maketrans('','',punctuation)).replace('\u200b', " ").strip()
 
 class Genius(_API):
     """User-level interface with the Genius.com API. User can search for songs (getting lyrics) and artists (getting songs)"""    
 
-    def search_song(self, song_title, artist_name=''):
+    def search_song(self, song_title, artist_name=""):
         # TODO: Should search_song() be a @classmethod?
         """Search Genius.com for *song_title* by *artist_name*"""                
                     
         # Perform a Genius API search for the song
-        if artist_name != '':            
-            print('Searching for "{0}" by {1}...'.format(song_title,artist_name))
+        if artist_name == "":
+            print('Searching for "{0}" by {1}...'.format(song_title, artist_name))            
         else:            
             print('Searching for "{0}"...'.format(song_title))
-        search_term = song_title + ' ' + artist_name
+        search_term = "{} {}".format(song_title, artist_name)
+        
         json_search = self._make_api_request((search_term,'search'))        
                 
         # Loop through search results, stopping as soon as title and artist of result match request
         n_hits = min(10,len(json_search['hits']))
         for i in range(n_hits):
-            search_hit   = json_search['hits'][i]['result']
-            found_title = self._clean_string(search_hit['title'])
-            found_artist = self._clean_string(search_hit['primary_artist']['name'])
+            search_hit = json_search['hits'][i]['result']
+            found_song   = self._clean(search_hit['title'])
+            found_artist = self._clean(search_hit['primary_artist']['name'])
                                     
             # Download song from Genius.com if title and artist match the request
-            if found_title == self._clean_string(song_title) and found_artist == self._clean_string(artist_name) or artist_name=='':
+            if found_song == self._clean(song_title) and found_artist == self._clean(artist_name) or artist_name == "":
+            
                 # Found correct song, accessing API ID
                 json_song = self._make_api_request((search_hit['id'],'song'))
                 
@@ -175,7 +159,7 @@ class Genius(_API):
             if first_result is None:
                 first_result = found_artist
             artist_id = found_artist['id']
-            if self._clean_string(found_artist['name'].lower()) == self._clean_string(artist_name.lower()):                
+            if self._clean(found_artist['name'].lower()) == self._clean(artist_name.lower()):                
                 break
             else:                
                 # check for searched name in alternate artist names
