@@ -101,8 +101,8 @@ class _API(object):
 
         return lyrics.strip('\n')
 
-    def _clean_string(self, s):
-        return s.translate(str.maketrans('','',punctuation))
+    def _clean(self, s):
+        return s.translate(str.maketrans('','',punctuation)).replace('\u200b', " ").strip()
 
 class Genius(_API):
     """User-level interface with the Genius.com API. User can search for songs (getting lyrics) and artists (getting songs)"""    
@@ -124,11 +124,11 @@ class Genius(_API):
         n_hits = min(10,len(json_search['hits']))
         for i in range(n_hits):
             search_hit = json_search['hits'][i]['result']
-            found_song   = self._clean_string(search_hit['title'])
-            found_artist = self._clean_string(search_hit['primary_artist']['name'])
+            found_song   = self._clean(search_hit['title'])
+            found_artist = self._clean(search_hit['primary_artist']['name'])
                                     
             # Download song from Genius.com if title and artist match the request
-            if found_song == self._clean_string(song_title) and found_artist == self._clean_string(artist_name) or artist_name == "":
+            if found_song == self._clean(song_title) and found_artist == self._clean(artist_name) or artist_name == "":
             
                 # Found correct song, accessing API ID
                 json_song = self._make_api_request((search_hit['id'],'song'))
@@ -159,7 +159,7 @@ class Genius(_API):
             if first_result is None:
                 first_result = found_artist
             artist_id = found_artist['id']
-            if self._clean_string(found_artist['name'].lower()) == self._clean_string(artist_name.lower()):                
+            if self._clean(found_artist['name'].lower()) == self._clean(artist_name.lower()):                
                 break
             else:                
                 # check for searched name in alternate artist names
