@@ -104,7 +104,7 @@ class _API(object):
         return lyrics.strip('\n')
 
     def _clean(self, s):
-        return s.translate(str.maketrans('','',punctuation)).replace('\u200b', " ").strip()
+        return s.translate(str.maketrans('','',punctuation)).replace('\u200b', " ").strip().lower()
 
 class Genius(_API):
     """User-level interface with the Genius.com API. User can search for songs (getting lyrics) and artists (getting songs)"""    
@@ -252,12 +252,12 @@ class Genius(_API):
 
         # Extract each artist's lyrics in json format
         all_lyrics = {'artists': []}
-        for n, art in enumerate(artists):
-            if isinstance(art, Artist):
+        for n, artist in enumerate(artists):
+            if isinstance(artist, Artist):
                 all_lyrics['artists'].append({})
-                tmp_file = "./{dir}/tmp_{num}_{name}".format(dir=tmp_dir, num=n, name=art.name.replace(" ",""))
+                tmp_file = "./{dir}/tmp_{num}_{name}".format(dir=tmp_dir, num=n, name=artist.name.replace(" ",""))
                 print(tmp_file)
-                all_lyrics['artists'][-1] = art.save_lyrics(filename=tmp_file, overwrite=True)
+                all_lyrics['artists'][-1] = artist.save_lyrics(filename=tmp_file, overwrite=True)
             else:
                 warn("Item #{} was not of type Artist. Skipping.".format(n))
 
