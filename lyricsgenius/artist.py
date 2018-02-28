@@ -115,7 +115,7 @@ class Artist(object):
                     lyrics_to_write['songs'][-1]['lyrics'] = song.lyrics                
                     lyrics_to_write['songs'][-1]['image']  = song.song_art_image_url
                     lyrics_to_write['songs'][-1]['artist'] = self.name
-                    lyrics_to_write['songs'][-1]['json']   = song._body
+                    lyrics_to_write['songs'][-1]['raw']   = song._body
                 else:
                     print("SKIPPING \"{}\" -- already found in artist collection.".format(song.title))
         else:

@@ -89,7 +89,7 @@ class TestSong(unittest.TestCase):
 	def setUpClass(cls):
 		print("\n---------------------\nSetting up Song tests...\n")
 		cls.artist_name = 'Andy Shauf'
-		cls.song_title = 'Begin Again'
+		cls.song_title = 'begin again' # Lowercase is intentional
 		cls.album = 'The Party'
 		cls.year = '2016-05-20'
 		cls.song = api.search_song(cls.song_title,cls.artist_name)
@@ -100,7 +100,7 @@ class TestSong(unittest.TestCase):
 
 	def test_title(self):
 		msg = "The returned song title does not match the title of the requested song."
-		self.assertEqual(self.song.title, self.song_title, msg)
+		self.assertEqual(api._clean(self.song.title), api._clean(self.song_title), msg)
 
 	def test_artist(self):
 		msg = "The returned artist name does not match the artist of the requested song."
