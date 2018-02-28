@@ -15,6 +15,8 @@ import os, re
 import requests, socket, json
 from bs4 import BeautifulSoup
 from string import punctuation
+import time
+from warnings import warn
 
 from .song import Song
 from .artist import Artist
@@ -221,9 +223,48 @@ class Genius(_API):
         print('Done.')
         return artist
 
-    def save_artist_lyrics(self, artist):
-        n_songs = artist.num_songs
-        filename = "Lyrics_" + artist.name.replace(" ","") + ".txt"                        
-        with open(filename,'w') as lyrics_file:
-            [lyrics_file.write(s.lyrics + 5*'\n') for s in artist.songs]
-        print('Wrote lyrics for {} songs.'.format(n_songs))
+    def save_artists(self, artists, filename="artist_lyrics", overwrite=False):
+        """Pass a list of Artist objects to save multiple artists"""
+        if isinstance(artists, Artist):
+            artists = [artists]
+        assert isinstance(artists, list), "Must pass in list of Artist objects."
+
+        # Create a temporary directory for lyrics
+        start = time.time()        
+        t = 0
+        tmp_dir = 'tmp_lyrics_{}'.format(t)
+        while os.path.isdir(tmp_dir):
+            t += 1
+            tmp_dir = 'tmp_lyrics_{}'.format(t)
+        os.mkdir(tmp_dir)
+
+        # Check if file already exists    
+        write_file = False
+        if not os.path.isfile(filename + ".json"):
+            pass
+        elif overwrite:
+            pass
+        else:
+            if input("{} already exists. Overwrite?\n(y/n): ".format(filename)).lower() != 'y':
+                print("Leaving file in place. Exiting.")
+                os.rmdir(tmp_dir)
+                return                
+
+        # Extract each artist's lyrics in json format
+        all_lyrics = {'artists': []}
+        for n, art in enumerate(artists):
+            if isinstance(art, Artist):
+                all_lyrics['artists'].append({})
+                tmp_file = "./{dir}/tmp_{num}_{name}".format(dir=tmp_dir, num=n, name=art.name.replace(" ",""))
+                print(tmp_file)
+                all_lyrics['artists'][-1] = art.save_lyrics(filename=tmp_file, overwrite=True)
+            else:
+                warn("Item #{} was not of type Artist. Skipping.".format(n))
+
+        # Save all of the lyrics
+        with open(filename + '.json', 'w') as outfile:
+            json.dump(all_lyrics, outfile)
+
+        end = time.time()
+        print("Time elapsed: {} hours".format((end-start)/60.0/60.0))
+

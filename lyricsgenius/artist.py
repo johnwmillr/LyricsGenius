@@ -17,6 +17,9 @@ class Artist(object):
         self._id       = self._body['id']
         self._songs = []
         self._num_songs = len(self._songs)
+
+    def __len__(self):
+        return 1
         
     @property
     def name(self):            
@@ -58,6 +61,8 @@ class Artist(object):
         self.add_song(song)
         return
 
+    # TODO: define an export_to_json() method
+
     def save_lyrics(self, format='json', filename=None, overwrite=False, skip_duplicates=True):
         """Allows user to save all lyrics within an Artist obejct to a .json or .txt file."""
         if format[0] == '.':
@@ -82,8 +87,11 @@ class Artist(object):
         # Determine the filename
         if filename is None:
             filename = "Lyrics_{}.{}".format(self.name.replace(" ",""), format)
-        else:
-            filename = filename.split('.')[0] + '.' + format
+        else:            
+            if filename.rfind('.') != -1:
+                filename = filename[filename.rfind('.'):] + '.' + format
+            else:
+                filename = filename + '.' + format
             
         # Check if file already exists    
         write_file = False
