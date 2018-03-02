@@ -22,7 +22,7 @@ setup(
     author_email='john.w.millr@gmail.com',
     url='https://github.com/johnwmillr/lyricsgenius',
     download_url = "https://github.com/johnwmillr/LyricsGenius/archive/0.4.tar.gz",
-    keywords='genius api music lyrics artists albums songs',
+    keywords='genius api genius-api music lyrics artists albums songs',
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,

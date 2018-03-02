@@ -109,7 +109,7 @@ class _API(object):
 class Genius(_API):
     """User-level interface with the Genius.com API. User can search for songs (getting lyrics) and artists (getting songs)"""    
 
-    def search_song(self, song_title, artist_name=""):
+    def search_song(self, song_title, artist_name="", take_first_result=False):
         # TODO: Should search_song() be a @classmethod?
         """Search Genius.com for *song_title* by *artist_name*"""                
                     
@@ -130,7 +130,7 @@ class Genius(_API):
             found_artist = self._clean(search_hit['primary_artist']['name'])
                                     
             # Download song from Genius.com if title and artist match the request
-            if found_song == self._clean(song_title) and found_artist == self._clean(artist_name) or artist_name == "":
+            if take_first_result or found_song == self._clean(song_title) and found_artist == self._clean(artist_name) or artist_name == "":
             
                 # Found correct song, accessing API ID
                 json_song = self._make_api_request((search_hit['id'],'song'))
@@ -147,7 +147,7 @@ class Genius(_API):
         print('Specified song was not first result :(')
         return None
         
-    def search_artist(self, artist_name, verbose=True, max_songs=None):
+    def search_artist(self, artist_name, verbose=True, max_songs=None, take_first_result=False):
         """Allow user to search for an artist on the Genius.com database by supplying an artist name.
         Returns an Artist() object containing all songs for that particular artist."""
                                 
@@ -161,7 +161,8 @@ class Genius(_API):
             if first_result is None:
                 first_result = found_artist
             artist_id = found_artist['id']
-            if self._clean(found_artist['name'].lower()) == self._clean(artist_name.lower()):                
+            if take_first_result or self._clean(found_artist['name'].lower()) == self._clean(artist_name.lower()):
+                artist_name = found_artist['name']
                 break
             else:                
                 # check for searched name in alternate artist names
