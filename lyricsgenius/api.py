@@ -232,12 +232,12 @@ class Genius(_API):
 
         # Create a temporary directory for lyrics
         start = time.time()        
-        t = 0
-        tmp_dir = 'tmp_lyrics_{}'.format(t)
-        while os.path.isdir(tmp_dir):
-            t += 1
-            tmp_dir = 'tmp_lyrics_{}'.format(t)
-        os.mkdir(tmp_dir)
+        tmp_dir = 'tmp_lyrics'
+        if not os.path.isdir(tmp_dir):
+            os.mkdir(tmp_dir)
+            tmp_count = 0
+        else:
+            tmp_count = len(os.listdir('./' + tmp_dir))
 
         # Check if file already exists    
         write_file = False
@@ -256,7 +256,7 @@ class Genius(_API):
         for n, artist in enumerate(artists):
             if isinstance(artist, Artist):
                 all_lyrics['artists'].append({})
-                tmp_file = "./{dir}/tmp_{num}_{name}".format(dir=tmp_dir, num=n, name=artist.name.replace(" ",""))
+                tmp_file = "./{dir}/tmp_{num}_{name}".format(dir=tmp_dir, num=n+tmp_count, name=artist.name.replace(" ",""))
                 print(tmp_file)
                 all_lyrics['artists'][-1] = artist.save_lyrics(filename=tmp_file, overwrite=True)
             else:
