@@ -65,7 +65,8 @@ class Artist(object):
 
     # TODO: define an export_to_json() method
 
-    def save_lyrics(self, format='json', filename=None, overwrite=False, skip_duplicates=True):
+    def save_lyrics(self, format='json', filename=None,
+                    overwrite=False, skip_duplicates=True, verbose=True):
         """Allows user to save all lyrics within an Artist obejct to a .json or .txt file."""
         if format[0] == '.':
             format = format[1:]        
@@ -119,7 +120,8 @@ class Artist(object):
                     lyrics_to_write['songs'][-1]['artist'] = self.name
                     lyrics_to_write['songs'][-1]['raw']   = song._body
                 else:
-                    print("SKIPPING \"{}\" -- already found in artist collection.".format(song.title))
+                    if(verbose):
+                        print("SKIPPING \"{}\" -- already found in artist collection.".format(song.title))
         else:
             lyrics_to_write = " ".join([s.lyrics + 5*'\n' for s in self.songs])
 
@@ -130,9 +132,11 @@ class Artist(object):
                     json.dump(lyrics_to_write, lyrics_file)
                 else:    
                     lyrics_file.write(lyrics_to_write)
-            print('Wrote {} songs to {}.'.format(self.num_songs, filename))
+            if(verbose):
+                print('Wrote {} songs to {}.'.format(self.num_songs, filename))
         else:
-            print('Skipping file save.\n')    
+            if(verbose):
+                print('Skipping file save.\n')    
         return lyrics_to_write
 
     def __str__(self):
