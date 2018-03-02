@@ -146,13 +146,14 @@ class Genius(_API):
         
         print('Specified song was not first result :(')
         return None
-        
+
     def search_artist(self, artist_name, verbose=True, max_songs=None, take_first_result=False):
         """Allow user to search for an artist on the Genius.com database by supplying an artist name.
         Returns an Artist() object containing all songs for that particular artist."""
-                                
-        print('Searching for {0}...\n'.format(artist_name))
-    
+
+        if(verbose):             
+            print('Searching for {0}...\n'.format(artist_name))
+
         # Perform a Genius API search for the artist                
         json_search = self._make_api_request((artist_name,'search'))                        
         first_result, artist_id = None, None
@@ -168,7 +169,8 @@ class Genius(_API):
                 # check for searched name in alternate artist names
                 json_artist = self._make_api_request((artist_id, 'artist'))['artist']            
                 if artist_name.lower() in [s.lower() for s in json_artist['alternate_names']]:
-                    print("Found alternate name. Changing name to {}.".format(json_artist['name']))
+                    if(verbose):
+                        print("Found alternate name. Changing name to {}.".format(json_artist['name']))
                     artist_name = json_artist['name']
                     break
                 artist_id = None
@@ -180,9 +182,8 @@ class Genius(_API):
         
         # Make Genius API request for the determined artist ID
         json_artist = self._make_api_request((artist_id,'artist'))
-
         # Create the Artist object
-        artist = Artist(json_artist);
+        artist = Artist(json_artist)
         
         if max_songs is None or max_songs > 0:
             # Access the api_path found by searching
@@ -196,10 +197,9 @@ class Genius(_API):
                     # TODO: Shouldn't I use self.search_song() here?
                     # Scrape song lyrics from the song's HTML
                     lyrics = self._scrape_song_lyrics_from_url(json_song['url'])            
-
                     # Create song object for current song
-                    song = Song(self._make_api_request((json_song['id'], 'song')), lyrics)
-                    if artist.add_song(song)==0:
+                    song = Song({'song':json_song}, lyrics)
+                    if artist.add_song(song, verbose=False)==0:
                         n += 1
                         if verbose==True:
                             try: print('Song {0}: "{1}"'.format(n,song.title))
@@ -209,7 +209,8 @@ class Genius(_API):
                     if not isinstance(max_songs,type(None)):
                         if artist.num_songs >= max_songs:
                             keep_searching = False
-                            print('\nReached user-specified song limit ({0}).'.format(max_songs))
+                            if(verbose):
+                                print('\nReached user-specified song limit ({0}).'.format(max_songs))
                             break
 
                 # Move on to next page of search results
@@ -219,9 +220,12 @@ class Genius(_API):
                 else: # Get next page of artist song results
                     artist_search_results = self._make_api_request((artist_id, 'artist-songs'), page=next_page)           
 
-            print('Found {n_songs} songs.\n'.format(n_songs=artist.num_songs))
+            if(verbose):
+                print('Found {n_songs} songs.'.format(n_songs=artist.num_songs))
 
-        print('Done.')
+        if(verbose):
+            print('Done.')
+            
         return artist
 
     def save_artists(self, artists, filename="artist_lyrics", overwrite=False):

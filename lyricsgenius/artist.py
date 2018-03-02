@@ -40,18 +40,20 @@ class Artist(object):
     def num_songs(self):
         return self._num_songs          
         
-    def add_song(self, newsong):
+    def add_song(self, newsong, verbose=True):
         """Add a Song object to the Artist object"""
         
         if any([song.title==newsong.title for song in self._songs]):
-            print('{newsong.title} already in {self.name}, not adding song.'.format(newsong=newsong,self=self))
+            if(verbose):
+                print('{newsong.title} already in {self.name}, not adding song.'.format(newsong=newsong,self=self))
             return 1 # Failure
         if newsong.artist == self.name:
             self._songs.append(newsong)
             self._num_songs += 1
             return 0 # Success
         else:
-            print("Can't add song by {newsong.artist}, artist must be {self.name}.".format(newsong=newsong,self=self))
+            if(verbose):
+                print("Can't add song by {newsong.artist}, artist must be {self.name}.".format(newsong=newsong,self=self))
             return 1 # Failure        
             
     def get_song(self, song_name):
