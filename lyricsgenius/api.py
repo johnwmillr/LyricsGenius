@@ -109,15 +109,16 @@ class _API(object):
 class Genius(_API):
     """User-level interface with the Genius.com API. User can search for songs (getting lyrics) and artists (getting songs)"""    
 
-    def search_song(self, song_title, artist_name="", take_first_result=False):
+    def search_song(self, song_title, artist_name="", take_first_result=False, verbose=True):
         # TODO: Should search_song() be a @classmethod?
         """Search Genius.com for *song_title* by *artist_name*"""                
                     
         # Perform a Genius API search for the song
-        if artist_name == "":
-            print('Searching for "{0}" by {1}...'.format(song_title, artist_name))            
-        else:            
-            print('Searching for "{0}"...'.format(song_title))
+        if verbose:
+            if artist_name == "":
+                print('Searching for "{0}" by {1}...'.format(song_title, artist_name))            
+            else:            
+                print('Searching for "{0}"...'.format(song_title))
         search_term = "{} {}".format(song_title, artist_name)
         
         json_search = self._make_api_request((search_term,'search'))        
@@ -140,18 +141,20 @@ class Genius(_API):
 
                 # Create the Song object
                 song = Song(json_song, lyrics)
-                                
-                print('Done.')
+                    
+                if verbose:                        
+                    print('Done.')
                 return song
         
-        print('Specified song was not first result :(')
+        if verbose:
+            print('Specified song was not first result :(')
         return None
 
     def search_artist(self, artist_name, verbose=True, max_songs=None, take_first_result=False):
         """Allow user to search for an artist on the Genius.com database by supplying an artist name.
         Returns an Artist() object containing all songs for that particular artist."""
 
-        if(verbose):             
+        if verbose:             
             print('Searching for {0}...\n'.format(artist_name))
 
         # Perform a Genius API search for the artist                
@@ -169,7 +172,7 @@ class Genius(_API):
                 # check for searched name in alternate artist names
                 json_artist = self._make_api_request((artist_id, 'artist'))['artist']            
                 if artist_name.lower() in [s.lower() for s in json_artist['alternate_names']]:
-                    if(verbose):
+                    if verbose:
                         print("Found alternate name. Changing name to {}.".format(json_artist['name']))
                     artist_name = json_artist['name']
                     break
@@ -201,15 +204,17 @@ class Genius(_API):
                     song = Song({'song':json_song}, lyrics)
                     if artist.add_song(song, verbose=False)==0:
                         n += 1
-                        if verbose==True:
-                            try: print('Song {0}: "{1}"'.format(n,song.title))
-                            except: pass
+                        if verbose:
+                            try:
+                                print('Song {0}: "{1}"'.format(n,song.title))
+                            except:
+                                pass
                     
                     # Check if user specified a max number of songs for the artist
                     if not isinstance(max_songs,type(None)):
                         if artist.num_songs >= max_songs:
                             keep_searching = False
-                            if(verbose):
+                            if verbose:
                                 print('\nReached user-specified song limit ({0}).'.format(max_songs))
                             break
 
@@ -220,10 +225,10 @@ class Genius(_API):
                 else: # Get next page of artist song results
                     artist_search_results = self._make_api_request((artist_id, 'artist-songs'), page=next_page)           
 
-            if(verbose):
+            if verbose:
                 print('Found {n_songs} songs.'.format(n_songs=artist.num_songs))
 
-        if(verbose):
+        if verbose:
             print('Done.')
             
         return artist
