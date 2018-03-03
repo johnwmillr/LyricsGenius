@@ -40,18 +40,20 @@ class Artist(object):
     def num_songs(self):
         return self._num_songs          
         
-    def add_song(self, newsong):
+    def add_song(self, newsong, verbose=True):
         """Add a Song object to the Artist object"""
         
         if any([song.title==newsong.title for song in self._songs]):
-            print('{newsong.title} already in {self.name}, not adding song.'.format(newsong=newsong,self=self))
+            if verbose:
+                print('{newsong.title} already in {self.name}, not adding song.'.format(newsong=newsong,self=self))
             return 1 # Failure
         if newsong.artist == self.name:
             self._songs.append(newsong)
             self._num_songs += 1
             return 0 # Success
         else:
-            print("Can't add song by {newsong.artist}, artist must be {self.name}.".format(newsong=newsong,self=self))
+            if verbose:
+                print("Can't add song by {newsong.artist}, artist must be {self.name}.".format(newsong=newsong,self=self))
             return 1 # Failure        
             
     def get_song(self, song_name):
@@ -63,7 +65,8 @@ class Artist(object):
 
     # TODO: define an export_to_json() method
 
-    def save_lyrics(self, format='json', filename=None, overwrite=False, skip_duplicates=True):
+    def save_lyrics(self, format='json', filename=None,
+                    overwrite=False, skip_duplicates=True, verbose=True):
         """Allows user to save all lyrics within an Artist obejct to a .json or .txt file."""
         if format[0] == '.':
             format = format[1:]        
@@ -117,7 +120,8 @@ class Artist(object):
                     lyrics_to_write['songs'][-1]['artist'] = self.name
                     lyrics_to_write['songs'][-1]['raw']   = song._body
                 else:
-                    print("SKIPPING \"{}\" -- already found in artist collection.".format(song.title))
+                    if verbose:
+                        print("SKIPPING \"{}\" -- already found in artist collection.".format(song.title))
         else:
             lyrics_to_write = " ".join([s.lyrics + 5*'\n' for s in self.songs])
 
@@ -128,9 +132,11 @@ class Artist(object):
                     json.dump(lyrics_to_write, lyrics_file)
                 else:    
                     lyrics_file.write(lyrics_to_write)
-            print('Wrote {} songs to {}.'.format(self.num_songs, filename))
+            if verbose:
+                print('Wrote {} songs to {}.'.format(self.num_songs, filename))
         else:
-            print('Skipping file save.\n')    
+            if verbose:
+                print('Skipping file save.\n')    
         return lyrics_to_write
 
     def __str__(self):
