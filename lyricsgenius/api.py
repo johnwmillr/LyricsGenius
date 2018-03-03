@@ -150,7 +150,7 @@ class Genius(_API):
             print('Specified song was not first result :(')
         return None
 
-    def search_artist(self, artist_name, verbose=True, max_songs=None, take_first_result=False):
+    def search_artist(self, artist_name, verbose=True, max_songs=None, take_first_result=False, get_full_song_info=True):
         """Allow user to search for an artist on the Genius.com database by supplying an artist name.
         Returns an Artist() object containing all songs for that particular artist."""
 
@@ -200,8 +200,17 @@ class Genius(_API):
                     # TODO: Shouldn't I use self.search_song() here?
                     # Scrape song lyrics from the song's HTML
                     lyrics = self._scrape_song_lyrics_from_url(json_song['url'])            
+
+                    
+                    
+
                     # Create song object for current song
-                    song = Song({'song':json_song}, lyrics)
+                    if get_full_song_info:
+                        song = Song(self._make_api_request((json_song['id'], 'song')), lyrics)
+                    else:
+                        song = Song({'song':json_song}, lyrics) # Faster, less info from API
+                        
+                    # Add song to the Artist object
                     if artist.add_song(song, verbose=False)==0:
                         n += 1
                         if verbose:
