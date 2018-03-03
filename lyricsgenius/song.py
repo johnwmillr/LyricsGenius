@@ -87,7 +87,7 @@ class Song(object):
         except:
             return None
 
-    def save_lyrics(self, filename=None, format='txt', overwrite=False):
+    def save_lyrics(self, filename=None, format='txt', overwrite=False, verbose=True):
         # TODO: way too much repeated code between this and the Artist.save_lyrics method
         """Allows user to save song lyrics from Song obejct to a .json or .txt file."""
         if format[0] == '.':
@@ -146,9 +146,11 @@ class Song(object):
                     json.dump(lyrics_to_write, lyrics_file)
                 else:    
                     lyrics_file.write(lyrics_to_write)
-            print('Wrote {} to {}.'.format(self.title, filename))
+            if verbose:
+                print('Wrote {} to {}.'.format(self.title, filename))
         else:
-            print('Skipping file save.\n')    
+            if verbose:
+                print('Skipping file save.\n')    
         return lyrics_to_write                
 
     def __str__(self):

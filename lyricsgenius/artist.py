@@ -44,7 +44,7 @@ class Artist(object):
         """Add a Song object to the Artist object"""
         
         if any([song.title==newsong.title for song in self._songs]):
-            if(verbose):
+            if verbose:
                 print('{newsong.title} already in {self.name}, not adding song.'.format(newsong=newsong,self=self))
             return 1 # Failure
         if newsong.artist == self.name:
@@ -52,7 +52,7 @@ class Artist(object):
             self._num_songs += 1
             return 0 # Success
         else:
-            if(verbose):
+            if verbose:
                 print("Can't add song by {newsong.artist}, artist must be {self.name}.".format(newsong=newsong,self=self))
             return 1 # Failure        
             
@@ -120,7 +120,7 @@ class Artist(object):
                     lyrics_to_write['songs'][-1]['artist'] = self.name
                     lyrics_to_write['songs'][-1]['raw']   = song._body
                 else:
-                    if(verbose):
+                    if verbose:
                         print("SKIPPING \"{}\" -- already found in artist collection.".format(song.title))
         else:
             lyrics_to_write = " ".join([s.lyrics + 5*'\n' for s in self.songs])
@@ -132,10 +132,10 @@ class Artist(object):
                     json.dump(lyrics_to_write, lyrics_file)
                 else:    
                     lyrics_file.write(lyrics_to_write)
-            if(verbose):
+            if verbose:
                 print('Wrote {} songs to {}.'.format(self.num_songs, filename))
         else:
-            if(verbose):
+            if verbose:
                 print('Skipping file save.\n')    
         return lyrics_to_write
 
