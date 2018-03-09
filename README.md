@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/johnwmillr/LyricsGenius.svg?branch=master)](https://travis-ci.org/johnwmillr/LyricsGenius)
 [![PyPI version](https://badge.fury.io/py/lyricsgenius.svg)](https://pypi.python.org/pypi/lyricsgenius)
-[![Python version](https://img.shields.io/badge/python-3.x-brightgreen.svg)](https://pypi.python.org/pypi/lyricsgenius)
+![Python version](https://img.shields.io/badge/python-3.x-brightgreen.svg)
 
 ## Setup
 This repository is intended to provide an easy interface for programatically accessing the song information stored on [Genius.com](https://www.genius.com). Check out [my blog post](http://www.johnwmillr.com/scraping-genius-lyrics/) for a more thorough description of the package and its usage.
@@ -52,6 +52,7 @@ Done.
 >>> artist.add_song(song)
 >>> print(artist)
 Andy Shauf, 4 songs
+>>> artist.save_lyrics() # Saves artist's lyrics to a JSON file
 ```
 
 You can also call the package from the command line. When ran from the command line, the package expects to find an environment variable with your Genius client access token.
