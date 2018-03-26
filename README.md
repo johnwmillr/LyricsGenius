@@ -1,7 +1,7 @@
 # Scraping song lyrics from Genius.com
 
 [![Build Status](https://travis-ci.org/johnwmillr/LyricsGenius.svg?branch=master)](https://travis-ci.org/johnwmillr/LyricsGenius)
-[![PyPI version](https://badge.fury.io/py/lyricsgenius.svg)](https://pypi.python.org/pypi/lyricsgenius)
+[![PyPI version](https://badge.fury.io/py/lyricsgenius.svg)](https://pypi.org/project/lyricsgenius/)
 [![Python version](https://img.shields.io/badge/python-3.x-brightgreen.svg)](https://pypi.python.org/pypi/lyricsgenius)
 
 ## Setup
