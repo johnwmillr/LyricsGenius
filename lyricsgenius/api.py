@@ -116,7 +116,7 @@ class Genius(_API):
                     
         # Perform a Genius API search for the song
         if verbose:
-            if artist_name == "":
+            if artist_name != "":
                 print('Searching for "{0}" by {1}...'.format(song_title, artist_name))            
             else:            
                 print('Searching for "{0}"...'.format(song_title))
@@ -156,7 +156,7 @@ class Genius(_API):
         Returns an Artist() object containing all songs for that particular artist."""
 
         if verbose:             
-            print('Searching for {0}...\n'.format(artist_name))
+            print('Searching for songs by {0}...\n'.format(artist_name))
 
         # Perform a Genius API search for the artist                
         json_search = self._make_api_request((artist_name,'search'))                        
