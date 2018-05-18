@@ -92,7 +92,8 @@ class TestSong(unittest.TestCase):
 		cls.song_title = 'begin again' # Lowercase is intentional
 		cls.album = 'The Party'
 		cls.year = '2016-05-20'
-		cls.song = api.search_song(cls.song_title,cls.artist_name)
+		cls.song = api.search_song(cls.song_title, cls.artist_name)
+		cls.song_trimmed = api.search_song(cls.song_title, cls.artist_name, remove_section_headers=True)
 
 	def test_song(self):
 		msg = "The returned object is not an instance of the Song class."
@@ -114,9 +115,13 @@ class TestSong(unittest.TestCase):
 		msg = "The returned year does not match the year of the requested song"
 		self.assertEqual(self.song.year, self.year, msg)
 
-	def test_lyrics(self):
-		lyrics = 'Begin again\nThis time you should take a bow at the'
+	def test_lyrics_raw(self):
+		lyrics = '[Verse 1: Andy Shauf]'
 		self.assertTrue(self.song.lyrics.startswith(lyrics))
+
+	def test_lyrics_no_section_headers(self):
+		lyrics = 'Begin again\nThis time you should take a bow at the'
+		self.assertTrue(self.song_trimmed.lyrics.startswith(lyrics))		
 
 	def test_media(self):
 		msg = "The returned song does not have a media attribute."
