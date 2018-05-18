@@ -67,7 +67,7 @@ class _API(object):
         # Add the necessary headers to the request
         request = Request(api_request)        
         request.add_header("Authorization", self._HEADER_AUTHORIZATION)
-        request.add_header("User-Agent","")
+        request.add_header("User-Agent","LyricsGenius")
         while True:
             try:
                 response = urlopen(request, timeout=4) #timeout set to 4 seconds; automatically retries if times out
@@ -91,15 +91,16 @@ class _API(object):
         else:        
             return self._API_URL + self._API_REQUEST_TYPES[request_type] + quote(request_term)
     
-    def _scrape_song_lyrics_from_url(self, URL):
+    def _scrape_song_lyrics_from_url(self, URL, remove_section_headers=False):
         """Use BeautifulSoup to scrape song info off of a Genius song URL"""                                
         page = requests.get(URL)    
         html = BeautifulSoup(page.text, "html.parser")
         
         # Scrape the song lyrics from the HTML
         lyrics = html.find("div", class_="lyrics").get_text()
-        lyrics = re.sub('\[.*\]',  '', lyrics) # Remove [Verse] and [Bridge] stuff
-        lyrics = re.sub('\n{2}', '\n', lyrics) # Remove gaps between verses
+        if remove_section_headers:
+            lyrics = re.sub('(\[.*?\])*', '', lyrics) # Remove [Verse] and [Bridge] stuff
+            lyrics = re.sub('\n{2}', '\n', lyrics) # Remove gaps between verses
 
         return lyrics.strip('\n')
 
@@ -109,13 +110,13 @@ class _API(object):
 class Genius(_API):
     """User-level interface with the Genius.com API. User can search for songs (getting lyrics) and artists (getting songs)"""    
 
-    def search_song(self, song_title, artist_name="", take_first_result=False, verbose=True):
+    def search_song(self, song_title, artist_name="", take_first_result=False, verbose=True, remove_section_headers=False):
         # TODO: Should search_song() be a @classmethod?
         """Search Genius.com for *song_title* by *artist_name*"""                
                     
         # Perform a Genius API search for the song
         if verbose:
-            if artist_name == "":
+            if artist_name != "":
                 print('Searching for "{0}" by {1}...'.format(song_title, artist_name))            
             else:            
                 print('Searching for "{0}"...'.format(song_title))
@@ -137,7 +138,7 @@ class Genius(_API):
                 json_song = self._make_api_request((search_hit['id'],'song'))
                 
                 # Scrape the song's HTML for lyrics                
-                lyrics = self._scrape_song_lyrics_from_url(json_song['song']['url'])
+                lyrics = self._scrape_song_lyrics_from_url(json_song['song']['url'], remove_section_headers)
 
                 # Create the Song object
                 song = Song(json_song, lyrics)
@@ -150,12 +151,12 @@ class Genius(_API):
             print('Specified song was not first result :(')
         return None
 
-    def search_artist(self, artist_name, verbose=True, max_songs=None, take_first_result=False, get_full_song_info=True):
+    def search_artist(self, artist_name, verbose=True, max_songs=None, take_first_result=False, get_full_song_info=True, remove_section_headers=False):
         """Allow user to search for an artist on the Genius.com database by supplying an artist name.
         Returns an Artist() object containing all songs for that particular artist."""
 
         if verbose:             
-            print('Searching for {0}...\n'.format(artist_name))
+            print('Searching for songs by {0}...\n'.format(artist_name))
 
         # Perform a Genius API search for the artist                
         json_search = self._make_api_request((artist_name,'search'))                        
@@ -199,10 +200,7 @@ class Genius(_API):
                 for json_song in artist_search_results['songs']:
                     # TODO: Shouldn't I use self.search_song() here?
                     # Scrape song lyrics from the song's HTML
-                    lyrics = self._scrape_song_lyrics_from_url(json_song['url'])            
-
-                    
-                    
+                    lyrics = self._scrape_song_lyrics_from_url(json_song['url'], remove_section_headers)
 
                     # Create song object for current song
                     if get_full_song_info:
