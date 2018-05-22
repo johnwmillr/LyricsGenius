@@ -180,9 +180,7 @@ class Genius(_API):
                 artist_id = None
         
         if first_result is not None and artist_id is None and verbose:
-            if input("Couldn't find {}. Did you mean {}? (y/n): ".format(artist_name, first_result['name'])).lower() == 'y':
-                artist_name, artist_id = first_result['name'], first_result['id']
-        assert (not isinstance(artist_id, type(None))), "Could not find artist. Check spelling?"
+            pass
         
         # Make Genius API request for the determined artist ID
         json_artist = self._make_api_request((artist_id,'artist'))
