@@ -122,7 +122,7 @@ class _API(object):
     def _result_is_lyrics(self, song_title):
         """Returns False if result from Genius is not actually song lyrics"""
         regex = re.compile(
-            r"(tracklist)(track list)|(album art(work)?)|(liner notes)|(booklet)|(credits)", re.IGNORECASE)
+            r"(tracklist)|(track list)|(album art(work)?)|(liner notes)|(booklet)|(credits)", re.IGNORECASE)
         return not regex.search(song_title)
 
 
@@ -235,7 +235,7 @@ class Genius(_API):
 
                     # Remove non-song results (e.g. Linear Notes, Tracklists, etc.)
                     song_is_valid = self._result_is_lyrics(json_song['title']) if remove_non_songs else True
-                    
+
                     if song_is_valid:                    
                         # Scrape song lyrics from the song's HTML
                         lyrics = self._scrape_song_lyrics_from_url(json_song['url'], remove_section_headers)
@@ -248,6 +248,7 @@ class Genius(_API):
                             
                         # Add song to the Artist object
                         if artist.add_song(song, verbose=False) == 0:
+                            # print("Add song: {}".format(song.title))
                             n += 1
                             if verbose:                                
                                 print('Song {0}: "{1}"'.format(n, song.title))
