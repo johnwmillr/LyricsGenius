@@ -122,7 +122,7 @@ class _API(object):
     def _result_is_lyrics(self, song_title):
         """Returns False if result from Genius is not actually song lyrics"""
         regex = re.compile(
-            r"(tracklist)|(album art(work)?)|(liner notes)|(booklet)|(credits)", re.IGNORECASE)
+            r"(tracklist)(track list)|(album art(work)?)|(liner notes)|(booklet)|(credits)", re.IGNORECASE)
         return not regex.search(song_title)
 
 
