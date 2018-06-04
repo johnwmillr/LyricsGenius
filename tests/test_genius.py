@@ -101,7 +101,7 @@ class TestSong(unittest.TestCase):
 
 	def test_title(self):
 		msg = "The returned song title does not match the title of the requested song."
-		self.assertEqual(api._clean(self.song.title), api._clean(self.song_title), msg)
+		self.assertEqual(api._clean_str(self.song.title), api._clean_str(self.song_title), msg)
 
 	def test_artist(self):
 		msg = "The returned artist name does not match the artist of the requested song."
