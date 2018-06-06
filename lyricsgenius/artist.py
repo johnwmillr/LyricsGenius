@@ -52,9 +52,10 @@ class Artist(object):
             self._num_songs += 1
             return 0 # Success
         else:
-            if verbose:
-                print("Can't add song by {newsong.artist}, artist must be {self.name}.".format(newsong=newsong,self=self))
-            return 1 # Failure        
+            self._songs.append(newsong)
+            self._num_songs += 1
+            print("Song by {newsong.artist} was added to {self.name}.".format(newsong=newsong,self=self))
+            return 0 # Success  
             
     def get_song(self, song_name):
         """Search Genius.com for *song_name* and add it to artist"""        
