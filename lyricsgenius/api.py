@@ -20,9 +20,160 @@ from bs4 import BeautifulSoup
 from string import punctuation
 import time
 from warnings import warn
+import pandas as pd
 
-from .song import Song
-from .artist import Artist
+from lyricsgenius.song import Song
+
+
+class Artist(object):
+    """An artist from the Genius.com database.
+
+    Attributes:
+        name: (str) Artist name.
+        num_songs: (int) Total number of songs listed on Genius.com
+
+    """
+
+    def __init__(self, json_dict):
+        """Populate the Artist object with the data from *json_dict*"""
+        self._body = json_dict['artist']
+        self._url = self._body['url']
+        self._api_path = self._body['api_path']
+        self._id = self._body['id']
+        self._songs = []
+        self._num_songs = len(self._songs)
+
+    def __len__(self):
+        return 1
+
+    @property
+    def name(self):
+        return self._body['name']
+
+    @property
+    def image_url(self):
+        try:
+            return self._body['image_url']
+        except:
+            return None
+
+    @property
+    def songs(self):
+        return self._songs
+
+    @property
+    def num_songs(self):
+        return self._num_songs
+
+    def add_song(self, newsong, verbose=True):
+        """Add a Song object to the Artist object"""
+
+        if any([song.title == newsong.title for song in self._songs]):
+            if verbose:
+                print('{newsong.title} already in {self.name}, not adding song.'.format(newsong=newsong, self=self))
+            return 1  # Failure
+        if newsong.artist == self.name:
+            self._songs.append(newsong)
+            self._num_songs += 1
+            return 0  # Success
+        else:
+            self._songs.append(newsong)
+            self._num_songs += 1
+            print("Song by {newsong.artist} was added to {self.name}.".format(newsong=newsong, self=self))
+            return 0  # Success
+
+    def get_song(self, song_name):
+        """Search Genius.com for *song_name* and add it to artist"""
+        raise NotImplementedError("I need to figure out how to allow Artist() to access search_song().")
+        song = Genius.search_song(song_name, self.name)
+        self.add_song(song)
+        return
+
+    # TODO: define an export_to_json() method
+
+    def save_lyrics(self, format='json', filename=None,
+                    overwrite=False, skip_duplicates=True, verbose=True):
+        """Allows user to save all lyrics within an Artist obejct to a .json or .txt file."""
+        if format[0] == '.':
+            format = format[1:]
+        assert (format == 'json') or (format == 'txt'), "Format must be json or txt"
+
+        # We want to reject songs that have already been added to artist collection
+        def songsAreSame(s1, s2):
+            from difflib import SequenceMatcher as sm  # For comparing similarity of lyrics
+            # Idea credit: https://bigishdata.com/2016/10/25/talkin-bout-trucks-beer-and-love-in-country-songs-analyzing-genius-lyrics/
+            seqA = sm(None, s1.lyrics, s2['lyrics'])
+            seqB = sm(None, s2['lyrics'], s1.lyrics)
+            return seqA.ratio() > 0.5 or seqB.ratio() > 0.5
+
+        def songInArtist(new_song):
+            # artist_lyrics is global (works in Jupyter notebook)
+            for song in lyrics_to_write['songs']:
+                if songsAreSame(new_song, song):
+                    return True
+            return False
+
+        # Determine the filename
+        if filename is None:
+            filename = "Lyrics_{}.{}".format(self.name.replace(" ", ""), format)
+        else:
+            if filename.rfind('.') != -1:
+                filename = filename[filename.rfind('.'):] + '.' + format
+            else:
+                filename = filename + '.' + format
+
+        # Check if file already exists
+        write_file = False
+        if not os.path.isfile(filename):
+            write_file = True
+        elif overwrite:
+            write_file = True
+        else:
+            if input("{} already exists. Overwrite?\n(y/n): ".format(filename)).lower() == 'y':
+                write_file = True
+
+        # Format lyrics in either .txt or .json format
+        if format == 'json':
+            lyrics_to_write = {'songs': [], 'artist': self.name}
+            for song in self.songs:
+                if skip_duplicates is False or not songInArtist(song):  # This takes way too long! It's basically O(n^2), can I do better?
+                    lyrics_to_write['songs'].append({})
+                    lyrics_to_write['songs'][-1]['title'] = song.title
+                    lyrics_to_write['songs'][-1]['album'] = song.album
+                    lyrics_to_write['songs'][-1]['year'] = song.year
+                    lyrics_to_write['songs'][-1]['lyrics'] = song.lyrics
+                    lyrics_to_write['songs'][-1]['image'] = song.song_art_image_url
+                    lyrics_to_write['songs'][-1]['artist'] = self.name
+                    lyrics_to_write['songs'][-1]['raw'] = song._body
+                else:
+                    if verbose:
+                        print("SKIPPING \"{}\" -- already found in artist collection.".format(song.title))
+        else:
+            lyrics_to_write = " ".join([s.lyrics + 5 * '\n' for s in self.songs])
+
+        # Write the lyrics to either a .json or .txt file
+        if write_file:
+            with open(filename, 'w') as lyrics_file:
+                if format == 'json':
+                    json.dump(lyrics_to_write, lyrics_file)
+                else:
+                    lyrics_file.write(lyrics_to_write)
+            if verbose:
+                print('Wrote {} songs to {}.'.format(self.num_songs, filename))
+        else:
+            if verbose:
+                print('Skipping file save.\n')
+        return lyrics_to_write
+
+    def __str__(self):
+        """Return a string representation of the Artist object."""
+        if self._num_songs == 1:
+            return '{0}, {1} song'.format(self.name, self._num_songs)
+        else:
+            return '{0}, {1} songs'.format(self.name, self._num_songs)
+
+    def __repr__(self):
+        return repr((self.name, '{0} songs'.format(self._num_songs)))
 
 
 class _API(object):
@@ -276,6 +427,106 @@ class Genius(_API):
 
         return artist
 
+    def search_album(self, artist_name, album_title):
+        """Get all lyrics from an album"""
+        # authentify
+        api = Genius(client_access_token)
+        # genius find the artist
+        artist = api.search_artist(artist_name, max_songs=0)
+        # modify artist_name and album_title so that they will lead us to the album page on Genius.com
+        for ch in [',', "/", ' ', '$', ';', ':', '(', ')', '[', ']', '----', '---', '--']:
+            if ch in artist._body['name']:
+                artist_name = artist._body['name'].replace(ch, "-")
+            if ch in album_title:
+                album_title = album_title.replace(ch, "-")
+
+        for ch in ['.', "\"", "'"]:
+            if ch in artist_name:
+                artist_name = artist_name.replace(ch, "")
+            if ch in album_title:
+                album_title = album_title.replace(ch, "-")
+
+        for ch in ['é', 'è', 'ê', 'ë']:
+            if ch in artist_name:
+                artist_name = artist_name.replace(ch, "e")
+            if ch in album_title:
+                album_title = album_title.replace(ch, "e")
+
+        artist_name = artist_name.replace("&", "and")
+        album_title = album_title.replace("&", "").replace("#", "").replace("--", "-")
+
+        while artist_name[-1] == '-':
+            artist_name = artist_name[:-1]
+        while album_title[-1] == '-':
+            album_title = album_title[:-1]
+        # create index
+        index = []
+        # get the album page on Genius.com
+        r = requests.get('https://genius.com/albums/' + artist_name + "/" + album_title)
+        soup = BeautifulSoup(r.text, 'html.parser')
+        # get the html section indicating if the album isn't found
+        not_found = soup.find('h1', attrs={'class': 'render_404-headline'})
+        if not_found != None and "Page not found" in not_found.text:
+            print("Album not found.")
+            return None
+        # get the html section indicating if the song is missing lyrics
+        missing = soup.find_all('div', attrs={'class': 'chart_row-metadata_element chart_row-metadata_element--large'})
+        miss_nb = 0
+        # count the number of songs without lyrics
+        for miss in missing:
+            if miss.text.find("(Missing Lyrics)") >= 0 or miss.text.find("(Unreleased)") >= 0:
+                miss_nb += 1
+        divi = soup.find_all('div', attrs={'class': 'column_layout-column_span column_layout-column_span--primary'})
+        for div in divi:
+            var = 0
+            # get the html section indicating the track numbers (this will be to eliminate sections similar to those of songs but are actually of tracklist or credits of the album)
+            mdiv = div.find_all('span', attrs={'class': 'chart_row-number_container-number chart_row-number_container-number--gray'})
+            for mindiv in mdiv:
+                nb = mindiv.text.replace("\n", "")
+                if nb != "":
+                    index.append(nb)
+            # create the pandas dataframe holding the tracks' titles
+            df = pd.DataFrame(index=index, columns=['track_title'])
+            ndiv = div.find_all('h3', attrs={'class': 'chart_row-content-title'})
+            for mindiv in ndiv:
+                tt = mindiv.text.replace("\n", "").strip()
+                # getting rid of the featurings in the title
+                if tt.find("(Ft") >= 0:
+                    tt = tt.split(" (Ft.", 1)[0]
+                else:
+                    # getting ride of "lyrics" at the end of the title
+                    tt = tt.rsplit(" ", 1)[0].strip()
+                df['track_title'][var] = tt
+                var += 1
+                if var == len(df.index):
+                    break
+        # loop to add song with title from the dataframe
+        for track in df['track_title']:
+            # search the song
+            song = api.search_song(track, artist.name)
+            # if the song was found, it's added to artist
+            if song != None:
+                artist.add_song(song)
+            # if the song wasn't found, it might be because it's formatted in this way : "title by other artist"
+            elif track.find("by") >= 0:
+                s_artist_name = track.replace("\xa0", " ").rsplit(" by ", 1)[1]
+                s_artist = api.search_artist(s_artist_name, max_songs=0)
+                track = track.replace("\xa0", " ").rsplit(" by ", 1)[0].strip()
+                # look for song with other artist
+                song = api.search_song(track, s_artist.name)
+                if song != None:
+                    # add song to the album's main artist
+                    artist.add_song(song)
+                else:
+                    print("Missing lyrics")
+            else:
+                print("Missing lyrics")
+        artist.save_lyrics(format='json')
+        if miss_nb == 1:
+            print("{} song was ignored due to missing lyrics.".format(miss_nb))
+        elif miss_nb > 1:
+            print("{} songs were ignored due to missing lyrics.".format(miss_nb))
+
     def save_artists(self, artists, filename="artist_lyrics", overwrite=False):
         """Pass a list of Artist objects to save multiple artists"""
         if isinstance(artists, Artist):
@@ -321,4 +572,8 @@ class Genius(_API):
         end = time.time()
 
 
-print("Time elapsed: {} hours".format((end - start) / 60.0 / 60.0))
+# Get the token by signing in on the Genius website https://genius.com/api-clients   (free)
+client_access_token = 'xGTE6BWS9yG0EQ4D2RLefoKyjbj3d1SPfUgiA8ifk_bmKj24xhf7GO3iMPlPtB0b'
+api = Genius(client_access_token)
+
+Genius.search_album(api, "Ace Hood", "Trials & Tribulations")
