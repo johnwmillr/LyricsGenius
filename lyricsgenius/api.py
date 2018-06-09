@@ -573,7 +573,7 @@ class Genius(_API):
 
 
 # Get the token by signing in on the Genius website https://genius.com/api-clients   (free)
-client_access_token = 'xGTE6BWS9yG0EQ4D2RLefoKyjbj3d1SPfUgiA8ifk_bmKj24xhf7GO3iMPlPtB0b'
+client_access_token = 'YOUR_TOKEN_HERE'
 api = Genius(client_access_token)
 
 Genius.search_album(api, "Ace Hood", "Trials & Tribulations")
