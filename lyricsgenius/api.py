@@ -275,7 +275,7 @@ class _API(object):
 class Genius(_API):
     """User-level interface with the Genius.com API. User can search for songs (getting lyrics) and artists (getting songs)"""
 
-    def search_song(self, song_title, artist_name="", take_first_result=False, verbose=True, remove_section_headers=False, remove_non_songs=True):
+    def search_song(self, song_title, artist_name="", take_first_result=False, verbose=True, remove_section_headers=True, remove_non_songs=True):
         # TODO: Should search_song() be a @classmethod?
         """Search Genius.com for *song_title* by *artist_name*"""
 
@@ -434,18 +434,17 @@ class Genius(_API):
         # genius find the artist
         artist = api.search_artist(artist_name, max_songs=0)
         # modify artist_name and album_title so that they will lead us to the album page on Genius.com
-        for ch in [',', "/", ' ', '$', ';', ':', '(', ')', '[', ']', '----', '---', '--']:
-            if ch in artist._body['name']:
-                artist_name = artist._body['name'].replace(ch, "-")
+        artist_name = artist._body['name']
+        for ch in [',', "/", " ", '$', ';', ':', '(', ')', '[', ']', '----', '---', '--']:
+            if ch in artist_name:
+                artist_name = artist_name.replace(ch, "-")
             if ch in album_title:
                 album_title = album_title.replace(ch, "-")
-
         for ch in ['.', "\"", "'"]:
             if ch in artist_name:
                 artist_name = artist_name.replace(ch, "")
             if ch in album_title:
                 album_title = album_title.replace(ch, "-")
-
         for ch in ['é', 'è', 'ê', 'ë']:
             if ch in artist_name:
                 artist_name = artist_name.replace(ch, "e")
