@@ -12,7 +12,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='lyricsgenius',
-    version='0.4.2',
+    version='0.5',
     description='Download lyrics and metadata from Genius.com',
     long_description=README,
     long_description_content_type="text/markdown",
@@ -22,7 +22,7 @@ setup(
     author='John W. Miller',
     author_email='john.w.millr@gmail.com',
     url='https://github.com/johnwmillr/lyricsgenius',
-    download_url = "https://github.com/johnwmillr/LyricsGenius/archive/0.4.tar.gz",
+    download_url = "https://github.com/johnwmillr/LyricsGenius/archive/0.5.tar.gz",
     keywords='genius api genius-api music lyrics artists albums songs',
     packages=find_packages(),
     include_package_data=True,
