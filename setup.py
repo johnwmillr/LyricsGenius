@@ -3,7 +3,7 @@
 # See LICENSE for details.
 
 import re
-import os
+from os import path
 from setuptools import find_packages, setup
 
 VERSIONFILE = "lyricsgenius/__init__.py"
@@ -17,9 +17,9 @@ else:
     raise RuntimeError(
         "Unable to find version string in {}".format(VERSIONFILE))
 
-here = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(here, 'README.md')) as f:
-    README = f.read()
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 requirements = []
 with open('requirements.txt') as f:
@@ -29,6 +29,8 @@ setup(
     name='lyricsgenius',
     version=version,
     description='Download lyrics and metadata from Genius.com',
+    long_description=long_description,
+    long_description_content_type='text/markdown/',
     license="MIT",
     author='John W. Miller',
     author_email='john.w.millr@gmail.com',
