@@ -29,8 +29,6 @@ setup(
     name='lyricsgenius',
     version=version,
     description='Download lyrics and metadata from Genius.com',
-    long_description=README,
-    long_description_content_type="text/markdown",
     license="MIT",
     author='John W. Miller',
     author_email='john.w.millr@gmail.com',
