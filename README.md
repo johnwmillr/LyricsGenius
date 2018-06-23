@@ -12,16 +12,16 @@ To use the Genius API you'll need to sign up for a (free) client that authorizes
 ## Installation
 *LyricsGenius* requires Python 3.
 
-The easiest way to use this package is to install it via [PyPI](https://pypi.python.org/pypi/lyricsgenius) using `pip`:
+The easiest way to start using this package is to install it via [PyPI](https://pypi.python.org/pypi/lyricsgenius) using `pip`:
 
 `$pip install lyricsgenius`
 
 If you'd prefer to clone the repository and install it yourself, follow these steps:
-1. Clone this repo:  
+1. Clone this repo:
 `$git clone https://github.com/johnwmillr/LyricsGenius.git`
-2. Enter the directory created:  
+2. Enter the cloned directory:
 `$cd LyricsGenius`
-3. Install using pip:  
+3. Install using pip:
 `$pip install .`
 
 ## Usage
@@ -63,11 +63,11 @@ $python3 -m lyricsgenius --search-artist 'Lupe Fiasco' 3
 ```
 
 ## Example projects
-  
+
   - [Textual analysis of popular country music](http://www.johnwmillr.com/trucks-and-beer/)
   - [What makes some blink-182 songs more popular than others?](http://jdaytn.com/posts/download-blink-182-data/)
   - [Words per song for rap, rock, and country music](https://www.reddit.com/r/dataisbeautiful/comments/8j1r7b/words_per_song_for_rap_rock_and_country_music_oc/)
-  
+
   I'd love to have more examples to list here! Let me know if you've made use of this wrapper for one of your own projects, and I'll list it here.
 
 ## Contributing
