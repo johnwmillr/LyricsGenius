@@ -22,4 +22,4 @@
 *.egg-info
 __pycache__
 dist
-#README.rst
+build
