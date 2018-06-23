@@ -30,7 +30,7 @@ setup(
     version=version,
     description='Download lyrics and metadata from Genius.com',
     long_description=long_description,
-    long_description_content_type='text/markdown/',
+    long_description_content_type='text/markdown',
     license="MIT",
     author='John W. Miller',
     author_email='john.w.millr@gmail.com',
