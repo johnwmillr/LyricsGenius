@@ -2,12 +2,12 @@ import json, os
 
 class Artist(object):
     """An artist from the Genius.com database.
-    
+
     Attributes:
         name: (str) Artist name.
         num_songs: (int) Total number of songs listed on Genius.com
-    
-    """                            
+
+    """
 
     def __init__(self, json_dict):
         """Populate the Artist object with the data from *json_dict*"""
@@ -20,29 +20,29 @@ class Artist(object):
 
     def __len__(self):
         return 1
-        
+
     @property
-    def name(self):            
+    def name(self):
         return self._body['name']
-                    
+
     @property
     def image_url(self):
         try:
             return self._body['image_url']
         except:
             return None
-    
+
     @property
     def songs(self):
         return self._songs
-    
+
     @property
     def num_songs(self):
-        return self._num_songs          
-        
+        return self._num_songs
+
     def add_song(self, newsong, verbose=True):
         """Add a Song object to the Artist object"""
-        
+
         if any([song.title==newsong.title for song in self._songs]):
             if verbose:
                 print('{newsong.title} already in {self.name}, not adding song.'.format(newsong=newsong,self=self))
@@ -54,10 +54,10 @@ class Artist(object):
         else:
             if verbose:
                 print("Can't add song by {newsong.artist}, artist must be {self.name}.".format(newsong=newsong,self=self))
-            return 1 # Failure        
-            
+            return 1 # Failure
+
     def get_song(self, song_name):
-        """Search Genius.com for *song_name* and add it to artist"""        
+        """Search Genius.com for *song_name* and add it to artist"""
         raise NotImplementedError("I need to figure out how to allow Artist() to access search_song().")
         song = Genius.search_song(song_name,self.name)
         self.add_song(song)
@@ -69,19 +69,20 @@ class Artist(object):
                     overwrite=False, skip_duplicates=True, verbose=True):
         """Allows user to save all lyrics within an Artist obejct to a .json or .txt file."""
         if format[0] == '.':
-            format = format[1:]        
+            format = format[1:]
         assert (format == 'json') or (format == 'txt'), "Format must be json or txt"
 
         # We want to reject songs that have already been added to artist collection
         def songsAreSame(s1, s2):
-            from difflib import SequenceMatcher as sm # For comparing similarity of lyrics
-            # Idea credit: https://bigishdata.com/2016/10/25/talkin-bout-trucks-beer-and-love-in-country-songs-analyzing-genius-lyrics/
+            from difflib import SequenceMatcher as sm
+            # Idea credit: https://bigishdata.com/2016/10/25/
             seqA = sm(None, s1.lyrics, s2['lyrics'])
-                if seqA.ratio() > 0.4:
-                    seqB = sm(None, s2['lyrics'], s1.lyrics)
-            return seqA.ratio() > 0.5 or seqB.ratio() > 0.5
+            if seqA.ratio() > 0.4:
+                seqB = sm(None, s2['lyrics'], s1.lyrics)
+                return seqA.ratio() > 0.5 or seqB.ratio() > 0.5
+            return False
 
-        def songInArtist(new_song):    
+        def songInArtist(new_song):
             # artist_lyrics is global (works in Jupyter notebook)
             for song in lyrics_to_write['songs']:
                 if songsAreSame(new_song, song):
@@ -91,13 +92,13 @@ class Artist(object):
         # Determine the filename
         if filename is None:
             filename = "Lyrics_{}.{}".format(self.name.replace(" ",""), format)
-        else:            
+        else:
             if filename.rfind('.') != -1:
                 filename = filename[filename.rfind('.'):] + '.' + format
             else:
                 filename = filename + '.' + format
-            
-        # Check if file already exists    
+
+        # Check if file already exists
         write_file = False
         if not os.path.isfile(filename):
             write_file = True
@@ -106,7 +107,7 @@ class Artist(object):
         else:
             if input("{} already exists. Overwrite?\n(y/n): ".format(filename)).lower() == 'y':
                 write_file = True
-                
+
         # Format lyrics in either .txt or .json format
         if format == 'json':
             lyrics_to_write = {'songs': [], 'artist': self.name}
@@ -116,7 +117,7 @@ class Artist(object):
                     lyrics_to_write['songs'][-1]['title']  = song.title
                     lyrics_to_write['songs'][-1]['album']  = song.album
                     lyrics_to_write['songs'][-1]['year']   = song.year
-                    lyrics_to_write['songs'][-1]['lyrics'] = song.lyrics                
+                    lyrics_to_write['songs'][-1]['lyrics'] = song.lyrics
                     lyrics_to_write['songs'][-1]['image']  = song.song_art_image_url
                     lyrics_to_write['songs'][-1]['artist'] = self.name
                     lyrics_to_write['songs'][-1]['raw']   = song._body
@@ -129,23 +130,23 @@ class Artist(object):
         # Write the lyrics to either a .json or .txt file
         if write_file:
             with open(filename, 'w') as lyrics_file:
-                if format == 'json':                    
+                if format == 'json':
                     json.dump(lyrics_to_write, lyrics_file)
-                else:    
+                else:
                     lyrics_file.write(lyrics_to_write)
             if verbose:
                 print('Wrote {} songs to {}.'.format(self.num_songs, filename))
         else:
             if verbose:
-                print('Skipping file save.\n')    
+                print('Skipping file save.\n')
         return lyrics_to_write
 
     def __str__(self):
-        """Return a string representation of the Artist object."""                        
+        """Return a string representation of the Artist object."""
         if self._num_songs == 1:
             return '{0}, {1} song'.format(self.name,self._num_songs)
         else:
             return '{0}, {1} songs'.format(self.name,self._num_songs)
-    
+
     def __repr__(self):
-        return repr((self.name, '{0} songs'.format(self._num_songs))) 
+        return repr((self.name, '{0} songs'.format(self._num_songs)))
