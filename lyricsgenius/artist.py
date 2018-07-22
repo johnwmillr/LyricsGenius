@@ -87,11 +87,13 @@ class Artist(object):
 
         # We want to reject songs that have already been added to artist collection
         def songsAreSame(s1, s2):
-            from difflib import SequenceMatcher as sm # For comparing similarity of lyrics
-            # Idea credit: https://bigishdata.com/2016/10/25/talkin-bout-trucks-beer-and-love-in-country-songs-analyzing-genius-lyrics/
+            from difflib import SequenceMatcher as sm
+            # Idea credit: https://bigishdata.com/2016/10/25/
             seqA = sm(None, s1.lyrics, s2['lyrics'])
-            seqB = sm(None, s2['lyrics'], s1.lyrics)
-            return seqA.ratio() > 0.5 or seqB.ratio() > 0.5
+            if seqA.ratio() > 0.4:
+                seqB = sm(None, s2['lyrics'], s1.lyrics)
+                return seqA.ratio() > 0.5 or seqB.ratio() > 0.5
+            return False
 
         def songInArtist(new_song):
             # artist_lyrics is global (works in Jupyter notebook)
