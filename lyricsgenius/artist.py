@@ -28,6 +28,7 @@ class Artist(object):
         self._id = self._body['id']
         self._songs = []
         self._num_songs = len(self._songs)
+        self._songs_dropped = 0
 
     def __len__(self):
         return 1
@@ -136,6 +137,7 @@ class Artist(object):
                     lyrics_to_write['songs'][-1]['artist'] = self.name
                     lyrics_to_write['songs'][-1]['raw'] = song._body
                 else:
+                    self._songs_dropped+=1
                     if verbose:
                         print("SKIPPING \"{}\" (already found in artist collection)".format(song.title))
         else:
@@ -149,7 +151,7 @@ class Artist(object):
                 else:
                     lyrics_file.write(lyrics_to_write)
             if verbose:
-                print('Wrote {} songs to {}.'.format(self.num_songs, filename))
+                print('Wrote {} songs to {}.'.format((self.num_songs-self.songs_dropped), filename))
         else:
             if verbose:
                 print('Skipping file save.\n')
