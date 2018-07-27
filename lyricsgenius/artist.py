@@ -151,7 +151,7 @@ class Artist(object):
                 else:
                     lyrics_file.write(lyrics_to_write)
             if verbose:
-                print('Wrote {} songs to {}.'.format((self.num_songs-self.songs_dropped), filename))
+                print('Wrote {} songs to {}.'.format((self.num_songs-self._songs_dropped), filename))
         else:
             if verbose:
                 print('Skipping file save.\n')
