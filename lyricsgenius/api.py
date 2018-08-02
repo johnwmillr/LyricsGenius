@@ -25,6 +25,7 @@ class API(object):
 
     # Create a persistent requests connection
     session = requests.Session()
+    session.headers = {'application': 'LyricsGenius'}
 
     def __init__(self, client_access_token,
                  response_format='plain', timeout=5, sleep_time=0.5):
@@ -37,6 +38,7 @@ class API(object):
         """
 
         self.ACCESS_TOKEN = client_access_token
+        self.session.headers['authorization'] = 'Bearer ' + self.ACCESS_TOKEN
         self.FORMAT = response_format.lower()
         self.api_root = 'https://api.genius.com/'
         self.timeout = timeout
@@ -45,33 +47,32 @@ class API(object):
     def _make_request(self, path, method='GET', params_=None):
         """Make a request to the API"""
 
+        uri = self.api_root + path
         if params_:
             params_['text_format'] = self.FORMAT
         else:
             params_ = {'text_format': self.FORMAT}
-        self.session.headers = {'application': 'LyricsGenius',
-                                'authorization': 'Bearer ' + self.ACCESS_TOKEN}
 
-        # Make the request to the API
-        uri = self.api_root + path
+        # Make the request
         try:
-            response = self.session.request(method, uri,
+            response = self.session.request(method,
+                                            uri,
                                             timeout=self.timeout,
                                             params=params_)
         except socket.timeout as e:
             print("Timeout raised and caught: {}".format(e))
+
         assert response.status_code == 200, "API response is not 200: {r}".format(r=response.reason)
-        time.sleep(self.sleep_time)  # Rate limiting
+        time.sleep(self.sleep_time)
         return response.json()['response']
 
     """ API Endpoints """
-    """ Songs: https://docs.genius.com/#songs-h2 """
+
     def get_song(self, id_):
         """Data for a specific song."""
         endpoint = "songs/{id}".format(id=id_)
         return self._make_request(endpoint)
 
-    """ Artists: https://docs.genius.com/#artists-h2 """
     def get_artist(self, id_):
         """Data for a specific artist."""
         endpoint = "artists/{id}".format(id=id_)
@@ -83,14 +84,12 @@ class API(object):
         params = {'sort': sort, 'per_page': per_page, 'page': page}
         return self._make_request(endpoint, params_=params)
 
-    """ Search: https://docs.genius.com/#search-h2 """
     def search_genius(self, search_term):
         """Search documents hosted on Genius."""
         endpoint = "search/"
         params = {'q': search_term}
         return self._make_request(endpoint, params_=params)
 
-    """ Annotations: https://docs.genius.com/#!#annotations-h2 """
     def get_annotation(self, id_):
         """Data for a specific annotation."""
         endpoint = "annotations/{id}".format(id=id_)
