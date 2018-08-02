@@ -22,13 +22,13 @@ from .artist import Artist
 
 
 class API(object):
-    """Genius.com API"""
+    """Genius API"""
 
     # Create a persistent requests connection
     session = requests.Session()
 
     def __init__(self, client_access_token,
-                 response_format='dom', timeout=5, sleep_time=0.5):
+                 response_format='plain', timeout=5, sleep_time=0.5):
         """ Genius API Constructor
 
         :param api_key: API key provided by Genius
@@ -37,41 +37,65 @@ class API(object):
         :param sleep_time: time to wait between requests
         """
 
-        self.CLIENT_ACCESS_TOKEN = client_access_token
+        self.ACCESS_TOKEN = client_access_token
         self.FORMAT = response_format.lower()
         self.api_root = 'https://api.genius.com/'
         self.timeout = timeout
         self.sleep_time = sleep_time
 
     def _make_request(self, path, method='GET', params_=None):
-        """Make a GET or POST request to the API"""
-        time.sleep(self.sleep_time)  # Rate limiting
-        uri = self.api_root + path
-        print(path)
-        print(uri)
+        """Make a request to the API"""
+
+        if params_:
+            params_['text_format'] = self.FORMAT
+        else:
+            params_ = {'text_format': self.FORMAT}
         self.session.headers = {'application': 'LyricsGenius',
-                                'authorization': 'Bearer ' + self.CLIENT_ACCESS_TOKEN,
-                                'text_format': self.FORMAT}
-        print(params_)
+                                'authorization': 'Bearer ' + self.ACCESS_TOKEN}
+
+        # Make the request to the API
+        uri = self.api_root + path
         try:
             response = self.session.request(method, uri,
                                             timeout=self.timeout,
                                             params=params_)
         except socket.timeout as e:
             print("Timeout raised and caught: {}".format(e))
-        time.sleep(self.sleep_time)
         assert response.status_code == 200, "API response is not 200: {r}".format(r=response.reason)
+        time.sleep(self.sleep_time)  # Rate limiting
         return response.json()['response']
 
+    """ API Endpoints """
+    """ Songs: https://docs.genius.com/#songs-h2 """
     def get_song(self, id_):
-        return self._make_request('songs/' + id_)
+        """Data for a specific song."""
+        endpoint = "songs/{id}".format(id=id_)
+        return self._make_request(endpoint)
 
+    """ Artists: https://docs.genius.com/#artists-h2 """
     def get_artist(self, id_):
-        return self._make_request('artists/' + id_)
+        """Data for a specific artist."""
+        endpoint = "artists/{id}".format(id=id_)
+        return self._make_request(endpoint)
 
     def get_artist_songs(self, id_, sort='title', per_page=20, page=1):
+        """Documents (songs) for the artist specified."""
+        endpoint = "artists/{id}/songs".format(id=id_)
         params = {'sort': sort, 'per_page': per_page, 'page': page}
-        return self._make_request('artists/{}/songs'.format(id_), params_=params)
+        return self._make_request(endpoint, params_=params)
+
+    """ Search: https://docs.genius.com/#search-h2 """
+    def search(self, search_term):
+        """Search documents hosted on Genius."""
+        endpoint = "search/"
+        params = {'q': search_term}
+        return self._make_request(endpoint, params_=params)
+
+    """ Annotations: https://docs.genius.com/#!#annotations-h2 """
+    def get_annotation(self, id_):
+        """Data for a specific annotation."""
+        endpoint = "annotations/{id}".format(id=id_)
+        return self._make_request(endpoint)
 
 
 class _API(object):
@@ -84,8 +108,8 @@ class _API(object):
             'artist-songs': 'artists/songs/', 'search': 'search?q='}
 
     def __init__(self, client_access_token, sleep_time=0):
-        self.CLIENT_ACCESS_TOKEN = client_access_token
-        self._HEADER_AUTHORIZATION = 'Bearer ' + self.CLIENT_ACCESS_TOKEN
+        self.ACCESS_TOKEN = client_access_token
+        self._HEADER_AUTHORIZATION = 'Bearer ' + self.ACCESS_TOKEN
         self.sleep_time = sleep_time
         """ API instance Constructor
 
