@@ -21,8 +21,51 @@ from .song import Song
 from .artist import Artist
 
 
+class API(object):
+    """Genius.com API"""
+
+    # Create a persistent requests connection
+    session = requests.Session()
+
+    def __init__(self, client_access_token, response_format='dom', timeout=5, sleep_time=0.5):
+        """ Genius API Constructor
+
+        :param api_key: API key provided by Genius
+        :param format_: response format to request from the API (dom, plain, html)
+        :param timeout: time before quitting on response (seconds)
+        :param sleep_time: time to wait between requests
+        """
+
+        self._CLIENT_ACCESS_TOKEN = client_access_token
+        self.api_root = 'https://api.genius.com/'
+        self.FORMAT = response_format
+        self.timeout = timeout
+        self._sleep_time = sleep_time
+
+    def _make_request(self, path, method='GET'):
+        """Make a GET or POST request to the API"""
+        time.sleep(self._sleep_time)  # Rate limiting
+        full_uri = self.api_root + path
+        print(path)
+        print(full_uri)
+        self.session.headers = {'application': 'LyricsGenius',
+                           'authorization': 'Bearer ' + self._CLIENT_ACCESS_TOKEN}
+        try:
+            response = self.session.request(method,
+                                            full_uri,
+                                            timeout=self.timeout,
+                                            params=self._CLIENT_ACCESS_TOKEN)
+            # response.raise_for_status()  # Raise error for bad status
+            # raw = response.read().decode('utf-8')
+        except socket.timeout as e:
+            print("Timeout raised and caught: {}".format(e))
+        time.sleep(self._sleep_time)
+        # return json.loads(raw)['response']
+        return response
+
+
 class _API(object):
-    """Interface with the Genius.com API"""
+    """Genius.com API"""
 
     # Genius API constants
     _API_URL = "https://api.genius.com/"
@@ -41,7 +84,7 @@ class _API(object):
         """
 
     def _make_api_request(self, request_term_and_type, page=1):
-        """Send a request (song, artist, or search) to the Genius API, returning a json object
+        """Send a request to the Genius API, returning a json object
 
         INPUT:
             request_term_and_type: (tuple) (request_term, request_type)

@@ -13,3 +13,4 @@ __version__ = '0.7.0'
 import sys
 assert sys.version_info[0] == 3, "LyricsGenius requires Python 3."
 from .api import Genius
+from .api import API
