@@ -27,7 +27,8 @@ class API(object):
     # Create a persistent requests connection
     session = requests.Session()
 
-    def __init__(self, client_access_token, response_format='dom', timeout=5, sleep_time=0.5):
+    def __init__(self, client_access_token,
+                 response_format='dom', timeout=5, sleep_time=0.5):
         """ Genius API Constructor
 
         :param api_key: API key provided by Genius
@@ -36,32 +37,41 @@ class API(object):
         :param sleep_time: time to wait between requests
         """
 
-        self._CLIENT_ACCESS_TOKEN = client_access_token
+        self.CLIENT_ACCESS_TOKEN = client_access_token
+        self.FORMAT = response_format.lower()
         self.api_root = 'https://api.genius.com/'
-        self.FORMAT = response_format
         self.timeout = timeout
-        self._sleep_time = sleep_time
+        self.sleep_time = sleep_time
 
-    def _make_request(self, path, method='GET'):
+    def _make_request(self, path, method='GET', params_=None):
         """Make a GET or POST request to the API"""
-        time.sleep(self._sleep_time)  # Rate limiting
-        full_uri = self.api_root + path
+        time.sleep(self.sleep_time)  # Rate limiting
+        uri = self.api_root + path
         print(path)
-        print(full_uri)
+        print(uri)
         self.session.headers = {'application': 'LyricsGenius',
-                           'authorization': 'Bearer ' + self._CLIENT_ACCESS_TOKEN}
+                                'authorization': 'Bearer ' + self.CLIENT_ACCESS_TOKEN,
+                                'text_format': self.FORMAT}
+        print(params_)
         try:
-            response = self.session.request(method,
-                                            full_uri,
+            response = self.session.request(method, uri,
                                             timeout=self.timeout,
-                                            params=self._CLIENT_ACCESS_TOKEN)
-            # response.raise_for_status()  # Raise error for bad status
-            # raw = response.read().decode('utf-8')
+                                            params=params_)
         except socket.timeout as e:
             print("Timeout raised and caught: {}".format(e))
-        time.sleep(self._sleep_time)
-        # return json.loads(raw)['response']
-        return response
+        time.sleep(self.sleep_time)
+        assert response.status_code == 200, "API response is not 200: {r}".format(r=response.reason)
+        return response.json()['response']
+
+    def get_song(self, id_):
+        return self._make_request('songs/' + id_)
+
+    def get_artist(self, id_):
+        return self._make_request('artists/' + id_)
+
+    def get_artist_songs(self, id_, sort='title', per_page=20, page=1):
+        params = {'sort': sort, 'per_page': per_page, 'page': page}
+        return self._make_request('artists/{}/songs'.format(id_), params_=params)
 
 
 class _API(object):
@@ -74,9 +84,9 @@ class _API(object):
             'artist-songs': 'artists/songs/', 'search': 'search?q='}
 
     def __init__(self, client_access_token, sleep_time=0):
-        self._CLIENT_ACCESS_TOKEN = client_access_token
-        self._HEADER_AUTHORIZATION = 'Bearer ' + self._CLIENT_ACCESS_TOKEN
-        self._sleep_time = sleep_time
+        self.CLIENT_ACCESS_TOKEN = client_access_token
+        self._HEADER_AUTHORIZATION = 'Bearer ' + self.CLIENT_ACCESS_TOKEN
+        self.sleep_time = sleep_time
         """ API instance Constructor
 
         :param client_access_token: Access token from Genius.com
@@ -117,7 +127,7 @@ class _API(object):
                 continue
             break
 
-        time.sleep(self._sleep_time)  # rate limiting
+        time.sleep(self.sleep_time)  # rate limiting
         return json.loads(raw)['response']
 
     def _format_api_request(self, term_and_type, page=1):
