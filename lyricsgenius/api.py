@@ -6,7 +6,6 @@
 API documentation: https://docs.genius.com/
 """
 
-from urllib.request import Request, urlopen, quote
 import os
 import re
 import requests
@@ -21,73 +20,87 @@ from .song import Song
 from .artist import Artist
 
 
-class _API(object):
-    """Interface with the Genius.com API"""
+class API(object):
+    """Genius API"""
 
-    # Genius API constants
-    _API_URL = "https://api.genius.com/"
-    _API_REQUEST_TYPES =\
-        {'song': 'songs/', 'artist': 'artists/',
-            'artist-songs': 'artists/songs/', 'search': 'search?q='}
+    # Create a persistent requests connection
+    session = requests.Session()
 
-    def __init__(self, client_access_token, sleep_time=0):
-        self._CLIENT_ACCESS_TOKEN = client_access_token
-        self._HEADER_AUTHORIZATION = 'Bearer ' + self._CLIENT_ACCESS_TOKEN
-        self._sleep_time = sleep_time
-        """ API instance Constructor
+    def __init__(self, client_access_token,
+                 response_format='plain', timeout=5, sleep_time=0.5):
+        """ Genius API Constructor
 
-        :param client_access_token: Access token from Genius.com
-        :param sleep_time: Time (in seconds) to wait between API calls
+        :param api_key: API key provided by Genius
+        :param format_: response format to request from the API (dom, plain, html)
+        :param timeout: time before quitting on response (seconds)
+        :param sleep_time: time to wait between requests
         """
 
-    def _make_api_request(self, request_term_and_type, page=1):
-        """Send a request (song, artist, or search) to the Genius API, returning a json object
+        self.ACCESS_TOKEN = client_access_token
+        self.FORMAT = response_format.lower()
+        self.api_root = 'https://api.genius.com/'
+        self.timeout = timeout
+        self.sleep_time = sleep_time
 
-        INPUT:
-            request_term_and_type: (tuple) (request_term, request_type)
+    def _make_request(self, path, method='GET', params_=None):
+        """Make a request to the API"""
 
-        *request term* is a string. If *request_type* is 'search', then *request_term* is just
-        what you'd type into the search box on Genius.com. If you have an song ID or an artist ID,
-        you'd do this: self._make_api_request('2236','song')
-
-        Returns a json object.
-        """
-
-        # TODO: This should maybe be a generator
-
-        # The API request URL must be formatted according to the desired
-        # request type"""
-        api_request = self._format_api_request(
-            request_term_and_type, page=page)
-
-        # Add the necessary headers to the request
-        request = Request(api_request)
-        request.add_header("Authorization", self._HEADER_AUTHORIZATION)
-        request.add_header("User-Agent", "LyricsGenius")
-        while True:
-            try:
-                # timeout set to 4 seconds; automatically retries if times out
-                response = urlopen(request, timeout=4)
-                raw = response.read().decode('utf-8')
-            except socket.timeout:
-                print("Timeout raised and caught")
-                continue
-            break
-
-        time.sleep(self._sleep_time)  # rate limiting
-        return json.loads(raw)['response']
-
-    def _format_api_request(self, term_and_type, page=1):
-        """Format the request URL depending on the type of request"""
-
-        request_term, request_type = str(term_and_type[0]), term_and_type[1]
-        assert request_type in self._API_REQUEST_TYPES, "Unknown API request type"
-
-        # TODO - Clean this up (might not need separate returns)
-        if request_type == 'artist-songs':
-            return self._API_URL + 'artists/' + quote(request_term) + '/songs?per_page=50&page=' + str(page)
+        if params_:
+            params_['text_format'] = self.FORMAT
         else:
-            return self._API_URL + self._API_REQUEST_TYPES[request_type] + quote(request_term)
+            params_ = {'text_format': self.FORMAT}
+        self.session.headers = {'application': 'LyricsGenius',
+                                'authorization': 'Bearer ' + self.ACCESS_TOKEN}
+
+        # Make the request to the API
+        uri = self.api_root + path
+        try:
+            response = self.session.request(method, uri,
+                                            timeout=self.timeout,
+                                            params=params_)
+        except socket.timeout as e:
+            print("Timeout raised and caught: {}".format(e))
+        assert response.status_code == 200, "API response is not 200: {r}".format(r=response.reason)
+        time.sleep(self.sleep_time)  # Rate limiting
+        return response.json()['response']
+
+    """ API Endpoints """
+    """ Songs: https://docs.genius.com/#songs-h2 """
+    def get_song(self, id_):
+        """Data for a specific song."""
+        endpoint = "songs/{id}".format(id=id_)
+        return self._make_request(endpoint)
+
+    """ Artists: https://docs.genius.com/#artists-h2 """
+    def get_artist(self, id_):
+        """Data for a specific artist."""
+        endpoint = "artists/{id}".format(id=id_)
+        return self._make_request(endpoint)
+
+    def get_artist_songs(self, id_, sort='title', per_page=20, page=1):
+        """Documents (songs) for the artist specified."""
+        endpoint = "artists/{id}/songs".format(id=id_)
+        params = {'sort': sort, 'per_page': per_page, 'page': page}
+        return self._make_request(endpoint, params_=params)
+
+    """ Search: https://docs.genius.com/#search-h2 """
+    def search_genius(self, search_term):
+        """Search documents hosted on Genius."""
+        endpoint = "search/"
+        params = {'q': search_term}
+        return self._make_request(endpoint, params_=params)
+
+    """ Annotations: https://docs.genius.com/#!#annotations-h2 """
+    def get_annotation(self, id_):
+        """Data for a specific annotation."""
+        endpoint = "annotations/{id}".format(id=id_)
+        return self._make_request(endpoint)
+
+
+class Genius(API):
+    """User-level interface with the Genius.com API.
+    :param client_access_token: Access token from Genius.com
+    """
 
     def _scrape_song_lyrics_from_url(self, URL, remove_section_headers=False):
         """Use BeautifulSoup to scrape song info off of a Genius song URL"""
@@ -113,12 +126,6 @@ class _API(object):
         regex = re.compile(
             r"(tracklist)|(track list)|(album art(work)?)|(liner notes)|(booklet)|(credits)|(remix)|(interview)|(skit)", re.IGNORECASE)
         return not regex.search(song_title)
-
-
-class Genius(_API):
-    """User-level interface with the Genius.com API.
-    :param client_access_token: Access token from Genius.com
-    """
 
     def search_song(self, song_title, artist_name="",
                     take_first_result=False,
@@ -146,7 +153,7 @@ class Genius(_API):
                 print('Searching for "{0}"...'.format(song_title))
         search_term = "{} {}".format(song_title, artist_name)
 
-        json_search = self._make_api_request((search_term, 'search'))
+        json_search = self.search_genius(search_term)
 
         # Loop through search results
         # Stop as soon as title and artist of result match request
@@ -168,7 +175,7 @@ class Genius(_API):
                 song_is_valid = self._result_is_lyrics(found_song) if remove_non_songs else True
                 if song_is_valid:
                     # Found correct song, accessing API ID
-                    json_song = self._make_api_request((search_hit['id'], 'song'))
+                    json_song = self.get_song(search_hit['id'])
 
                     # Scrape the song's HTML for lyrics
                     lyrics = self._scrape_song_lyrics_from_url(
@@ -211,7 +218,7 @@ class Genius(_API):
             print('Searching for songs by {0}...\n'.format(artist_name))
 
         # Perform a Genius API search for the artist
-        json_search = self._make_api_request((artist_name, 'search'))
+        json_search = self.search_genius(artist_name)
         first_result, artist_id = None, None
         for hit in json_search['hits']:
             found_artist = hit['result']['primary_artist']
@@ -226,7 +233,7 @@ class Genius(_API):
                 break
             else:
                 # check for searched name in alternate artist names
-                json_artist = self._make_api_request((artist_id, 'artist'))['artist']
+                json_artist = self.get_artist(artist_id)['artist']
                 if artist_name.lower() in [s.lower() for s in json_artist['alternate_names']]:
                     if verbose:
                         print("Found alternate name. Changing name to {}.".format(json_artist['name']))
@@ -241,13 +248,13 @@ class Genius(_API):
         assert (not isinstance(artist_id, type(None))), "Could not find artist. Check spelling?"
 
         # Make Genius API request for the determined artist ID
-        json_artist = self._make_api_request((artist_id,'artist'))
+        json_artist = self.get_artist(artist_id)
         # Create the Artist object
         artist = Artist(json_artist)
 
         if max_songs is None or max_songs > 0:
             # Access the api_path found by searching
-            artist_search_results = self._make_api_request((artist_id, 'artist-songs'))
+            artist_search_results = self.get_artist_songs(artist_id)
 
             # Download each song by artist, store as Song objects in Artist object
             keep_searching = True
@@ -269,7 +276,7 @@ class Genius(_API):
 
                         # Create song object for current song
                         if get_full_song_info:
-                            song = Song(self._make_api_request((json_song['id'], 'song')), lyrics)
+                            song = Song(self.get_song(json_song['id']), lyrics)
                         else:
                             # Create song with less info (faster)
                             song = Song({'song': json_song}, lyrics)
@@ -297,7 +304,7 @@ class Genius(_API):
                 if next_page is None:
                     break
                 else:  # Get next page of artist song results
-                    artist_search_results = self._make_api_request((artist_id, 'artist-songs'), page=next_page)
+                    artist_search_results = self.get_artist_songs(artist_id, page=next_page)
 
             if verbose:
                 print('Found {n_songs} songs.'.format(n_songs=artist.num_songs))
