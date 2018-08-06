@@ -129,20 +129,20 @@ class Song(object):
             lyrics_to_write['songs'][-1]['title']  = self.title
             lyrics_to_write['songs'][-1]['album']  = self.album
             lyrics_to_write['songs'][-1]['year']   = self.year
-            lyrics_to_write['songs'][-1]['lyrics'] = self.lyrics
+            lyrics_to_write['songs'][-1]['lyrics'] = self.lyrics.encode('utf8')
             lyrics_to_write['songs'][-1]['image']  = self.song_art_image_url
             lyrics_to_write['songs'][-1]['artist'] = self.artist
             lyrics_to_write['songs'][-1]['json']   = self._body
         else:
-            lyrics_to_write = self.lyrics
+            lyrics_to_write = self.lyrics.encode('utf8')
 
         # Write the lyrics to either a .json or .txt file
         if write_file:
             with open(filename, 'wb') as lyrics_file:
                 if format == 'json':
-                    json.dump(lyrics_to_write.encode('utf8'), lyrics_file)
+                    json.dump(lyrics_to_write, lyrics_file)
                 else:
-                    lyrics_file.write(lyrics_to_write.encode('utf8'))
+                    lyrics_file.write(lyrics_to_write)
             if verbose:
                 print('Wrote {} to {}.'.format(self.title, filename))
         else:
