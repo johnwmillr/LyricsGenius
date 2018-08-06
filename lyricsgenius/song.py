@@ -138,11 +138,11 @@ class Song(object):
 
         # Write the lyrics to either a .json or .txt file
         if write_file:
-            with open(filename, 'w') as lyrics_file:
+            with open(filename, 'wb') as lyrics_file:
                 if format == 'json':
-                    json.dump(lyrics_to_write, lyrics_file)
+                    json.dump(lyrics_to_write.encode('utf8'), lyrics_file)
                 else:
-                    lyrics_file.write(lyrics_to_write)
+                    lyrics_file.write(lyrics_to_write.encode('utf8'))
             if verbose:
                 print('Wrote {} to {}.'.format(self.title, filename))
         else:
