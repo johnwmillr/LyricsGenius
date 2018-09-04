@@ -99,7 +99,7 @@ class Song(object):
         except Exception as e:
             return None
 
-    def save_lyrics(self, filename=None, format='txt', overwrite=False, verbose=True):
+    def save_lyrics(self, filename=None, format='txt', overwrite=False, verbose=True, binary=False):
         # TODO: way too much repeated code between this and the Artist.save_lyrics method
         """Allows user to save song lyrics from Song obejct to a .json or .txt file."""
         if format[0] == '.':
@@ -136,9 +136,12 @@ class Song(object):
         else:
             lyrics_to_write = self.lyrics
 
+        if binary:
+            lyrics_to_write = lyrics_to_write.encode('utf8')
+
         # Write the lyrics to either a .json or .txt file
         if write_file:
-            with open(filename, 'wb') as lyrics_file:
+            with open(filename, 'wb' if binary else 'w') as lyrics_file:
                 if format == 'json':
                     json.dump(lyrics_to_write, lyrics_file)
                 else:
