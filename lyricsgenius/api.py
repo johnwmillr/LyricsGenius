@@ -114,7 +114,7 @@ class Genius(API):
             # Remove gaps between verses
             lyrics = re.sub('\n{2}', '\n', lyrics)
 
-        return lyrics.strip('\n').encode('utf8')
+        return lyrics.strip('\n')
 
     def _clean_str(self, s):
         return s.translate(str.maketrans('', '',
