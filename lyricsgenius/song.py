@@ -99,18 +99,23 @@ class Song(object):
         except Exception as e:
             return None
 
-    def save_lyrics(self, filename=None, format='txt', overwrite=False, verbose=True, binary=False):
+    def save_lyrics(self,
+                    filename=None,
+                    format_='txt',
+                    overwrite=False,
+                    verbose=True,
+                    binary_encoding=False):
         # TODO: way too much repeated code between this and the Artist.save_lyrics method
         """Allows user to save song lyrics from Song obejct to a .json or .txt file."""
-        if format[0] == '.':
-            format = format[1:]
-        assert (format == 'json') or (format == 'txt'), "Format must be json or txt"
+        if format_[0] == '.':
+            format_ = format_[1:]
+        assert (format_ == 'json') or (format_ == 'txt'), "Format_ must be json or txt"
 
         # Determine the filename
         if filename is None:
-            filename = "Lyrics_{}.{}".format(self.artist.replace(" ",""), format)
+            filename = "Lyrics_{}.{}".format(self.artist.replace(" ",""), format_)
         else:
-            filename = filename.split('.')[0] + '.' + format
+            filename = filename.split('.')[0] + '.' + format_
 
         # Check if file already exists
         write_file = False
@@ -122,27 +127,27 @@ class Song(object):
             if input("{} already exists. Overwrite?\n(y/n): ".format(filename)).lower() == 'y':
                 write_file = True
 
-        # Format lyrics in either .txt or .json format
-        if format == 'json':
+        # Format lyrics as either .txt or .json
+        if format_ == 'json':
             lyrics_to_write = {'songs': [], 'artist': self.artist}
             lyrics_to_write['songs'].append({})
-            lyrics_to_write['songs'][-1]['title']  = self.title
-            lyrics_to_write['songs'][-1]['album']  = self.album
-            lyrics_to_write['songs'][-1]['year']   = self.year
+            lyrics_to_write['songs'][-1]['title'] = self.title
+            lyrics_to_write['songs'][-1]['album'] = self.album
+            lyrics_to_write['songs'][-1]['year'] = self.year
             lyrics_to_write['songs'][-1]['lyrics'] = self.lyrics
-            lyrics_to_write['songs'][-1]['image']  = self.song_art_image_url
+            lyrics_to_write['songs'][-1]['image'] = self.song_art_image_url
             lyrics_to_write['songs'][-1]['artist'] = self.artist
-            lyrics_to_write['songs'][-1]['json']   = self._body
+            lyrics_to_write['songs'][-1]['json'] = self._body
         else:
             lyrics_to_write = self.lyrics
 
-        if binary:
+        if binary_encoding:
             lyrics_to_write = lyrics_to_write.encode('utf8')
 
         # Write the lyrics to either a .json or .txt file
         if write_file:
-            with open(filename, 'wb' if binary else 'w') as lyrics_file:
-                if format == 'json':
+            with open(filename, 'wb' if binary_encoding else 'w') as lyrics_file:
+                if format_ == 'json':
                     json.dump(lyrics_to_write, lyrics_file)
                 else:
                     lyrics_file.write(lyrics_to_write)
