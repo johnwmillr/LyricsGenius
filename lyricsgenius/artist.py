@@ -79,12 +79,17 @@ class Artist(object):
 
     # TODO: define an export_to_json() method
 
-    def save_lyrics(self, format='json', filename=None,
-                    overwrite=False, skip_duplicates=True, verbose=True):
+    def save_lyrics(self,
+                    format_='json',
+                    filename=None,
+                    overwrite=False,
+                    skip_duplicates=True,
+                    verbose=True,
+                    binary_encoding=False):
         """Allows user to save all lyrics within an Artist obejct"""
-        if format[0] == '.':
-            format = format[1:]
-        assert (format == 'json') or (format == 'txt'), "Format must be json or txt"
+        if format_[0] == '.':
+            format_ = format_[1:]
+        assert (format_ == 'json') or (format_ == 'txt'), "Format must be json or txt"
 
         # We want to reject songs that have already been added to artist collection
         def songsAreSame(s1, s2):
@@ -105,12 +110,12 @@ class Artist(object):
 
         # Determine the filename
         if filename is None:
-            filename = "Lyrics_{}.{}".format(self.name.replace(" ", ""), format)
+            filename = "Lyrics_{}.{}".format(self.name.replace(" ", ""), format_)
         else:
             if filename.rfind('.') != -1:
-                filename = filename[filename.rfind('.'):] + '.' + format
+                filename = filename[filename.rfind('.'):] + '.' + format_
             else:
-                filename = filename + '.' + format
+                filename = filename + '.' + format_
 
         # Check if file already exists
         write_file = False
@@ -122,8 +127,8 @@ class Artist(object):
             if input("{} already exists. Overwrite?\n(y/n): ".format(filename)).lower() == 'y':
                 write_file = True
 
-        # Format lyrics in either .txt or .json format
-        if format == 'json':
+        # Format lyrics as either .txt or .json
+        if format_ == 'json':
             lyrics_to_write = {'songs': [], 'artist': self.name}
             for song in self.songs:
                 # This takes way too long! It's basically O(n^2), can I do better?
@@ -137,16 +142,20 @@ class Artist(object):
                     lyrics_to_write['songs'][-1]['artist'] = self.name
                     lyrics_to_write['songs'][-1]['raw'] = song._body
                 else:
-                    self._songs_dropped+=1
+                    self._songs_dropped += 1
                     if verbose:
                         print("SKIPPING \"{}\" (already found in artist collection)".format(song.title))
         else:
             lyrics_to_write = " ".join([s.lyrics + 5*'\n' for s in self.songs])
 
+
+        if binary_encoding:
+            lyrics_to_write = lyrics_to_write.encode('utf8')
+
         # Write the lyrics to either a .json or .txt file
         if write_file:
-            with open(filename, 'w') as lyrics_file:
-                if format == 'json':
+            with open(filename, 'wb' if binary_encoding else 'w') as lyrics_file:
+                if format_ == 'json':
                     json.dump(lyrics_to_write, lyrics_file)
                 else:
                     lyrics_file.write(lyrics_to_write)
