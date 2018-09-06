@@ -345,9 +345,8 @@ class Genius(API):
         for n, artist in enumerate(artists):
             if isinstance(artist, Artist):
                 all_lyrics['artists'].append({})
-                tmp_file = "./{dir}/tmp_{num}_{name}".format(dir=tmp_dir,
-                                                             num=(n + tmp_count),
-                                                             name=artist.name.replace(" ", ""))
+                tmp_file = "." + os.sep + tmp_dir + os.sep + "tmp_{num}_{name}".format(num=(n + tmp_count),
+                                                                                       name=artist.name.replace(" ", ""))
                 print(tmp_file)
                 all_lyrics['artists'][-1] = artist.save_lyrics(filename=tmp_file,
                                                                overwrite=True)
