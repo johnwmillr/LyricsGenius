@@ -98,8 +98,8 @@ class TestSong(unittest.TestCase):
         cls.album = 'The Party'
         cls.year = '2016-05-20'
         cls.song = api.search_song(cls.song_title, cls.artist_name)
-        cls.song_trimmed = api.search_song(
-            cls.song_title, cls.artist_name, remove_section_headers=True)
+        api.remove_section_headers = True
+        cls.song_trimmed = api.search_song(cls.song_title, cls.artist_name)
 
     def test_song(self):
         msg = "The returned object is not an instance of the Song class."
