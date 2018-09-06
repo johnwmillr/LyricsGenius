@@ -101,24 +101,26 @@ class Genius(API):
     :param client_access_token: Access token from Genius.com
     """
 
+    # TODO: Make remove_section_headers, remove_non_songs, etc. class variables
+
     def _scrape_song_lyrics_from_url(self, URL, remove_section_headers=False):
         """Use BeautifulSoup to scrape song info off of a Genius song URL"""
+        print(URL)
         page = requests.get(URL)
-        html = BeautifulSoup(page.text, "html.parser")
+        if page.status_code == 404:
+            return None
 
         # Scrape the song lyrics from the HTML
+        html = BeautifulSoup(page.text, "html.parser")
         lyrics = html.find("div", class_="lyrics").get_text()
-        if remove_section_headers:
-            # Remove [Verse] and [Bridge] stuff
+        if remove_section_headers:  # Remove [Verse] and [Bridge] stuff
             lyrics = re.sub('(\[.*?\])*', '', lyrics)
-            # Remove gaps between verses
-            lyrics = re.sub('\n{2}', '\n', lyrics)
+            lyrics = re.sub('\n{2}', '\n', lyrics)  # Gaps between verses
 
         return lyrics.strip('\n')
 
     def _clean_str(self, s):
-        return s.translate(str.maketrans('', '',
-                        punctuation)).replace('\u200b', " ").strip().lower()
+        return s.translate(str.maketrans('', '', punctuation)).replace('\u200b', " ").strip().lower()
 
     def _page_exists(self, URL):
         """Returns False if the given URL is a 404 error or lyrics can't be found on the page"""
@@ -186,13 +188,13 @@ class Genius(API):
                     # Found correct song, accessing API ID
                     json_song = self.get_song(search_hit['id'])
 
-                    # Remove results where the URL returns a 404 or lyrics can't be found
-                    if self._page_exists(json_song['song']['url']):
-                        # Scrape the song's HTML for lyrics
-                        lyrics = self._scrape_song_lyrics_from_url(
-                                json_song['song']['url'], remove_section_headers)
+                    # Scrape the song's HTML for lyrics
+                    lyrics = self._scrape_song_lyrics_from_url(
+                            json_song['song']['url'],
+                            remove_section_headers)
 
-                        # Create the Song object
+                    # Remove results where the URL returns a 404 or lyrics can't be found
+                    if lyrics:
                         song = Song(json_song, lyrics)
 
                         if verbose:
@@ -282,19 +284,13 @@ class Genius(API):
                         json_song['title'] = 'MISSING TITLE'
 
                     # Remove non-song results (e.g. Linear Notes, Tracklists, etc.)
-                    song_is_valid = self._result_is_lyrics(json_song['title']) if remove_non_songs else True
-                    # Remove results where the URL returns a 404 or lyrics can't be found
-                    page_exists = self._page_exists(json_song['url'])
+                    lyrics = self._scrape_song_lyrics_from_url(json_song['url'], remove_section_headers)
+                    song_is_valid = self._result_is_lyrics(json_song['title']) if (lyrics and remove_non_songs) else True
 
-                    if song_is_valid and page_exists:
-                        # Scrape song lyrics from the song's HTML
-                        lyrics = self._scrape_song_lyrics_from_url(json_song['url'], remove_section_headers)
-
-                        # Create song object for current song
+                    if song_is_valid:
                         if get_full_song_info:
                             song = Song(self.get_song(json_song['id']), lyrics)
-                        else:
-                            # Create song with less info (faster)
+                        else:  # Create song with less info (faster)
                             song = Song({'song': json_song}, lyrics)
 
                         # Add song to the Artist object
@@ -305,10 +301,7 @@ class Genius(API):
 
                     else:  # Song does not contain lyrics
                         if verbose:
-                            if not page_exists:
-                                print('Valid URL for "{title}" can not be found. Rejecting.'.format(title=json_song['title']))
-                            else:
-                                print('"{title}" does not contain lyrics. Rejecting.'.format(title=json_song['title']))
+                            print('"{title}" does not contain lyrics. Rejecting.'.format(title=json_song['title']))
 
                     # Check if user specified a max number of songs
                     if not isinstance(max_songs, type(None)):
