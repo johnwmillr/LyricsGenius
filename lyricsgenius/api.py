@@ -24,9 +24,9 @@ class API(object):
     """Genius API"""
 
     # Create a persistent requests connection
-    userAgent = 'LyricsGenius'
     session = requests.Session()
-    session.headers = {'application': userAgent, 'User-Agent': userAgent}
+    session.headers = {'application': 'LyricsGenius',
+                       'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'}
 
     def __init__(self, client_access_token,
                  response_format='plain', timeout=5, sleep_time=0.5):
@@ -138,10 +138,20 @@ class Genius(API):
     def _clean_str(self, s):
         return s.translate(str.maketrans('', '', punctuation)).replace('\u200b', " ").strip().lower()
 
-    def _result_is_lyrics(self, song_title):
+    def _result_is_lyrics(self, song_title, extra_terms=[]):
         """Returns False if result from Genius is not actually song lyrics"""
-        regex = re.compile(
-            r"(tracklist)|(track list)|(album art(work)?)|(liner notes)|(booklet)|(credits)|(remix)|(interview)|(skit)", re.IGNORECASE)
+
+        excluded_terms = ['track\\s?list', 'album art(work)?', 'liner notes',
+                          'booklet', 'credits', 'interview',
+                          'skit', 'instrumental']
+        if extra_terms:
+            if isinstance(extra_terms, list):
+                excluded_terms.extend(extra_terms)
+            else:
+                excluded_terms.append(extra_terms)
+
+        expression = r"".join(["({})|".format(term) for term in excluded_terms]).strip('|')
+        regex = re.compile(expression, re.IGNORECASE)
         return not regex.search(song_title)
 
     def search_song(self, song_title, artist_name=""):

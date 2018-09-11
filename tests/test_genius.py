@@ -134,6 +134,10 @@ class TestSong(unittest.TestCase):
         msg = "The returned song does not have a media attribute."
         self.assertTrue(hasattr(self.song, 'media'), msg)
 
+    def test_result_is_lyrics(self):
+        msg = "Did not reject a false-song."
+        self.assertFalse(api._result_is_lyrics('Beatles Tracklist'), msg)
+
     def test_saving_json_file(self):
         print('\n')
         format_ = 'json'
