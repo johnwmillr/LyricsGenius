@@ -105,13 +105,17 @@ class Genius(API):
                  verbose=True,
                  remove_section_headers=False,
                  skip_non_songs=True,
-                 take_first_result=False):
+                 take_first_result=False,
+                 excluded_terms=[],
+                 replace_default_terms=False):
         """ Genius Client Constructor
 
         :param verbose: Turn printed messages on or off (bool)
         :param remove_section_headers: If True, removes [Chorus], [Bridge], etc. headers from lyrics
         :param skip_non_songs: If True, attempts to skip non-songs (e.g. track listings)
         :param take_first_result: Force searches to choose first result
+        :param excluded_terms: (list) extra terms for flagging results as non-lyrics
+        :param replace_default_terms: if True, replaces default excluded terms with user's
         """
 
         super().__init__(client_access_token, response_format, timeout, sleep_time)
@@ -119,6 +123,8 @@ class Genius(API):
         self.remove_section_headers = remove_section_headers
         self.skip_non_songs = skip_non_songs
         self.take_first_result = take_first_result
+        self.excluded_terms = excluded_terms
+        self.replace_default_terms = replace_default_terms
 
     def _scrape_song_lyrics_from_url(self, url):
         """Use BeautifulSoup to scrape song info off of a Genius song url"""
@@ -138,25 +144,23 @@ class Genius(API):
     def _clean_str(self, s):
         return s.translate(str.maketrans('', '', punctuation)).replace('\u200b', " ").strip().lower()
 
-    def _result_is_lyrics(self, song_title, extra_terms=[],
-                          replace_defaults=False):
+    def _result_is_lyrics(self, song_title):
         """Returns False if result from Genius is not actually song lyrics
-
-        :param song_title: title of the song, used to check for non-lyrics
-        :param extra_terms: (list) extra terms for flagging non-lyrics
-        :param replace_defaults: if True, replaces default terms with user's
+            Set the `excluded_terms` and `replace_default_terms` as
+            instance variables within the Genius class.
         """
 
-        excluded_terms = ['track\\s?list', 'album art(work)?', 'liner notes',
-                          'booklet', 'credits', 'interview', 'skit',
-                          'instrumental']
-        if extra_terms:
-            if replace_defaults:
-                excluded_terms = extra_terms
+        default_terms = ['track\\s?list', 'album art(work)?', 'liner notes',
+                         'booklet', 'credits', 'interview', 'skit',
+                         'instrumental']
+        if self.excluded_terms:
+            if self.replace_default_terms:
+                default_terms = self.excluded_terms
             else:
-                excluded_terms.extend(extra_terms)
+                default_terms.extend(self.excluded_terms)
 
-        expression = r"".join(["({})|".format(term) for term in excluded_terms]).strip('|')
+        expression = r"".join(["({})|".format(term) for term in default_terms]).strip('|')
+        print(expression)
         regex = re.compile(expression, re.IGNORECASE)
         return not regex.search(song_title)
 
