@@ -140,7 +140,12 @@ class Genius(API):
 
     def _result_is_lyrics(self, song_title, extra_terms=[],
                           replace_defaults=False):
-        """Returns False if result from Genius is not actually song lyrics"""
+        """Returns False if result from Genius is not actually song lyrics
+
+        :param song_title: title of the song, used to check for non-lyrics
+        :param extra_terms: (list) extra terms for flagging non-lyrics
+        :param replace_defaults: if True, replaces default terms with user's
+        """
 
         excluded_terms = ['track\\s?list', 'album art(work)?', 'liner notes',
                           'booklet', 'credits', 'interview', 'skit',
@@ -149,7 +154,7 @@ class Genius(API):
             if replace_defaults:
                 excluded_terms = extra_terms
             else:
-                excluded_terms.extend(extra_terms if isinstance(extra_terms, list) else [extra_terms])
+                excluded_terms.extend(extra_terms)
 
         expression = r"".join(["({})|".format(term) for term in excluded_terms]).strip('|')
         regex = re.compile(expression, re.IGNORECASE)
