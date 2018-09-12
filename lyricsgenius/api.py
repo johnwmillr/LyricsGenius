@@ -138,17 +138,18 @@ class Genius(API):
     def _clean_str(self, s):
         return s.translate(str.maketrans('', '', punctuation)).replace('\u200b', " ").strip().lower()
 
-    def _result_is_lyrics(self, song_title, extra_terms=[]):
+    def _result_is_lyrics(self, song_title, extra_terms=[],
+                          replace_defaults=False):
         """Returns False if result from Genius is not actually song lyrics"""
 
         excluded_terms = ['track\\s?list', 'album art(work)?', 'liner notes',
-                          'booklet', 'credits', 'interview',
-                          'skit', 'instrumental']
+                          'booklet', 'credits', 'interview', 'skit',
+                          'instrumental']
         if extra_terms:
-            if isinstance(extra_terms, list):
-                excluded_terms.extend(extra_terms)
+            if replace_defaults:
+                excluded_terms = extra_terms
             else:
-                excluded_terms.append(extra_terms)
+                excluded_terms.extend(extra_terms if isinstance(extra_terms, list) else [extra_terms])
 
         expression = r"".join(["({})|".format(term) for term in excluded_terms]).strip('|')
         regex = re.compile(expression, re.IGNORECASE)
