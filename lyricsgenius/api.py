@@ -125,7 +125,7 @@ class Genius(API):
         self.take_first_result = take_first_result
         self.excluded_terms = excluded_terms
         self.replace_default_terms = replace_default_terms
-        
+
     def _scrape_song_lyrics_from_url(self, URL):
         """Use BeautifulSoup to scrape song info off of a Genius song URL"""
         page = requests.get(URL)
@@ -160,7 +160,6 @@ class Genius(API):
                 default_terms.extend(self.excluded_terms)
 
         expression = r"".join(["({})|".format(term) for term in default_terms]).strip('|')
-        print(expression)
         regex = re.compile(expression, re.IGNORECASE)
         return not regex.search(song_title)
 
@@ -169,7 +168,7 @@ class Genius(API):
 
         :param song_title: Song title to search for
         :param artist_name: Name of the artist (optional)
-        
+
         # TODO: Should search_song() be a @classmethod?
         """
 
@@ -211,11 +210,11 @@ class Genius(API):
                     # Remove results where the URL returns a 404 or lyrics can't be found
                     if lyrics:
                         song = Song(json_song, lyrics)
-                        if verbose:
+                        if self.verbose:
                             print('Done.')
                         return song
                     else:
-                        if verbose:
+                        if self.verbose:
                             print('Specified song does not have a valid URL with lyrics. Rejecting.')
                         return None
                 else:
@@ -289,8 +288,8 @@ class Genius(API):
                         json_song['title'] = 'MISSING TITLE'
 
                     # Remove non-song results (e.g. Linear Notes, Tracklists, etc.)
-                    lyrics = self._scrape_song_lyrics_from_url(json_song['url'], remove_section_headers)
-                    song_is_valid = self._result_is_lyrics(json_song['title']) if (lyrics and remove_non_songs) else True
+                    lyrics = self._scrape_song_lyrics_from_url(json_song['url'])
+                    song_is_valid = self._result_is_lyrics(json_song['title']) if (lyrics and self.skip_non_songs) else True
 
                     if song_is_valid:
                         if get_full_song_info:
