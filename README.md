@@ -66,6 +66,7 @@ $python3 -m lyricsgenius --search-artist 'Lupe Fiasco' 3
   - [Textual analysis of popular country music](http://www.johnwmillr.com/trucks-and-beer/)
   - [What makes some blink-182 songs more popular than others?](http://jdaytn.com/posts/download-blink-182-data/)
   - [Words per song for rap, rock, and country music](https://www.reddit.com/r/dataisbeautiful/comments/8j1r7b/words_per_song_for_rap_rock_and_country_music_oc/)
+  - [Sentiment analysis on hip-hop lyrics](https://github.com/Hugo-Nattagh/2017-Hip-Hop)
 
   I'd love to have more examples to list here! Let me know if you've made use of this wrapper for one of your own projects, and I'll list it here.
 
