@@ -9,6 +9,7 @@ API documentation: https://docs.genius.com/
 import os
 import re
 import requests
+import shutil
 import socket
 import json
 from bs4 import BeautifulSoup
@@ -373,6 +374,9 @@ class Genius(API):
         # Save all of the lyrics
         with open(filename + '.json', 'w') as outfile:
             json.dump(all_lyrics, outfile)
+
+        # Delete the temporary directory
+        shutil.rmtree(tmp_dir)
 
         end = time.time()
         print("Time elapsed: {} hours".format((end-start)/60.0/60.0))
