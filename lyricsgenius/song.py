@@ -115,7 +115,7 @@ class Song(object):
         if filename is None:
             filename = "Lyrics_{}.{}".format(self.artist.replace(" ",""), format_)
         else:
-            filename = filename.split('.')[0] + '.' + format_
+            filename += '.' + format_
 
         # Check if file already exists
         write_file = False
