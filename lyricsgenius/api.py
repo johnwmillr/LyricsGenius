@@ -25,9 +25,9 @@ class API(object):
     """Genius API"""
 
     # Create a persistent requests connection
-    session = requests.Session()
-    session.headers = {'application': 'LyricsGenius',
-                       'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'}
+    _session = requests.Session()
+    _session.headers = {'application': 'LyricsGenius',
+       'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'}
 
     def __init__(self, client_access_token,
                  response_format='plain', timeout=5, sleep_time=0.5):
@@ -39,9 +39,9 @@ class API(object):
         :param sleep_time: time to wait between requests
         """
 
-        self.ACCESS_TOKEN = client_access_token
-        self.session.headers['authorization'] = 'Bearer ' + self.ACCESS_TOKEN
-        self.FORMAT = response_format.lower()
+        self._ACCESS_TOKEN = client_access_token
+        self._session.headers['authorization'] = 'Bearer ' + self._ACCESS_TOKEN
+        self.response_format = response_format.lower()
         self.api_root = 'https://api.genius.com/'
         self.timeout = timeout
         self.sleep_time = sleep_time
@@ -51,19 +51,18 @@ class API(object):
 
         uri = self.api_root + path
         if params_:
-            params_['text_format'] = self.FORMAT
+            params_['text_format'] = self.response_format
         else:
-            params_ = {'text_format': self.FORMAT}
+            params_ = {'text_format': self.response_format}
 
         # Make the request
         try:
-            response = self.session.request(method, uri,
+            response = self._session.request(method, uri,
                                             timeout=self.timeout,
                                             params=params_)
         except socket.timeout as e:
             print("Timeout raised and caught: {}".format(e))
 
-        assert response.status_code == 200, "API response is not 200: {r}".format(r=response.reason)
         time.sleep(self.sleep_time)
         return response.json()['response']
 
@@ -98,17 +97,11 @@ class API(object):
 class Genius(API):
     """User-level interface with the Genius.com API."""
 
-    def __init__(self,
-                 client_access_token,
-                 response_format='plain',
-                 timeout=5,
-                 sleep_time=0.5,
-                 verbose=True,
-                 remove_section_headers=False,
-                 skip_non_songs=True,
-                 take_first_result=False,
-                 excluded_terms=[],
-                 replace_default_terms=False):
+    def __init__(self, client_access_token,
+                 response_format='plain', timeout=5, sleep_time=0.5,
+                 verbose=True, remove_section_headers=False,
+                 skip_non_songs=True, take_first_result=False,
+                 excluded_terms=[], replace_default_terms=False):
         """ Genius Client Constructor
 
         :param verbose: Turn printed messages on or off (bool)
