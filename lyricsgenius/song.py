@@ -110,12 +110,11 @@ class Song(object):
         format_ = format_.lstrip(".")
         assert (format_ == 'json') or (format_ == 'txt'), "format_ must be JSON or TXT"
 
-        # Remove format suffix if supplied by user
-        for ext in ["txt", "TXT", "json", "JSON"]:
-            filename = filename.replace("." + ext, "")
-
         # Determine the filename
         if filename:
+            # Remove format suffix if supplied by user
+            for ext in ["txt", "TXT", "json", "JSON"]:
+                filename = filename.replace("." + ext, "")
             filename += "." + format_
         else:
             filename = "Lyrics_{}.{}".format(self.artist.replace(" ", ""), format_)

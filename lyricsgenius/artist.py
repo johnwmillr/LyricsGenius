@@ -90,10 +90,6 @@ class Artist(object):
         format_ = format_.lstrip(".")
         assert (format_ == 'json') or (format_ == 'txt'), "format_ must be JSON or TXT"
 
-        # Remove format suffix if supplied by user
-        for ext in ["txt", "TXT", "json", "JSON"]:
-            filename = filename.replace("." + ext, "")
-
         # We want to reject songs that have already been added to artist collection
         def songsAreSame(s1, s2):
             from difflib import SequenceMatcher as sm
@@ -113,6 +109,9 @@ class Artist(object):
 
         # Determine the filename
         if filename:
+            # Remove format suffix if supplied by user
+            for ext in ["txt", "TXT", "json", "JSON"]:
+                filename = filename.replace("." + ext, "")
             filename += "." + format_
         else:
             filename = "Lyrics_{}.{}".format(self.artist.replace(" ", ""), format_)
