@@ -87,9 +87,8 @@ class Artist(object):
                     verbose=True,
                     binary_encoding=False):
         """Allows user to save all lyrics within an Artist obejct"""
-        if format_[0] == '.':
-            format_ = format_[1:]
-        assert (format_ == 'json') or (format_ == 'txt'), "Format must be json or txt"
+        format_ = format_.lstrip(".")
+        assert (format_ == 'json') or (format_ == 'txt'), "format_ must be JSON or TXT"
 
         # We want to reject songs that have already been added to artist collection
         def songsAreSame(s1, s2):
@@ -109,13 +108,13 @@ class Artist(object):
             return False
 
         # Determine the filename
-        if filename is None:
-            filename = "Lyrics_{}.{}".format(self.name.replace(" ", ""), format_)
+        if filename:
+            # Remove format suffix if supplied by user
+            for ext in ["txt", "TXT", "json", "JSON"]:
+                filename = filename.replace("." + ext, "")
+            filename += "." + format_
         else:
-            if filename.rfind('.') != -1:
-                filename = filename[filename.rfind('.'):] + '.' + format_
-            else:
-                filename = filename + '.' + format_
+            filename = "Lyrics_{}.{}".format(self.artist.replace(" ", ""), format_)
 
         # Check if file already exists
         write_file = False
