@@ -107,15 +107,18 @@ class Song(object):
                     binary_encoding=False):
         # TODO: way too much repeated code between this and the Artist.save_lyrics method
         """Allows user to save song lyrics from Song obejct to a .json or .txt file."""
-        if format_[0] == '.':
-            format_ = format_[1:]
-        assert (format_ == 'json') or (format_ == 'txt'), "Format_ must be json or txt"
+        format_ = format_.lstrip(".")
+        assert (format_ == 'json') or (format_ == 'txt'), "format_ must be JSON or TXT"
+
+        # Remove format suffix if supplied by user
+        for ext in ["txt", "TXT", "json", "JSON"]:
+            filename = filename.replace("." + ext, "")
 
         # Determine the filename
-        if filename is None:
-            filename = "Lyrics_{}.{}".format(self.artist.replace(" ",""), format_)
+        if filename:
+            filename += "." + format_
         else:
-            filename += '.' + format_
+            filename = "Lyrics_{}.{}".format(self.artist.replace(" ", ""), format_)
 
         # Check if file already exists
         write_file = False
