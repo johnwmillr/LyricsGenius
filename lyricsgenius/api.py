@@ -9,8 +9,8 @@ API documentation: https://docs.genius.com/
 import os
 import re
 import requests
+from requests.exceptions import Timeout
 import shutil
-import socket
 import json
 from bs4 import BeautifulSoup
 from string import punctuation
@@ -56,15 +56,18 @@ class API(object):
             params_ = {'text_format': self.response_format}
 
         # Make the request
+        response = None
         try:
             response = self._session.request(method, uri,
                                             timeout=self.timeout,
                                             params=params_)
-        except socket.timeout as e:
-            print("Timeout raised and caught: {}".format(e))
 
+        except Timeout as e:
+            print(f"Timeout raised and caught:\n{e}")
+
+        # Enforce rate limiting
         time.sleep(self.sleep_time)
-        return response.json()['response']
+        return response.json()['response'] if response else None
 
     def get_song(self, id_):
         """Data for a specific song."""
@@ -174,47 +177,47 @@ class Genius(API):
             else:
                 print('Searching for "{0}"...'.format(song_title))
         search_term = "{} {}".format(song_title, artist_name)
+        search_results = self.search_genius(search_term)
 
-        json_search = self.search_genius(search_term)
+        if search_results:
+            # Loop through search results
+            # Stop as soon as title and artist of result match request
+            n_hits = min(10, len(search_results['hits']))
+            for i in range(n_hits):
+                search_hit = search_results['hits'][i]['result']
+                found_song = self._clean_str(search_hit['title'])
+                found_artist = self._clean_str(
+                    search_hit['primary_artist']['name'])
 
-        # Loop through search results
-        # Stop as soon as title and artist of result match request
-        n_hits = min(10, len(json_search['hits']))
-        for i in range(n_hits):
-            search_hit = json_search['hits'][i]['result']
-            found_song = self._clean_str(search_hit['title'])
-            found_artist = self._clean_str(
-                search_hit['primary_artist']['name'])
+                # Download song if title and artist match search request
+                if (self.take_first_result or
+                    found_song == self._clean_str(song_title) and
+                    found_artist == self._clean_str(artist_name) or
+                    artist_name == ""):
 
-            # Download song if title and artist match search request
-            if (self.take_first_result or
-                found_song == self._clean_str(song_title) and
-                found_artist == self._clean_str(artist_name) or
-                artist_name == ""):
+                    # Remove non-song results (e.g. Linear Notes, Tracklists, etc.)
+                    song_is_valid = self._result_is_lyrics(found_song) if self.skip_non_songs else True
+                    if song_is_valid:
+                        # Found correct song, accessing API ID
+                        json_song = self.get_song(search_hit['id'])
 
-                # Remove non-song results (e.g. Linear Notes, Tracklists, etc.)
-                song_is_valid = self._result_is_lyrics(found_song) if self.skip_non_songs else True
-                if song_is_valid:
-                    # Found correct song, accessing API ID
-                    json_song = self.get_song(search_hit['id'])
+                        # Scrape the song's HTML for lyrics
+                        lyrics = self._scrape_song_lyrics_from_url(json_song['song']['url'])
 
-                    # Scrape the song's HTML for lyrics
-                    lyrics = self._scrape_song_lyrics_from_url(json_song['song']['url'])
-
-                    # Remove results where the URL returns a 404 or lyrics can't be found
-                    if lyrics:
-                        song = Song(json_song, lyrics)
-                        if self.verbose:
-                            print('Done.')
-                        return song
+                        # Remove results where the URL returns a 404 or lyrics can't be found
+                        if lyrics:
+                            song = Song(json_song, lyrics)
+                            if self.verbose:
+                                print('Done.')
+                            return song
+                        else:
+                            if self.verbose:
+                                print('Specified song does not have a valid URL with lyrics. Rejecting.')
+                            return None
                     else:
                         if self.verbose:
-                            print('Specified song does not have a valid URL with lyrics. Rejecting.')
+                            print('Specified song does not contain lyrics. Rejecting.')
                         return None
-                else:
-                    if self.verbose:
-                        print('Specified song does not contain lyrics. Rejecting.')
-                    return None
 
         if self.verbose:
             print('Specified song was not first result')
@@ -232,9 +235,9 @@ class Genius(API):
             print('Searching for songs by {0}...\n'.format(artist_name))
 
         # Perform a Genius API search for the artist
-        json_search = self.search_genius(artist_name)
+        search_results = self.search_genius(artist_name)
         first_result, artist_id = None, None
-        for hit in json_search['hits']:
+        for hit in search_results['hits']:
             found_artist = hit['result']['primary_artist']
             if first_result is None:
                 first_result = found_artist
