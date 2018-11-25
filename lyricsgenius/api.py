@@ -135,7 +135,6 @@ class Genius(API):
         if self.remove_section_headers:  # Remove [Verse], [Bridge], etc.
             lyrics = re.sub('(\[.*?\])*', '', lyrics)
             lyrics = re.sub('\n{2}', '\n', lyrics)  # Gaps between verses
-
         return lyrics.strip('\n')
 
     def _clean_str(self, s):
@@ -161,7 +160,7 @@ class Genius(API):
 
         expression = r"".join(["({})|".format(term) for term in default_terms]).strip('|')
         regex = re.compile(expression, re.IGNORECASE)
-        return not regex.search(song_title)
+        return not regex.search(self._clean_str(song_title))
 
     def search_song(self, title, artist="",
                     get_full_info=True, take_first_result=False):
@@ -172,14 +171,14 @@ class Genius(API):
         :param take_first_result: Force search to choose first result
         """
 
-        def resultIsAMatch(title, result_title, artist=None, result_artist=None):
+        def resultIsAMatch(result, title, artist=None):
+            """ Returns True if search result matches searched song """
+            result_title = self._clean_str(result['title'])
             title_is_match = result_title == self._clean_str(title)
-            if artist and result_artist:
-                return title_is_match and result_artist == self._clean_str(artist)
-            return title_is_match
-
-        # Take first result in search if artist wasn't supplied
-        take_first_result = True if artist == "" else take_first_result
+            if not artist:
+                return title_is_match
+            result_artist = self._clean_str(result['primary_artist']['name'])
+            return title_is_match and result_artist == self._clean_str(artist)
 
         # Search the Genius API for the specified song
         if self.verbose:
@@ -188,47 +187,55 @@ class Genius(API):
             else:
                 print('Searching for "{s}"...'.format(s=title))
         search_term = "{s} {a}".format(s=title, a=artist).strip()
-        search_results = self.search_genius(search_term)
+        response = self.search_genius(search_term)
 
-        if search_results or len(search_results['hits']):
-            results = [r['result'] for r in search_results['hits'] if r['type'] == 'song']
-            for result in results:
-                result_title = self._clean_str(result['title'])
-                result_artist = self._clean_str(result['primary_artist']['name'])
+        # Exit search if there were no results returned from API
+        if (response is None) or (len(response['hits']) == 0):
+            if self.verbose:
+                print("No results found for: '{s}'".format(s=search_term))
+            return None
 
-                # Download full song info if title and artist match request
-                if take_first_result or resultIsAMatch(title, result_title, artist, result_artist):
-                    # Remove non-song results (Liner Notes, Tracklists, etc.)
-                    if self.skip_non_songs:
-                        song_is_valid = self._result_is_lyrics(result_title)
-                    else:
-                        song_is_valid = True
+        # Always take first search result if user didn't specify an artist
+        take_first_result = True if artist == "" else take_first_result
 
-                    # Proceed if song is valid (contains lyrics)
-                    if song_is_valid:
-                        if get_full_info:
-                            song_info = self.get_song(result['id'])['song']
-                        else:
-                            song_info = result
-                        lyrics = self._scrape_song_lyrics_from_url(song_info['url'])
+        # Loop through the API search results, looking for desired song
+        results = [r['result'] for r in response['hits'] if r['type'] == 'song']
+        for result in results:
+            # Skip to next search result if current result is not a match
+            if not (take_first_result or resultIsAMatch(result, title, artist)):
+                continue
 
-                        # Skip results when URL 404s or lyrics are missing
-                        if lyrics:
-                            song = Song(song_info, lyrics)
-                            if self.verbose:
-                                print('Done.')
-                            return song
-                        else:
-                            if self.verbose:
-                                print('Specified song does not have a valid URL with lyrics. Rejecting.')
-                            return None
-                    else:
-                        if self.verbose:
-                            print('Specified song does not contain lyrics. Rejecting.')
-                        return None
+            # Reject non-songs (Liner notes, track lists, etc.)
+            if self.skip_non_songs:
+                song_is_valid = self._result_is_lyrics(result['title'])
+            else:
+                song_is_valid = True
+            if not song_is_valid:
+                if self.verbose:
+                    print('Specified song does not contain lyrics. Rejecting.')
+                return None
+
+            # Download full song info (an API call) unless told not to by user
+            if get_full_info:
+                song_info = self.get_song(result['id'])['song']
+            else:
+                song_info = result
+            lyrics = self._scrape_song_lyrics_from_url(song_info['url'])
+
+            # Skip results when URL is a 404 or lyrics are missing
+            if not lyrics:
+                if self.verbose:
+                    print('Specified song does not have a valid URL with lyrics. Rejecting.')
+                return None
+
+            # Return a Song object with lyrics if we've made it this far
+            song = Song(song_info, lyrics)
+            if self.verbose:
+                print('Done.')
+            return song
 
         if self.verbose:
-            print('Specified song was not first result')
+            print("Could not find specified song.")
         return None
 
     def search_artist(self, artist_name, max_songs=None,
@@ -245,9 +252,9 @@ class Genius(API):
             print('Searching for songs by {0}...\n'.format(artist_name))
 
         # Perform a Genius API search for the artist
-        search_results = self.search_genius(artist_name)
+        response = self.search_genius(artist_name)
         first_result, artist_id = None, None
-        for hit in search_results['hits']:
+        for hit in response['hits']:
             found_artist = hit['result']['primary_artist']
             if first_result is None:
                 first_result = found_artist
@@ -281,13 +288,13 @@ class Genius(API):
 
         if max_songs is None or max_songs > 0:
             # Access the api_path found by searching
-            artist_search_results = self.get_artist_songs(artist_id)
+            artist_response = self.get_artist_songs(artist_id)
 
             # Download each song by artist, store as Song objects in Artist object
             keep_searching = True
             next_page, n = 0, 0
             while keep_searching:
-                for song_info in artist_search_results['songs']:
+                for song_info in artist_response['songs']:
                     # TODO: Shouldn't I use self.search_song() here?
 
                     # Songs must have a title
@@ -323,11 +330,11 @@ class Genius(API):
                             break
 
                 # Move on to next page of search results
-                next_page = artist_search_results['next_page']
+                next_page = artist_response['next_page']
                 if next_page is None:
                     break
                 else:  # Get next page of artist song results
-                    artist_search_results = self.get_artist_songs(artist_id, page=next_page)
+                    artist_response = self.get_artist_songs(artist_id, page=next_page)
 
             if self.verbose:
                 print('Found {n_songs} songs.'.format(n_songs=artist.num_songs))
