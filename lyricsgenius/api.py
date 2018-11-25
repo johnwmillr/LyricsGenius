@@ -103,14 +103,13 @@ class Genius(API):
     def __init__(self, client_access_token,
                  response_format='plain', timeout=5, sleep_time=0.5,
                  verbose=True, remove_section_headers=False,
-                 skip_non_songs=True, take_first_result=False,
-                 excluded_terms=[], replace_default_terms=False):
+                 skip_non_songs=True, excluded_terms=[],
+                 replace_default_terms=False):
         """ Genius Client Constructor
 
         :param verbose: Turn printed messages on or off (bool)
         :param remove_section_headers: If True, removes [Chorus], [Bridge], etc. headers from lyrics
         :param skip_non_songs: If True, attempts to skip non-songs (e.g. track listings)
-        :param take_first_result: Force searches to choose first result
         :param excluded_terms: (list) extra terms for flagging results as non-lyrics
         :param replace_default_terms: if True, replaces default excluded terms with user's
         """
@@ -119,7 +118,6 @@ class Genius(API):
         self.verbose = verbose
         self.remove_section_headers = remove_section_headers
         self.skip_non_songs = skip_non_songs
-        self.take_first_result = take_first_result
         self.excluded_terms = excluded_terms
         self.replace_default_terms = replace_default_terms
 
@@ -165,11 +163,13 @@ class Genius(API):
         regex = re.compile(expression, re.IGNORECASE)
         return not regex.search(song_title)
 
-    def search_song(self, title, artist="", get_full_info=True):
+    def search_song(self, title, artist="",
+                    get_full_info=True, take_first_result=False):
         """ Search Genius.com for lyrics to a specific song
         :param title: Song title to search for
         :param artist: Name of the artist
         :param get_full_info: Get full info for each song (slower)
+        :param take_first_result: Force search to choose first result
         """
 
         def resultIsAMatch(title, result_title, artist=None, result_artist=None):
@@ -177,6 +177,9 @@ class Genius(API):
             if artist and result_artist:
                 return title_is_match and result_artist == self._clean_str(artist)
             return title_is_match
+
+        # Take first result in search if artist wasn't supplied
+        take_first_result = True if artist == "" else take_first_result
 
         # Search the Genius API for the specified song
         if self.verbose:
@@ -194,9 +197,7 @@ class Genius(API):
                 result_artist = self._clean_str(result['primary_artist']['name'])
 
                 # Download full song info if title and artist match request
-                if (resultIsAMatch(title, result_title, artist, result_artist) or
-                    self.take_first_result or artist is None):
-
+                if take_first_result or resultIsAMatch(title, result_title, artist, result_artist):
                     # Remove non-song results (Liner Notes, Tracklists, etc.)
                     if self.skip_non_songs:
                         song_is_valid = self._result_is_lyrics(result_title)
@@ -230,12 +231,14 @@ class Genius(API):
             print('Specified song was not first result')
         return None
 
-    def search_artist(self, artist_name, max_songs=None, get_full_info=True):
+    def search_artist(self, artist_name, max_songs=None,
+                      get_full_info=True, take_first_result=False):
         """Search Genius.com for songs by the specified artist.
         Returns an Artist object containing artist's songs.
         :param artist_name: Name of the artist to search for
         :param max_songs: Maximum number of songs to search for
         :param get_full_info: Get full info for each song (slower)
+        :param take_first_result: Force search to choose first result
         """
 
         if self.verbose:
@@ -249,7 +252,7 @@ class Genius(API):
             if first_result is None:
                 first_result = found_artist
             artist_id = found_artist['id']
-            if (self.take_first_result or
+            if (take_first_result or
                 self._clean_str(found_artist['name'].lower()) ==
                 self._clean_str(artist_name.lower())):
                 # Break out if desired artist is found
