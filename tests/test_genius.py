@@ -7,7 +7,7 @@ from lyricsgenius.artist import Artist
 # Import client access token from environment variable
 client_access_token = os.environ.get("GENIUS_CLIENT_ACCESS_TOKEN", None)
 assert client_access_token is not None, "Must declare environment variable: GENIUS_CLIENT_ACCESS_TOKEN"
-api = lyricsgenius.Genius(client_access_token, sleep_time=1)
+api = lyricsgenius.Genius(client_access_token, sleep_time=0.5)
 
 
 class TestEndpoints(unittest.TestCase):
@@ -19,9 +19,9 @@ class TestEndpoints(unittest.TestCase):
 
     def test_search_genius_web(self):
         # TODO: test more than just a 200 response
-        msg = "Response was not 200."
+        msg = "Response was None."
         r = api.search_genius_web(self.search_term)
-        self.assertEqual(r.status_code, 200, msg)
+        self.assertTrue(r is not None, msg)
 
 
 class TestArtist(unittest.TestCase):
