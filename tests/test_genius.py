@@ -10,6 +10,20 @@ assert client_access_token is not None, "Must declare environment variable: GENI
 api = lyricsgenius.Genius(client_access_token, sleep_time=1)
 
 
+class TestEndpoints(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        print("\n---------------------\nSetting up Endpoint tests...\n")
+        cls.search_term = "Ezra Furman"
+
+    def test_search_genius_web(self):
+        # TODO: test more than just a 200 response
+        msg = "Response was not 200."
+        r = api.search_genius_web(self.search_term)
+        self.assertEqual(r.status_code, 200, msg)
+
+
 class TestArtist(unittest.TestCase):
 
     @classmethod
