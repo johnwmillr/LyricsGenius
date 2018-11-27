@@ -10,6 +10,7 @@ import os
 import re
 import requests
 from requests.exceptions import Timeout
+from urllib.parse import urlencode
 import shutil
 import json
 from bs4 import BeautifulSoup
@@ -90,6 +91,16 @@ class API(object):
         endpoint = "search/"
         params = {'q': search_term}
         return self._make_request(endpoint, params_=params)
+
+    def search_genius_web(self, search_term, per_page=5):
+        """Use the web-version of Genius search"""
+        endpoint = "search/multi?"
+        params = {'per_page': per_page, 'q': search_term}
+
+        # This endpoint is not part of the API, requires different formatting
+        root = "https://genius.com/api/"
+        url = root + endpoint + urlencode(params)
+        return self._session.get(url)
 
     def get_annotation(self, id_):
         """Data for a specific annotation."""
