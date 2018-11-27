@@ -162,6 +162,15 @@ class Genius(API):
         regex = re.compile(expression, re.IGNORECASE)
         return not regex.search(self._clean_str(song_title))
 
+    def resultIsAMatch(self, result, title, artist=None):
+        """ Returns True if search result matches searched song """
+        result_title = self._clean_str(result['title'])
+        title_is_match = result_title == self._clean_str(title)
+        if not artist:
+            return title_is_match
+        result_artist = self._clean_str(result['primary_artist']['name'])
+        return title_is_match and result_artist == self._clean_str(artist)
+
     def search_song(self, title, artist="",
                     get_full_info=True, take_first_result=False):
         """ Search Genius.com for lyrics to a specific song
@@ -170,15 +179,6 @@ class Genius(API):
         :param get_full_info: Get full info for each song (slower)
         :param take_first_result: Force search to choose first result
         """
-
-        def resultIsAMatch(result, title, artist=None):
-            """ Returns True if search result matches searched song """
-            result_title = self._clean_str(result['title'])
-            title_is_match = result_title == self._clean_str(title)
-            if not artist:
-                return title_is_match
-            result_artist = self._clean_str(result['primary_artist']['name'])
-            return title_is_match and result_artist == self._clean_str(artist)
 
         # Search the Genius API for the specified song
         if self.verbose:
@@ -202,7 +202,7 @@ class Genius(API):
         results = [r['result'] for r in response['hits'] if r['type'] == 'song']
         for result in results:
             # Skip to next search result if current result is not a match
-            if not (take_first_result or resultIsAMatch(result, title, artist)):
+            if not (take_first_result or self.resultIsAMatch(result, title, artist)):
                 continue
 
             # Reject non-songs (Liner notes, track lists, etc.)
@@ -253,6 +253,10 @@ class Genius(API):
 
         # Perform a Genius API search for the artist
         response = self.search_genius(artist_name)
+        # results = [r['result'] for r in response['hits'] if r['type'] == 'song']
+        # # Loop through the API search results, searching for songs by artist
+        # for result in results:
+
         first_result, artist_id = None, None
         for hit in response['hits']:
             found_artist = hit['result']['primary_artist']
