@@ -277,27 +277,26 @@ class Genius(API):
                 print("No results found for '{a}'.".format(a=artist_name))
             return None
 
-        # Asume the top search result is the intended artist
+        # Assume the top search result is the intended artist
         found_artist = top_artists[0]['result']
         artist_id = found_artist['id']
         artist_info = self.get_artist(artist_id)
-        if artist_info['artist']['name'] != artist_name:
-            artist_name = artist_info['artist']['name']
+        found_name = artist_info['artist']['name']
+        if found_name != artist_name:
             if self.verbose:
-                print("Changing artist name to '{a}'".format(a=artist_name))
+                print("Changing artist name to '{a}'".format(a=found_name))
+            artist_name = found_name
 
         # Create the Artist object
         artist = Artist(artist_info)
-        artist_songs = self.get_artist_songs(artist_id)
 
         # Download each song by artist, stored as Song objects in Artist object
-        num_songs = 0
-        next_page = 1
-        while (not max_songs) or (artist.num_songs < max_songs):
-            # Loop through each song on page of search results,
-            # potentially adding each song to the Artist object
-            songs_on_page = self.get_artist_songs(id_=artist_id, sort=sort,
-                                                  per_page=per_page, page=next_page)
+        page = 1
+        reached_max_songs = False
+        while not reached_max_songs:
+            songs_on_page = self.get_artist_songs(artist_id, sort, per_page, page)
+
+            # Loop through each song on page of search results
             for song_info in songs_on_page['songs']:
                 # Check if song is valid (e.g. has title, contains lyrics)
                 has_title = ('title' in song_info)
@@ -309,31 +308,32 @@ class Genius(API):
                     if self.verbose:
                         s = song_info['title'] if has_title else "MISSING TITLE"
                         print('"{s}" is not valid. Skipping.'.format(s=s))
-                    num_songs += 1
                     continue
 
                 # Create the Song object from lyrics and metadata
                 lyrics = self._scrape_song_lyrics_from_url(song_info['url'])
                 if get_full_info:
-                    song = Song(self.get_song(song_info['id']), lyrics)
+                    info = self.get_song(song_info['id'])
                 else:
-                    song = Song({'song': song_info}, lyrics)
+                    info = {'song': song_info}
+                song = Song(info, lyrics)
 
-                # Add the Song to the Artist
-                if artist.add_song(song, verbose=False) == 0:
-                    num_songs += 1
-                    if self.verbose:
-                        print('Song {n}: "{t}"'.format(n=num_songs, t=song.title))
+                # Attempt to add the Song to the Artist
+                result = artist.add_song(song, verbose=False)
+                if result == 0 and self.verbose:
+                    print('Song {n}: "{t}"'.format(n=artist.num_songs,
+                                                   t=song.title))
 
                 # Exit search if the max number of songs has been met
-                if max_songs and artist.num_songs >= max_songs:
+                reached_max_songs = max_songs and artist.num_songs >= max_songs
+                if reached_max_songs:
                     if self.verbose:
                         print('\nReached user-specified song limit ({m}).'.format(m=max_songs))
                     break
 
             # Move on to next page of search results
-            next_page = artist_songs['next_page']
-            if next_page is None:
+            page = songs_on_page['next_page']
+            if page is None:
                 break  # Exit search when last page is reached
 
         if self.verbose:
