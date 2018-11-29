@@ -353,17 +353,14 @@ class Genius(API):
         tmp_dir = 'tmp_lyrics'
         if not os.path.isdir(tmp_dir):
             os.mkdir(tmp_dir)
-            tmp_count = 0
+            count = 0
         else:
-            tmp_count = len(os.listdir('./' + tmp_dir))
+            count = len(os.listdir(tmp_dir))
 
         # Check if file already exists
-        if not os.path.isfile(filename + ".json"):
-            pass
-        elif overwrite:
-            pass
-        else:
-            if input("{} already exists. Overwrite?\n(y/n): ".format(filename)).lower() != 'y':
+        if os.path.isfile(filename + ".json") and not overwrite:
+            msg = "{f} already exists. Overwrite?\n(y/n): ".format(f=filename)
+            if input(msg).lower() != "y":
                 print("Leaving file in place. Exiting.")
                 os.rmdir(tmp_dir)
                 return
@@ -373,13 +370,13 @@ class Genius(API):
         for n, artist in enumerate(artists):
             if isinstance(artist, Artist):
                 all_lyrics['artists'].append({})
-                tmp_file = "." + os.sep + tmp_dir + os.sep + "tmp_{num}_{name}".format(num=(n + tmp_count),
-                                                                                       name=artist.name.replace(" ", ""))
-                print(tmp_file)
+                f = "tmp_{n}_{a}".format(n=count + n,
+                                         a=artist.name.replace(" ", ""))
+                tmp_file = os.path.join(tmp_dir, f)
+                if self.verbose:
+                    print(tmp_file)
                 all_lyrics['artists'][-1] = artist.save_lyrics(filename=tmp_file,
                                                                overwrite=True)
-            else:
-                warn("Item #{} was not of type Artist. Skipping.".format(n))
 
         # Save all of the lyrics
         with open(filename + '.json', 'w') as outfile:
@@ -387,6 +384,5 @@ class Genius(API):
 
         # Delete the temporary directory
         shutil.rmtree(tmp_dir)
-
-        end = time.time()
-        print("Time elapsed: {} hours".format((end - start) / 60 / 60))
+        elapsed = (time.time() - start) / 60 / 60
+        print("Time elapsed: {t} hours".format(t=elapsed))
