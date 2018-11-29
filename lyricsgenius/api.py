@@ -29,6 +29,7 @@ class API(object):
     _session = requests.Session()
     _session.headers = {'application': 'LyricsGenius',
        'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'}
+    _SLEEP_MIN = 0.1
 
     def __init__(self, client_access_token,
                  response_format='plain', timeout=5, sleep_time=0.5):
@@ -67,7 +68,7 @@ class API(object):
             print("Timeout raised and caught:\n{e}".format(e=e))
 
         # Enforce rate limiting
-        time.sleep(self.sleep_time)
+        time.sleep(max(self._SLEEP_MIN, self.sleep_time))
         return response.json()['response'] if response else None
 
     def get_song(self, id_):
@@ -100,7 +101,7 @@ class API(object):
         # This endpoint is not part of the API, requires different formatting
         url = "https://genius.com/api/" + endpoint + urlencode(params)
         response = requests.get(url)
-        time.sleep(self.sleep_time)
+        time.sleep(max(self._SLEEP_MIN, self.sleep_time))
         return response.json()['response'] if response.status_code == 200 else None
 
     def get_annotation(self, id_):
@@ -388,4 +389,4 @@ class Genius(API):
         shutil.rmtree(tmp_dir)
 
         end = time.time()
-        print("Time elapsed: {} hours".format((end-start)/60.0/60.0))
+        print("Time elapsed: {} hours".format((end - start) / 60 / 60))
