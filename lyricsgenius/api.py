@@ -16,7 +16,6 @@ import json
 from bs4 import BeautifulSoup
 from string import punctuation
 import time
-from warnings import warn
 
 from .song import Song
 from .artist import Artist
@@ -29,7 +28,7 @@ class API(object):
     _session = requests.Session()
     _session.headers = {'application': 'LyricsGenius',
        'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'}
-    _SLEEP_MIN = 0.1
+    _SLEEP_MIN = 0.2  # Enforce minimum wait time between API calls (seconds)
 
     def __init__(self, client_access_token,
                  response_format='plain', timeout=5, sleep_time=0.5):
@@ -50,7 +49,6 @@ class API(object):
 
     def _make_request(self, path, method='GET', params_=None):
         """Make a request to the API"""
-
         uri = self.api_root + path
         if params_:
             params_['text_format'] = self.response_format
@@ -102,7 +100,7 @@ class API(object):
         url = "https://genius.com/api/" + endpoint + urlencode(params)
         response = requests.get(url)
         time.sleep(max(self._SLEEP_MIN, self.sleep_time))
-        return response.json()['response'] if response.status_code == 200 else None
+        return response.json()['response'] if response else None
 
     def get_annotation(self, id_):
         """Data for a specific annotation."""
