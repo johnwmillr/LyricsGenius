@@ -13,19 +13,16 @@ class Song(object):
         """ Song Constructor
 
         Properties:
-            title:  (str) Title of the song.
-            artist: (str) Primary artist on the song.
-            lyrcis: (str) Full set of song lyrics.
-            album:  (str) Name of the album the song is on.
-            year:   (int) Year the song was released.
+            title: Title of the song.
+            artist: Primary artist on the song.
+            lyrcis: Full set of song lyrics.
+            album: Name of the album the song is on.
+            year: Year the song was released.
 
         Methods:
             save_lyrics: Save the song lyrics to a JSON or TXT file.
         """
-        try:
-            self._body = json_dict['song']
-        except Exception as e:
-            self._body = json_dict
+        self._body = json_dict['song'] if 'song' in json_dict else json_dict
         self._body['lyrics'] = lyrics
         self._url = self._body['url']
         self._api_path = self._body['api_path']
@@ -45,66 +42,47 @@ class Song(object):
 
     @property
     def album(self):
-        try:
+        if 'album' in self._body and 'name' in self._body['album']:
             return self._body['album']['name']
-        except Exception as e:
-            return None
 
     @property
     def year(self):
-        try:
+        if 'release_date' in self._body:
             return self._body['release_date']
-        except Exception as e:
-            return None
 
     @property
     def url(self):
-        try:
+        if 'url' in self._body:
             return self._body['url']
-        except Exception as e:
-            return None
 
     @property
     def album_url(self):
-        try:
+        if 'album' in self._body and 'url' in self._body['album']:
             return self._body['album']['url']
-        except Exception as e:
-            return None
 
     @property
     def featured_artists(self):
-        try:
+        if 'featured_artists' in self._body:
             return self._body['featured_artists']
-        except Exception as e:
-            return None
 
     @property
     def media(self):
-        m = {}
         if 'media' in self._body:
-            [m.__setitem__(p['provider'], p['url']) for p in self._body['media']]
-        return m
+            return self._body['media']
 
     @property
     def writer_artists(self):
         """List of artists credited as writers"""
-        writers = []
-        [writers.append((writer['name'], writer['id'], writer['url'])) for writer in self._body['writer_artists']]
-        return writers
+        if 'writer_artists' in self._body:
+            return self._body['writer_artists']
 
     @property
     def song_art_image_url(self):
-        try:
+        if 'song_art_image_url' in self._body:
             return self._body['song_art_image_url']
-        except Exception as e:
-            return None
 
-    def save_lyrics(self,
-                    filename=None,
-                    format_='txt',
-                    overwrite=False,
-                    verbose=True,
-                    binary_encoding=False):
+    def save_lyrics(self, filename=None, format_='txt', verbose=True,
+                    overwrite=False, binary_encoding=False):
         # TODO: way too much repeated code between this and the Artist.save_lyrics method
         """Allows user to save song lyrics from Song obejct to a .json or .txt file."""
         if format_[0] == '.':
