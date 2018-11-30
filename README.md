@@ -68,4 +68,4 @@ python3 -m lyricsgenius --search-artist 'Lupe Fiasco' 3
   I'd love to have more examples to list here! Let me know if you've made use of this wrapper for one of your own projects, and I'll list it here.
 
 ## Contributing
-Please contribute! I enjoy having collaborators on this project. If you want to fix a bug, suggest improvements, or add new features, just [open an issue](https://github.com/johnwmillr/LyricsGenius/issues) or send me a pull request.
+Please contribute! If you want to fix a bug, suggest improvements, or add new features to the project, just [open an issue](https://github.com/johnwmillr/LyricsGenius/issues) or send me a pull request.
