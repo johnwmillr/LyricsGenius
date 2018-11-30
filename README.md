@@ -1,4 +1,4 @@
-# Scraping song lyrics from Genius.com
+# LyricsGenius - a Python client for the Genius.com API
 [![Build Status](https://travis-ci.org/johnwmillr/LyricsGenius.svg?branch=master)](https://travis-ci.org/johnwmillr/LyricsGenius)
 [![PyPI version](https://badge.fury.io/py/lyricsgenius.svg)](https://pypi.org/project/lyricsgenius/)
 [![Python version](https://img.shields.io/badge/python-3.x-brightgreen.svg)](https://pypi.org/project/lyricsgenius/)
@@ -11,54 +11,51 @@ To use the Genius API you'll need to sign up for a (free) client that authorizes
 ## Installation
 *LyricsGenius* requires Python 3.
 
-The easiest way to start using this package is to install it via [PyPI](https://pypi.python.org/pypi/lyricsgenius) using `pip`:
+Install the package via [PyPI](https://pypi.python.org/pypi/lyricsgenius) using `pip`:
 
-`$pip install lyricsgenius`
+```bash
+pip install lyricsgenius
+```
 
-If you'd prefer to clone the repository and install it yourself, follow these steps:
-1. Clone this repo:
-`$git clone https://github.com/johnwmillr/LyricsGenius.git`
-2. Enter the cloned directory:
-`$cd LyricsGenius`
-3. Install using pip:
-`$pip install .`
+Or, install the latest version from GitHub:
+
+```bash
+pip install git+https://github.com/johnwmillr/LyricsGenius.git
+```
 
 ## Usage
+Import the package and search for songs by a given artist:
+
 ```python
->>> import lyricsgenius as genius
->>> api = genius.Genius('my_client_access_token_here')
->>> artist = api.search_artist('Andy Shauf', max_songs=3)
-Searching for Andy Shauf...
-
-Song 1: "Alexander All Alone"
-Song 2: "Begin Again"
-Song 3: "Comfortable With Silence"
-
-Reached user-specified song limit (3).
-Found 3 songs.
-
-Done.
->>> print(artist)
-Andy Shauf, 3 songs
->>> song = api.search_song('To You',artist.name)
-Searching for "To You" by Andy Shauf...
-Done.
->>> print(song)
-"To You" by Andy Shauf:
-    Jeremy can we talk a minute
-    I've got some things that I need to
-    Get off of my chestI know that we h...
->>> artist.add_song(song)
->>> print(artist)
-Andy Shauf, 4 songs
->>> artist.save_lyrics() # Saves artist's lyrics to a JSON file
+lyricsgenius as genius
+api = genius.Genius('my_client_access_token_here')
+artist = api.search_artist('Andy Shauf', max_songs=3)
 ```
 
-You can also call the package from the command line. When ran from the command line, the package expects to find an environment variable with your Genius client access token.
+Search for a single song by the same artist:
+
+```python
+song = api.search_song('To You', artist.name)
 ```
-$export GENIUS_CLIENT_ACCESS_TOKEN="my_client_access_token_here"
-$python3 -m lyricsgenius --search-song 'Begin Again' 'Andy Shauf'
-$python3 -m lyricsgenius --search-artist 'Lupe Fiasco' 3
+
+Add the song to the artist object:
+
+```python
+artist.add_song(song)
+```
+
+Save the artist's songs to a JSON file:
+
+```python
+artist.save_lyrics()
+```
+
+You can also call the package from the command line:
+
+```bash
+export GENIUS_CLIENT_ACCESS_TOKEN="my_client_access_token_here"
+python3 -m lyricsgenius --search-song 'Begin Again' 'Andy Shauf'
+python3 -m lyricsgenius --search-artist 'Lupe Fiasco' 3
 ```
 
 ## Example projects
@@ -71,4 +68,4 @@ $python3 -m lyricsgenius --search-artist 'Lupe Fiasco' 3
   I'd love to have more examples to list here! Let me know if you've made use of this wrapper for one of your own projects, and I'll list it here.
 
 ## Contributing
-Please contribute! I'd love to have collaborators on this project. If you want to add features, suggest improvements, or have other comments, just make a pull request or raise an issue.
+Please contribute! If you want to fix a bug, suggest improvements, or add new features to the project, just [open an issue](https://github.com/johnwmillr/LyricsGenius/issues) or send me a pull request.

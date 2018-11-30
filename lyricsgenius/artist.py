@@ -39,10 +39,8 @@ class Artist(object):
 
     @property
     def image_url(self):
-        try:
+        if 'image_url' in self._body:
             return self._body['image_url']
-        except Exception as e:
-            return None
 
     @property
     def songs(self):
@@ -57,35 +55,29 @@ class Artist(object):
 
         if any([song.title == newsong.title for song in self._songs]):
             if verbose:
-                print('{newsong} already in {artist_}, not adding song.'.format(
-                                            newsong=newsong.title, artist_=self.name))
+                print('{s} already in {a}, not adding song.'.format(s=newsong.title,
+                                                                    a=self.name))
             return 1  # Failure
         if newsong.artist == self.name:
             self._songs.append(newsong)
             self._num_songs += 1
             return 0  # Success
-        else:
-            if verbose:
-                print("Can't add song by {new_artist}, artist must be {artist_}.".format(
-                                            new_artist=newsong.artist, artist_=self.name))
-            return 1  # Failure
+        if verbose:
+            print("Can't add song by {b}, artist must be {a}.".format(b=newsong.artist,
+                                                                      a=self.name))
+        return 1  # Failure
 
     def get_song(self, song_name):
         """Search Genius.com for *song_name* and add it to artist"""
-        raise NotImplementedError("I need to figure out how to allow Artist() to access search_song().")
+        raise NotImplementedError("I need to figure out how to allow Artist() to access Genius.search_song().")
         # song = Genius.search_song(song_name, self.name)
         # self.add_song(song)
         # return
 
     # TODO: define an export_to_json() method
 
-    def save_lyrics(self,
-                    format_='json',
-                    filename=None,
-                    overwrite=False,
-                    skip_duplicates=True,
-                    verbose=True,
-                    binary_encoding=False):
+    def save_lyrics(self, filename=None, format_='json', overwrite=False,
+                    skip_duplicates=True, verbose=True, binary_encoding=False):
         """Allows user to save all lyrics within an Artist obejct"""
         format_ = format_.lstrip(".")
         assert (format_ == 'json') or (format_ == 'txt'), "format_ must be JSON or TXT"
@@ -147,7 +139,6 @@ class Artist(object):
         else:
             lyrics_to_write = " ".join([s.lyrics + 5*'\n' for s in self.songs])
 
-
         if binary_encoding:
             lyrics_to_write = lyrics_to_write.encode('utf8')
 
@@ -159,7 +150,7 @@ class Artist(object):
                 else:
                     lyrics_file.write(lyrics_to_write)
             if verbose:
-                print('Wrote {} songs to {}.'.format((self.num_songs-self._songs_dropped), filename))
+                print('Wrote {} songs to {}.'.format(self.num_songs - self._songs_dropped, filename))
         else:
             if verbose:
                 print('Skipping file save.\n')
