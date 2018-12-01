@@ -246,7 +246,7 @@ class Genius(API):
             return song
 
         if self.verbose:
-            print("Could not find specified song.")
+            print("Could not find specified song. Check spelling?")
         return None
 
     def search_artist(self, artist_name, max_songs=None, sort='title',
