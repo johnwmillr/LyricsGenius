@@ -345,6 +345,8 @@ class Genius(API):
         :param filename: Name of output file (json)
         :param overwrite: Overwrites preexisting file if True
         """
+        if isinstance(artists, Artist):
+            artists = [artists]
 
         # Create a temporary directory for lyrics
         start = time.time()
