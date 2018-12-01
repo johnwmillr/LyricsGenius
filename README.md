@@ -27,15 +27,15 @@ pip install git+https://github.com/johnwmillr/LyricsGenius.git
 Import the package and search for songs by a given artist:
 
 ```python
-lyricsgenius as genius
-api = genius.Genius('my_client_access_token_here')
-artist = api.search_artist('Andy Shauf', max_songs=3)
+import lyricsgenius as genius
+api = genius.Genius("my_client_access_token_here")
+artist = api.search_artist("Andy Shauf", max_songs=3)
 ```
 
 Search for a single song by the same artist:
 
 ```python
-song = api.search_song('To You', artist.name)
+song = api.search_song("To You", artist.name)
 ```
 
 Add the song to the artist object:
@@ -54,8 +54,19 @@ You can also call the package from the command line:
 
 ```bash
 export GENIUS_CLIENT_ACCESS_TOKEN="my_client_access_token_here"
-python3 -m lyricsgenius --search-song 'Begin Again' 'Andy Shauf'
-python3 -m lyricsgenius --search-artist 'Lupe Fiasco' 3
+python3 -m lyricsgenius --help
+```
+
+Search for and save lyrics to a given song:
+
+```bash
+python3 -m lyricsgenius song "Begin Again" "Andy Shauf" --save
+```
+
+Search for five songs by 'The Beatles' and save the lyrics:
+
+```bash
+python3 -m lyricsgenius artist "The Beatles" --max-songs 5 --save
 ```
 
 ## Example projects
