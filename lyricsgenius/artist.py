@@ -106,7 +106,7 @@ class Artist(object):
                 filename = filename.replace("." + ext, "")
             filename += "." + format_
         else:
-            filename = "Lyrics_{}.{}".format(self.artist.replace(" ", ""), format_)
+            filename = "Lyrics_{}.{}".format(self.name.replace(" ", ""), format_)
 
         # Check if file already exists
         write_file = False
