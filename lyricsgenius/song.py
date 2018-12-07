@@ -30,56 +30,54 @@ class Song(object):
 
     @property
     def title(self):
-        return self._body['title']
+        return self._body.get('title')
 
     @property
     def artist(self):
-        return self._body['primary_artist']['name']
+        primary = self._body.get('primary_artist')
+        if primary:
+            return primary.get('name')
 
     @property
     def lyrics(self):
-        return self._body['lyrics']
+        return self._body.get('lyrics')
 
     @property
     def album(self):
-        if 'album' in self._body and 'name' in self._body['album']:
-            return self._body['album']['name']
+        album = self._body.get('album')
+        if album:
+            return album.get('name')
 
     @property
     def year(self):
-        if 'release_date' in self._body:
-            return self._body['release_date']
+        return self._body.get('release_date')
 
     @property
     def url(self):
-        if 'url' in self._body:
-            return self._body['url']
+        return self._body.get('url')
 
     @property
     def album_url(self):
-        if 'album' in self._body and 'url' in self._body['album']:
-            return self._body['album']['url']
+        album = self._body.get('album')
+        if album:
+            return album.get('url')
 
     @property
     def featured_artists(self):
-        if 'featured_artists' in self._body:
-            return self._body['featured_artists']
+        return self._body.get('featured_artists')
 
     @property
     def media(self):
-        if 'media' in self._body:
-            return self._body['media']
+        return self._body.get('media')
 
     @property
     def writer_artists(self):
         """List of artists credited as writers"""
-        if 'writer_artists' in self._body:
-            return self._body['writer_artists']
+        return self._body.get('writer_artists')
 
     @property
     def song_art_image_url(self):
-        if 'song_art_image_url' in self._body:
-            return self._body['song_art_image_url']
+        return self._body.get('song_art_image_url')
 
     def save_lyrics(self, filename=None, format_='txt', verbose=True,
                     overwrite=False, binary_encoding=False):
