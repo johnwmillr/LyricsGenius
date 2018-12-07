@@ -2,9 +2,12 @@
 # Copyright 2018 John W. Miller
 # See LICENSE for details.
 
+import sys
 import re
 from os import path
 from setuptools import find_packages, setup
+
+assert sys.version_info[0] == 3, "LyricsGenius requires Python 3."
 
 VERSIONFILE = "lyricsgenius/__init__.py"
 ver_file = open(VERSIONFILE, "rt").read()
