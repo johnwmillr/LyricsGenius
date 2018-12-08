@@ -266,18 +266,21 @@ class Genius(API):
             print('Searching for songs by {0}...\n'.format(artist_name))
 
         # Perform a Genius API search for the artist
+        found_artist = None
         response = self.search_genius_web(artist_name)
-        hits = response['sections'][0]['hits']
-        top_artists = [hit for hit in hits if hit['type'] == 'artist']
+        for section in response['sections']:
+            hits = [hit for hit in section['hits'] if hit['type'] == 'artist']
+            if hits:
+                found_artist = hits[0]['result']
+                break
 
         # Exit the search if we couldn't find an artist by the given name
-        if not len(top_artists):
+        if not found_artist:
             if self.verbose:
                 print("No results found for '{a}'.".format(a=artist_name))
             return None
 
         # Assume the top search result is the intended artist
-        found_artist = top_artists[0]['result']
         artist_id = found_artist['id']
         artist_info = self.get_artist(artist_id)
         found_name = artist_info['artist']['name']
