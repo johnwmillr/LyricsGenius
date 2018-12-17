@@ -272,7 +272,7 @@ class Genius(API):
         response = self.search_genius_web(search_term)
 
         # Use old song search method if search_genius_web fails
-        if not response or True:
+        if not response:
             if self.verbose:
                 print("\nsearch_genius_web failed, using old search method.")
             return self._search_song_old(title, artist, get_full_info, True)
