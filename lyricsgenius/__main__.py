@@ -44,7 +44,7 @@ def main(args=None):
         if args.save:
             if not args.quiet:
                 print("Saving lyrics to '{s}'...".format(s=song.title))
-        song.save_lyrics()
+            song.save_lyrics()
     else:
         artist = api.search_artist(args.terms[0], max_songs=args.max_songs)
         if args.save:
