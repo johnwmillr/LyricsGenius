@@ -71,10 +71,11 @@ python3 -m lyricsgenius artist "The Beatles" --max-songs 5 --save
 
 ## Example projects
 
-  - [Textual analysis of popular country music](http://www.johnwmillr.com/trucks-and-beer/)
+  - [Trucks and Beer: A textual analysis of popular country music](http://www.johnwmillr.com/trucks-and-beer/)
   - [What makes some blink-182 songs more popular than others?](http://jdaytn.com/posts/download-blink-182-data/)
-  - [Words per song for rap, rock, and country music](https://www.reddit.com/r/dataisbeautiful/comments/8j1r7b/words_per_song_for_rap_rock_and_country_music_oc/)
   - [Sentiment analysis on hip-hop lyrics](https://github.com/Hugo-Nattagh/2017-Hip-Hop)
+  - [Does Country Music Drink More Than Other Genres?](https://towardsdatascience.com/does-country-music-drink-more-than-other-genres-a21db901940b)
+  - [49 Years of Lyrics: Why So Angry?](https://towardsdatascience.com/49-years-of-lyrics-why-so-angry-1adf0a3fa2b4)
 
   I'd love to have more examples to list here! Let me know if you've made use of this wrapper for one of your own projects, and I'll list it here.
 
