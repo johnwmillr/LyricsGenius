@@ -11,7 +11,7 @@ Before using this package you'll need to sign up for a (free) account that autho
 ## Installation
 `lyricsgenius` requires Python 3.
 
-Install the package via [PyPI](https://pypi.python.org/pypi/lyricsgenius) using `pip`:
+Install the package with `pip`:
 
 ```bash
 pip install lyricsgenius
@@ -50,6 +50,15 @@ Save the artist's songs to a JSON file:
 
 ```python
 artist.save_lyrics()
+```
+
+There are various options configurable as parameters within the `Genius` class:
+
+```python
+api.verbose = False # Turn off status messages
+api.remove_section_headers = True # Remove section headers (e.g. [Chorus]) from lyrics when searching
+api.skip_non_songs = False # Include hits thought to be non-songs (e.g. track lists)
+api.excluded_terms = ["(Remix)", "(Live)"] # Exclude songs with these words in their title
 ```
 
 You can also call the package from the command line:
