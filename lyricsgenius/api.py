@@ -172,14 +172,14 @@ class Genius(API):
         regex = re.compile(expression, re.IGNORECASE)
         return not regex.search(self._clean_str(song_title))
 
-    def _getItemFromSearchResponse(self, response, type_):
+    def _get_item_from_search_response(self, response, type_):
         """ Returns either a Song or Artist result from search_genius_web """
         for section in response['sections']:
             hits = [hit for hit in section['hits'] if hit['type'] == type_]
             if hits:
                 return hits[0]['result']
 
-    def _resultIsMatch(self, result, title, artist=None):
+    def _result_is_match(self, result, title, artist=None):
         """ Returns True if search result matches searched song """
         result_title = self._clean_str(result['title'])
         title_is_match = result_title == self._clean_str(title)
@@ -219,7 +219,9 @@ class Genius(API):
             results = [r['result'] for r in response['hits'] if r['type'] == 'song']
             for result in results:
                 # Skip to next search result if current result is not a match
-                if not (take_first_result or self.resultIsAMatch(result, title, artist)):
+                if not (take_first_result or self._result_is_match(result,
+                                                                   title,
+                                                                   artist)):
                     continue
 
                 # Reject non-songs (Liner notes, track lists, etc.)
@@ -278,7 +280,7 @@ class Genius(API):
             return self._search_song_old(title, artist, get_full_info, True)
 
         # Otherwise, move forward with processing the search results
-        result = self._getItemFromSearchResponse(response, type_="song")
+        result = self._get_item_from_search_response(response, type_="song")
 
         # Exit search if there were no results returned from API
         if not result:
@@ -332,7 +334,7 @@ class Genius(API):
         # Perform a Genius API search for the artist
         found_artist = None
         response = self.search_genius_web(artist_name)
-        found_artist = self._getItemFromSearchResponse(response, type_="artist")
+        found_artist = self._get_item_from_search_response(response, type_="artist")
 
         # Exit the search if we couldn't find an artist by the given name
         if not found_artist:
