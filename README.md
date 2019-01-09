@@ -27,16 +27,16 @@ pip install git+https://github.com/johnwmillr/LyricsGenius.git
 Import the package and search for songs by a given artist:
 
 ```python
-import lyricsgenius as genius
-api = genius.Genius("my_client_access_token_here")
-artist = api.search_artist("Andy Shauf", max_songs=3)
+import lyricsgenius
+genius = lyricsgenius.Genius("my_client_access_token_here")
+artist = genius.search_artist("Andy Shauf", max_songs=3)
 print(artist.songs)
 ```
 
 Search for a single song by the same artist:
 
 ```python
-song = api.search_song("To You", artist.name)
+song = genius.search_song("To You", artist.name)
 print(song.lyrics)
 ```
 
@@ -55,10 +55,10 @@ artist.save_lyrics()
 There are various options configurable as parameters within the `Genius` class:
 
 ```python
-api.verbose = False # Turn off status messages
-api.remove_section_headers = True # Remove section headers (e.g. [Chorus]) from lyrics when searching
-api.skip_non_songs = False # Include hits thought to be non-songs (e.g. track lists)
-api.excluded_terms = ["(Remix)", "(Live)"] # Exclude songs with these words in their title
+genius.verbose = False # Turn off status messages
+genius.remove_section_headers = True # Remove section headers (e.g. [Chorus]) from lyrics when searching
+genius.skip_non_songs = False # Include hits thought to be non-songs (e.g. track lists)
+genius.excluded_terms = ["(Remix)", "(Live)"] # Exclude songs with these words in their title
 ```
 
 You can also call the package from the command line:
