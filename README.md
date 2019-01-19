@@ -29,7 +29,7 @@ Import the package and search for songs by a given artist:
 ```python
 import lyricsgenius
 genius = lyricsgenius.Genius("my_client_access_token_here")
-artist = genius.search_artist("Andy Shauf", max_songs=3)
+artist = genius.search_artist("Andy Shauf", max_songs=3, sort="title")
 print(artist.songs)
 ```
 

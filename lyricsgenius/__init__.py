@@ -8,7 +8,7 @@ __author__ = 'John W. Miller'
 __url__ = 'https://github.com/johnwmillr/LyricsGenius'
 __description__ = 'A Python wrapper around the Genius API'
 __license__ = 'MIT'
-__version__ = '1.2.2'
+__version__ = '1.2.3'
 
 import sys
 assert sys.version_info[0] == 3, "LyricsGenius requires Python 3."
