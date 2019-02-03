@@ -404,6 +404,23 @@ class Genius(API):
             print('Done. Found {n} songs.'.format(n=artist.num_songs))
         return artist
 
+    def get_all_artists(self):
+        artists = []
+
+        page = requests.get('https://genius.com/artists')
+
+        # Scrape the song lyrics from the HTML
+        soup = BeautifulSoup(page.text, "html.parser")
+        for a_index in soup.find_all('a', class_='character_index_list-link', href=True):
+            index_page = requests.get(a_index['href'])
+            index_soup = BeautifulSoup(index_page.text, "html.parser")
+
+            for a_artist in index_soup.find_all('a', class_='artists_index_list-artist_name'):
+                artist = self.search_artist(a_artist.get_text())
+                artists.append(artist)
+
+        return artists
+
     def save_artists(self, artists, filename="artist_lyrics", overwrite=False):
         """Save lyrics from multiple Artist objects as JSON object
         :param artists: List of Artist objects to save lyrics from
