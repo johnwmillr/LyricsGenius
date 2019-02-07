@@ -5,7 +5,7 @@
 
 import os
 import argparse
-import lyricsgenius
+from lyricsgenius.api import Genius
 
 
 def main(args=None):
@@ -27,7 +27,7 @@ def main(args=None):
     client_access_token = os.environ.get("GENIUS_CLIENT_ACCESS_TOKEN", None)
     msg = "Must declare environment variable: GENIUS_CLIENT_ACCESS_TOKEN"
     assert client_access_token, msg
-    api = lyricsgenius.Genius(client_access_token)
+    api = Genius(client_access_token)
     if args.quiet:
         api.verbose = False
 
@@ -38,9 +38,9 @@ def main(args=None):
             if not args.quiet:
                 print("Could not find specified song. Check spelling?")
             return
-        print('\n"{s}" by {a}:\n\n{lyrics}\n'.format(s=song.title,
-                                                     a=song.artist,
-                                                     lyrics=song.lyrics))
+        # print('\n"{s}" by {a}:\n\n{lyrics}\n'.format(s=song.title,
+        #                                              a=song.artist,
+        #                                              lyrics=song.lyrics))
         if args.save:
             if not args.quiet:
                 print("Saving lyrics to '{s}'...".format(s=song.title))

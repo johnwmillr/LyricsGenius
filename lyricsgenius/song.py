@@ -4,6 +4,7 @@
 
 import json
 import os
+from filecmp import cmp
 
 
 class Song(object):
@@ -15,7 +16,7 @@ class Song(object):
         Properties:
             title: Title of the song.
             artist: Primary artist on the song.
-            lyrcis: Full set of song lyrics.
+            lyrics: Full set of song lyrics.
             album: Name of the album the song is on.
             year: Year the song was released.
 
@@ -79,21 +80,34 @@ class Song(object):
     def song_art_image_url(self):
         return self._body.get('song_art_image_url')
 
-    def save_lyrics(self, filename=None, format_='txt', verbose=True,
+    def to_dict(self):
+        """
+        Create a dictionary from the song object
+        Used in save_lyrics to create json object
+
+        :return: Dictionary
+        """
+        return dict({'title': self.title,
+                     'album': self.album,
+                     'year': self.year,
+                     'lyrics': self.lyrics,
+                     'image': self.song_art_image_url})
+
+    def save_lyrics(self, filename=None, extension='json', verbose=True,
                     overwrite=False, binary_encoding=False):
-        # TODO: way too much repeated code between this and the Artist.save_lyrics method
-        """Allows user to save song lyrics from Song obejct to a .json or .txt file."""
-        format_ = format_.lstrip(".")
-        assert (format_ == 'json') or (format_ == 'txt'), "format_ must be JSON or TXT"
+        """Allows user to save song lyrics from Song object to a .json or .txt file."""
+        extension = extension.lstrip(".")
+        assert (extension == 'json') or (extension == 'txt'), "format_ must be JSON or TXT"
 
         # Determine the filename
         if filename:
             # Remove format suffix if supplied by user
             for ext in ["txt", "TXT", "json", "JSON"]:
                 filename = filename.replace("." + ext, "")
-            filename += "." + format_
+            filename += "." + extension
         else:
-            filename = "Lyrics_{}.{}".format(self.artist.replace(" ", ""), format_)
+            filename = "Lyrics_{}_{}.{}".format(self.artist.replace(" ", ""), self.title.replace(" ", ""),
+                                                extension).lower()
 
         # Check if file already exists
         write_file = False
@@ -106,16 +120,9 @@ class Song(object):
                 write_file = True
 
         # Format lyrics as either .txt or .json
-        if format_ == 'json':
+        if extension == 'json':
             lyrics_to_write = {'songs': [], 'artist': self.artist}
-            lyrics_to_write['songs'].append({})
-            lyrics_to_write['songs'][-1]['title'] = self.title
-            lyrics_to_write['songs'][-1]['album'] = self.album
-            lyrics_to_write['songs'][-1]['year'] = self.year
-            lyrics_to_write['songs'][-1]['lyrics'] = self.lyrics
-            lyrics_to_write['songs'][-1]['image'] = self.song_art_image_url
-            lyrics_to_write['songs'][-1]['artist'] = self.artist
-            lyrics_to_write['songs'][-1]['json'] = self._body
+            lyrics_to_write['songs'].append(self.to_dict())
         else:
             lyrics_to_write = self.lyrics
 
@@ -125,7 +132,7 @@ class Song(object):
         # Write the lyrics to either a .json or .txt file
         if write_file:
             with open(filename, 'wb' if binary_encoding else 'w') as lyrics_file:
-                if format_ == 'json':
+                if extension == 'json':
                     json.dump(lyrics_to_write, lyrics_file)
                 else:
                     lyrics_file.write(lyrics_to_write)
@@ -143,7 +150,7 @@ class Song(object):
         else:
             lyr = self.lyrics[:100]
         return '"{title}" by {artist}:\n    {lyrics}'.format(
-                 title=self.title, artist=self.artist, lyrics=lyr.replace('\n', '\n    '))
+            title=self.title, artist=self.artist, lyrics=lyr.replace('\n', '\n    '))
 
     def __repr__(self):
         return repr((self.title, self.artist))

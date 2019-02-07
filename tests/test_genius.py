@@ -65,13 +65,13 @@ class TestArtist(unittest.TestCase):
             os.remove(expected_filename)
 
         # Test saving json file
-        self.artist.save_lyrics(filename=filename, format_=format_)
+        self.artist.save_lyrics(filename=filename, extension=format_)
         self.assertTrue(os.path.isfile(expected_filename), msg)
 
         # Test overwriting json file
         try:
             self.artist.save_lyrics(
-                filename=filename, format_=format_, overwrite=True)
+                filename=filename, extension=format_, overwrite=True)
             os.remove(expected_filename)
         except:
             self.fail("Failed {} overwrite test".format(format_))
@@ -89,13 +89,13 @@ class TestArtist(unittest.TestCase):
             os.remove(expected_filename)
 
         # Test saving txt file
-        self.artist.save_lyrics(filename=filename, format_=format_)
+        self.artist.save_lyrics(filename=filename, extension=format_)
         self.assertTrue(os.path.isfile(expected_filename), msg)
 
         # Test overwriting txt file
         try:
             self.artist.save_lyrics(
-                filename=filename, format_=format_, overwrite=True)
+                filename=filename, extension=format_, overwrite=True)
             os.remove(expected_filename)
         except:
             self.fail("Failed {} overwrite test".format(format_))
@@ -164,13 +164,13 @@ class TestSong(unittest.TestCase):
             os.remove(expected_filename)
 
         # Test saving json file
-        self.song.save_lyrics(filename=filename, format_=format_)
+        self.song.save_lyrics(filename=filename, extension=format_)
         self.assertTrue(os.path.isfile(expected_filename), msg)
 
         # Test overwriting json file
         try:
             self.song.save_lyrics(
-                filename=filename, format_=format_, overwrite=True)
+                filename=filename, extension=format_, overwrite=True)
             os.remove(expected_filename)
         except:
             self.fail("Failed {} overwrite test".format(format_))
@@ -188,13 +188,13 @@ class TestSong(unittest.TestCase):
             os.remove(expected_filename)
 
         # Test saving txt file
-        self.song.save_lyrics(filename=filename, format_=format_)
+        self.song.save_lyrics(filename=filename, extension=format_)
         self.assertTrue(os.path.isfile(expected_filename), msg)
 
         # Test overwriting txt file
         try:
             self.song.save_lyrics(
-                filename=filename, format_=format_, overwrite=True)
+                filename=filename, extension=format_, overwrite=True)
             os.remove(expected_filename)
         except:
             self.fail("Failed {} overwrite test".format(format_))
