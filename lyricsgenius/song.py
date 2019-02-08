@@ -94,7 +94,7 @@ class Song(object):
                      'image': self.song_art_image_url})
 
     def save_lyrics(self, filename=None, extension='json', verbose=True,
-                    overwrite=False, binary_encoding=False):
+                    overwrite=None, binary_encoding=False):
         """Allows user to save song lyrics from Song object to a .json or .txt file."""
         extension = extension.lstrip(".")
         assert (extension == 'json') or (extension == 'txt'), "format_ must be JSON or TXT"
@@ -109,6 +109,7 @@ class Song(object):
             filename = "Lyrics_{}_{}.{}".format(self.artist.replace(" ", ""), self.title.replace(" ", ""),
                                                 extension).lower()
 
+        print("overwrite = " + str(overwrite))
         # Check if file already exists
         write_file = False
         if not os.path.isfile(filename):
