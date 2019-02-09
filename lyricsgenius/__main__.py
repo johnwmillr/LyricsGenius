@@ -38,9 +38,6 @@ def main(args=None):
             if not args.quiet:
                 print("Could not find specified song. Check spelling?")
             return
-        # print('\n"{s}" by {a}:\n\n{lyrics}\n'.format(s=song.title,
-        #                                              a=song.artist,
-        #                                              lyrics=song.lyrics))
         if args.save:
             if not args.quiet:
                 print("Saving lyrics to '{s}'...".format(s=song.title))
