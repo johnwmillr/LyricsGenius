@@ -55,9 +55,9 @@ class TestArtist(unittest.TestCase):
 
     def test_saving_json_file(self):
         print('\n')
-        format_ = 'json'
-        msg = "Could not save {} file.".format(format_)
-        expected_filename = 'lyrics_thebeatles_paperbackwriter.' + format_
+        extension = 'json'
+        msg = "Could not save {} file.".format(extension)
+        expected_filename = 'lyrics_thebeatles_paperbackwriter.' + extension
         filename = expected_filename.split('.')[0]
 
         # Remove the test file if it already exists
@@ -65,23 +65,21 @@ class TestArtist(unittest.TestCase):
             os.remove(expected_filename)
 
         # Test saving json file
-        self.artist.save_lyrics(extension=format_, overwrite=True)
+        self.artist.save_lyrics(extension=extension, overwrite=True)
         self.assertTrue(os.path.isfile(expected_filename), msg)
 
         # Test overwriting json file
         try:
-            self.artist.save_lyrics(
-                extension=format_, overwrite=True)
-            os.remove(expected_filename)
+            self.artist.save_lyrics(extension=extension, overwrite=True)
         except:
-            self.fail("Failed {} overwrite test".format(format_))
-            os.remove(expected_filename)
+            self.fail("Failed {} overwrite test".format(extension))
+        os.remove(expected_filename)
 
     def test_saving_txt_file(self):
         print('\n')
-        format_ = 'txt'
-        msg = "Could not save {} file.".format(format_)
-        expected_filename = 'lyrics_thebeatles_paperbackwriter.' + format_
+        extension = 'txt'
+        msg = "Could not save {} file.".format(extension)
+        expected_filename = 'lyrics_thebeatles_paperbackwriter.' + extension
         filename = expected_filename.split('.')[0]
 
         # Remove the test file if it already exists
@@ -89,17 +87,15 @@ class TestArtist(unittest.TestCase):
             os.remove(expected_filename)
 
         # Test saving txt file
-        self.artist.save_lyrics(extension=format_, overwrite=True)
+        self.artist.save_lyrics(extension=extension, overwrite=True)
         self.assertTrue(os.path.isfile(expected_filename), msg)
 
         # Test overwriting txt file
         try:
-            self.artist.save_lyrics(
-                extension=format_, overwrite=True)
-            os.remove(expected_filename)
+            self.artist.save_lyrics(extension=extension, overwrite=True)
         except:
-            self.fail("Failed {} overwrite test".format(format_))
-            os.remove(expected_filename)
+            self.fail("Failed {} overwrite test".format(extension))
+        os.remove(expected_filename)
 
 
 class TestSong(unittest.TestCase):
@@ -154,9 +150,9 @@ class TestSong(unittest.TestCase):
 
     def test_saving_json_file(self):
         print('\n')
-        format_ = 'json'
-        msg = "Could not save {} file.".format(format_)
-        expected_filename = 'lyrics_save_test_file.' + format_
+        extension = 'json'
+        msg = "Could not save {} file.".format(extension)
+        expected_filename = 'lyrics_save_test_file.' + extension
         filename = expected_filename.split('.')[0]
 
         # Remove the test file if it already exists
@@ -164,23 +160,23 @@ class TestSong(unittest.TestCase):
             os.remove(expected_filename)
 
         # Test saving json file
-        self.song.save_lyrics(filename=filename, extension=format_, overwrite=True)
+        self.song.save_lyrics(filename=filename, extension=extension, overwrite=True)
         self.assertTrue(os.path.isfile(expected_filename), msg)
 
         # Test overwriting json file
         try:
             self.song.save_lyrics(
-                filename=filename, extension=format_, overwrite=True)
+                filename=filename, extension=extension, overwrite=True)
             os.remove(expected_filename)
         except:
-            self.fail("Failed {} overwrite test".format(format_))
+            self.fail("Failed {} overwrite test".format(extension))
             os.remove(expected_filename)
 
     def test_saving_txt_file(self):
         print('\n')
-        format_ = 'txt'
-        msg = "Could not save {} file.".format(format_)
-        expected_filename = 'lyrics_save_test_file.' + format_
+        extension = 'txt'
+        msg = "Could not save {} file.".format(extension)
+        expected_filename = 'lyrics_save_test_file.' + extension
         filename = expected_filename.split('.')[0]
 
         # Remove the test file if it already exists
@@ -188,14 +184,14 @@ class TestSong(unittest.TestCase):
             os.remove(expected_filename)
 
         # Test saving txt file
-        self.song.save_lyrics(filename=filename, extension=format_, overwrite=True)
+        self.song.save_lyrics(filename=filename, extension=extension, overwrite=True)
         self.assertTrue(os.path.isfile(expected_filename), msg)
 
         # Test overwriting txt file
         try:
             self.song.save_lyrics(
-                filename=filename, extension=format_, overwrite=True)
+                filename=filename, extension=extension, overwrite=True)
             os.remove(expected_filename)
         except:
-            self.fail("Failed {} overwrite test".format(format_))
+            self.fail("Failed {} overwrite test".format(extension))
             os.remove(expected_filename)
