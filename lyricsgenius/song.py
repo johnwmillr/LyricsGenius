@@ -109,7 +109,6 @@ class Song(object):
             filename = "Lyrics_{}_{}.{}".format(self.artist.replace(" ", ""), self.title.replace(" ", ""),
                                                 extension).lower()
 
-        print("overwrite = " + str(overwrite))
         # Check if file already exists
         write_file = False
         if not os.path.isfile(filename):
