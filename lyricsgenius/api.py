@@ -17,8 +17,8 @@ from bs4 import BeautifulSoup
 from string import punctuation
 import time
 
-from .song import Song
-from .artist import Artist
+from lyricsgenius.song import Song
+from lyricsgenius.artist import Artist
 
 
 class API(object):
@@ -440,8 +440,7 @@ class Genius(API):
                 tmp_file = os.path.join(tmp_dir, f)
                 if self.verbose:
                     print(tmp_file)
-                all_lyrics['artists'][-1] = artist.save_lyrics(filename=tmp_file,
-                                                               overwrite=True)
+                all_lyrics['artists'][-1] = artist.save_lyrics(overwrite=True)
 
         # Save all of the lyrics
         with open(filename + '.json', 'w') as outfile:
