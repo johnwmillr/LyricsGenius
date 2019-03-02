@@ -93,6 +93,10 @@ class Song(object):
                      'lyrics': self.lyrics,
                      'image': self.song_art_image_url})
 
+    def sanitize_filename(self, f):
+        keepchars = (" ", ".", "_")
+        return "".join(c for c in f if c.isalnum() or c in keepchars).rstrip()
+
     def save_lyrics(self, filename=None, extension='json', verbose=True,
                     overwrite=None, binary_encoding=False):
         """Allows user to save song lyrics from Song object to a .json or .txt file."""
@@ -101,13 +105,14 @@ class Song(object):
 
         # Determine the filename
         if filename:
-            # Remove format suffix if supplied by user
             for ext in ["txt", "TXT", "json", "JSON"]:
                 filename = filename.replace("." + ext, "")
             filename += "." + extension
         else:
-            filename = "Lyrics_{}_{}.{}".format(self.artist.replace(" ", ""), self.title.replace(" ", ""),
+            filename = "Lyrics_{}_{}.{}".format(self.artist.replace(" ", ""),
+                                                self.title.replace(" ", ""),
                                                 extension).lower()
+            filename = self.sanitize_filename(filename)
 
         # Check if file already exists
         write_file = False
