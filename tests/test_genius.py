@@ -84,7 +84,7 @@ class TestArtist(unittest.TestCase):
         for expected_filename in expected_filenames:
             self.assertTrue(os.path.isfile(expected_filename), msg)
 
-        # Test overwriting json file
+        # Test overwriting json file (now that file is written)
         try:
             self.artist.save_lyrics(extension=extension, overwrite=True)
         except:
@@ -108,7 +108,7 @@ class TestArtist(unittest.TestCase):
         for expected_filename in expected_filenames:
             self.assertTrue(os.path.isfile(expected_filename), msg)
 
-        # Test overwriting txt file
+        # Test overwriting txt file (now that file is written)
         try:
             self.artist.save_lyrics(
                 extension=extension, overwrite=True)
@@ -176,8 +176,6 @@ class TestSong(unittest.TestCase):
         filename = expected_filename.split('.')[0]
 
         # Remove the test file if it already exists
-        print(filename)
-        print(expected_filename)
         if os.path.isfile(expected_filename):
             os.remove(expected_filename)
 
@@ -185,7 +183,7 @@ class TestSong(unittest.TestCase):
         self.song.save_lyrics(filename=filename, extension=extension, overwrite=True)
         self.assertTrue(os.path.isfile(expected_filename), msg)
 
-        # Test overwriting json file
+        # Test overwriting json file (now that file is written)
         try:
             self.song.save_lyrics(
                 filename=expected_filename, extension=extension, overwrite=True)
@@ -211,7 +209,7 @@ class TestSong(unittest.TestCase):
                               overwrite=True)
         self.assertTrue(os.path.isfile(expected_filename), msg)
 
-        # Test overwriting txt file
+        # Test overwriting txt file (now that file is written)
         try:
             self.song.save_lyrics(filename=filename,
                                   extension=extension,
