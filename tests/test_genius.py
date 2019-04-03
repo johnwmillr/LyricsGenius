@@ -218,18 +218,18 @@ class TestSong(unittest.TestCase):
             self.fail("Failed {} overwrite test".format(extension))
         os.remove(expected_filename)
 
-    def test_bad_chars_in_filename(self):
-        print("\n")
-        extension = "json"
-        msg = "Could not save {} file.".format(extension)
-        song = genius.search_song("Blessed rainbow", "Ariana Grande")
-        expected_filename = "lyrics_arianagrande_blessedrainbow.json"
+    # def test_bad_chars_in_filename(self):
+    #     print("\n")
+    #     extension = "json"
+    #     msg = "Could not save {} file.".format(extension)
+    #     song = genius.search_song("Blessed rainbow", "Ariana Grande")
+    #     expected_filename = "lyrics_arianagrande_blessedrainbow.json"
 
-        # Remove the test file if it already exists
-        if os.path.isfile(expected_filename):
-            os.remove(expected_filename)
+    #     # Remove the test file if it already exists
+    #     if os.path.isfile(expected_filename):
+    #         os.remove(expected_filename)
 
-        # Test saving txt file
-        song.save_lyrics(extension=extension, overwrite=True)
-        self.assertTrue(os.path.isfile(expected_filename), msg)
-        os.remove(expected_filename)
+    #     # Test saving txt file
+    #     song.save_lyrics(extension=extension, overwrite=True)
+    #     self.assertTrue(os.path.isfile(expected_filename), msg)
+    #     os.remove(expected_filename)
