@@ -11,25 +11,16 @@ Before using this package you'll need to sign up for a (free) account that autho
 ## Installation
 `lyricsgenius` requires Python 3.
 
-Install the package from PyPI using `pip`:
+Use `pip` to install the package from PyPI:
 
 ```bash
 pip install lyricsgenius
 ```
 
-Or, install the latest version from GitHub:
+Or, install the latest version of the package from GitHub:
 
 ```bash
 pip install git+https://github.com/johnwmillr/LyricsGenius.git
-```
-
-Thanks to [hendrimat](https://github.com/hendrimat), the package is also available for Arch Linux via the AUR:
-
-```bash
-curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/python-lyricsgenius.tar.gz
-tar -xvf python-lyricsgenius.tar.gz
-cd python-lyricsgenius
-makepkg -si
 ```
 
 ## Usage
