@@ -174,7 +174,8 @@ class Genius(API):
 
     def _get_item_from_search_response(self, response, type_):
         """ Returns either a Song or Artist result from search_genius_web """
-        for section in response['sections']:
+        sections = sorted(response['sections'], key=lambda sect: sect['type'] == type_, reverse=True)
+        for section in sections:
             hits = [hit for hit in section['hits'] if hit['type'] == type_]
             if hits:
                 return hits[0]['result']
