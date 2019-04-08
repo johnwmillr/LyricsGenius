@@ -16,12 +16,30 @@ class TestEndpoints(unittest.TestCase):
     def setUpClass(cls):
         print("\n---------------------\nSetting up Endpoint tests...\n")
         cls.search_term = "Ezra Furman"
+        cls.song_title_only = "99 Problems"
 
     def test_search_genius_web(self):
         # TODO: test more than just a 200 response
         msg = "Response was None."
         r = genius.search_genius_web(self.search_term)
         self.assertTrue(r is not None, msg)
+
+    def test_search_song(self):
+        # Empty response
+        response = genius.search_song('')
+        self.assertIsNone(response)
+
+        # Exact match exact search
+        response = genius.search_song(self.song_title_only)
+        self.assertTrue(response.title.lower() == self.song_title_only.lower())
+
+        #Spaced out search
+        response = genius.search_song("  \t 99  \t \t\tProblems   ")
+        self.assertTrue(response.title.lower() == self.song_title_only.lower())
+
+        # No title match because of artist
+        response = genius.search_song(self.song_title_only, artist="Drake")
+        self.assertFalse(response.title.lower() == self.song_title_only.lower())
 
 
 class TestArtist(unittest.TestCase):
