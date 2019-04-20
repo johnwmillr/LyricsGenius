@@ -141,11 +141,16 @@ class Genius(API):
 
         # Scrape the song lyrics from the HTML
         html = BeautifulSoup(page.text, "html.parser")
-        lyrics = html.find("div", class_="lyrics").get_text()
+        div = html.find("div", class_="lyrics")
+        if not div:
+            return None # Sometimes the lyrics section isn't found
+
+        # Scrape lyrics if proper section was found on page
+        lyrics = div.get_text()
         if self.remove_section_headers:  # Remove [Verse], [Bridge], etc.
             lyrics = re.sub('(\[.*?\])*', '', lyrics)
             lyrics = re.sub('\n{2}', '\n', lyrics)  # Gaps between verses
-        return lyrics.strip('\n')
+        return lyrics.strip("\n")
 
     def _clean_str(self, s):
         """ Returns a lowercase string with punctuation and bad chars removed
