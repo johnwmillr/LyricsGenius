@@ -161,7 +161,7 @@ class Genius(API):
 
         default_terms = ['track\\s?list', 'album art(work)?', 'liner notes',
                          'booklet', 'credits', 'interview', 'skit',
-                         'instrumental']
+                         'instrumental', 'setlist']
         if self.excluded_terms:
             if self.replace_default_terms:
                 default_terms = self.excluded_terms
@@ -229,10 +229,11 @@ class Genius(API):
 
                 # Reject non-songs (Liner notes, track lists, etc.)
                 if self.skip_non_songs:
-                    song_is_valid = self._result_is_lyrics(result['title'])
+                    valid = self._result_is_lyrics(result['title'])
                 else:
-                    song_is_valid = True
-                if not song_is_valid:
+                    valid = True
+                valid = self._result_is_lyrics(result['title']) if self.skip_non_songs else True
+                if not valid:
                     if self.verbose:
                         print('Specified song does not contain lyrics. Rejecting.')
                     return None
@@ -292,18 +293,15 @@ class Genius(API):
             return None
 
         # Reject non-songs (Liner notes, track lists, etc.)
-        if self.skip_non_songs:
-            song_is_valid = self._result_is_lyrics(result['title'])
-        else:
-            song_is_valid = True
-        if not song_is_valid:
+        valid = self._result_is_lyrics(result['title']) if self.skip_non_songs else True
+        if not valid:
             if self.verbose:
                 print('Specified song does not contain lyrics. Rejecting.')
             return None
 
         # Download full song info (an API call) unless told not to by user
         if get_full_info:
-            song_info = self.get_song(result['id'])['song']
+            song_info = {**result, **self.get_song(result['id'])['song']}.copy()
         else:
             song_info = result
         lyrics = self._scrape_song_lyrics_from_url(song_info['url'])
@@ -368,10 +366,10 @@ class Genius(API):
                 # Check if song is valid (e.g. has title, contains lyrics)
                 has_title = ('title' in song_info)
                 has_lyrics = self._result_is_lyrics(song_info['title'])
-                song_is_valid = has_title and (has_lyrics or (not self.skip_non_songs))
+                valid = has_title and (has_lyrics or (not self.skip_non_songs))
 
                 # Reject non-song results (e.g. Linear Notes, Tracklists, etc.)
-                if not song_is_valid:
+                if not valid:
                     if self.verbose:
                         s = song_info['title'] if has_title else "MISSING TITLE"
                         print('"{s}" is not valid. Skipping.'.format(s=s))
