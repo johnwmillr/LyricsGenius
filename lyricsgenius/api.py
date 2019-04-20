@@ -224,10 +224,9 @@ class Genius(API):
             return None
 
         # Download full song info (an API call) unless told not to by user
+        song_info = result.copy()
         if get_full_info:
-            song_info = {**result, **self.get_song(result['id'])['song']}.copy()
-        else:
-            song_info = result
+            song_info.update(self.get_song(result['id'])['song'])
         lyrics = self._scrape_song_lyrics_from_url(song_info['url'])
 
         # Skip results when URL is a 404 or lyrics are missing
