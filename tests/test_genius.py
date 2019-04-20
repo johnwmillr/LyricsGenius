@@ -53,11 +53,6 @@ class TestArtist(unittest.TestCase):
         cls.artist = genius.search_artist(
             cls.artist_name, max_songs=cls.max_songs)
 
-    def sanitize_filename(f):
-        keepchars = (" ", ".", "_")
-        s = "".join(c for c in f if c.isalnum() or c in keepchars).rstrip()
-        return s
-
     def test_artist(self):
         msg = "The returned object is not an instance of the Artist class."
         self.assertIsInstance(self.artist, Artist, msg)
@@ -82,7 +77,7 @@ class TestArtist(unittest.TestCase):
             fn = "lyrics_{name}_{song}.{ext}".format(name=self.artist.name,
                                                      song=song.title,
                                                      ext=extension)
-            fn = song.sanitize_filename(fn.lower().replace(" ", ""))
+            fn = song._sanitize_filename(fn.lower().replace(" ", ""))
             expected_filenames.append(fn)
         return expected_filenames
 
