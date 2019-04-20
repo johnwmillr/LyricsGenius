@@ -320,8 +320,8 @@ class Genius(API):
             print('Done.')
         return song
 
-    def search_artist(self, artist_name, max_songs=None, sort='title',
-                      per_page=20, get_full_info=True):
+    def search_artist(self, artist_name, max_songs=None,
+                      sort='popularity', per_page=20, get_full_info=True):
         """Search Genius.com for songs by the specified artist.
         Returns an Artist object containing artist's songs.
         :param artist_name: Name of the artist to search for
