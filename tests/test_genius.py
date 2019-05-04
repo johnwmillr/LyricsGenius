@@ -57,6 +57,12 @@ class TestArtist(unittest.TestCase):
         msg = "The returned object is not an instance of the Artist class."
         self.assertIsInstance(self.artist, Artist, msg)
 
+    def test_correct_artist_name(self):
+        msg = "Returned artist name does not match searched artist."
+        name = "Queen"
+        result = genius.search_artist(name, max_songs=1).name
+        self.assertEqual(name, result, msg)
+
     def test_name(self):
         msg = "The artist object name does not match the requested artist name."
         self.assertEqual(self.artist.name, self.artist_name, msg)
