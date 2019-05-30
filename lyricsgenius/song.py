@@ -67,7 +67,7 @@ class Song(object):
     def featured_artists(self):
         return self._body.get('featured_artists')
 
-    @Property
+    @property
     def producer_artists(self):
       return self.__body.get('producer_artists')
 
