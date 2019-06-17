@@ -68,6 +68,10 @@ class Song(object):
         return self._body.get('featured_artists')
 
     @property
+    def producer_artists(self):
+      return self._body.get('producer_artists')
+
+    @property
     def media(self):
         return self._body.get('media')
 
