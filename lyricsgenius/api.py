@@ -108,8 +108,7 @@ class API(object):
 
     def get_referents(self, song_id):
         """ Get song's referents"""
-        endpoint = "referents?song_id={id}".format(song_id)
-        print(endpoint)
+        endpoint = "referents?song_id={id}".format(id=song_id)
         return self._make_request(endpoint)
 
 
@@ -386,14 +385,12 @@ class Genius(API):
         elapsed = (time.time() - start) / 60 / 60
         print("Time elapsed: {t} hours".format(t=elapsed))
 
-    def get_annotations(self, song_id):
-        referents = self.get_referents(song_id)
-        print("LEN REFERENTS = " + str(len(referents)))
-        return []
-        """
-        To get referents : referents?song_id=id
+    def get_song_annotations_id(self, song_id):
+        referents = self.get_referents(song_id)["referents"]
+        annotations = []
+        for r in referents:
+            for a in r["annotations"]:
+                annotations.append(a["id"])
+        return annotations
 
-        From the returned JSON we have array of referents in ["response"]["referents"]
-
-        From a referent we have annotations id in ["annotations"][annotation_indice]["id"]
-        """
+    
