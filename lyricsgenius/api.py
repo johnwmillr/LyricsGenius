@@ -17,8 +17,8 @@ from bs4 import BeautifulSoup
 from string import punctuation
 import time
 
-from lyricsgenius.song import Song
-from lyricsgenius.artist import Artist
+from song import Song
+from artist import Artist
 
 
 class API(object):
@@ -104,6 +104,12 @@ class API(object):
     def get_annotation(self, id_):
         """Data for a specific annotation."""
         endpoint = "annotations/{id}".format(id=id_)
+        return self._make_request(endpoint)
+
+    def get_referents(self, song_id):
+        """ Get song's referents"""
+        endpoint = "referents?song_id={id}".format(song_id)
+        print(endpoint)
         return self._make_request(endpoint)
 
 
@@ -379,3 +385,15 @@ class Genius(API):
         shutil.rmtree(tmp_dir)
         elapsed = (time.time() - start) / 60 / 60
         print("Time elapsed: {t} hours".format(t=elapsed))
+
+    def get_annotations(self, song_id):
+        referents = self.get_referents(song_id)
+        print("LEN REFERENTS = " + str(len(referents)))
+        return []
+        """
+        To get referents : referents?song_id=id
+
+        From the returned JSON we have array of referents in ["response"]["referents"]
+
+        From a referent we have annotations id in ["annotations"][annotation_indice]["id"]
+        """
