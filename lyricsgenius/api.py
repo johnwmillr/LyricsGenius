@@ -111,6 +111,18 @@ class API(object):
         endpoint = "referents?song_id={id}".format(id=song_id)
         return self._make_request(endpoint)
 
+    def get_song_annotations(self, song_id):
+        """Return song's annotations with associated fragment in list of tuple."""
+        referents = self.get_referents(song_id)["referents"]
+        all_annotations = [] # list of tuples(fragment, annotations[])
+        for r in referents:
+            fragment = r["fragment"]
+            annotations = []
+            for a in r["annotations"]:
+                annotations.append(a["body"]["plain"])
+            all_annotations.append((fragment, annotations))
+        return all_annotations
+
 
 class Genius(API):
     """User-level interface with the Genius.com API."""
@@ -385,12 +397,3 @@ class Genius(API):
         elapsed = (time.time() - start) / 60 / 60
         print("Time elapsed: {t} hours".format(t=elapsed))
 
-    def get_song_annotations_id(self, song_id):
-        referents = self.get_referents(song_id)["referents"]
-        annotations = []
-        for r in referents:
-            for a in r["annotations"]:
-                annotations.append(a["id"])
-        return annotations
-
-    
