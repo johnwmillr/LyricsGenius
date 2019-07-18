@@ -25,16 +25,22 @@ class TestEndpoints(unittest.TestCase):
         self.assertTrue(r is not None, msg)
 
     def test_search_song(self):
+        artist = "Jay-Z"
+        drake_song = "All Me"
         # Empty response
         response = genius.search_song('')
         self.assertIsNone(response)
 
         # Exact match exact search
         response = genius.search_song(self.song_title_only)
+        self.assertTrue(response.title.lower() == drake_song.lower()) # Drake gets returned
+
+        # Song with artist name
+        response = genius.search_song(self.song_title_only, artist)
         self.assertTrue(response.title.lower() == self.song_title_only.lower())
 
-        #Spaced out search
-        response = genius.search_song("  \t 99  \t \t\tProblems   ")
+        # Spaced out search
+        response = genius.search_song("  \t 99  \t \t\tProblems   ", artist)
         self.assertTrue(response.title.lower() == self.song_title_only.lower())
 
         # No title match because of artist
@@ -56,6 +62,12 @@ class TestArtist(unittest.TestCase):
     def test_artist(self):
         msg = "The returned object is not an instance of the Artist class."
         self.assertIsInstance(self.artist, Artist, msg)
+
+    def test_correct_artist_name(self):
+        msg = "Returned artist name does not match searched artist."
+        name = "Queen"
+        result = genius.search_artist(name, max_songs=1).name
+        self.assertEqual(name, result, msg)
 
     def test_name(self):
         msg = "The artist object name does not match the requested artist name."
