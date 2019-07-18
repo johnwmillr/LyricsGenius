@@ -25,16 +25,22 @@ class TestEndpoints(unittest.TestCase):
         self.assertTrue(r is not None, msg)
 
     def test_search_song(self):
+        artist = "Jay-Z"
+        drake_song = "All Me"
         # Empty response
         response = genius.search_song('')
         self.assertIsNone(response)
 
         # Exact match exact search
         response = genius.search_song(self.song_title_only)
+        self.assertTrue(response.title.lower() == drake_song.lower()) # Drake gets returned
+
+        # Song with artist name
+        response = genius.search_song(self.song_title_only, artist)
         self.assertTrue(response.title.lower() == self.song_title_only.lower())
 
-        #Spaced out search
-        response = genius.search_song("  \t 99  \t \t\tProblems   ")
+        # Spaced out search
+        response = genius.search_song("  \t 99  \t \t\tProblems   ", artist)
         self.assertTrue(response.title.lower() == self.song_title_only.lower())
 
         # No title match because of artist
