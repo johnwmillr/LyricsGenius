@@ -193,6 +193,10 @@ class TestSong(unittest.TestCase):
         msg = "Did not reject a false-song."
         self.assertFalse(genius._result_is_lyrics('Beatles Tracklist'), msg)
 
+    def test_producer_artists(self):
+        msg = "Producer artist should be 'Andy Shauf'."
+        self.assertEqual(self.song.producer_artists[0]["name"], "Andy Shauf")
+
     def test_saving_json_file(self):
         print('\n')
         extension = 'json'
