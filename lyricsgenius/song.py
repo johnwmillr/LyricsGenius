@@ -140,7 +140,7 @@ class Song(object):
 
         # Write the lyrics to either a .json or .txt file
         if write_file:
-            with open(filename, 'wb' if binary_encoding else 'w') as lyrics_file:
+            with open(filename, 'wb' if binary_encoding else 'w', encoding='utf-8') as lyrics_file:
                 if extension == 'json':
                     json.dump(lyrics_to_write, lyrics_file)
                 else:

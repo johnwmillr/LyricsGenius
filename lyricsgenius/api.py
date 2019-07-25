@@ -391,8 +391,8 @@ class Genius(API):
                 all_lyrics['artists'][-1] = artist.save_lyrics(overwrite=True)
 
         # Save all of the lyrics
-        with open(filename + '.json', 'w') as outfile:
-            json.dump(all_lyrics, outfile)
+        with open(filename + '.json', 'w', encoding='utf-8') as outfile:
+            json.dump(all_lyrics, outfile, ensure_ascii=False)
 
         # Delete the temporary directory
         shutil.rmtree(tmp_dir)
