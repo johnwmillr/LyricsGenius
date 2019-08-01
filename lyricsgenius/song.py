@@ -142,7 +142,7 @@ class Song(object):
         if write_file:
             with open(filename, 'wb' if binary_encoding else 'w', encoding='utf-8') as lyrics_file:
                 if extension == 'json':
-                    json.dump(lyrics_to_write, lyrics_file)
+                    json.dump(lyrics_to_write, lyrics_file, ensure_ascii=False)
                 else:
                     lyrics_file.write(lyrics_to_write)
             if verbose:
