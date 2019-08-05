@@ -41,6 +41,35 @@ class TestEndpoints(unittest.TestCase):
         response = genius.search_song(self.song_title_only, artist="Drake")
         self.assertFalse(response.title.lower() == self.song_title_only.lower())
 
+    def test_get_referents_web_page(self):
+        msg = "Returned referent API path is different than expected."
+        id_ = 10347
+        r = genius.get_referents(web_page_id=id_)
+        real = r['referents'][0]['api_path']
+        expected = '/referents/11828416'
+        self.assertTrue(real == expected, msg)
+
+    def test_get_referents_invalid_input(self):
+        msg = "Method should prevent inputs for both song and web_pag ID."
+        with self.assertRaises(AssertionError):
+            genius.get_referents(song_id=1, web_page_id=1)
+
+    def test_get_referents_no_inputs(self):
+        msg = "Must supply `song_id`, `web_page_id`, or `created_by_id`."
+        with self.assertRaises(AssertionError):
+            genius.get_referents()
+
+    def test_get_annotation(self):
+        msg = "Returned annotation API path is different than expected."
+        id_ = 10225840
+        r = genius.get_annotation(id_)
+        real = r['annotation']['api_path']
+        expected = '/annotations/10225840'
+        self.assertTrue(real == expected, msg)
+
+    def test_get_annotations(self):
+        pass
+
 
 class TestArtist(unittest.TestCase):
 

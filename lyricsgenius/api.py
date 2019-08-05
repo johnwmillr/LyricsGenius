@@ -84,6 +84,39 @@ class API(object):
         params = {'sort': sort, 'per_page': per_page, 'page': page}
         return self._make_request(endpoint, params_=params)
 
+    def get_referents(self, song_id=None, web_page_id=None, created_by_id=None,
+                      text_format='plain', per_page=20, page=1):
+        """Get song's referents"""
+        msg = "Must supply `song_id`, `web_page_id`, or `created_by_id`."
+        assert any([song_id, web_page_id, created_by_id]), msg
+        if song_id or web_page_id:
+            msg = "Pass only one of `song_id` and `web_page_id`, not both."
+            assert bool(song_id) ^ bool(web_page_id), msg
+
+        # Construct the URI
+        endpoint = "referents?"
+        params = {'song_id': song_id, 'web_page_id': web_page_id,
+                  'created_by_id': created_by_id, 'text_format': text_format,
+                  'per_page': per_page, 'page':page}
+        return self._make_request(endpoint, params_=params)
+
+    def get_annotation(self, id_):
+        """Data for a specific annotation."""
+        endpoint = "annotations/{id}".format(id=id_)
+        return self._make_request(endpoint)
+
+    def get_song_annotations(self, song_id):
+        """Return song's annotations with associated fragment in list of tuple."""
+        referents = self.get_referents(song_id)["referents"]
+        all_annotations = [] # list of tuples(fragment, annotations[])
+        for r in referents:
+            fragment = r["fragment"]
+            annotations = []
+            for a in r["annotations"]:
+                annotations.append(a["body"]["plain"])
+            all_annotations.append((fragment, annotations))
+        return all_annotations
+
     def search_genius(self, search_term):
         """Search documents hosted on Genius."""
         endpoint = "search/"
@@ -100,28 +133,6 @@ class API(object):
         response = requests.get(url, timeout=self.timeout)
         time.sleep(max(self._SLEEP_MIN, self.sleep_time))
         return response.json()['response'] if response else None
-
-    def get_annotation(self, id_):
-        """Data for a specific annotation."""
-        endpoint = "annotations/{id}".format(id=id_)
-        return self._make_request(endpoint)
-
-    def get_referents(self, song_id):
-        """ Get song's referents"""
-        endpoint = "referents?song_id={id}".format(id=song_id)
-        return self._make_request(endpoint)
-
-    def get_song_annotations(self, song_id):
-        """Return song's annotations with associated fragment in list of tuple."""
-        referents = self.get_referents(song_id)["referents"]
-        all_annotations = [] # list of tuples(fragment, annotations[])
-        for r in referents:
-            fragment = r["fragment"]
-            annotations = []
-            for a in r["annotations"]:
-                annotations.append(a["body"]["plain"])
-            all_annotations.append((fragment, annotations))
-        return all_annotations
 
 
 class Genius(API):
