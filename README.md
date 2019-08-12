@@ -83,6 +83,7 @@ python3 -m lyricsgenius artist "The Beatles" --max-songs 5 --save
 ## Example projects
 
   - [Trucks and Beer: A textual analysis of popular country music](http://www.johnwmillr.com/trucks-and-beer/)
+  - [Neural machine translation: Explaining the Meaning Behind Lyrics](https://github.com/tsandefer/dsi_capstone_3)
   - [What makes some blink-182 songs more popular than others?](http://jdaytn.com/posts/download-blink-182-data/)
   - [Sentiment analysis on hip-hop lyrics](https://github.com/Hugo-Nattagh/2017-Hip-Hop)
   - [Does Country Music Drink More Than Other Genres?](https://towardsdatascience.com/does-country-music-drink-more-than-other-genres-a21db901940b)
