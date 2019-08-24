@@ -65,10 +65,15 @@ class TestEndpoints(unittest.TestCase):
         r = genius.get_annotation(id_)
         real = r['annotation']['api_path']
         expected = '/annotations/10225840'
-        self.assertTrue(real == expected, msg)
+        self.assertEqual(real, expected, msg)
 
-    def test_get_annotations(self):
-        pass
+    def test_get_song_annotations(self):
+        msg = "Incorrect song annotation response."
+        id_ = 1
+        r = sorted(genius.get_song_annotations(1))
+        real = r[0][0]
+        expected = "And I’ma keep ya fresh"
+        self.assertEqual(real, expected, msg)
 
 
 class TestArtist(unittest.TestCase):
