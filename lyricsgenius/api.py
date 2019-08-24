@@ -204,6 +204,14 @@ class Genius(API):
 
     def _get_item_from_search_response(self, response, type_):
         """ Returns either a Song or Artist result from search_genius_web """
+        # Convert list to dictionary
+        hits = response['sections'][0]['hits']
+        if hits:
+            tophit = hits[0]
+            if tophit['type'] == type_:
+                return tophit['result']
+
+        # Check rest of results if top hit wasn't the search type
         sections = sorted(response['sections'],
                           key=lambda sect: sect['type'] == type_,
                           reverse=True)
@@ -227,7 +235,6 @@ class Genius(API):
         :param artist: Name of the artist
         :param get_full_info: Get full info for each song (slower)
         """
-
         # Search the Genius API for the specified song
         if self.verbose:
             if artist:
@@ -272,7 +279,10 @@ class Genius(API):
         return song
 
     def search_artist(self, artist_name, max_songs=None,
-                      sort='popularity', per_page=20, get_full_info=True):
+                      sort='popularity', per_page=20,
+                      get_full_info=True,
+                      allow_name_change=True,
+                      artist_id=None):
         """Search Genius.com for songs by the specified artist.
         Returns an Artist object containing artist's songs.
         :param artist_name: Name of the artist to search for
@@ -280,27 +290,36 @@ class Genius(API):
         :param sort: Sort by 'title' or 'popularity'
         :param per_page: Number of results to return per search page
         :param get_full_info: Get full info for each song (slower)
+        :param allow_name_change: (bool) If True, search attempts to
+                                  switch to intended artist name.
+        :param artist_id: Allows user to pass a Genius.com artist ID.
         """
-
-        if self.verbose:
-            print('Searching for songs by {0}...\n'.format(artist_name))
-
-        # Perform a Genius API search for the artist
-        found_artist = None
-        response = self.search_genius_web(artist_name)
-        found_artist = self._get_item_from_search_response(response, type_="artist")
-
-        # Exit the search if we couldn't find an artist by the given name
-        if not found_artist:
+        def find_artist_id(search_term):
             if self.verbose:
-                print("No results found for '{a}'.".format(a=artist_name))
+                print('Searching for songs by {0}...\n'.format(search_term))
+
+            # Perform a Genius API search for the artist
+            found_artist = None
+            response = self.search_genius_web(search_term)
+            found_artist = self._get_item_from_search_response(response, type_="artist")
+
+            # Exit the search if we couldn't find an artist by the given name
+            if not found_artist:
+                if self.verbose:
+                    print("No results found for '{a}'.".format(a=search_term))
+                return None
+
+            # Assume the top search result is the intended artist
+            return found_artist['id']
+
+        # Get the artist ID (or use the one supplied)
+        artist_id = artist_id if artist_id else find_artist_id(artist_name)
+        if artist_id == None:
             return None
 
-        # Assume the top search result is the intended artist
-        artist_id = found_artist['id']
         artist_info = self.get_artist(artist_id)
         found_name = artist_info['artist']['name']
-        if found_name != artist_name:
+        if found_name != artist_name and allow_name_change:
             if self.verbose:
                 print("Changing artist name to '{a}'".format(a=found_name))
             artist_name = found_name
