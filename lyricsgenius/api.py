@@ -47,13 +47,10 @@ class API(object):
         self.timeout = timeout
         self.sleep_time = sleep_time
 
-    def _make_request(self, path, method='GET', params_=None):
+    def _make_request(self, path, method='GET', params_={}):
         """Make a request to the API"""
         uri = self.api_root + path
-        if params_:
-            params_['text_format'] = self.response_format
-        else:
-            params_ = {'text_format': self.response_format}
+        params_['text_format'] = self.response_format
 
         # Make the request
         response = None
@@ -84,8 +81,8 @@ class API(object):
         params = {'sort': sort, 'per_page': per_page, 'page': page}
         return self._make_request(endpoint, params_=params)
 
-    def get_referents(self, song_id=None, web_page_id=None, created_by_id=None,
-                      text_format='plain', per_page=20, page=1):
+    def get_referents(self, song_id=None, web_page_id=None,
+                      created_by_id=None, per_page=20, page=1):
         """Get song's referents"""
         msg = "Must supply `song_id`, `web_page_id`, or `created_by_id`."
         assert any([song_id, web_page_id, created_by_id]), msg
@@ -96,7 +93,7 @@ class API(object):
         # Construct the URI
         endpoint = "referents?"
         params = {'song_id': song_id, 'web_page_id': web_page_id,
-                  'created_by_id': created_by_id, 'text_format': text_format,
+                  'created_by_id': created_by_id,
                   'per_page': per_page, 'page':page}
         return self._make_request(endpoint, params_=params)
 
@@ -107,7 +104,7 @@ class API(object):
 
     def get_song_annotations(self, song_id):
         """Return song's annotations with associated fragment in list of tuple."""
-        referents = self.get_referents(song_id)["referents"]
+        referents = self.get_referents(song_id=song_id)["referents"]
         all_annotations = [] # list of tuples(fragment, annotations[])
         for r in referents:
             fragment = r["fragment"]
