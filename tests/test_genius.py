@@ -3,6 +3,9 @@ import unittest
 from lyricsgenius.api import Genius
 from lyricsgenius.song import Song
 from lyricsgenius.artist import Artist
+import vcr
+import sys
+sys.path.append('..')
 
 # Import client access token from environment variable
 client_access_token = os.environ.get("GENIUS_CLIENT_ACCESS_TOKEN", None)
@@ -18,12 +21,14 @@ class TestEndpoints(unittest.TestCase):
         cls.search_term = "Ezra Furman"
         cls.song_title_only = "99 Problems"
 
+    @vcr.use_cassette()
     def test_search_genius_web(self):
         # TODO: test more than just a 200 response
         msg = "Response was None."
         r = genius.search_genius_web(self.search_term)
         self.assertTrue(r is not None, msg)
 
+    @vcr.use_cassette()
     def test_search_song(self):
         artist = "Jay-Z"
         drake_song = "All Me"
@@ -47,6 +52,7 @@ class TestEndpoints(unittest.TestCase):
         response = genius.search_song(self.song_title_only, artist="Drake")
         self.assertFalse(response.title.lower() == self.song_title_only.lower())
 
+    @vcr.use_cassette()
     def test_get_referents_web_page(self):
         msg = "Returned referent API path is different than expected."
         id_ = 10347
@@ -65,6 +71,7 @@ class TestEndpoints(unittest.TestCase):
         with self.assertRaises(AssertionError):
             genius.get_referents()
 
+    @vcr.use_cassette()
     def test_get_annotation(self):
         msg = "Returned annotation API path is different than expected."
         id_ = 10225840
@@ -73,10 +80,11 @@ class TestEndpoints(unittest.TestCase):
         expected = '/annotations/10225840'
         self.assertEqual(real, expected, msg)
 
+    @vcr.use_cassette()
     def test_get_song_annotations(self):
         msg = "Incorrect song annotation response."
         id_ = 1
-        r = sorted(genius.get_song_annotations(1))
+        r = sorted(genius.get_song_annotations(id_))
         real = r[0][0]
         expected = "And I’ma keep ya fresh"
         self.assertEqual(real, expected, msg)
@@ -85,6 +93,7 @@ class TestEndpoints(unittest.TestCase):
 class TestArtist(unittest.TestCase):
 
     @classmethod
+    @vcr.use_cassette()
     def setUpClass(cls):
         print("\n---------------------\nSetting up Artist tests...\n")
         cls.artist_name = "The Beatles"
@@ -97,6 +106,7 @@ class TestArtist(unittest.TestCase):
         msg = "The returned object is not an instance of the Artist class."
         self.assertIsInstance(self.artist, Artist, msg)
 
+    @vcr.use_cassette()
     def test_correct_artist_name(self):
         msg = "Returned artist name does not match searched artist."
         name = "Queen"
@@ -107,11 +117,13 @@ class TestArtist(unittest.TestCase):
         msg = "The artist object name does not match the requested artist name."
         self.assertEqual(self.artist.name, self.artist_name, msg)
 
+    @vcr.use_cassette()
     def test_add_song_from_same_artist(self):
         msg = "The new song was not added to the artist object."
         self.artist.add_song(genius.search_song(self.new_song, self.artist_name))
         self.assertEqual(self.artist.num_songs, self.max_songs+1, msg)
 
+    @vcr.use_cassette()
     def test_add_song_from_different_artist(self):
         msg = "A song from a different artist was incorrectly allowed to be added."
         self.artist.add_song(genius.search_song("These Days", "Jackson Browne"))
@@ -180,6 +192,7 @@ class TestArtist(unittest.TestCase):
 class TestSong(unittest.TestCase):
 
     @classmethod
+    @vcr.use_cassette()
     def setUpClass(cls):
         print("\n---------------------\nSetting up Song tests...\n")
         cls.artist_name = 'Andy Shauf'

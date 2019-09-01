@@ -24,3 +24,10 @@ __pycache__
 dist
 build
 .idea
+
+# VCR cache files
+test_get_annotation
+test_get_referents_web_page
+test_get_song_annotations
+test_search_genius_web
+test_search_song
