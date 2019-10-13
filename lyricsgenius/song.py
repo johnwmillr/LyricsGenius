@@ -102,7 +102,7 @@ class Song(object):
         return "".join(c for c in f if c.isalnum() or c in keepchars).rstrip()
 
     def save_lyrics(self, filename=None, extension='json', verbose=True,
-                    overwrite=None, binary_encoding=False):
+                    overwrite=None, binary_encoding=False, ensure_ascii=True):
         """Allows user to save song lyrics from Song object to a .json or .txt file."""
         extension = extension.lstrip(".")
         assert (extension == 'json') or (extension == 'txt'), "format_ must be JSON or TXT"
@@ -142,7 +142,7 @@ class Song(object):
         if write_file:
             with open(filename, 'wb' if binary_encoding else 'w') as lyrics_file:
                 if extension == 'json':
-                    json.dump(lyrics_to_write, lyrics_file)
+                    json.dump(lyrics_to_write, lyrics_file, ensure_ascii=ensure_ascii)
                 else:
                     lyrics_file.write(lyrics_to_write)
             if verbose:
