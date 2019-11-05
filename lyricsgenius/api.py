@@ -205,7 +205,9 @@ class Genius(API):
     def _get_item_from_search_response(self, response, type_):
         """ Returns either a Song or Artist result from search_genius_web """
         # Convert list to dictionary
+        from pprint import pprint
         hits = response['sections'][0]['hits']
+        #pprint(hits)
         if hits:
             tophit = hits[0]
             if tophit['type'] == type_:
@@ -215,6 +217,7 @@ class Genius(API):
         sections = sorted(response['sections'],
                           key=lambda sect: sect['type'] == type_,
                           reverse=True)
+        #pprint(sections)
         for section in sections:
             hits = [hit for hit in section['hits'] if hit['type'] == type_]
             if hits:
@@ -272,7 +275,7 @@ class Genius(API):
                 print('Specified song does not have a valid URL with lyrics. Rejecting.')
             return None
 
-        # Return a Song object with lyrics if we've made it this far
+        # Return a Song object with lyrics if we've made it this far 
         song = Song(song_info, lyrics)
         if self.verbose:
             print('Done.')
@@ -282,7 +285,8 @@ class Genius(API):
                       sort='popularity', per_page=20,
                       get_full_info=True,
                       allow_name_change=True,
-                      artist_id=None):
+                      artist_id=None,
+                      include_features=False):
         """Search Genius.com for songs by the specified artist.
         Returns an Artist object containing artist's songs.
         :param artist_name: Name of the artist to search for
@@ -356,7 +360,7 @@ class Genius(API):
                 song = Song(info, lyrics)
 
                 # Attempt to add the Song to the Artist
-                result = artist.add_song(song, verbose=False)
+                result = artist.add_song(song, verbose=False, include_features=include_features)
                 if result == 0 and self.verbose:
                     print('Song {n}: "{t}"'.format(n=artist.num_songs,
                                                    t=song.title))
