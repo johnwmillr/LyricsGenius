@@ -2,6 +2,7 @@
 # Copyright 2018 John W. Miller
 # See LICENSE for details.
 
+import os
 import json
 from lyricsgenius.utils import sanitize_filename
 
