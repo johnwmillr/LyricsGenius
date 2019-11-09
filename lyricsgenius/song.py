@@ -5,6 +5,7 @@
 import json
 import os
 from filecmp import cmp
+from lyricsgenius.utils import sanitize_filename
 
 
 class Song(object):
@@ -97,10 +98,6 @@ class Song(object):
                      'lyrics': self.lyrics,
                      'image': self.song_art_image_url})
 
-    def _sanitize_filename(self, f):
-        keepchars = (" ", ".", "_")
-        return "".join(c for c in f if c.isalnum() or c in keepchars).rstrip()
-
     def to_json(self,
                 filename=None,
                 full_data=True,
@@ -124,7 +121,7 @@ class Song(object):
             return json.dumps(data, indent=1)
 
         # Save Song object to a json file
-        filename = self._sanitize_filename(filename) if sanitize else filename
+        filename = sanitize_filename(filename) if sanitize else filename
         with open(filename, 'w') as ff:
             json.dump(data, ff, indent=1)
         return None
@@ -151,7 +148,7 @@ class Song(object):
             return data
 
         # Save song lyrics to a text file
-        filename = self._sanitize_filename(filename) if sanitize else filename
+        filename = sanitize_filename(filename) if sanitize else filename
         with open(filename, 'wb' if binary_encoding else 'w') as ff:
             if binary_encoding:
                 data = data.encode('utf8')
@@ -164,6 +161,7 @@ class Song(object):
                     overwrite=None,
                     binary_encoding=False,
                     full_data=True,
+                    sanitize=True,
                     verbose=True):
         """Save Song lyrics and metadata to a JSON or TXT file."""
         extension = extension.lstrip(".").lower()
@@ -178,7 +176,7 @@ class Song(object):
             filename = "Lyrics_{}_{}.{}".format(self.artist.replace(" ", ""),
                                                 self.title.replace(" ", ""),
                                                 extension).lower()
-        filename = self._sanitize_filename(filename)
+        filename = sanitize_filename(filename) if sanitize else filename
 
         # Check if file already exists
         write_file = False
