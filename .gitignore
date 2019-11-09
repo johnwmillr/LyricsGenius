@@ -11,6 +11,7 @@
 # Jupyter
 /Notebooks
 .ipynb_checkpoints/
+*.ipynb
 
 # Test files
 .cache/
