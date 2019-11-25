@@ -205,9 +205,7 @@ class Genius(API):
     def _get_item_from_search_response(self, response, type_):
         """ Returns either a Song or Artist result from search_genius_web """
         # Convert list to dictionary
-        from pprint import pprint
         hits = response['sections'][0]['hits']
-        #pprint(hits)
         if hits:
             tophit = hits[0]
             if tophit['type'] == type_:
@@ -217,7 +215,6 @@ class Genius(API):
         sections = sorted(response['sections'],
                           key=lambda sect: sect['type'] == type_,
                           reverse=True)
-        #pprint(sections)
         for section in sections:
             hits = [hit for hit in section['hits'] if hit['type'] == type_]
             if hits:
