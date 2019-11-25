@@ -32,8 +32,14 @@ class TestEndpoints(unittest.TestCase):
         self.assertIsNone(response)
 
         # Exact match exact search
+        print('here', self.song_title_only)
+        response = genius.search_song("Post Malone (feat. RANI)", "Sam Feldt")
+        print(response)
+        response = genius.search_song('Rocket Man (I Think It’s Going to Be a Long, Long Time)')
+        print(response)
         response = genius.search_song(self.song_title_only)
-        self.assertTrue(response.title.lower() == drake_song.lower()) # Drake gets returned
+        print(response)
+        self.assertTrue(response.title.lower() == self.song_title_only.lower()) # Drake gets returned
 
         # Song with artist name
         response = genius.search_song(self.song_title_only, artist)
