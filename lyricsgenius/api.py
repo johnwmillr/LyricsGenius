@@ -217,8 +217,8 @@ class Genius(API):
         for hit in hits:
             if hit['result'][result_type] == search_term:
                 return hit['result']
-        if hits:
-            return hits[0]['result']
+        
+        return hits[0]['result'] if hits else None
 
 
     def _result_is_match(self, result, title, artist=None):
