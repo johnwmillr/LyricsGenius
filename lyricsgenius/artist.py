@@ -2,6 +2,10 @@
 # Copyright 2018 John W. Miller
 # See LICENSE for details.
 
+import os
+import json
+from lyricsgenius.utils import sanitize_filename
+
 
 class Artist(object):
     """An artist with songs from the Genius.com database."""
@@ -28,7 +32,7 @@ class Artist(object):
         self._songs_dropped = 0
 
     def __len__(self):
-        return 1
+        return len(self._songs)
 
     @property
     def name(self):
@@ -71,16 +75,102 @@ class Artist(object):
         # self.add_song(song)
         # return
 
-    # TODO: define an export_to_json() method
+    def to_json(self,
+                filename=None,
+                sanitize=True):
+        """
+        Convert the Song object to a json string.
+        INPUT
+        :filename: Output filename, string. If not specified, the
+                   result is returned as a string.
+        :sanitize: Sanitizes the filename if True.
 
-    def save_lyrics(self, extension='json', overwrite=False,
-                    verbose=True, binary_encoding=False):
-        """Allows user to save all lyrics within an Artist object"""
-        extension = extension.lstrip(".")
-        assert (extension == 'json') or (extension == 'txt'), "format_ must be JSON or TXT"
+        OUTPUT
+            If `filename` is None, returns the lyrics as
+            a plain string. Otherwise None.
+        """
+        data = self._body
+        data['songs'] = [song._body for song in self.songs]
 
-        for song in self.songs:
-            song.save_lyrics(extension=extension, overwrite=overwrite, verbose=verbose, binary_encoding=binary_encoding)
+        # Return the json string if no output path was specified
+        if not filename:
+            return json.dumps(data, indent=1)
+
+        # Save Song object to a json file
+        filename = sanitize_filename(filename) if sanitize else filename
+        with open(filename, 'w') as ff:
+            json.dump(data, ff, indent=1)
+        return None
+
+    def to_text(self,
+                filename=None,
+                binary_encoding=False,
+                sanitize=True):
+        """
+        Convert all song lyrics to a single string.
+        INPUT
+        :filename: Output filename, string. If not specified, the
+                   result is returned as a string.
+        :binary_encoding: Enable binary encoding of text data.
+        :sanitize: Sanitizes the filename if True.
+
+        OUTPUT
+            If `filename` is None, returns the lyrics as
+            a plain string. Otherwise None.
+        """
+        data = ' '.join(song.lyrics for song in self.songs)
+
+        # Return the lyrics as a string if no `filename` was specified
+        if not filename:
+            return data
+
+        # Save song lyrics to a text file
+        filename = sanitize_filename(filename) if sanitize else filename
+        with open(filename, 'wb' if binary_encoding else 'w') as ff:
+            if binary_encoding:
+                data = data.encode('utf8')
+            ff.write(data)
+        return None
+
+    def save_lyrics(self,
+                    filename=None,
+                    extension='json',
+                    overwrite=False,
+                    binary_encoding=False,
+                    sanitize=True,
+                    verbose=True):
+        """Saves all lyrics within an Artist object to a single file."""
+        extension = extension.lstrip(".").lower()
+        assert (extension == 'json') or (extension == 'txt'), "extension must be JSON or TXT"
+
+        # Determine the filename
+        if not filename:
+            filename = 'Lyrics_' + self.name.replace(' ', '') + '.' + extension
+        filename = sanitize_filename(filename) if sanitize else filename
+
+        # Check if file already exists
+        write_file = False
+        if overwrite or not os.path.isfile(filename):
+            write_file = True
+        elif verbose:
+            if input("{} already exists. Overwrite?\n(y/n): ".format(filename)).lower() == 'y':
+                write_file = True
+
+        # Exit if we won't be saving a file
+        if not write_file:
+            if verbose:
+                print('Skipping file save.\n')
+            return
+
+        # Save the lyrics to a file
+        if extension == 'json':
+            self.to_json(filename)
+        else:
+            self.to_text(filename, binary_encoding=binary_encoding)
+
+        if verbose:
+            print('Wrote `{}`'.format(filename))
+        return None
 
     def __str__(self):
         """Return a string representation of the Artist object."""
