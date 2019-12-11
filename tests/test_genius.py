@@ -35,7 +35,7 @@ class TestEndpoints(unittest.TestCase):
 
         # Exact match exact search
         response = genius.search_song(self.song_title_only)
-        self.assertTrue(response.title.lower() == drake_song.lower()) # Drake gets returned
+        self.assertTrue(response.title.lower() == self.song_title_only.lower()) # Drake gets returned
 
         # Song with artist name
         response = genius.search_song(self.song_title_only, artist)
