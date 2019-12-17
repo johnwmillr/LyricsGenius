@@ -202,23 +202,24 @@ class Genius(API):
         regex = re.compile(expression, re.IGNORECASE)
         return not regex.search(self._clean_str(song_title))
 
-    def _get_item_from_search_response(self, response, type_):
+    def _get_item_from_search_response(self, response, search_term, type_, result_type):
         """ Returns either a Song or Artist result from search_genius_web """
         # Convert list to dictionary
         hits = response['sections'][0]['hits']
         if hits:
             tophit = hits[0]
-            if tophit['type'] == type_:
-                return tophit['result']
-
         # Check rest of results if top hit wasn't the search type
         sections = sorted(response['sections'],
                           key=lambda sect: sect['type'] == type_,
                           reverse=True)
-        for section in sections:
-            hits = [hit for hit in section['hits'] if hit['type'] == type_]
-            if hits:
-                return hits[0]['result']
+        
+        hits =[hit for section in sections for hit in section['hits'] if hit['type'] == type_]
+        for hit in hits:
+            if hit['result'][result_type] == search_term:
+                return hit['result']
+        
+        return hits[0]['result'] if hits else None
+
 
     def _result_is_match(self, result, title, artist=None):
         """ Returns True if search result matches searched song """
@@ -245,7 +246,7 @@ class Genius(API):
         response = self.search_genius_web(search_term)
 
         # Otherwise, move forward with processing the search results
-        result = self._get_item_from_search_response(response, type_="song")
+        result = self._get_item_from_search_response(response, title, type_="song", result_type = "title")
 
         # Exit search if there were no results returned from API
         if not result:
@@ -301,14 +302,13 @@ class Genius(API):
             # Perform a Genius API search for the artist
             found_artist = None
             response = self.search_genius_web(search_term)
-            found_artist = self._get_item_from_search_response(response, type_="artist")
+            found_artist = self._get_item_from_search_response(response, search_term, type_="artist", result_type="name")
 
             # Exit the search if we couldn't find an artist by the given name
             if not found_artist:
                 if self.verbose:
                     print("No results found for '{a}'.".format(a=search_term))
                 return None
-
             # Assume the top search result is the intended artist
             return found_artist['id']
 
@@ -326,13 +326,12 @@ class Genius(API):
 
         # Create the Artist object
         artist = Artist(artist_info)
-
         # Download each song by artist, stored as Song objects in Artist object
         page = 1
         reached_max_songs = False
         while not reached_max_songs:
             songs_on_page = self.get_artist_songs(artist_id, sort, per_page, page)
-
+        
             # Loop through each song on page of search results
             for song_info in songs_on_page['songs']:
                 # Check if song is valid (e.g. has title, contains lyrics)

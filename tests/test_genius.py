@@ -3,6 +3,8 @@ import unittest
 from lyricsgenius.api import Genius
 from lyricsgenius.song import Song
 from lyricsgenius.artist import Artist
+from lyricsgenius.utils import sanitize_filename
+
 
 # Import client access token from environment variable
 client_access_token = os.environ.get("GENIUS_CLIENT_ACCESS_TOKEN", None)
@@ -33,7 +35,7 @@ class TestEndpoints(unittest.TestCase):
 
         # Exact match exact search
         response = genius.search_song(self.song_title_only)
-        self.assertTrue(response.title.lower() == drake_song.lower()) # Drake gets returned
+        self.assertTrue(response.title.lower() == self.song_title_only.lower()) # Drake gets returned
 
         # Song with artist name
         response = genius.search_song(self.song_title_only, artist)
@@ -123,7 +125,7 @@ class TestArtist(unittest.TestCase):
             fn = "lyrics_{name}_{song}.{ext}".format(name=self.artist.name,
                                                      song=song.title,
                                                      ext=extension)
-            fn = song._sanitize_filename(fn.lower().replace(" ", ""))
+            fn = sanitize_filename(fn.lower().replace(" ", ""))
             expected_filenames.append(fn)
         return expected_filenames
 
@@ -131,41 +133,36 @@ class TestArtist(unittest.TestCase):
         print('\n')
         extension = 'json'
         msg = "Could not save {} file.".format(extension)
-        expected_filenames = self.determine_filenames(extension)
+        expected_filename = 'Lyrics_' + self.artist.name.replace(' ', '') + '.' + extension
 
         # Remove the test file if it already exists
-        for expected_filename in expected_filenames:
-            if os.path.isfile(expected_filename):
-                os.remove(expected_filename)
+        if os.path.isfile(expected_filename):
+            os.remove(expected_filename)
 
         # Test saving json file
         self.artist.save_lyrics(extension=extension, overwrite=True)
-        for expected_filename in expected_filenames:
-            self.assertTrue(os.path.isfile(expected_filename), msg)
+        self.assertTrue(os.path.isfile(expected_filename), msg)
 
         # Test overwriting json file (now that file is written)
         try:
             self.artist.save_lyrics(extension=extension, overwrite=True)
         except:
             self.fail("Failed {} overwrite test".format(extension))
-        for expected_filename in expected_filenames:
-            os.remove(expected_filename)
+        os.remove(expected_filename)
 
     def test_saving_txt_file(self):
         print('\n')
         extension = 'txt'
         msg = "Could not save {} file.".format(extension)
-        expected_filenames = self.determine_filenames(extension)
+        expected_filename = 'Lyrics_' + self.artist.name.replace(' ', '') + '.' + extension
 
         # Remove the test file if it already exists
-        for expected_filename in expected_filenames:
-            if os.path.isfile(expected_filename):
-                os.remove(expected_filename)
+        if os.path.isfile(expected_filename):
+            os.remove(expected_filename)
 
         # Test saving txt file
         self.artist.save_lyrics(extension=extension, overwrite=True)
-        for expected_filename in expected_filenames:
-            self.assertTrue(os.path.isfile(expected_filename), msg)
+        self.assertTrue(os.path.isfile(expected_filename), msg)
 
         # Test overwriting txt file (now that file is written)
         try:
@@ -173,8 +170,7 @@ class TestArtist(unittest.TestCase):
                 extension=extension, overwrite=True)
         except:
             self.fail("Failed {} overwrite test".format(extension))
-        for expected_filename in expected_filenames:
-            os.remove(expected_filename)
+        os.remove(expected_filename)
 
 
 class TestSong(unittest.TestCase):
