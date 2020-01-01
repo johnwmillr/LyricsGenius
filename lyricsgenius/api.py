@@ -343,7 +343,7 @@ class Genius(API):
                 if not valid:
                     if self.verbose:
                         s = song_info['title'] if has_title else "MISSING TITLE"
-                        print('"{s}" is not valid. Skipping.'.format(s=s))
+                        print('"{s}" is not valid. Skipping.'.format(s=s).encode('utf8'))
                     continue
 
                 # Create the Song object from lyrics and metadata
@@ -358,7 +358,7 @@ class Genius(API):
                 result = artist.add_song(song, verbose=False)
                 if result == 0 and self.verbose:
                     print('Song {n}: "{t}"'.format(n=artist.num_songs,
-                                                   t=song.title))
+                                                   t=song.title).encode('utf8'))
 
                 # Exit search if the max number of songs has been met
                 reached_max_songs = max_songs and artist.num_songs >= max_songs
