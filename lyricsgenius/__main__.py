@@ -40,7 +40,7 @@ def main(args=None):
             return
         if args.save:
             if not args.quiet:
-                print("Saving lyrics to '{s}'...".format(s=song.title))
+                print("Saving lyrics to '{s}'...".format(s=song.title).encode('utf8'))
             song.save_lyrics()
     else:
         artist = api.search_artist(args.terms[0],
