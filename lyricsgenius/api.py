@@ -166,12 +166,20 @@ class Genius(API):
 
         # Scrape the song lyrics from the HTML
         html = BeautifulSoup(page.text, "html.parser")
-        div = html.find("div", class_="lyrics")
-        if not div:
-            return None # Sometimes the lyrics section isn't found
+        
+        # Determine the class of the div
+        old_div = html.find("div", class_="lyrics")
+        new_div = html.find("div", class_="SongPageGrid-sc-1vi6xda-0 DGVcp Lyrics__Root-sc-1ynbvzw-0 jvlKWy")
+        if old_div:
+            lyrics = old_div.get_text()
+        elif new_div:
+            # Clean the lyrics since get_text() fails to convert "</br/>"
+            lyrics = str(new_div)
+            lyrics = lyrics.replace('<br/>', '\n')
+            lyrics = re.sub(r'(\<.*?\>)', '', lyrics)
+        else:
+            return None # In case the lyrics section isn't found
 
-        # Scrape lyrics if proper section was found on page
-        lyrics = div.get_text()
         if self.remove_section_headers:  # Remove [Verse], [Bridge], etc.
             lyrics = re.sub('(\[.*?\])*', '', lyrics)
             lyrics = re.sub('\n{2}', '\n', lyrics)  # Gaps between verses
