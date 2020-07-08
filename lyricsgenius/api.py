@@ -336,7 +336,7 @@ class Genius(API):
         artist = Artist(artist_info)
         # Download each song by artist, stored as Song objects in Artist object
         page = 1
-        reached_max_songs = False
+        reached_max_songs = True if max_songs == 0 else False
         while not reached_max_songs:
             songs_on_page = self.get_artist_songs(artist_id, sort, per_page, page)
         
