@@ -1,5 +1,5 @@
 .. _api:
-.. currentmodule:: lyricsgenius
+.. currentmodule:: lyricsgenius.api
 .. toctree::
    :maxdepth: 2
    :hidden:
@@ -11,7 +11,7 @@ The :ref:`Genius` class inherits this class, and it's recommended to
 call the methods using the Genius calss rather than accessing this
 class directly.
 
-.. autoclass:: lyricsgenius.api.API
+.. autoclass:: API
    :members:
    :member-order: bysource
    :no-show-inheritance:
