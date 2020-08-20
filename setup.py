@@ -24,9 +24,25 @@ this_directory = path.abspath(path.dirname(__file__))
 with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
-requirements = []
-with open('requirements.txt') as f:
-    requirements = f.read().splitlines()
+extras_require = {
+    'docs': [
+        'sphinx~=3.2',
+        'sphinx-rtd-theme',
+    ],
+    'tests': [
+        'pytest~=6.0',
+    ],
+    'checks': [
+        'tox~=3.1',
+        'doc8',
+        'flake8',
+        'flake8-bugbear',
+        'pygments',
+    ]
+}
+extras_require['dev'] = (
+    extras_require['docs'] + extras_require['tests'] + extras_require['checks']
+)
 
 setup(
     name='lyricsgenius',
@@ -40,7 +56,11 @@ setup(
     url='https://github.com/johnwmillr/lyricsgenius',
     keywords='genius api genius-api music lyrics artists albums songs',
     packages=find_packages(exclude=['tests']),
-    install_requires=requirements,
+    install_requires=[
+        'beautifulsoup4==4.6.0',
+        'requests>=2.20.0'
+    ],
+    extras_require=extras_require,
     entry_points={
         'console_scripts': [
             'lyricsgenius = lyricsgenius.__main__:main']
