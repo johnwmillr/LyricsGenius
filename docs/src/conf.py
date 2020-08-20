@@ -24,7 +24,7 @@ master_doc = 'index'
 autosummary_generate = True
 # -- Options for HTML output -------------------------------------------------
 
-pygments_style = 'sphinx'
+highlight_language = 'python3'
 html_theme = 'sphinx_rtd_theme'
 
 # -- Other -------------------------------------------------------------------
