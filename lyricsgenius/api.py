@@ -376,6 +376,8 @@ class Genius(API):
         """
         page = requests.get(url)
         if page.status_code == 404:
+            if self.verbose:
+                print("Song URL returned 404.")
             return None
 
         # Scrape the song lyrics from the HTML
@@ -396,6 +398,8 @@ class Genius(API):
                 if lyrics:
                     break
             else:
+                if self.verbose:
+                    print("Couldn't find the lyrics section.")
                 return None
 
             lyrics = lyrics.get_text('<br/>').replace('<br/>', '\n')
