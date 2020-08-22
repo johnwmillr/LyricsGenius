@@ -105,6 +105,12 @@ class TestArtist(unittest.TestCase):
         result = genius.search_artist(name, max_songs=1).name
         self.assertEqual(name, result, msg)
 
+    def test_zero_songs(self):
+        msg = "Songs were downloaded even though 0 songs was requested."
+        name = "Queen"
+        result = genius.search_artist(name, max_songs=0).songs
+        self.assertEqual(0, len(result), msg)
+
     def test_name(self):
         msg = "The artist object name does not match the requested artist name."
         self.assertEqual(self.artist.name, self.artist_name, msg)
