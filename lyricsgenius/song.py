@@ -194,9 +194,9 @@ class Song(object):
 
         # Save the lyrics to a file
         if extension == 'json':
-            self.to_json(filename, full_data=full_data)
+            self.to_json(filename, full_data=full_data, sanitize=sanitize)
         else:
-            self.to_text(filename, binary_encoding=binary_encoding)
+            self.to_text(filename, binary_encoding=binary_encoding, sanitize=sanitize)
 
         if verbose:
             print('Wrote {} to {}.'.format(self.title, filename))
