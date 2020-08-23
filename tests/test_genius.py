@@ -9,7 +9,7 @@ from lyricsgenius.utils import sanitize_filename
 # Import client access token from environment variable
 client_access_token = os.environ.get("GENIUS_CLIENT_ACCESS_TOKEN", None)
 assert client_access_token is not None, "Must declare environment variable: GENIUS_CLIENT_ACCESS_TOKEN"
-genius = Genius(client_access_token, sleep_time=0.5)
+genius = Genius(client_access_token, sleep_time=1.0, timeout=15)
 
 
 class TestEndpoints(unittest.TestCase):
@@ -105,6 +105,12 @@ class TestArtist(unittest.TestCase):
         result = genius.search_artist(name, max_songs=1).name
         self.assertEqual(name, result, msg)
 
+    def test_zero_songs(self):
+        msg = "Songs were downloaded even though 0 songs was requested."
+        name = "Queen"
+        result = genius.search_artist(name, max_songs=0).songs
+        self.assertEqual(0, len(result), msg)
+
     def test_name(self):
         msg = "The artist object name does not match the requested artist name."
         self.assertEqual(self.artist.name, self.artist_name, msg)
@@ -122,7 +128,13 @@ class TestArtist(unittest.TestCase):
     def test_artist_with_includes_features(self):
         msg = "The artist did not get songs returned that they were featured in."
         name = "Swae Lee"
-        result = genius.search_artist(name, max_songs=1, include_features=True).songs[0]._body['primary_artist']['name']
+        result = (genius
+                  .search_artist(
+                                 name,
+                                 max_songs=1,
+                                 include_features=True)
+                  .songs[0]
+                  ._body['primary_artist']['name'])
         self.assertNotEqual(result, name)
 
     def determine_filenames(self, extension):
