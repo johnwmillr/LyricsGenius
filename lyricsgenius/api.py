@@ -169,7 +169,7 @@ class Genius(API):
         
         # Determine the class of the div
         old_div = html.find("div", class_="lyrics")
-        new_div = html.find("div", class_="SongPageGrid-sc-1vi6xda-0 DGVcp Lyrics__Root-sc-1ynbvzw-0 jvlKWy")
+        new_div = html.find("div", class_=re.compile("^SongPageGrid-sc-1vi6xda-0 DGVcp Lyrics__Root-sc-1ynbvzw-0.*"))
         if old_div:
             lyrics = old_div.get_text()
         elif new_div:
