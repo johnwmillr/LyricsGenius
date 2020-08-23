@@ -125,6 +125,18 @@ class TestArtist(unittest.TestCase):
         self.artist.add_song(genius.search_song("These Days", "Jackson Browne"))
         self.assertEqual(self.artist.num_songs, self.max_songs, msg)
 
+    def test_artist_with_includes_features(self):
+        msg = "The artist did not get songs returned that they were featured in."
+        name = "Swae Lee"
+        result = (genius
+                  .search_artist(
+                                 name,
+                                 max_songs=1,
+                                 include_features=True)
+                  .songs[0]
+                  ._body['primary_artist']['name'])
+        self.assertNotEqual(result, name)
+
     def determine_filenames(self, extension):
         expected_filenames = []
         for song in self.artist.songs:

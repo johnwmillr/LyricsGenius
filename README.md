@@ -32,6 +32,14 @@ genius = lyricsgenius.Genius("my_client_access_token_here")
 artist = genius.search_artist("Andy Shauf", max_songs=3, sort="title")
 print(artist.songs)
 ```
+By default, the `search_artist()` only returns songs where the given artist is the primary artist.
+However, there may be instances where it is desirable to get all of the songs that the artist appears on.
+You can do this by setting the `include_features` argument to `True`.
+
+```python
+artist = genius.search_artist("Andy Shauf", max_songs=3, sort="title", include_features=True)
+print(artist.songs)
+```
 
 Search for a single song by the same artist:
 
