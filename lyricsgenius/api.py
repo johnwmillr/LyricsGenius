@@ -563,7 +563,7 @@ class Genius(API):
                        'Rejecting.'))
             return None
 
-        # Return a Song object with lyrics if we've made it this far
+        # Return a Song object with lyrics if we've made it this far 
         song = Song(song_info, lyrics)
         if self.verbose:
             print('Done.')
@@ -573,7 +573,8 @@ class Genius(API):
                       sort='popularity', per_page=20,
                       get_full_info=True,
                       allow_name_change=True,
-                      artist_id=None):
+                      artist_id=None,
+                      include_features=False):
         """Searches Genius.com for songs by the specified artist.
         This method looks for the artist by the name or by the
         ID if it's provided. It returrns an :class:`Artist <lyricsgenius.artist.Artist>`
@@ -591,6 +592,8 @@ class Genius(API):
             allow_name_change (:obj:`bool`, optional): If True, search attempts to
                 switch to intended artist name.
             artist_id (:obj:`int`, optional): Allows user to pass an artist ID.
+            include_features (:obj:`bool`, optional): If True, includes tracks
+                featuring the artist.
 
         Returns:
             :class:`Artist <lyricsgenius.artist.Artist>`: Artist object containing
@@ -599,14 +602,13 @@ class Genius(API):
         Examples:
             .. code:: python
 
-                # printing thel lyrics of all of the artist's songs
+                # printing the lyrics of all of the artist's songs
                 genius = Genius(token)
                 artist = genius.search_artist('Andy Shauf')
                 for song in artist.songs:
                     print(song.lyrics)
 
             Visit :class:`Aritst <lyricsgenius.artist.Artist>` for more examples.
-
         """
         def find_artist_id(search_term):
             """Finds the ID of the artist, returns the first
@@ -649,7 +651,7 @@ class Genius(API):
         artist = Artist(artist_info)
         # Download each song by artist, stored as Song objects in Artist object
         page = 1
-        reached_max_songs = False
+        reached_max_songs = True if max_songs == 0 else False
         while not reached_max_songs:
             songs_on_page = self.get_artist_songs(artist_id, sort, per_page, page)
 
@@ -676,7 +678,9 @@ class Genius(API):
                 song = Song(info, lyrics)
 
                 # Attempt to add the Song to the Artist
-                result = artist.add_song(song, verbose=False)
+                result = artist.add_song(song, verbose=False, 
+                                         
+                                         atures=include_features)
                 if result == 0 and self.verbose:
                     print('Song {n}: "{t}"'.format(n=artist.num_songs,
                                                    t=song.title))

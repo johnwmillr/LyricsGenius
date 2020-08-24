@@ -75,7 +75,7 @@ class Artist(object):
         """
         return self._num_songs
 
-    def add_song(self, new_song, verbose=True):
+    def add_song(self, new_song, verbose=True, include_features=False):
         """Adds a Song object to the Artist object.
 
         This method adds a new song to the artist object. It checks
@@ -85,6 +85,8 @@ class Artist(object):
         Args:
             new_song (:class:`Song <lyricsgenius.song.Song>`): Song to be added.
             verbose (:obj:`bool`): prints operation result.
+            include_features (:obj:`bool`, optional): If True, includes tracks
+                featuring the artist.
 
         Returns:
             :obj:`int`: 0 for success and 1 for failure.
@@ -98,13 +100,13 @@ class Artist(object):
                 artist.add_song(song)
 
         """
-
         if any([song.title == new_song.title for song in self._songs]):
             if verbose:
                 print('{s} already in {a}, not adding song.'.format(s=new_song.title,
                                                                     a=self.name))
             return 1  # Failure
-        if new_song.artist == self.name:
+        if (new_song.artist == self.name or
+            (include_features and any(new_song.featured_artists))):
             self._songs.append(new_song)
             self._num_songs += 1
             return 0  # Success
