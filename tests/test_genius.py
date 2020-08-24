@@ -104,6 +104,12 @@ class TestArtist(unittest.TestCase):
         result = genius.search_artist(name, max_songs=1).name
         self.assertEqual(name, result, msg)
 
+    def test_zero_songs(self):
+        msg = "Songs were downloaded even though 0 songs was requested."
+        name = "Queen"
+        result = genius.search_artist(name, max_songs=0).songs
+        self.assertEqual(0, len(result), msg)
+
     def test_name(self):
         msg = "The artist object name does not match the requested artist name."
         self.assertEqual(self.artist.name, self.artist_name, msg)
@@ -117,6 +123,18 @@ class TestArtist(unittest.TestCase):
         msg = "A song from a different artist was incorrectly allowed to be added."
         self.artist.add_song(genius.search_song("These Days", "Jackson Browne"))
         self.assertEqual(self.artist.num_songs, self.max_songs, msg)
+
+    def test_artist_with_includes_features(self):
+        msg = "The artist did not get songs returned that they were featured in."
+        name = "Swae Lee"
+        result = (genius
+                  .search_artist(
+                                 name,
+                                 max_songs=1,
+                                 include_features=True)
+                  .songs[0]
+                  ._body['primary_artist']['name'])
+        self.assertNotEqual(result, name)
 
     def determine_filenames(self, extension):
         expected_filenames = []
