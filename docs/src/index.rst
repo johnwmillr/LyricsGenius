@@ -44,6 +44,7 @@ to :ref:`setup` to get started.
 
    setup
    usage
+   how_it_works
    contributing
 
 
