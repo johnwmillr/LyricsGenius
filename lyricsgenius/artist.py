@@ -105,8 +105,8 @@ class Artist(object):
                 print('{s} already in {a}, not adding song.'.format(s=new_song.title,
                                                                     a=self.name))
             return 1  # Failure
-        if (new_song.artist == self.name or
-            (include_features and any(new_song.featured_artists))):
+        if (new_song.artist == self.name
+                or (include_features and any(new_song.featured_artists))):
             self._songs.append(new_song)
             self._num_songs += 1
             return 0  # Success

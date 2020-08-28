@@ -563,7 +563,7 @@ class Genius(API):
                        'Rejecting.'))
             return None
 
-        # Return a Song object with lyrics if we've made it this far 
+        # Return a Song object with lyrics if we've made it this far
         song = Song(song_info, lyrics)
         if self.verbose:
             print('Done.')
@@ -678,7 +678,7 @@ class Genius(API):
                 song = Song(info, lyrics)
 
                 # Attempt to add the Song to the Artist
-                result = artist.add_song(song, verbose=False, 
+                result = artist.add_song(song, verbose=False,
                                          include_features=include_features)
                 if result == 0 and self.verbose:
                     print('Song {n}: "{t}"'.format(n=artist.num_songs,
