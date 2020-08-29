@@ -70,4 +70,4 @@ Searching for a song by lyrics
 
     request = genius.search_genius_web('Jeremy can we talk a minute?')
     for hit in request['sections'][2]['hits']:
-        print(hit['result']['name'])
+        print(hit['result']['title'])
