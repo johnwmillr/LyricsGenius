@@ -8,7 +8,7 @@
 API
 =======================
 The :ref:`Genius` class inherits this class, and it's recommended to
-call the methods using the Genius calss rather than accessing this
+call the methods using the Genius class rather than accessing this
 class directly.
 
 .. autoclass:: API
