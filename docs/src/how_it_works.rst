@@ -4,7 +4,7 @@
 How It Works
 #############
 LyricsGenius makes two kinds of calls to the Genius API. The first one is
-the API that requires an access token, and the otehr one to the public API.
+the API that requires an access token, and the other one to the public API.
 
 The API
 **********
@@ -37,12 +37,12 @@ but `to no avail`_. So it shouldn't come as a surprise if they don't
 provide lyrics in calls to
 the API. So how does LyricsGenius get the lyrics?
 
-LyricsGenius uses a screen-scraping library called `Beautiful Soup`_
+LyricsGenius uses a web-scraping library called `Beautiful Soup`_
 to scrape lyrics from the song's page on Genius. Scraping the lyrics in
 this way violates Genius' terms of service. If you intend to use the lyrics for
 personal purposes, that shouldn't be cause for trouble, but other than that,
 you should inquire what happens when you violate the terms this way.
-And as always, LyricsGenius is not responsible for your usage of the library.
+As a reminder, LyricsGenius is not responsible for your usage of the library.
 
 
 .. _the Genius API: http://genius.com/api-clients\
