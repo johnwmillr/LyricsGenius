@@ -8,11 +8,9 @@
 
 Genius
 =======================
-High-level interface to the API
-
 The Genius class provides a high-level interface to the Genius
-API that provides convenient to much more than the pure API
-offers, such as getting song lyrics.
+API. This class provides convenient access to the standard API
+as well as additional features such as downloading lyrics.
 
 .. autosummary::
    :nosignatures:
