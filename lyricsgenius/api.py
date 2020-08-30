@@ -402,7 +402,7 @@ class Genius(API):
                     print("Couldn't find the lyrics section.")
                 return None
 
-            lyrics = lyrics.get_text('<br/>').replace('<br/>', '\n')
+            lyrics = lyrics.get_text('\n').replace('\n[', '\n\n[')
 
         if self.remove_section_headers:  # Remove [Verse], [Bridge], etc.
             lyrics = re.sub(r'(\[.*?\])*', '', lyrics)
