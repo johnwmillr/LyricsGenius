@@ -74,6 +74,7 @@ to :ref:`setup` to get started.
    setup
    usage
    how_it_works
+   text_formatting
    contributing
 
 
