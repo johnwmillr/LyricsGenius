@@ -52,7 +52,7 @@ setup(
     long_description_content_type='text/markdown',
     license="MIT",
     author='John W. Miller',
-    author_email='john.w.millr@gmail.com',
+    author_email='john.w.millr+lg@gmail.com',
     url='https://github.com/johnwmillr/lyricsgenius',
     keywords='genius api genius-api music lyrics artists albums songs',
     packages=find_packages(exclude=['tests']),
