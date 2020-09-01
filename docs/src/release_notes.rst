@@ -3,11 +3,14 @@
 
 Release notes
 =============
-1.8.6 (2020-05-27)
+2.0.0 (2020-09-01)
 ------------------
+New
+***
+- Added online docs! (:issue:`153`)
+
 Fixed
 *****
-- :ref:`Genius` - Genius.com sometimes returns the new song page for lyrics
-  So a new *div* class was added to :func:`Genius._scrape_song_lyrics_from_url`
-  (:issue:`139`)
+- :ref:`Genius` - Fixed finding :obj:`div` tag that contains the lyrics. 
+  (:issue:`153`)
 

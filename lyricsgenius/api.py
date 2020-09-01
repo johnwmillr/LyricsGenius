@@ -7,7 +7,7 @@
 import os
 import re
 import requests
-from requests.exceptions import Timeout
+from requests.exceptions import Timeout, HTTPError
 from urllib.parse import urlencode
 import shutil
 import json
@@ -62,6 +62,7 @@ class API(object):
         self.api_root = 'https://api.genius.com/'
         self.timeout = timeout
         self.sleep_time = sleep_time
+        self.get_song(378195)
 
     def _make_request(self, path, method='GET', params_=None):
         """Makes a request to the API."""
@@ -76,12 +77,21 @@ class API(object):
             response = self._session.request(method, uri,
                                              timeout=self.timeout,
                                              params=params_)
+            response.raise_for_status()
         except Timeout as e:
             print("Timeout raised and caught:\n{e}".format(e=e))
+        except HTTPError as e:
+            error = str(e)
+            res = e.response.json()
+            description = (res['meta']['message']
+                           if res.get('meta')
+                           else res.get('error_description'))
+            error += '\n{}'.format(description) if description else ''
+            raise HTTPError(error)
 
         # Enforce rate limiting
         time.sleep(max(self._SLEEP_MIN, self.sleep_time))
-        return response.json()['response'] if response else None
+        return response.json()['response']
 
     def get_song(self, id_):
         """Gets data for a specific song.
