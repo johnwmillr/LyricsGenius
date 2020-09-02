@@ -79,7 +79,8 @@ class API(object):
                                              params=params_)
             response.raise_for_status()
         except Timeout as e:
-            print("Timeout raised and caught:\n{e}".format(e=e))
+            error = "Request timed out:\n{e}".format(e=e)
+            raise Timeout(error)
         except HTTPError as e:
             error = str(e)
             res = e.response.json()
@@ -87,7 +88,7 @@ class API(object):
                            if res.get('meta')
                            else res.get('error_description'))
             error += '\n{}'.format(description) if description else ''
-            raise HTTPError(error)
+            raise HTTPError(response.status_code, error)
 
         # Enforce rate limiting
         time.sleep(max(self._SLEEP_MIN, self.sleep_time))

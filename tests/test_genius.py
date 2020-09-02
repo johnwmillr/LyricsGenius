@@ -1,5 +1,6 @@
 import os
 import unittest
+from requests.exceptions import HTTPError
 from lyricsgenius.api import Genius
 from lyricsgenius.song import Song
 from lyricsgenius.artist import Artist
@@ -22,10 +23,16 @@ class TestEndpoints(unittest.TestCase):
         cls.song_title_only = "99 Problems"
 
     def test_search_genius_web(self):
-        # TODO: test more than just a 200 response
         msg = "Response was None."
         r = genius.search_genius_web(self.search_term)
-        self.assertTrue(r is not None, msg)
+        self.assertTrue(r.get('sections'), msg)
+
+    def test_http_error_handler(self):
+        try:
+            genius.get_annotation(0)
+        except HTTPError as e:
+            status_code = e.args[0]
+            self.assertEqual(status_code, 404)
 
     def test_search_song(self):
         artist = "Jay-Z"
@@ -299,6 +306,9 @@ class TestSong(unittest.TestCase):
         except Exception:
             self.fail("Failed {} overwrite test".format(extension))
         os.remove(expected_filename)
+
+    def test_tearDown(self):
+        genius._session.close()
 
     # def test_bad_chars_in_filename(self):
     #     print("\n")
