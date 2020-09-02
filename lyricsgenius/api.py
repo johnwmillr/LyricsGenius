@@ -62,7 +62,7 @@ class API(object):
         self.api_root = 'https://api.genius.com/'
         self.timeout = timeout
         self.sleep_time = sleep_time
-        self.get_song(378195)
+        self._validate_token()
 
     def _make_request(self, path, method='GET', params_=None):
         """Makes a request to the API."""
@@ -93,6 +93,9 @@ class API(object):
         # Enforce rate limiting
         time.sleep(max(self._SLEEP_MIN, self.sleep_time))
         return response.json()['response']
+
+    def _validate_token(self):
+        self.get_song(378195)
 
     def get_song(self, id_):
         """Gets data for a specific song.
