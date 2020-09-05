@@ -7,7 +7,7 @@
 import os
 import re
 import requests
-from requests.exceptions import Timeout
+from requests.exceptions import Timeout, HTTPError
 from urllib.parse import urlencode
 import shutil
 import json
@@ -62,6 +62,7 @@ class API(object):
         self.api_root = 'https://api.genius.com/'
         self.timeout = timeout
         self.sleep_time = sleep_time
+        self._validate_token()
 
     def _make_request(self, path, method='GET', params_=None):
         """Makes a request to the API."""
@@ -76,12 +77,186 @@ class API(object):
             response = self._session.request(method, uri,
                                              timeout=self.timeout,
                                              params=params_)
+            response.raise_for_status()
         except Timeout as e:
-            print("Timeout raised and caught:\n{e}".format(e=e))
+            error = "Request timed out:\n{e}".format(e=e)
+            raise Timeout(error)
+        except HTTPError as e:
+            error = str(e)
+            res = e.response.json()
+            description = (res['meta']['message']
+                           if res.get('meta')
+                           else res.get('error_description'))
+            error += '\n{}'.format(description) if description else ''
+            raise HTTPError(response.status_code, error)
 
         # Enforce rate limiting
         time.sleep(max(self._SLEEP_MIN, self.sleep_time))
-        return response.json()['response'] if response else None
+        return response.json()['response']
+
+    def _validate_token(self):
+        self.get_song(378195)
+
+    def create_annotation(self, text, raw_annotatable_url, fragment,
+                          before_html=None, after_html=None,
+                          canonical_url=None, og_url=None, title=None):
+        """Creates an annotation for a web page.
+        Requires scope: :obj:`create_annotation`.
+
+        Args:
+            text (:obj:`str`): Annotation text in Markdown format.
+            raw_annotatable_url (:obj:`str`): The original URL of the page.
+            fragment (:obj:`str`): The highlighted fragment (the referent).
+            before_html (:obj:`str`, optional): The HTML before the highlighted fragment
+                (prefer up to 200 characters).
+            after_html (:obj:`str`, optional): The HTML after the highlighted fragment
+                (prefer up to 200 characters).
+            canonical_url (:obj:`str`, optional): The href property of the
+                :obj:`<link rel="canonical">` tag on the page.
+            og_url (:obj:`str`, optional): The content property of the
+                :obj:`<meta property="og:url">` tag on the page.
+            title (:obj:`str`, optional): The title of the page.
+
+        Returns:
+            :obj:`dict`: The annotation that was created.
+
+        """
+        msg = "Must supply `raw_annotatable_url`, `canonical_url`, or `title`."
+        assert any([canonical_url, og_url, title]), msg
+
+        endpoint = 'annotations'
+        payload = {
+            'annotation': {
+                'body': {'markdown': text}
+            },
+            'referent': {
+                'raw_annotatable_url': raw_annotatable_url,
+                'fragment': fragment,
+                'context_for_display': {
+                    'before_html': before_html,
+                    'after_html': after_html
+                }
+            },
+            'web_page': {
+                'canonical_url': canonical_url,
+                'og_url': og_url,
+                'title': title
+            }
+        }
+        return self._make_request(path=endpoint, method='POST', params=payload)
+
+    def update_annotation(self, text, raw_annotatable_url, fragment,
+                          before_html=None, after_html=None,
+                          canonical_url=None, og_url=None, title=None):
+        """Updates an annotation created by the authenticated user.
+        Requires scope: :obj:`manage_annotation`.
+
+        Args:
+            text (:obj:`str`): Annotation text in Markdown format.
+            raw_annotatable_url (:obj:`str`): The original URL of the page.
+            fragment (:obj:`str`): The highlighted fragment (the referent).
+            before_html (:obj:`str`, optional): The HTML before the highlighted fragment
+                (prefer up to 200 characters).
+            after_html (:obj:`str`, optional): The HTML after the highlighted fragment
+                (prefer up to 200 characters).
+            canonical_url (:obj:`str`, optional): The href property of the
+                :obj:`<link rel="canonical">` tag on the page.
+            og_url (:obj:`str`, optional): The content property of the
+                :obj:`<meta property="og:url">` tag on the page.
+            title (:obj:`str`, optional): The title of the page.
+
+
+        Returns:
+            :obj:`dict`: The annotation that was updated.
+
+        """
+        msg = "Must supply `raw_annotatable_url`, `canonical_url`, or `title`."
+        assert any([canonical_url, og_url, title]), msg
+
+        endpoint = 'annotations'
+        payload = {
+            'annotation': {
+                'body': {'markdown': text}
+            },
+            'referent': {
+                'raw_annotatable_url': raw_annotatable_url,
+                'fragment': fragment,
+                'context_for_display': {
+                    'before_html': before_html,
+                    'after_html': after_html
+                }
+            },
+            'web_page': {
+                'canonical_url': canonical_url,
+                'og_url': og_url,
+                'title': title
+            }
+        }
+        return self._make_request(path=endpoint, method='PUT', params=payload)
+
+    def delete_annotation(self, id_):
+        """Deletes an annotation created by the authenticated user.
+        Requires scope: :obj:`manage_annotation`.
+
+        Args:
+            id\\_ (:obj:`int`): ID of the annotation.
+
+        """
+        endpoint = 'annotations/{}'.format(id_)
+        self._make_request(path=endpoint, method='DELETE')
+
+    def upvote_annotation():
+
+    def get_account(self):
+        """Gets details about the current user.
+        Requires scope: :obj:`me`.
+
+        Returns:
+            :obj:`dict`: user details from Genius.
+
+        Note:
+            * This endpoint requires a user token, not a client access token.
+
+        """
+        endpoint = 'account'
+        return self._make_request(path=endpoint)
+
+    def get_webpage(self, raw_annotatable_url=None, canonical_url=None, og_url=None):
+        """Gets data for a specific webpage.
+
+        Args:
+            raw_annotatable_url (:obj:`str`): The URL as it would appear in a browser.
+            canonical_url (:obj:`str`): The URL as specified by an appropriate <link>
+                tag in a page's <head>.
+            og_url (:obj:`str`): The URL as specified by an og:url <meta> tag in
+                a page's <head>.
+
+        Returns:
+            :obj:`dict`: webpage details from Genius.
+
+        Examples:
+            .. code:: python
+
+                genius = Genius(token)
+                webpage = genius.get_webpage(docs.genius.com)
+                print(webpage['full_title'])
+
+        Note:
+            * Data is only available for pages that already have at
+                least one annotation.
+            * You must at least pass one argument to the method.
+            * You can pass more than one or all arguments (provided they're the address
+                the same webpage).
+
+        """
+        msg = "Must supply `raw_annotatable_url`, `canonical_url`, or `og_url`."
+        assert any([raw_annotatable_url, canonical_url, og_url]), msg
+
+        endpoint = 'web_pages/lookup'
+        params = {'raw_annotatable_url': raw_annotatable_url,
+                  'canonical_url': canonical_url,
+                  'og_url': og_url}
+        return self._make_request(path=endpoint, params_=params)
 
     def get_song(self, id_):
         """Gets data for a specific song.

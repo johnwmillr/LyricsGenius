@@ -1,0 +1,108 @@
+from lyricsgenius.utils import parse_redirected_url
+
+from urllib.parse import urlencode
+import webbrowser
+import requests
+
+
+class OAuth2(object):
+    """Genius OAuth2 authorization flow.
+
+    Using this class you can authenticate a user,
+    and get their token.
+
+    Args:
+        client_id (:obj:`str`): Client ID
+        redirect_uri (:obj:`str`): Whitelisted redirect URI.
+        client_secret (:obj:`str`, optional): Client secret.
+        scope (:obj:`list` | :obj:`all`, optional) : Token privilages.
+        state (:obj:`str`, optional): Request state.
+        client_only (:obj:`bool`, optional): `True` to use the client-only
+            authorization flow, otherwise `False`.
+
+    Raises:
+        AssertionError: If  neither client_secret, nor client_only is
+        provided (set to `True`).
+
+    """
+    auth_url = 'https://api.genius.com/oauth/authorize'
+    token_url = 'https://api.genius.com/oauth/token'
+
+    def __init__(self, client_id, redirect_uri,
+                 client_secret=None, scope=None, state=None, client_only=False):
+
+        msg = ("You must provide a client_secret "
+               "if you intend to use the normal authorization flow"
+               "\nIf you meant to use the client-only flow, "
+               "set the client_only parameter to True.")
+        assert any([client_secret, client_only]), msg
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.redirect_uri = redirect_uri
+        if scope == 'all':
+            scope = ['me', 'create_annotation', 'manage_annotation', 'vote']
+        self.scope = scope
+        self.state = state
+        self.flow = 'token' if client_only else 'code'
+
+    def get_user_auth_url(self):
+        """Gets URL that directs user to authorization page.
+        You can use this method to get a URL that opens the authorization page
+        on Genius when the user opns it.
+
+        Returns:
+            :obj:`str`: URL used to have user authenticate the client.
+        """
+        payload = {
+            'client_id': self.client_id,
+            'redirect_uri': self.redirect_uri,
+            'response_type': self.flow
+        }
+        if self.scope:
+            payload['scope'] = ','.join(self.scope)
+        if self.state:
+            payload['state'] = self.state
+        return OAuth2.auth_url + '?' + urlencode(payload)
+
+    def request_user_token(self, code, **kwargs):
+        """Gets a user token using the value of 'code'.
+
+        Args:
+            code (:obj:`str`): 'code' parameter of redirected URL.
+            **kwargs: keywords for the POST request.
+        returns:
+            :obj:`str`: User token.
+
+        """
+        msg = ("You can't request a token using the client-only authorization flow."
+               "\nAre you sure you don't have the token already?")
+        assert self.client_only is False, msg
+        payload = {'code': code,
+                   'client_id': self.client_id,
+                   'client_secret': self.client_secret,
+                   'redirect_uri': self.redirect_uri,
+                   'grant_type': 'authorization_code',
+                   'response_type': 'code'}
+        res = requests.post(OAuth2.token_url, payload, **kwargs)
+        res.raise_for_status()
+        return res.json()['access_token']
+
+    def prompt_user(self):
+        """PromptS for manual authentication.
+
+        OpenS a web browser for the user to log in with Genius.
+        PromptS to paste the URL after logging in to parse the
+        `code`/'token' URL parameter.
+
+        returns:
+            :obj:`str`: User token.
+
+        """
+
+        url = self.get_user_auth_url()
+        print('Opening browser for Genius login...')
+        webbrowser.open(url)
+        redirected = input('Please paste redirect URL: ').strip()
+
+        code = parse_redirected_url(redirected, self.flow)
+        return code if self.client_only else self.request_user_token(code)
