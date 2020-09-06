@@ -205,7 +205,38 @@ class API(object):
         endpoint = 'annotations/{}'.format(id_)
         self._make_request(path=endpoint, method='DELETE')
 
-    def upvote_annotation():
+    def upvote_annotation(self, id_):
+        """Upvotes an annotation.
+        Requires scope: :obj:`vote`.
+
+        Args:
+            id\\_ (:obj:`int`): ID of the annotation.
+
+        """
+        endpoint = 'annotations/{}/upvote'.format(id_)
+        self._make_request(path=endpoint, method='PUT')
+
+    def downvote_annotation(self, id_):
+        """Downvotes an annotation.
+        Requires scope: :obj:`vote`.
+
+        Args:
+            id\\_ (:obj:`int`): ID of the annotation.
+
+        """
+        endpoint = 'annotations/{}/downvote'.format(id_)
+        self._make_request(path=endpoint, method='PUT')
+
+    def unvote_annotation(self, id_):
+        """Removes user's vote for the annotation.
+        Requires scope: :obj:`vote`.
+
+        Args:
+            id\\_ (:obj:`int`): ID of the annotation.
+
+        """
+        endpoint = 'annotations/{}/unvote'.format(id_)
+        self._make_request(path=endpoint, method='PUT')
 
     def get_account(self):
         """Gets details about the current user.
@@ -213,9 +244,6 @@ class API(object):
 
         Returns:
             :obj:`dict`: user details from Genius.
-
-        Note:
-            * This endpoint requires a user token, not a client access token.
 
         """
         endpoint = 'account'
