@@ -1,6 +1,6 @@
 # LyricsGenius: a Python client for the Genius.com API
 [![Build Status](https://travis-ci.org/johnwmillr/LyricsGenius.svg?branch=master)](https://travis-ci.org/johnwmillr/LyricsGenius)
-[![Documentation Status](https://readthedocs.org/projects/lyricsgenius/badge/?version=latest)](https://lyricsgenius.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/lyricsgenius/badge/?version=master)](https://lyricsgenius.readthedocs.io/en/latest/?badge=master)
 [![PyPI version](https://badge.fury.io/py/lyricsgenius.svg)](https://pypi.org/project/lyricsgenius/)
 [![Python version](https://img.shields.io/badge/python-3.x-brightgreen.svg)](https://pypi.org/project/lyricsgenius/)
 
@@ -8,7 +8,7 @@
 
 ## Documentation
 
-`lyricsgenius`'s full documentation is online at [Read the Docs](https://lyricsgenius.readthedocs.io/en/latest/).
+`lyricsgenius`'s full documentation is online at [Read the Docs](https://lyricsgenius.readthedocs.io/en/master/).
 
 ## Setup
 Before using this package you'll need to sign up for a (free) account that authorizes access to [the Genius API](http://genius.com/api-clients). The Genius account provides a `access_token` that is required by the package. See the [Usage section](https://github.com/johnwmillr/LyricsGenius#usage) below for examples.
