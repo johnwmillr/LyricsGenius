@@ -17,25 +17,25 @@ class OAuth2(object):
         client_secret (:obj:`str`, optional): Client secret.
         scope (:obj:`list` | :obj:`all`, optional) : Token privilages.
         state (:obj:`str`, optional): Request state.
-        client_only (:obj:`bool`, optional): `True` to use the client-only
+        client_only_app (:obj:`bool`, optional): `True` to use the client-only
             authorization flow, otherwise `False`.
 
     Raises:
-        AssertionError: If  neither client_secret, nor client_only is
-        provided (set to `True`).
+        AssertionError: If  neither client_secret, nor client_only_app is
+            provided.
 
     """
     auth_url = 'https://api.genius.com/oauth/authorize'
     token_url = 'https://api.genius.com/oauth/token'
 
     def __init__(self, client_id, redirect_uri,
-                 client_secret=None, scope=None, state=None, client_only=False):
+                 client_secret=None, scope=None, state=None, client_only_app=False):
 
         msg = ("You must provide a client_secret "
                "if you intend to use the normal authorization flow"
                "\nIf you meant to use the client-only flow, "
-               "set the client_only parameter to True.")
-        assert any([client_secret, client_only]), msg
+               "set the client_only_app parameter to True.")
+        assert any([client_secret, client_only_app]), msg
         self.client_id = client_id
         self.client_secret = client_secret
         self.redirect_uri = redirect_uri
@@ -43,7 +43,7 @@ class OAuth2(object):
             scope = ['me', 'create_annotation', 'manage_annotation', 'vote']
         self.scope = scope
         self.state = state
-        self.flow = 'token' if client_only else 'code'
+        self.flow = 'token' if client_only_app else 'code'
 
     def get_user_auth_url(self):
         """Gets URL that directs user to authorization page.
@@ -64,35 +64,35 @@ class OAuth2(object):
             payload['state'] = self.state
         return OAuth2.auth_url + '?' + urlencode(payload)
 
-    def request_user_token(self, code, **kwargs):
-        """Gets a user token using the value of 'code'.
+    def get_user_token(self, url, **kwargs):
+        """Gets a user token using the redirected url.
 
         Args:
-            code (:obj:`str`): 'code' parameter of redirected URL.
+            url (:obj:`str`): 'code' parameter of redirected URL.
             **kwargs: keywords for the POST request.
         returns:
             :obj:`str`: User token.
 
         """
-        msg = ("You can't request a token using the client-only authorization flow."
-               "\nAre you sure you don't have the token already?")
-        assert self.client_only is False, msg
-        payload = {'code': code,
-                   'client_id': self.client_id,
-                   'client_secret': self.client_secret,
-                   'redirect_uri': self.redirect_uri,
-                   'grant_type': 'authorization_code',
-                   'response_type': 'code'}
-        res = requests.post(OAuth2.token_url, payload, **kwargs)
-        res.raise_for_status()
-        return res.json()['access_token']
+        if self.flow == 'code':
+            payload = {'code': parse_redirected_url(url, self.flow),
+                       'client_id': self.client_id,
+                       'client_secret': self.client_secret,
+                       'redirect_uri': self.redirect_uri,
+                       'grant_type': 'authorization_code',
+                       'response_type': 'code'}
+            res = requests.post(OAuth2.token_url, payload, **kwargs)
+            res.raise_for_status()
+            return res.json()['access_token']
+        elif self.flow == 'token':
+            return parse_redirected_url(url, self.flow)
 
     def prompt_user(self):
-        """PromptS for manual authentication.
+        """Prompts current user for authentication.
 
-        OpenS a web browser for the user to log in with Genius.
-        PromptS to paste the URL after logging in to parse the
-        `code`/'token' URL parameter.
+        Opens a web browser for you to log in with Genius.
+        Prompts to paste the URL after logging in to parse the
+        *code* or *token* URL parameter.
 
         returns:
             :obj:`str`: User token.
@@ -105,4 +105,4 @@ class OAuth2(object):
         redirected = input('Please paste redirect URL: ').strip()
 
         code = parse_redirected_url(redirected, self.flow)
-        return code if self.client_only else self.request_user_token(code)
+        return code if self.client_only_app else self.get_user_token(code)
