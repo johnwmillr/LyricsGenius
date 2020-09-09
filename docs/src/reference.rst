@@ -10,6 +10,7 @@ All public objects are documented in these sections.
 :ref:`Genius`      Genius
 :ref:`Artist`	   Artist object
 :ref:`Song`        Song object
+:ref:`auth`        OAuth2
 :ref:`utils`       Utility functions
 ================== =============================
 
@@ -22,4 +23,5 @@ All public objects are documented in these sections.
    reference/genius
    reference/artist
    reference/song
+   reference/auth
    reference/utils
