@@ -1,7 +1,7 @@
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs
+import re
 
 """Utility functions."""
-
 
 
 def sanitize_filename(f):
@@ -33,8 +33,11 @@ def parse_redirected_url(url, flow):
     Raises:
         KeyError: if 'code'/'token' is not available or has multiple values.
     """
-    query = urlparse(url).query
-    code = parse_qs(query).get(flow, None)
+    parameters = parse_qs(url)
+    if flow == 'code':
+        code = parameters.get(flow, None)
+    elif flow == 'token':
+        code = parameters.get(re.search(r'.*#access_token', url)[0], None)
 
     if code is None:
         raise KeyError("Parameter {} not available!".format(flow))
