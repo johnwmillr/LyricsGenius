@@ -31,7 +31,7 @@ class API(object):
     | All methods of this class are available through the :class:`Genius` class.
 
     Args:
-        client_access_token (:obj:`str`): API key provided by Genius.
+        access_token (:obj:`str`): API key provided by Genius.
         response_format (:obj:`str`, optional): API response format (dom, plain, html).
         timeout (:obj:`int`, optional): time before quitting on response (seconds).
         sleep_time (:obj:`str`, optional): time to wait between requests.
@@ -52,11 +52,11 @@ class API(object):
                         'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'}
     _SLEEP_MIN = 0.2  # Enforce minimum wait time between API calls (seconds)
 
-    def __init__(self, client_access_token,
+    def __init__(self, access_token,
                  response_format='plain', timeout=5, sleep_time=0.5):
         # Genius API Constructor
 
-        self._ACCESS_TOKEN = client_access_token
+        self._ACCESS_TOKEN = access_token
         self._session.headers['authorization'] = 'Bearer ' + self._ACCESS_TOKEN
         self.response_format = response_format.lower()
         self.api_root = 'https://api.genius.com/'
@@ -513,7 +513,7 @@ class Genius(API):
     """User-level interface with the Genius.com API.
 
     Args:
-        client_access_token (:obj:`str`): API key provided by Genius.
+        access_token (:obj:`str`): API key provided by Genius.
         response_format (:obj:`str`, optional): API response format (dom, plain, html).
         timeout (:obj:`int`, optional): time before quitting on response (seconds).
         sleep_time (:obj:`str`, optional): time to wait between requests.
@@ -549,14 +549,14 @@ class Genius(API):
 
     """
 
-    def __init__(self, client_access_token,
+    def __init__(self, access_token,
                  response_format='plain', timeout=5, sleep_time=0.5,
                  verbose=True, remove_section_headers=False,
                  skip_non_songs=True, excluded_terms=None,
                  replace_default_terms=False):
         # Genius Client Constructor
 
-        super().__init__(client_access_token, response_format, timeout, sleep_time)
+        super().__init__(access_token, response_format, timeout, sleep_time)
         self.verbose = verbose
         self.remove_section_headers = remove_section_headers
         self.skip_non_songs = skip_non_songs
@@ -762,8 +762,8 @@ class Genius(API):
         # Skip results when URL is a 404 or lyrics are missing
         if not lyrics:
             if self.verbose:
-                print(('Specified song does not have a valid URL with lyrics.'
-                       'Rejecting.'))
+                print('Specified song does not have a valid URL with lyrics. '
+                      'Rejecting.')
             return None
 
         # Return a Song object with lyrics if we've made it this far
