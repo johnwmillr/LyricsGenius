@@ -24,10 +24,10 @@ def main(args=None):
     args = parser.parse_args()
 
     # Create an instance of the Genius class
-    client_access_token = os.environ.get("GENIUS_CLIENT_ACCESS_TOKEN", None)
-    msg = "Must declare environment variable: GENIUS_CLIENT_ACCESS_TOKEN"
-    assert client_access_token, msg
-    api = Genius(client_access_token)
+    access_token = os.environ.get("GENIUS_ACCESS_TOKEN", None)
+    msg = "Must declare environment variable: GENIUS_ACCESS_TOKEN"
+    assert access_token, msg
+    api = Genius(access_token)
     if args.quiet:
         api.verbose = False
 

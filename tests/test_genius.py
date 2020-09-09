@@ -8,10 +8,10 @@ from lyricsgenius.utils import sanitize_filename
 
 
 # Import client access token from environment variable
-client_access_token = os.environ.get("GENIUS_CLIENT_ACCESS_TOKEN", None)
-assert client_access_token is not None, (
-    "Must declare environment variable: GENIUS_CLIENT_ACCESS_TOKEN")
-genius = Genius(client_access_token, sleep_time=1.0, timeout=15)
+access_token = os.environ.get("GENIUS_ACCESS_TOKEN", None)
+assert access_token is not None, (
+    "Must declare environment variable: GENIUS_ACCESS_TOKEN")
+genius = Genius(access_token, sleep_time=1.0, timeout=15)
 
 
 class TestEndpoints(unittest.TestCase):
