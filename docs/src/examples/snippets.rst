@@ -112,7 +112,7 @@ Authenticating another user
     url_for_user = auth.get_user_auth_url()
     print('Redirecting you to {}'.format(url_for_user))
     redirected_url = 'https://example.com/?code=some_code'
-    token = get_user_token(redirected_url)
+    token = auth.get_user_token(redirected_url)
 
     genius = Genius(token)
 
