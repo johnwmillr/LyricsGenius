@@ -105,8 +105,7 @@ Authenticating another user
     auth = OAuth2('my_client_id',
                   'my_redirect_uri',
                   'my_client_secret',
-                  scope='all',
-                  client_only_app=True)
+                  scope='all')
 
     # this part is the same
     url_for_user = auth.url
