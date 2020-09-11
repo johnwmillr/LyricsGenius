@@ -1,4 +1,4 @@
-from urllib.parse import parse_qs
+from urllib.parse import parse_qs, urlparse
 import re
 
 """Utility functions."""
@@ -33,11 +33,12 @@ def parse_redirected_url(url, flow):
     Raises:
         KeyError: if 'code'/'token' is not available or has multiple values.
     """
-    parameters = parse_qs(url)
     if flow == 'code':
-        code = parameters.get(flow, None)
+        query = urlparse(url).query
     elif flow == 'token':
-        code = parameters.get(re.search(r'.*#access_token', url)[0], None)
+        query = re.sub(r'.*#access_', '', url)
+    parameters = parse_qs(query)
+    code = parameters.get(flow, None)
 
     if code is None:
         raise KeyError("Parameter {} not available!".format(flow))
