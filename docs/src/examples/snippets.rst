@@ -82,7 +82,7 @@ Authenticating yourself
     from lyricsgenius import OAuth2, Genius
     auth = OAuth2('my_client_id',
                   'my_redirect_uri',
-                  scope='all'
+                  scope='all',
                   client_only_app=True)  # if we don't set this,
                   we'll also have to provide client_secret
     token = auth.prompt_user()
