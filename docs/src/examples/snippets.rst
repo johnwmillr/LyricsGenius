@@ -98,14 +98,14 @@ Authenticating another user
     # client-only app
     auth = OAuth2('my_client_id',
                   'my_redirect_uri',
-                  scope='all'
+                  scope='all',
                   client_only_app=True)
 
     # full code exhange app
     auth = OAuth2('my_client_id',
                   'my_redirect_uri',
-                  'my_client_secret'
-                  scope='all'
+                  'my_client_secret',
+                  scope='all',
                   client_only_app=True)
 
     # this part is the same
