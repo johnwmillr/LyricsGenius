@@ -44,6 +44,7 @@ class OAuth2(object):
         self.scope = scope
         self.state = state
         self.flow = 'token' if client_only_app else 'code'
+        self.client_only_app = client_only_app
 
     @property
     def url(self):
