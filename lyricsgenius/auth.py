@@ -103,7 +103,7 @@ class OAuth2(object):
 
         """
 
-        url = self.get_user_auth_url()
+        url = self.url
         print('Opening browser for Genius login...')
         webbrowser.open(url)
         redirected = input('Please paste redirect URL: ').strip()
