@@ -75,22 +75,6 @@ Searching for a song by lyrics
 
 Authenticating using OAuth2
 ---------------------------
-Authenticating yourself
-^^^^^^^^^^^^^^^^^^^^^^^
-.. code:: python
-
-    from lyricsgenius import OAuth2, Genius
-    auth = OAuth2('my_client_id',
-                  'my_redirect_uri',
-                  scope='all'
-                  client_only_app=True)  # if we don't set this,
-                  we'll also have to provide client_secret
-    token = auth.prompt_user()
-
-    genius = Genius(token)
-
-Authenticating another user
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code:: python
 
     from lyricsgenius import OAuth2, Genius
@@ -98,14 +82,14 @@ Authenticating another user
     # client-only app
     auth = OAuth2('my_client_id',
                   'my_redirect_uri',
-                  scope='all'
+                  scope='all',
                   client_only_app=True)
 
     # full code exhange app
     auth = OAuth2('my_client_id',
                   'my_redirect_uri',
-                  'my_client_secret'
-                  scope='all'
+                  'my_client_secret',
+                  scope='all',
                   client_only_app=True)
 
     # this part is the same
