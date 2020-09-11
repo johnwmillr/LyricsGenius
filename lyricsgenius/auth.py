@@ -21,8 +21,8 @@ class OAuth2(object):
             authorization flow, otherwise `False`.
 
     Raises:
-        AssertionError: If  neither client_secret, nor client_only_app is
-            provided.
+        AssertionError: If neither :obj:`client_secret`, nor
+            :obj:`client_only_app` is supplied.
 
     """
     auth_url = 'https://api.genius.com/oauth/authorize'
@@ -40,18 +40,19 @@ class OAuth2(object):
         self.client_secret = client_secret
         self.redirect_uri = redirect_uri
         if scope == 'all':
-            scope = ['me', 'create_annotation', 'manage_annotation', 'vote']
+            scope = ('me', 'create_annotation', 'manage_annotation', 'vote')
         self.scope = scope
         self.state = state
         self.flow = 'token' if client_only_app else 'code'
 
-    def get_user_auth_url(self):
-        """Gets URL that directs user to authorization page.
-        You can use this method to get a URL that opens the authorization page
-        on Genius when the user opns it.
+    @property
+    def url(self):
+        """Returns the URL you redirect the user to.
+        You can use this property to get a URL that when opened on the user's
+        device, shows Genius's authorization page where user clicks *Agree*
+        to give your app access, and then Genius redirects user back to your
+        redirect URI.
 
-        Returns:
-            :obj:`str`: URL used to have user authenticate the client.
         """
         payload = {
             'client_id': self.client_id,
@@ -59,13 +60,16 @@ class OAuth2(object):
             'response_type': self.flow
         }
         if self.scope:
-            payload['scope'] = ','.join(self.scope)
+            payload['scope'] = ' '.join(self.scope)
         if self.state:
             payload['state'] = self.state
         return OAuth2.auth_url + '?' + urlencode(payload)
 
     def get_user_token(self, url, **kwargs):
-        """Gets a user token using the redirected url.
+        """Gets a user token using the redirected URL.
+        This method will either get the value of the *token*
+        parameter in the redirected URL, or use the value of the
+        *code* parameter to request a token from Genius.
 
         Args:
             url (:obj:`str`): 'code' parameter of redirected URL.

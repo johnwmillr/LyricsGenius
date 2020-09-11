@@ -109,7 +109,7 @@ Authenticating another user
                   client_only_app=True)
 
     # this part is the same
-    url_for_user = auth.get_user_auth_url()
+    url_for_user = auth.url
     print('Redirecting you to {}'.format(url_for_user))
     redirected_url = 'https://example.com/?code=some_code'
     token = auth.get_user_token(redirected_url)
