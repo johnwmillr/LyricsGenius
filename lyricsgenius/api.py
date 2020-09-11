@@ -133,17 +133,17 @@ class API(object):
                 'raw_annotatable_url': raw_annotatable_url,
                 'fragment': fragment,
                 'context_for_display': {
-                    'before_html': before_html,
-                    'after_html': after_html
+                    'before_html': before_html if before_html else None,
+                    'after_html': after_html if after_html else None
                 }
             },
             'web_page': {
-                'canonical_url': canonical_url,
-                'og_url': og_url,
-                'title': title
+                'canonical_url': canonical_url if canonical_url else None,
+                'og_url': og_url if og_url else None,
+                'title': title if title else None
             }
         }
-        return self._make_request(path=endpoint, method='POST', params=payload)
+        return self._make_request(path=endpoint, method='POST', params_=payload)
 
     def update_annotation(self, text, raw_annotatable_url, fragment,
                           before_html=None, after_html=None,
@@ -182,17 +182,17 @@ class API(object):
                 'raw_annotatable_url': raw_annotatable_url,
                 'fragment': fragment,
                 'context_for_display': {
-                    'before_html': before_html,
-                    'after_html': after_html
+                    'before_html': before_html if before_html else None,
+                    'after_html': after_html if after_html else None
                 }
             },
             'web_page': {
-                'canonical_url': canonical_url,
-                'og_url': og_url,
-                'title': title
+                'canonical_url': canonical_url if canonical_url else None,
+                'og_url': og_url if og_url else None,
+                'title': title if title else None
             }
         }
-        return self._make_request(path=endpoint, method='PUT', params=payload)
+        return self._make_request(path=endpoint, method='PUT', params_=payload)
 
     def delete_annotation(self, id_):
         """Deletes an annotation created by the authenticated user.
