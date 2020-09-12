@@ -486,7 +486,7 @@ class Genius(API):
 
         for hit in hits:
             item = hit['result']
-            if self._result_is_match(item[result_type], search_term):
+            if self._clean_str(item[result_type]) == self._clean_str(search_term):
                 return item
 
         # If the desired type is song lyrics and none of the results matched,
