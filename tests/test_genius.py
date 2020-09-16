@@ -113,6 +113,16 @@ class TestEndpoints(unittest.TestCase):
         msg = 'Annotation text did not match the one that was passed.'
         self.assertEqual(new_annotation['body']['plain'], example_text, msg)
 
+        example_text_two = 'Updated annotation'
+        annotation = genius.update_annotation(
+            new_annotation['id'],
+            example_text_two,
+            'https://example.com',
+            'illustrative examples',
+            title='test')['annotation']
+        msg = 'Updated annotation text did not match the one that was passed.'
+        self.assertEqual(annotation['body']['plain'], example_text_two, msg)
+
         annotation = genius.upvote_annotation(11828417)
         msg = 'Upvote was not registered.'
         self.assertTrue(annotation is not None, msg)
@@ -129,6 +139,7 @@ class TestEndpoints(unittest.TestCase):
         # this method returns a 204 HTTP response and
         # its response can't be tested since
         # _make_request() returns None either way (successful or failed).
+
 
 class TestArtist(unittest.TestCase):
 
