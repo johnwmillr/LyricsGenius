@@ -89,6 +89,46 @@ class TestEndpoints(unittest.TestCase):
         expected = "And I’ma keep ya fresh"
         self.assertEqual(real, expected, msg)
 
+    def test_get_webpage(self):
+        msg = "Returned webpage API path is different than expected."
+        url = "https://docs.genius.com"
+        r = genius.get_webpage(raw_annotatlbe_url=url)
+        real = r['web_page']['api_path']
+        expected = '/web_pages/10347'
+        self.assertEqual(real, expected, msg)
+
+    def test_get_account(self):
+        msg = ("No user detail was returned. "
+               "Are you sure you're using a user access token?")
+        acc = self.get_account()
+        self.assertTrue(acc is not None, msg)
+
+    def test_manage_annotation(self):
+        example_text = 'The annotation'
+        annotation = self.create_annotation(
+            example_text,
+            'https://example.com',
+            'illustrative examples',
+            title='test')
+        msg = 'Incorrect annotation body.'
+        self.assertEqual(annotation['body']['plain'] == example_text, msg)
+
+        annotation = self.upvote_annotation(annotation['id'])['annotation']
+        msg = 'Upvote was not registered.'
+        self.assertTrue(annotation['has_voters'], msg)
+
+        annotation = self.downvote_annotation(annotation['id'])['annotation']
+        msg = 'Downvote was not registered.'
+        self.assertTrue(annotation['has_voters'], msg)
+
+        annotation = self.unvote_annotation(annotation['id'])['annotation']
+        msg = 'Vote was not removed.'
+        self.assertFalse(annotation['has_voters'], msg)
+
+        annotation = self.delete_annotation(annotation['id'])
+        # this method returns a 204 HTTP response and
+        # its response can't be tested since
+        # _make_request() returns None either way (successful or failed).
 
 class TestArtist(unittest.TestCase):
 
