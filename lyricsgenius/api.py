@@ -82,7 +82,8 @@ class API(object):
 
         # Enforce rate limiting
         time.sleep(max(self._SLEEP_MIN, self.sleep_time))
-        return response.json() if response else None
+        if response and response.status_code == 200:
+            return response.json()['response']
 
     def create_annotation(self, text, raw_annotatable_url, fragment,
                           before_html=None, after_html=None,
