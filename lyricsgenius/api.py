@@ -7,7 +7,7 @@
 import os
 import re
 import requests
-from requests.exceptions import Timeout, HTTPError
+from requests.exceptions import Timeout
 from urllib.parse import urlencode
 import shutil
 import json
@@ -62,7 +62,6 @@ class API(object):
         self.api_root = 'https://api.genius.com/'
         self.timeout = timeout
         self.sleep_time = sleep_time
-        self._validate_token()
 
     def _make_request(self, path, method='GET', params_=None):
         """Makes a request to the API."""
@@ -77,25 +76,12 @@ class API(object):
             response = self._session.request(method, uri,
                                              timeout=self.timeout,
                                              params=params_)
-            response.raise_for_status()
         except Timeout as e:
-            error = "Request timed out:\n{e}".format(e=e)
-            raise Timeout(error)
-        except HTTPError as e:
-            error = str(e)
-            res = e.response.json()
-            description = (res['meta']['message']
-                           if res.get('meta')
-                           else res.get('error_description'))
-            error += '\n{}'.format(description) if description else ''
-            raise HTTPError(response.status_code, error)
+            print("Timeout raised and caught:\n{e}".format(e=e))
 
         # Enforce rate limiting
         time.sleep(max(self._SLEEP_MIN, self.sleep_time))
-        return response.json()['response']
-
-    def _validate_token(self):
-        self.get_song(378195)
+        return response.json()['response'] if response else None
 
     def create_annotation(self, text, raw_annotatable_url, fragment,
                           before_html=None, after_html=None,
