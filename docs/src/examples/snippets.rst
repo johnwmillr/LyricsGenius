@@ -77,6 +77,9 @@ Authenticating using OAuth2
 ---------------------------
 Authenticating yourself
 ^^^^^^^^^^^^^^^^^^^^^^^
+Whitelist a redirect URI in your app's page on Genius. Any redirect
+URI will work (for example `http://example.com/callback`)
+
 .. code:: python
 
     from lyricsgenius import OAuth2, Genius
