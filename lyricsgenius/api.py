@@ -63,7 +63,7 @@ class API(object):
         self.timeout = timeout
         self.sleep_time = sleep_time
 
-    def _make_request(self, path, method='GET', params_=None):
+    def _make_request(self, path, method='GET', params_=None, **kwargs):
         """Makes a request to the API."""
         uri = self.api_root + path
 
@@ -75,13 +75,14 @@ class API(object):
         try:
             response = self._session.request(method, uri,
                                              timeout=self.timeout,
-                                             params=params_)
+                                             params=params_,
+                                             **kwargs)
         except Timeout as e:
             print("Timeout raised and caught:\n{e}".format(e=e))
 
         # Enforce rate limiting
         time.sleep(max(self._SLEEP_MIN, self.sleep_time))
-        return response.json()['response'] if response else None
+        return response.json() if response else None
 
     def create_annotation(self, text, raw_annotatable_url, fragment,
                           before_html=None, after_html=None,
@@ -104,8 +105,16 @@ class API(object):
             title (:obj:`str`, optional): The title of the page.
 
         Returns:
-            :obj:`dict`: The annotation that was created.
+            :obj:`dict` \\| :obj:`None`: If the operation were successful,
+                returns the annotation; otherwise `None`.
 
+        Examples:
+            .. code:: python
+
+                genius = Genius(token)
+                new = genius.update_annotation('The annotation',
+                'https://example.com', 'illustrative examples', title='test')
+                print(new['id'])
         """
         msg = "Must supply `canonical_url`, `og_url`, or `title`."
         assert any([canonical_url, og_url, title]), msg
@@ -129,7 +138,7 @@ class API(object):
                 'title': title if title else None
             }
         }
-        return self._make_request(path=endpoint, method='POST', params_=payload)
+        return self._make_request(path=endpoint, method='POST', json=payload)
 
     def update_annotation(self, text, raw_annotatable_url, fragment,
                           before_html=None, after_html=None,
@@ -151,9 +160,9 @@ class API(object):
                 :obj:`<meta property="og:url">` tag on the page.
             title (:obj:`str`, optional): The title of the page.
 
-
         Returns:
-            :obj:`dict`: The annotation that was updated.
+            :obj:`dict` \\| :obj:`None`: If the operation were successful,
+                returns the annotation; otherwise `None`.
 
         """
         msg = "Must supply `canonical_url`, `og_url`, or `title`."
@@ -178,7 +187,7 @@ class API(object):
                 'title': title if title else None
             }
         }
-        return self._make_request(path=endpoint, method='PUT', params_=payload)
+        return self._make_request(path=endpoint, method='PUT', json=payload)
 
     def delete_annotation(self, id_):
         """Deletes an annotation created by the authenticated user.
@@ -187,9 +196,13 @@ class API(object):
         Args:
             id\\_ (:obj:`int`): ID of the annotation.
 
+        Returns:
+            :obj:`dict` \\| :obj:`None`: If the operation were successful,
+                returns the annotation; otherwise `None`.
+
         """
         endpoint = 'annotations/{}'.format(id_)
-        self._make_request(path=endpoint, method='DELETE')
+        return self._make_request(path=endpoint, method='DELETE')
 
     def upvote_annotation(self, id_):
         """Upvotes an annotation.
@@ -198,9 +211,11 @@ class API(object):
         Args:
             id\\_ (:obj:`int`): ID of the annotation.
 
+        Returns:
+            :obj:`dict`: The annotation.
         """
         endpoint = 'annotations/{}/upvote'.format(id_)
-        self._make_request(path=endpoint, method='PUT')
+        return self._make_request(path=endpoint, method='PUT')
 
     def downvote_annotation(self, id_):
         """Downvotes an annotation.
@@ -209,9 +224,12 @@ class API(object):
         Args:
             id\\_ (:obj:`int`): ID of the annotation.
 
+        Returns:
+            :obj:`dict` \\| :obj:`None`: If the operation were successful,
+                returns the annotation; otherwise `None`.
         """
         endpoint = 'annotations/{}/downvote'.format(id_)
-        self._make_request(path=endpoint, method='PUT')
+        return self._make_request(path=endpoint, method='PUT')
 
     def unvote_annotation(self, id_):
         """Removes user's vote for the annotation.
@@ -220,9 +238,12 @@ class API(object):
         Args:
             id\\_ (:obj:`int`): ID of the annotation.
 
+        Returns:
+            :obj:`dict` \\| :obj:`None`: If the operation were successful,
+                returns the annotation; otherwise `None`.
         """
         endpoint = 'annotations/{}/unvote'.format(id_)
-        self._make_request(path=endpoint, method='PUT')
+        return self._make_request(path=endpoint, method='PUT')
 
     def get_account(self):
         """Gets details about the current user.
@@ -252,7 +273,7 @@ class API(object):
             .. code:: python
 
                 genius = Genius(token)
-                webpage = genius.get_webpage(docs.genius.com)
+                webpage = genius.get_webpage('docs.genius.com')
                 print(webpage['full_title'])
 
         Note:
@@ -358,7 +379,7 @@ class API(object):
 
     def get_referents(self, song_id=None, web_page_id=None,
                       created_by_id=None, per_page=20, page=1):
-        """Gets song's referents
+        """Gets song or webpage's referents
 
         Args:
             song_id (:obj:`int`, optional): song ID
