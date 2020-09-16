@@ -84,6 +84,8 @@ class API(object):
         time.sleep(max(self._SLEEP_MIN, self.sleep_time))
         if response and response.status_code == 200:
             return response.json()['response']
+        else:
+            return None
 
     def create_annotation(self, text, raw_annotatable_url, fragment,
                           before_html=None, after_html=None,
@@ -141,13 +143,14 @@ class API(object):
         }
         return self._make_request(path=endpoint, method='POST', json=payload)
 
-    def update_annotation(self, text, raw_annotatable_url, fragment,
+    def update_annotation(self, id_, text, raw_annotatable_url, fragment,
                           before_html=None, after_html=None,
                           canonical_url=None, og_url=None, title=None):
         """Updates an annotation created by the authenticated user.
         Requires scope: :obj:`manage_annotation`.
 
         Args:
+            id_ (:obj:`int`): ID of the annotation that will be updated.
             text (:obj:`str`): Annotation text in Markdown format.
             raw_annotatable_url (:obj:`str`): The original URL of the page.
             fragment (:obj:`str`): The highlighted fragment (the referent).
@@ -169,7 +172,7 @@ class API(object):
         msg = "Must supply `canonical_url`, `og_url`, or `title`."
         assert any([canonical_url, og_url, title]), msg
 
-        endpoint = 'annotations'
+        endpoint = 'annotations/{}'.format(id_)
         payload = {
             'annotation': {
                 'body': {'markdown': text}
