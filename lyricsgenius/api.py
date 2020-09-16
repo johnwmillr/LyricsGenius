@@ -107,7 +107,7 @@ class API(object):
             :obj:`dict`: The annotation that was created.
 
         """
-        msg = "Must supply `raw_annotatable_url`, `canonical_url`, or `title`."
+        msg = "Must supply `canonical_url`, `og_url`, or `title`."
         assert any([canonical_url, og_url, title]), msg
 
         endpoint = 'annotations'
@@ -156,7 +156,7 @@ class API(object):
             :obj:`dict`: The annotation that was updated.
 
         """
-        msg = "Must supply `raw_annotatable_url`, `canonical_url`, or `title`."
+        msg = "Must supply `canonical_url`, `og_url`, or `title`."
         assert any([canonical_url, og_url, title]), msg
 
         endpoint = 'annotations'
