@@ -384,13 +384,17 @@ class Genius(API):
         html = BeautifulSoup(page.text, "html.parser")
 
         # Determine the class of the div
-        div = html.find("div", class_=re.compile("^lyrics$|Lyrics__Root")
-        if div:
-            lyrics = div.get_text('\n').replace('\n[', '\n\n[')
+        old_div = html.find("div", class_="lyrics")
+        if old_div:
+            lyrics = old_div.get_text()
         else:
-            if self.verbose:
-                print("Couldn't find the lyrics section.")
-            return None
+            new_div = html.find("div", class_=re.compile("Lyrics__Root"))
+            if new_div:
+                lyrics = new_div.get_text('\n').replace('\n[', '\n\n[')
+            else:
+                if self.verbose:
+                    print("Couldn't find the lyrics section.")
+                return None
 
         if self.remove_section_headers:  # Remove [Verse], [Bridge], etc.
             lyrics = re.sub(r'(\[.*?\])*', '', lyrics)
