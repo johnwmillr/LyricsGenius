@@ -8,7 +8,8 @@ from lyricsgenius.utils import sanitize_filename
 
 # Import client access token from environment variable
 client_access_token = os.environ.get("GENIUS_CLIENT_ACCESS_TOKEN", None)
-assert client_access_token is not None, "Must declare environment variable: GENIUS_CLIENT_ACCESS_TOKEN"
+assert client_access_token is not None, (
+    "Must declare environment variable: GENIUS_CLIENT_ACCESS_TOKEN")
 genius = Genius(client_access_token, sleep_time=1.0, timeout=15)
 
 
@@ -28,14 +29,13 @@ class TestEndpoints(unittest.TestCase):
 
     def test_search_song(self):
         artist = "Jay-Z"
-        drake_song = "All Me"
         # Empty response
         response = genius.search_song('')
         self.assertIsNone(response)
 
         # Exact match exact search
         response = genius.search_song(self.song_title_only)
-        self.assertTrue(response.title.lower() == self.song_title_only.lower()) # Drake gets returned
+        self.assertTrue(response.title.lower() == self.song_title_only.lower())
 
         # Song with artist name
         response = genius.search_song(self.song_title_only, artist)
@@ -58,12 +58,12 @@ class TestEndpoints(unittest.TestCase):
         self.assertTrue(real == expected, msg)
 
     def test_get_referents_invalid_input(self):
-        msg = "Method should prevent inputs for both song and web_pag ID."
+        # Method should prevent inputs for both song and web_pag ID.
         with self.assertRaises(AssertionError):
             genius.get_referents(song_id=1, web_page_id=1)
 
     def test_get_referents_no_inputs(self):
-        msg = "Must supply `song_id`, `web_page_id`, or `created_by_id`."
+        # Must supply `song_id`, `web_page_id`, or `created_by_id`.
         with self.assertRaises(AssertionError):
             genius.get_referents()
 
@@ -77,7 +77,6 @@ class TestEndpoints(unittest.TestCase):
 
     def test_get_song_annotations(self):
         msg = "Incorrect song annotation response."
-        id_ = 1
         r = sorted(genius.get_song_annotations(1))
         real = r[0][0]
         expected = "And I’ma keep ya fresh"
@@ -118,7 +117,7 @@ class TestArtist(unittest.TestCase):
     def test_add_song_from_same_artist(self):
         msg = "The new song was not added to the artist object."
         self.artist.add_song(genius.search_song(self.new_song, self.artist_name))
-        self.assertEqual(self.artist.num_songs, self.max_songs+1, msg)
+        self.assertEqual(self.artist.num_songs, self.max_songs + 1, msg)
 
     def test_add_song_from_different_artist(self):
         msg = "A song from a different artist was incorrectly allowed to be added."
@@ -126,13 +125,13 @@ class TestArtist(unittest.TestCase):
         self.assertEqual(self.artist.num_songs, self.max_songs, msg)
 
     def test_artist_with_includes_features(self):
-        msg = "The artist did not get songs returned that they were featured in."
+        # The artist did not get songs returned that they were featured in.
         name = "Swae Lee"
         result = (genius
                   .search_artist(
-                                 name,
-                                 max_songs=1,
-                                 include_features=True)
+                      name,
+                      max_songs=1,
+                      include_features=True)
                   .songs[0]
                   ._body['primary_artist']['name'])
         self.assertNotEqual(result, name)
@@ -151,7 +150,10 @@ class TestArtist(unittest.TestCase):
         print('\n')
         extension = 'json'
         msg = "Could not save {} file.".format(extension)
-        expected_filename = 'Lyrics_' + self.artist.name.replace(' ', '') + '.' + extension
+        expected_filename = ('Lyrics_'
+                             + self.artist.name.replace(' ', '')
+                             + '.'
+                             + extension)
 
         # Remove the test file if it already exists
         if os.path.isfile(expected_filename):
@@ -164,7 +166,7 @@ class TestArtist(unittest.TestCase):
         # Test overwriting json file (now that file is written)
         try:
             self.artist.save_lyrics(extension=extension, overwrite=True)
-        except:
+        except Exception:
             self.fail("Failed {} overwrite test".format(extension))
         os.remove(expected_filename)
 
@@ -172,7 +174,10 @@ class TestArtist(unittest.TestCase):
         print('\n')
         extension = 'txt'
         msg = "Could not save {} file.".format(extension)
-        expected_filename = 'Lyrics_' + self.artist.name.replace(' ', '') + '.' + extension
+        expected_filename = ('Lyrics_'
+                             + self.artist.name.replace(' ', '')
+                             + '.'
+                             + extension)
 
         # Remove the test file if it already exists
         if os.path.isfile(expected_filename):
@@ -186,7 +191,7 @@ class TestArtist(unittest.TestCase):
         try:
             self.artist.save_lyrics(
                 extension=extension, overwrite=True)
-        except:
+        except Exception:
             self.fail("Failed {} overwrite test".format(extension))
         os.remove(expected_filename)
 
@@ -214,7 +219,7 @@ class TestSong(unittest.TestCase):
                          genius._clean_str(self.song_title), msg)
 
     def test_artist(self):
-        msg = "The returned artist name does not match the artist of the requested song."
+        # The returned artist name does not match the artist of the requested song.
         self.assertEqual(self.song.artist, self.artist_name)
 
     def test_album(self):
@@ -242,7 +247,7 @@ class TestSong(unittest.TestCase):
         self.assertFalse(genius._result_is_lyrics('Beatles Tracklist'), msg)
 
     def test_producer_artists(self):
-        msg = "Producer artist should be 'Andy Shauf'."
+        # Producer artist should be 'Andy Shauf'.
         self.assertEqual(self.song.producer_artists[0]["name"], "Andy Shauf")
 
     def test_saving_json_file(self):
@@ -265,7 +270,7 @@ class TestSong(unittest.TestCase):
             self.song.save_lyrics(
                 filename=expected_filename, extension=extension, overwrite=True)
             os.remove(expected_filename)
-        except:
+        except Exception:
             self.fail("Failed {} overwrite test".format(extension))
             os.remove(expected_filename)
 
@@ -291,7 +296,7 @@ class TestSong(unittest.TestCase):
             self.song.save_lyrics(filename=filename,
                                   extension=extension,
                                   overwrite=True)
-        except:
+        except Exception:
             self.fail("Failed {} overwrite test".format(extension))
         os.remove(expected_filename)
 
