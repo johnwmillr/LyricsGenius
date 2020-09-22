@@ -27,11 +27,11 @@ class AlbumMethods(object):
         return self._make_request(path=endpoint, params_=params)
 
     def albums_charts(self,
-                     time_period='day',
-                     chart_genre='all',
-                     per_page=None,
-                     page=None,
-                     text_format=None):
+                      time_period='day',
+                      chart_genre='all',
+                      per_page=None,
+                      page=None,
+                      text_format=None):
         """Gets the album charts.
 
         Alias for :meth:`charts() <PublicAPI.charts>`.

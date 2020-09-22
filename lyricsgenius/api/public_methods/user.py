@@ -140,7 +140,7 @@ class UserMethods(object):
                          text_format=None
                          ):
         """Gets user's annotations.
-        
+
         Alias for :meth:`user_contributions() <PublicAPI.user_contributions>`
 
         Args:
@@ -175,7 +175,7 @@ class UserMethods(object):
                       text_format=None
                       ):
         """Gets user's articles.
-        
+
         Alias for :meth:`user_contributions() <PublicAPI.user_contributions>`
 
         Args:
@@ -208,7 +208,7 @@ class UserMethods(object):
                     next_curosr=None,
                     text_format=None):
         """Gets user's Pyongs.
-        
+
         Alias for :meth:`user_contributions() <PublicAPI.user_contributions>`
 
         Args:
@@ -238,7 +238,7 @@ class UserMethods(object):
                                    next_curosr=None,
                                    text_format=None):
         """Gets user's Q&As.
-        
+
         Alias for :meth:`user_contributions() <PublicAPI.user_contributions>`
 
         Args:
@@ -268,7 +268,7 @@ class UserMethods(object):
                          next_curosr=None,
                          text_format=None):
         """Gets user's suggestions (comments).
-        
+
         Alias for :meth:`user_contributions() <PublicAPI.user_contributions>`
 
         Args:
@@ -299,7 +299,7 @@ class UserMethods(object):
                             sort='popularity',
                             text_format=None):
         """Gets user's transcriptions.
-        
+
         Alias for :meth:`user_contributions() <PublicAPI.user_contributions>`
 
         Args:
