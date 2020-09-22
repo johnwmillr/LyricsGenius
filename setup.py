@@ -57,7 +57,7 @@ setup(
     keywords='genius api genius-api music lyrics artists albums songs',
     packages=find_packages(exclude=['tests']),
     install_requires=[
-        'beautifulsoup4==4.6.0',
+        'beautifulsoup4>=4.6.0',
         'requests>=2.20.0'
     ],
     extras_require=extras_require,

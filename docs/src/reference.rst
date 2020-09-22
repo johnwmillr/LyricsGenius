@@ -7,6 +7,7 @@ All public objects are documented in these sections.
 
 ================== =============================
 :ref:`api`         API
+:ref:`public_api`  Public API
 :ref:`Genius`      Genius
 :ref:`Artist`	   Artist object
 :ref:`Song`        Song object
@@ -19,6 +20,7 @@ All public objects are documented in these sections.
    :hidden:
 
    reference/api
+   reference/public_api
    reference/genius
    reference/artist
    reference/song
