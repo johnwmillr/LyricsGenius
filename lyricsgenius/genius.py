@@ -65,17 +65,13 @@ class Genius(API, PublicAPI):
                  replace_default_terms=False):
         # Genius Client Constructor
 
-        super(API, self).__init__(
-            client_access_token,
-            response_format,
-            timeout,
-            sleep_time
+        super().__init__(
+            client_access_token=client_access_token,
+            response_format=response_format,
+            timeout=timeout,
+            sleep_time=sleep_time
         )
-        super(PublicAPI, self).__init__(
-            response_format,
-            timeout,
-            sleep_time
-        )
+
         self.verbose = verbose
         self.remove_section_headers = remove_section_headers
         self.skip_non_songs = skip_non_songs
