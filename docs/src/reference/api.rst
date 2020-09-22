@@ -1,5 +1,5 @@
 .. _api:
-.. currentmodule:: lyricsgenius.api
+.. currentmodule:: lyricsgenius
 .. toctree::
    :maxdepth: 2
    :hidden:

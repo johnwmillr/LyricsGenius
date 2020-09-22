@@ -58,7 +58,7 @@ class Artist(object):
         """Song objects saved for the artist.
 
         Returns:
-            :obj:`list`: A list contatining :class:`Song <lyricsgenius.song.Song>`
+            :obj:`list`: A list contatining :class:`Song <song.Song>`
             objects.
 
         """
@@ -83,7 +83,7 @@ class Artist(object):
         song's artist is the same as the `Artist` object.
 
         Args:
-            new_song (:class:`Song <lyricsgenius.song.Song>`): Song to be added.
+            new_song (:class:`Song <song.Song>`): Song to be added.
             verbose (:obj:`bool`): prints operation result.
             include_features (:obj:`bool`, optional): If True, includes tracks
                 featuring the artist.
@@ -203,7 +203,7 @@ class Artist(object):
         artist songs.
         If you only want the songs lyrics, set :obj:`extension` to `txt`.
         If you choose to go with JSON (which is the default extension), you can access
-        the lyrics by accessing the :class:`Song <lyricsgenius.song.Song>`
+        the lyrics by accessing the :class:`Song <song.Song>`
         objects inside the `songs` key of the JSON file.
         Take a look at the example below.
 
