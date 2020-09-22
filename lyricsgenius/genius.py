@@ -243,9 +243,11 @@ class Genius(API, PublicAPI):
 
         """
         if public_api:
-            return super(PublicAPI, self).referents(song_id=song_id, text_format=text_format)
+            referents = super(PublicAPI, self).referents(song_id=song_id,
+                                                         text_format=text_format)
         else:
-            return super(API, self).referents(song_id=song_id, text_format=text_format)
+            referents = super(API, self).referents(song_id=song_id,
+                                                   text_format=text_format)
 
         all_annotations = []  # list of tuples(fragment, annotations[])
         for r in referents["referents"]:
@@ -493,7 +495,7 @@ class Genius(API, PublicAPI):
             print('Done.')
         return song
 
-    def search_artist(self, artist, max_songs=None,
+    def search_artist(self, artist_name, max_songs=None,
                       sort='popularity', per_page=20,
                       get_full_info=True,
                       allow_name_change=True,
@@ -502,13 +504,13 @@ class Genius(API, PublicAPI):
         """Searches for a specific artist and gets their songs.
 
         This method looks for the artist by the name or by the
-        ID if it's provided. It returrns an :class:`Artist <artist.Artist>`
-        object if the search is successful.
+        ID if it's provided in ``artist_id``. It returrns an
+        :class:`Artist <artist.Artist>` object if the search is successful.
         If :obj:`allow_name_change` is True, the name of the artist is changed to the
         artist name on Genius.
 
         Args:
-            artist (:obj:`str`|:obj:`int`): Name of the artist to search for.
+            artist_name (:obj:`str`|:obj:`int`): Name of the artist to search for.
             max_songs (obj:`int`, optional): Maximum number of songs to search for.
             sort (:obj:`str`, optional): Sort by 'title' or 'popularity'.
             per_page (:obj:`int`, optional): Number of results to return

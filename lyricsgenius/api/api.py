@@ -64,9 +64,11 @@ class API(object):
         self.timeout = timeout
         self.sleep_time = sleep_time
 
-    def _make_request(self, path, method='GET', params_={}):
+    def _make_request(self, path, method='GET', params_=None):
         """Makes a request to the API."""
         uri = self.api_root + path
+
+        params_ = params_ if params_ else {}
 
         # Make the request
         response = None
@@ -305,9 +307,11 @@ class PublicAPI(
         self.timeout = timeout
         self.sleep_time = sleep_time
 
-    def _make_request(self, path, method='GET', params_={}):
+    def _make_request(self, path, method='GET', params_=None):
         """Makes a request to the public API."""
         uri = self.api_root + path
+
+        params_ = params_ if params_ else {}
 
         # Make the request
         response = None
