@@ -1,9 +1,7 @@
 language: python
 python:
- - '3.4'
- - '3.5'
- - '3.6'
+ - '3'
 
-install: pip install -r requirements.txt
+install: pip install .[dev]
 
-script: python -m unittest discover
+script: tox
