@@ -1,6 +1,6 @@
 import os
 import unittest
-from lyricsgenius.api import Genius
+from lyricsgenius import Genius
 from lyricsgenius.song import Song
 from lyricsgenius.artist import Artist
 from lyricsgenius.utils import sanitize_filename
