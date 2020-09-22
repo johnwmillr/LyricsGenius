@@ -46,7 +46,7 @@ class SearchMethods(object):
 
     def search_albums(self, search_term, per_page=None, page=None):
         """Searches the albums on Genius.
-        
+
         Alias for :meth:`search() <PublicAPI.search>`
 
         Args:
@@ -66,7 +66,7 @@ class SearchMethods(object):
 
     def search_articles(self, search_term, per_page=None, page=None):
         """Searches the articles on Genius.
-        
+
         Alias for :meth:`search() <PublicAPI.search>`
 
         Args:
@@ -86,7 +86,7 @@ class SearchMethods(object):
 
     def search_artists(self, search_term, per_page=None, page=None):
         """Searches the artists on Genius.
-        
+
         Alias for :meth:`search() <PublicAPI.search>`
 
         Args:
@@ -106,7 +106,7 @@ class SearchMethods(object):
 
     def search_lyrics(self, search_term, per_page=None, page=None):
         """Searches the lyrics on Genius.
-        
+
         Alias for :meth:`search() <PublicAPI.search>`
 
         Args:
@@ -126,7 +126,7 @@ class SearchMethods(object):
 
     def search_songs(self, search_term, per_page=None, page=None):
         """Searches the songs on Genius.
-        
+
         Alias for :meth:`search() <PublicAPI.search>`
 
         Args:
@@ -146,7 +146,7 @@ class SearchMethods(object):
 
     def search_users(self, search_term, per_page=None, page=None):
         """Searches the users on Genius.
-        
+
         Alias for :meth:`search() <PublicAPI.search>`
 
         Args:
@@ -166,7 +166,7 @@ class SearchMethods(object):
 
     def search_videos(self, search_term, per_page=None, page=None):
         """Searches the videos on Genius.
-        
+
         Alias for :meth:`search() <PublicAPI.search>`
 
         Args:

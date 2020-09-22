@@ -16,7 +16,7 @@ class ArtistMethods(object):
         endpoint = 'artists/{}'.format(artist_id)
         params = {'text_format': text_format or self.response_format}
 
-        res = self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params)
 
     def artist_activity(self, artist_id, per_page=None, page=None, text_format=None):
         """Gets activities on artist's songs.
@@ -37,7 +37,7 @@ class ArtistMethods(object):
         params = {'per_page': per_page,
                   'page': page,
                   'text_format': text_format or self.response_format}
-        res = self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params)
 
     def artist_albums(self, artist_id, per_page=None, page=None):
         """Gets artist's albums.
@@ -55,7 +55,7 @@ class ArtistMethods(object):
         endpoint = 'artsits/{}/albums'.format(artist_id)
         params = {'per_page': per_page,
                   'page': page}
-        res = self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params)
 
     def artist_contribution_opportunities(self,
                                           artist_id,
@@ -81,7 +81,7 @@ class ArtistMethods(object):
         params = {'per_page': per_page,
                   'next_curosr': next_curosr,
                   'text_format': text_format or self.response_format}
-        res = self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params)
 
     def artist_followers(self, artist_id, per_page=None, page=None):
         """Gets artist's followers.
@@ -99,7 +99,7 @@ class ArtistMethods(object):
         endpoint = 'artists/{}/followers'.format(artist_id)
         params = {'per_page': per_page,
                   'page': page}
-        res = self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params)
 
     def artist_leaderboard(self, artist_id, per_page=None, page=None):
         """Gets artist's top scholars.
@@ -117,7 +117,7 @@ class ArtistMethods(object):
         endpoint = 'artists/{}/leaderboard'.format(artist_id)
         params = {'per_page': per_page,
                   'page': page}
-        res = self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params)
 
     def artist_songs(self, artist_id, per_page=None, page=None, sort='popularity'):
         """Gets artist's songs.
@@ -138,7 +138,7 @@ class ArtistMethods(object):
         params = {'per_page': per_page,
                   'page': page,
                   'sort': sort}
-        res = self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params)
 
     def search_artist_songs(self,
                             artist_id,
@@ -166,4 +166,4 @@ class ArtistMethods(object):
                   'per_page': per_page,
                   'page': page,
                   'sort': sort}
-        res = self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params)

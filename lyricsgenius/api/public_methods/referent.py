@@ -67,11 +67,11 @@ class ReferentMethods(object):
         return self._make_request(endpoint, params_=params)
 
     def referents_charts(self,
-                        time_period='day',
-                        chart_genre='all',
-                        per_page=None,
-                        page=None,
-                        text_format=None):
+                         time_period='day',
+                         chart_genre='all',
+                         per_page=None,
+                         page=None,
+                         text_format=None):
         """Gets the referents (lyrics) charts.
 
         Alias for :meth:`charts() <PublicAPI.charts>`.

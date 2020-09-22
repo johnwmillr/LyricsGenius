@@ -13,7 +13,7 @@ class ArticleMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'articles/'.format(article_id)
+        endpoint = 'articles/{}'.format(article_id)
         params = {'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params)
 
