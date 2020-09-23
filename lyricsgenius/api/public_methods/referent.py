@@ -53,11 +53,9 @@ class ReferentMethods(object):
         """
         msg = "Must supply `song_id`, `web_page_id`, or `created_by_id`."
         assert any([song_id, web_page_id, created_by_id]), msg
-        if song_id or web_page_id:
-            msg = "Pass only one of `song_id` and `web_page_id`, not both."
-            assert bool(song_id) ^ bool(web_page_id), msg
+        msg = "Pass only one of `song_id` and `web_page_id`, not both."
+        assert bool(song_id) ^ bool(web_page_id), msg
 
-        # Construct the URI
         endpoint = "referents"
         params = {'song_id': song_id,
                   'web_page_id': web_page_id,
