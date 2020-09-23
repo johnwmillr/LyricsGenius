@@ -1,7 +1,3 @@
-import requests
-from requests.exceptions import Timeout
-import time
-
 from .base import Sender
 from .public_methods import (
     AlbumMethods,
@@ -48,16 +44,9 @@ class API(Sender):
 
     """
 
-    # Create a persistent requests connection
-    _session = requests.Session()
-    _session.headers = {'application': 'LyricsGenius',
-                        'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'}
-    _SLEEP_MIN = 0.2  # Enforce minimum wait time between API calls (seconds)
-    api_root = 'https://api.genius.com/'
-
     def __init__(self, client_access_token,
                  response_format='plain', timeout=5, sleep_time=0.5):
-        super().__init__(
+        Sender.__init__(self,
             client_access_token=client_access_token,
             response_format=response_format,
             timeout=timeout,
@@ -236,6 +225,7 @@ class API(Sender):
 
 
 class PublicAPI(
+        Sender,
         AlbumMethods,
         AnnotationMethods,
         ArticleMethods,
