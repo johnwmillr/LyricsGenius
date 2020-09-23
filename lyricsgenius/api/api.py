@@ -139,6 +139,7 @@ class API(Sender):
 
         """
         endpoint = "artists/{id}/songs".format(id=artist_id)
+
         params = {'sort': sort,
                   'per_page': per_page,
                   'page': page}
