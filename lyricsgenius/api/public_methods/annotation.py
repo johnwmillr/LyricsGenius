@@ -15,7 +15,7 @@ class AnnotationMethods():
         """
         endpoint = 'annotations/{}'.format(annotation_id)
         params = {'text_format': text_format or self.response_format}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def annotation_edits(self, annotation_id, text_format=None):
         """Gets the edits on annotation (its versions).

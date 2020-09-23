@@ -232,7 +232,7 @@ class Genius(API, PublicAPI):
             :obj:`list`: list of tuples(fragment, [annotations])
 
         Note:
-            This method uses :meth:`Genius.get_referents`, but provides convenient
+            This method uses :meth:`Genius.referents`, but provides convenient
             access to fragments (annotated text) and the corresponding
             annotations (Some fragments may have more than one annotation,
             because sometimes both artists and Genius users annotate them).
@@ -242,8 +242,8 @@ class Genius(API, PublicAPI):
             referents = super(PublicAPI, self).referents(song_id=song_id,
                                                          text_format=text_format)
         else:
-            referents = super(API, self).referents(song_id=song_id,
-                                                   text_format=text_format)
+            referents = super().referents(song_id=song_id,
+                                          text_format=text_format)
 
         all_annotations = []  # list of tuples(fragment, annotations[])
         for r in referents["referents"]:
@@ -278,7 +278,7 @@ class Genius(API, PublicAPI):
         if public_api:
             return super(PublicAPI, self).annotation(annotation_id, text_format)
         else:
-            return super(API, self).annotation(annotation_id, text_format)
+            return super().annotation(annotation_id, text_format)
 
     def artist(self, artist_id, text_format=None, public_api=False):
         """Gets data for a specific artist.
@@ -303,7 +303,7 @@ class Genius(API, PublicAPI):
         if public_api:
             return super(PublicAPI, self).artist(artist_id, text_format)
         else:
-            return super(API, self).artist(artist_id, text_format)
+            return super().artist(artist_id, text_format)
 
     def artist_songs(self, artist_id, per_page=None, page=None,
                      sort='title', public_api=False):
@@ -332,7 +332,7 @@ class Genius(API, PublicAPI):
         if public_api:
             return super(PublicAPI, self).song(artist_id, per_page, page, sort)
         else:
-            return super(API, self).song(artist_id, per_page, page, sort)
+            return super().song(artist_id, per_page, page, sort)
 
     def referents(self, song_id=None, web_page_id=None,
                   created_by_id=None, per_page=None,
@@ -365,8 +365,8 @@ class Genius(API, PublicAPI):
             return super(PublicAPI, self).referents(song_id, web_page_id, created_by_id,
                                                     per_page, page, text_format)
         else:
-            return super(API, self).referents(song_id, web_page_id, created_by_id,
-                                              per_page, page, text_format)
+            return super().referents(song_id, web_page_id, created_by_id,
+                                     per_page, page, text_format)
 
     def song(self, song_id, text_format=None, public_api=False):
         """Gets data for a specific song.
@@ -391,7 +391,7 @@ class Genius(API, PublicAPI):
         if public_api:
             return super(PublicAPI, self).song(song_id, text_format)
         else:
-            return super(API, self).song(song_id, text_format)
+            return super().song(song_id, text_format)
 
     def search_songs(self, search_term, per_page=None, page=None, public_api=False):
         """Searches songs hosted on Genius.
@@ -420,7 +420,7 @@ class Genius(API, PublicAPI):
         if public_api:
             return super(PublicAPI, self).search_songs(search_term, per_page, page)
         else:
-            return super(API, self).search_songs(search_term, per_page, page)
+            return super().search_songs(search_term, per_page, page)
 
     def search_song(self, title, artist="", get_full_info=True):
         """Searches for a specific song and gets its lyrics.
