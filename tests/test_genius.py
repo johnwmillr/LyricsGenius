@@ -24,7 +24,7 @@ class TestEndpoints(unittest.TestCase):
     def test_search_genius_web(self):
         # TODO: test more than just a 200 response
         msg = "Response was None."
-        r = genius.search_genius_web(self.search_term)
+        r = genius.search_all(self.search_term)
         self.assertTrue(r is not None, msg)
 
     def test_search_song(self):
@@ -49,35 +49,35 @@ class TestEndpoints(unittest.TestCase):
         response = genius.search_song(self.song_title_only, artist="Drake")
         self.assertFalse(response.title.lower() == self.song_title_only.lower())
 
-    def test_get_referents_web_page(self):
+    def test_referents_web_page(self):
         msg = "Returned referent API path is different than expected."
         id_ = 10347
-        r = genius.get_referents(web_page_id=id_)
+        r = genius.referents(web_page_id=id_)
         real = r['referents'][0]['api_path']
         expected = '/referents/11828416'
         self.assertTrue(real == expected, msg)
 
-    def test_get_referents_invalid_input(self):
+    def test_referents_invalid_input(self):
         # Method should prevent inputs for both song and web_pag ID.
         with self.assertRaises(AssertionError):
-            genius.get_referents(song_id=1, web_page_id=1)
+            genius.referents(song_id=1, web_page_id=1)
 
-    def test_get_referents_no_inputs(self):
+    def test_referents_no_inputs(self):
         # Must supply `song_id`, `web_page_id`, or `created_by_id`.
         with self.assertRaises(AssertionError):
-            genius.get_referents()
+            genius.referents()
 
-    def test_get_annotation(self):
+    def test_annotation(self):
         msg = "Returned annotation API path is different than expected."
         id_ = 10225840
-        r = genius.get_annotation(id_)
+        r = genius.annotation(id_)
         real = r['annotation']['api_path']
         expected = '/annotations/10225840'
         self.assertEqual(real, expected, msg)
 
-    def test_get_song_annotations(self):
+    def test_song_annotations(self):
         msg = "Incorrect song annotation response."
-        r = sorted(genius.get_song_annotations(1))
+        r = sorted(genius.song_annotations(1))
         real = r[0][0]
         expected = "And I’ma keep ya fresh"
         self.assertEqual(real, expected, msg)
