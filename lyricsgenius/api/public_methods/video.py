@@ -13,6 +13,10 @@ class VideoMethods(object):
             :obj:`dict`
 
         """
+        endpoint = 'videos/{}'.format(video_id)
+        params = {'text_format': text_format or self.response_format}
+
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def videos(self,
                album_id=None,
@@ -67,4 +71,4 @@ class VideoMethods(object):
         elif song_id:
             params['song_id'] = song_id
 
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)

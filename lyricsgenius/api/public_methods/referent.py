@@ -29,7 +29,7 @@ class ReferentMethods(object):
             for id in referent_ids:
                 params.append(('ids[]', id))
 
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def referents(self, song_id=None, web_page_id=None,
                   created_by_id=None, per_page=None, page=None, text_format=None):
@@ -64,7 +64,7 @@ class ReferentMethods(object):
                   'created_by_id': created_by_id,
                   'per_page': per_page, 'page': page,
                   'text_format': text_format or self.response_format}
-        return self._make_request(endpoint, params_=params)
+        return self._make_request(endpoint, params_=params, public_api=True)
 
     def referents_charts(self,
                          time_period='day',

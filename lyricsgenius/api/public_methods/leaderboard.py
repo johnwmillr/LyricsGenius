@@ -27,7 +27,7 @@ class LeaderboardMethods(object):
                   'per_page': per_page,
                   'page': page,
                   'text_format': text_format or self.response_format}
-        return self._make_request(path=path, params_=params)
+        return self._make_request(path=path, params_=params, public_api=True)
 
     def charts(self,
                time_period='day',
@@ -66,4 +66,4 @@ class LeaderboardMethods(object):
                   'per_page': per_page,
                   'page': page,
                   'text_format': text_format or self.response_format}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)

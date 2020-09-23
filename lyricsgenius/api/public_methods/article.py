@@ -15,7 +15,7 @@ class ArticleMethods(object):
         """
         endpoint = 'articles/{}'.format(article_id)
         params = {'text_format': text_format or self.response_format}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def article_comments(self, article_id, per_page=None, page=None, text_format=None):
         """Gets the comments on an article.
@@ -36,7 +36,7 @@ class ArticleMethods(object):
         params = {'per_page': per_page,
                   'page': page,
                   'text_format': text_format or self.response_format}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def latest_articles(self, per_page=None, page=None, text_format=None):
         """Gets the latest articles on the homepage.
@@ -59,4 +59,4 @@ class ArticleMethods(object):
         params = {'per_page': per_page,
                   'page': page,
                   'text_format': text_format or self.response_format}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)

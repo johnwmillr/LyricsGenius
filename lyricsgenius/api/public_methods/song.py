@@ -15,7 +15,7 @@ class SongMethods(object):
         """
         endpoint = 'songs/{}'.format(song_id)
         params = {'text_format': text_format or self.response_format}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def song_iq_earners(self, song_id, page=None):
         """Gets the IQ earners of a song.
@@ -33,7 +33,7 @@ class SongMethods(object):
         """
         endpoint = 'songs/{}/contributors'.format(song_id)
         params = {'page': page}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def song_comments(self, song_id, per_page=None, page=None, text_format=None):
         """Gets the comments on a song.
@@ -54,7 +54,7 @@ class SongMethods(object):
         params = {'per_page': per_page,
                   'page': page,
                   'text_format': text_format or self.response_format}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def song_contributors(self, song_id):
         """Gets the contributors of a song.
@@ -70,4 +70,4 @@ class SongMethods(object):
 
         """
         endpoint = 'songs/{}/contributors'.format(song_id)
-        return self._make_request(path=endpoint)
+        return self._make_request(path=endpoint, public_api=True)
