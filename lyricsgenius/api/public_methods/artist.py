@@ -16,7 +16,7 @@ class ArtistMethods(object):
         endpoint = 'artists/{}'.format(artist_id)
         params = {'text_format': text_format or self.response_format}
 
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def artist_activity(self, artist_id, per_page=None, page=None, text_format=None):
         """Gets activities on artist's songs.

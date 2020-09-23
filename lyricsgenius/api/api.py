@@ -2,6 +2,7 @@ import requests
 from requests.exceptions import Timeout
 import time
 
+from .base import Sender
 from .public_methods import (
     AlbumMethods,
     AnnotationMethods,
@@ -20,7 +21,7 @@ from .public_methods import (
 )
 
 
-class API(object):
+class API(Sender):
     """Genius API.
     The :obj:`API` class is in charge of making all the requests
     to the developers' API (api.genius.com)
@@ -56,32 +57,12 @@ class API(object):
 
     def __init__(self, client_access_token,
                  response_format='plain', timeout=5, sleep_time=0.5):
-        # Genius API Constructor
-
-        self._ACCESS_TOKEN = client_access_token
-        self._session.headers['authorization'] = 'Bearer ' + self._ACCESS_TOKEN
-        self.response_format = response_format.lower()
-        self.timeout = timeout
-        self.sleep_time = sleep_time
-
-    def _make_request(self, path, method='GET', params_=None):
-        """Makes a request to the API."""
-        uri = self.api_root + path
-
-        params_ = params_ if params_ else {}
-
-        # Make the request
-        response = None
-        try:
-            response = self._session.request(method, uri,
-                                             timeout=self.timeout,
-                                             params=params_)
-        except Timeout as e:
-            print("Timeout raised and caught:\n{e}".format(e=e))
-
-        # Enforce rate limiting
-        time.sleep(max(self._SLEEP_MIN, self.sleep_time))
-        return response.json()['response'] if response else None
+        super().__init__(
+            client_access_token=client_access_token,
+            response_format=response_format,
+            timeout=timeout,
+            sleep_time=sleep_time
+        )
 
     def song(self, song_id, text_format=None):
         """Gets data for a specific song.
@@ -293,35 +274,16 @@ class PublicAPI(
         :class:`PublicAPI`: An object of the `PublicAPI` class.
 
     """
-    # Create a persistent requests connection
-    _session = requests.Session()
-    _session.headers = {'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'}
-    _SLEEP_MIN = 0.2  # Enforce minimum wait time between API calls (seconds)
-    api_root = 'https://genius.com/api/'
 
-    def __init__(self,
-                 response_format='plain', timeout=5, sleep_time=0.5):
-        # Genius API Constructor
-
-        self.response_format = response_format.lower()
-        self.timeout = timeout
-        self.sleep_time = sleep_time
-
-    def _make_request(self, path, method='GET', params_=None):
-        """Makes a request to the public API."""
-        uri = self.api_root + path
-
-        params_ = params_ if params_ else {}
-
-        # Make the request
-        response = None
-        try:
-            response = self._session.request(method, uri,
-                                             timeout=self.timeout,
-                                             params=params_)
-        except Timeout as e:
-            print("Timeout raised and caught:\n{e}".format(e=e))
-
-        # Enforce rate limiting
-        time.sleep(max(self._SLEEP_MIN, self.sleep_time))
-        return response.json()['response'] if response else None
+    def __init__(
+        self,
+        response_format='plain',
+        timeout=5,
+        sleep_time=0.5
+    ):
+        # Genius PublicAPI Constructor
+        super().__init__(
+            response_format=response_format,
+            timeout=timeout,
+            sleep_time=sleep_time
+        )
