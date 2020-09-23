@@ -330,9 +330,15 @@ class Genius(API, PublicAPI):
 
         """
         if public_api:
-            return super(PublicAPI, self).song(artist_id, per_page, page, sort)
+            return super(PublicAPI, self).artist_songs(artist_id=artist_id,
+                                                       per_page=per_page,
+                                                       page=page,
+                                                       sort=sort)
         else:
-            return super().song(artist_id, per_page, page, sort)
+            return super().artist_songs(artist_id=artist_id,
+                                        per_page=per_page,
+                                        page=page,
+                                        sort=sort)
 
     def referents(self, song_id=None, web_page_id=None,
                   created_by_id=None, per_page=None,
@@ -576,7 +582,10 @@ class Genius(API, PublicAPI):
         page = 1
         reached_max_songs = True if max_songs == 0 else False
         while not reached_max_songs:
-            songs_on_page = self.artist_songs(artist_id, sort, per_page, page)
+            songs_on_page = self.artist_songs(artist_id=artist_id,
+                                              per_page=per_page,
+                                              page=page,
+                                              sort=sort)
 
             # Loop through each song on page of search results
             for song_info in songs_on_page['songs']:
