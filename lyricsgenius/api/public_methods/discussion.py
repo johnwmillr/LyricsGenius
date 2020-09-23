@@ -15,7 +15,7 @@ class DiscussionMethods(object):
         """
         endpoint = 'discussions/{}'.format(disscussion_id)
         params = {'text_format': text_format or self.response_format}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def discussion_replies(self,
                            disscussion_id,
@@ -40,4 +40,4 @@ class DiscussionMethods(object):
         params = {'per_page': per_page,
                   'page': page,
                   'text_format': text_format or self.response_format}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)

@@ -31,7 +31,7 @@ class AnnotationMethods():
         """
         endpoint = 'annotations/{}/versions'.format(annotation_id)
         params = {'text_format': text_format or self.response_format}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def annotation_comments(self,
                             annotation_id,
@@ -56,4 +56,4 @@ class AnnotationMethods():
         params = {'per_page': per_page,
                   'page': page,
                   'text_format': text_format or self.response_format}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)

@@ -15,13 +15,14 @@ class UserMethods(object):
         """
         path = 'users/{}'.format(user_id)
         params = {'text_format': text_format or self.response_format}
-        return self._make_request(path, params_=params)
+        return self._make_request(path, params_=params, public_api=True)
 
     def user_accomplishments(self,
                              user_id,
                              per_page=None,
                              next_curosr=None,):
         """Gets user's accomplishments.
+
         This methods gets the section titled "TOP ACCOMPLISHMENTS" in
         the user's profile.
 
@@ -39,7 +40,7 @@ class UserMethods(object):
         endpoint = 'users/{}/accomplishments'.format(user_id)
         params = {'next_curosr': next_curosr,
                   'per_page': per_page}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def user_following(self,
                        user_id,
@@ -60,7 +61,7 @@ class UserMethods(object):
         endpoint = 'users/{}/followed_users'.format(user_id)
         params = {'page': page,
                   'per_page': per_page}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def user_followers(self,
                        user_id,
@@ -81,7 +82,7 @@ class UserMethods(object):
         endpoint = 'users/{}/followers'.format(user_id)
         params = {'page': page,
                   'per_page': per_page}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def user_contributions(self,
                            user_id,
@@ -130,7 +131,7 @@ class UserMethods(object):
                   'per_page': per_page,
                   'sort': sort,
                   'text_format': text_format or self.response_format}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def user_annotations(self,
                          user_id,

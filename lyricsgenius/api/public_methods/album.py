@@ -24,7 +24,7 @@ class AlbumMethods(object):
         """
         endpoint = 'albums/{}'.format(album_id)
         params = {'text_format': text_format or self.response_format}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def albums_charts(self,
                       time_period='day',
@@ -78,7 +78,7 @@ class AlbumMethods(object):
         params = {'per_page': per_page,
                   'page': page,
                   'text_format': text_format or self.response_format}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def album_cover_arts(self, album_id, text_format=None):
         """Gets cover arts of a specific album.
@@ -109,10 +109,11 @@ class AlbumMethods(object):
         """
         endpoint = 'cover_arts'
         params = {'text_format': text_format or self.response_format}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def album_leaderboard(self, album_id, per_page=None, page=None):
         """Gets the leaderboard of an album.
+
         This method returns the album's top contributors.
 
         Args:
@@ -120,8 +121,6 @@ class AlbumMethods(object):
             per_page (:obj:`int`, optional): Number of results to
                 return per request. It can't be more than 50.
             page (:obj:`int`, optional): Paginated offset (number of the page).
-            text_format (:obj:`str`, optional): Text format of the results
-                ('dom', 'html', 'markdown' or 'plain').
 
         Returns:
             :obj:`dict`
@@ -130,7 +129,7 @@ class AlbumMethods(object):
         endpoint = 'albums/{}/leaderboard'.format(album_id)
         params = {'per_page': per_page,
                   'page': page}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def album_tracks(self, album_id, per_page=None, page=None, text_format=None):
         """Gets the tracks of a specific album.
@@ -151,4 +150,4 @@ class AlbumMethods(object):
         params = {'per_page': per_page,
                   'page': page,
                   'text_format': text_format or self.response_format}
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)

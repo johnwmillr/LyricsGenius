@@ -43,4 +43,4 @@ class QuestionMethods(object):
             params['album_id'] = album_id
         elif song_id:
             params['song_id'] = song_id
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
