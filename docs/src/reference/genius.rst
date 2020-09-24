@@ -237,16 +237,6 @@ Video Methods
 .. automethod:: Genius.videos
 
 
-Voter Methods
--------------
-.. autosummary::
-   :nosignatures:
-
-   Genius.voters
-
-.. automethod:: Genius.voters
-
-
 Misc. Methods
 -------------
 Miscellaneous methods that are mostly standalones.
@@ -255,5 +245,7 @@ Miscellaneous methods that are mostly standalones.
    :nosignatures:
 
    Genius.line_item
+   Genius.voters
 
 .. automethod:: Genius.line_item
+.. automethod:: Genius.voters

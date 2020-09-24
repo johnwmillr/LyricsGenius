@@ -1,6 +1,6 @@
 import unittest
 
-from test_genius import genius
+from .test_genius import genius
 
 
 class TestAlbumMethods(unittest.TestCase):
@@ -18,27 +18,27 @@ class TestAlbumMethods(unittest.TestCase):
     def test_albums_charts(self):
         msg = "Album charts were empty."
         r = genius.albums_charts()
-        self.assertIsNotNone(r, msg)
+        self.assertTrue("chart_items" in r, msg)
 
     def test_album_comments(self):
         msg = "Album comments were empty."
         r = genius.album_comments(self.album_id)
-        self.assertIsNotNone(r, msg)
+        self.assertTrue("comments" in r, msg)
 
     def test_album_cover_arts(self):
         msg = "Album cover arts were empty."
         r = genius.album_cover_arts(self.album_id)
-        self.assertIsNotNone(r, msg)
+        self.assertTrue("cover_arts" in r, msg)
 
     def test_album_leaderboard(self):
         msg = "Album leaderboard was empty."
         r = genius.album_leaderboard(self.album_id)
-        self.assertIsNotNone(r, msg)
+        self.assertTrue("leaderboard" in r, msg)
 
     def test_album_tracks(self):
         msg = "Album tracks were empty."
         r = genius.album_tracks(self.album_id)
-        self.assertIsNotNone(r, msg)
+        self.assertTrue("tracks" in r, msg)
 
 
 class TestAnnotationMethods(unittest.TestCase):
@@ -56,12 +56,12 @@ class TestAnnotationMethods(unittest.TestCase):
     def test_annotation_edits(self):
         msg = "annotation edits were empty."
         r = genius.annotation_edits(self.annotation_id)
-        self.assertIsNone(r, msg)
+        self.assertTrue("versions" in r, msg)
 
     def test_annotation_comments(self):
         msg = "annotation comments were empty."
         r = genius.annotation_comments(self.annotation_id)
-        self.assertIsNone(r, msg)
+        self.assertTrue("comments" in r, msg)
 
 
 class TestArticleMethods(unittest.TestCase):
@@ -79,12 +79,12 @@ class TestArticleMethods(unittest.TestCase):
     def test_article_comments(self):
         msg = "article comments were empty."
         r = genius.article_comments(self.article_id)
-        self.assertIsNotNone(r, msg)
+        self.assertTrue("comments" in r, msg)
 
     def test_latest_articles(self):
         msg = "latest articles were empty."
         r = genius.latest_articles()
-        self.assertIsNone(r, msg)
+        self.assertTrue("editorial_placements" in r, msg)
 
 
 class TestArtistMethods(unittest.TestCase):
@@ -100,31 +100,31 @@ class TestArtistMethods(unittest.TestCase):
 
     def test_artist_activity(self):
         r = genius.artist_activity(self.artist_id)
-        self.assertIsNotNone(r)
+        self.assertTrue("line_items" in r)
 
     def test_artist_albums(self):
         r = genius.artist_albums(self.artist_id)
-        self.assertIsNotNone(r)
+        self.assertTrue("albums" in r)
 
-    def test_artist_contribution_opportunities(self):
-        r = genius.artist_contribution_opportunities(self.artist_id)
-        self.assertIsNotNone(r)
+    # def test_artist_contribution_opportunities(self):
+    #     r = genius.artist_contribution_opportunities(self.artist_id)
+    #     self.assertIsNotNone(r.get('contribution_opportunities'))
 
     def test_artist_followers(self):
         r = genius.artist_followers(self.artist_id)
-        self.assertIsNotNone(r)
+        self.assertTrue("followers" in r)
 
     def test_artist_leaderboard(self):
         r = genius.artist_leaderboard(self.artist_id)
-        self.assertIsNotNone(r)
+        self.assertTrue("leaderboard" in r)
 
     def test_artist_songs(self):
         r = genius.artist_songs(self.artist_id)
-        self.assertIsNotNone(r)
+        self.assertTrue("songs" in r)
 
     def test_search_artist_songs(self):
         r = genius.search_artist_songs(self.artist_id, 'test')
-        self.assertIsNotNone(r)
+        self.assertTrue("songs" in r)
 
 class TestCoverArtMethods(unittest.TestCase):
 
@@ -135,7 +135,7 @@ class TestCoverArtMethods(unittest.TestCase):
 
     def test_cover_arts(self):
         r = genius.cover_arts(self.album_id)
-        self.assertIsNotNone(r.get('cover_arts'))
+        self.assertTrue("cover_arts" in r)
 
 class TestDiscussionMethods(unittest.TestCase):
 
@@ -150,7 +150,7 @@ class TestDiscussionMethods(unittest.TestCase):
 
     def test_discussion_replies(self):
         r = genius.discussion_replies(self.discussion_id)
-        self.assertIsNotNone(r.get('forum_posts'))
+        self.assertTrue("forum_posts" in r)
 
 class TestLeaderboardMethods(unittest.TestCase):
 
@@ -160,11 +160,11 @@ class TestLeaderboardMethods(unittest.TestCase):
 
     def test_leaderboard(self):
         r = genius.leaderboard()
-        self.assertIsNotNone(r.get('leaderboard'))
+        self.assertTrue("leaderboard" in r)
 
     def test_charts(self):
         r = genius.charts()
-        self.assertIsNotNone(r.get('chart_items'))
+        self.assertTrue("chart_items" in r)
 
 class TestQuestionMethods(unittest.TestCase):
 
@@ -183,11 +183,12 @@ class TestReferentMethods(unittest.TestCase):
     def setUpClass(cls):
         print("\n---------------------\nSetting up referent methods tests...\n")
         cls.web_page_id = 10347
-        cls.referent_id = 20793764
+        cls.referent_ids = [20793764, 20641014]
 
     def test_referent(self):
-        r = genius.referent([self.referent_id])
-        self.assertIsNotNone(r['referents'].get(self.referent_id))
+        r = genius.referent(self.referent_ids)
+        self.assertTrue(str(self.referent_ids[0]) in r['referents'])
+        self.assertTrue(str(self.referent_ids[1]) in r['referents'])
 
     def test_referents(self):
         r = genius.referents(web_page_id=self.web_page_id, public_api=True)
@@ -249,16 +250,15 @@ class TestSongMethods(unittest.TestCase):
 
     def test_song_activity(self):
         r = genius.song_activity(self.song_id)
-        self.assertIsNotNone(r.get('line_items'))
+        self.assertTrue("line_items" in r)
 
     def test_song_comments(self):
         r = genius.song_comments(self.song_id)
-        self.assertIsNotNone(r.get('comments'))
+        self.assertTrue("comments" in r)
 
     def test_song_contributors(self):
         r = genius.song_contributors(self.song_id)
-        self.assertIsNotNone(r.get('transcribers'))
-        self.assertIsNotNone(r.get('iq_earners'))
+        self.assertTrue("contributors" in r)
 
 
 class TestUserMethods(unittest.TestCase):
@@ -274,19 +274,19 @@ class TestUserMethods(unittest.TestCase):
 
     def test_user_accomplishments(self):
         r = genius.user_accomplishments(self.user_id)
-        self.assertIsNotNone(r.get('accomplishments'))
+        self.assertTrue("accomplishments" in r)
 
     def test_user_following(self):
         r = genius.user_following(self.user_id)
-        self.assertIsNotNone(r.get('followed_users'))
+        self.assertTrue("followed_users" in r)
 
     def test_user_followers(self):
         r = genius.user_followers(self.user_id)
-        self.assertIsNotNone(r.get('followers'))
+        self.assertTrue("followers" in r)
 
     def test_user_contributions(self):
         r = genius.user_contributions(self.user_id)
-        self.assertIsNotNone(r.get('contribution_groups'))
+        self.assertTrue("contribution_groups" in r)
 
     def test_user_annotations(self):
         r = genius.user_annotations(self.user_id)
@@ -336,8 +336,24 @@ class TestVideoMethods(unittest.TestCase):
         self.assertEqual(r['video']['id'], self.video_id)
 
     def test_videos(self):
-        r = genius.videos(video_id=self.video_id)
-        self.assertIsNotNone(r.get('video_lists'))
-
         r = genius.videos(video_id=self.video_id, series=True)
-        self.assertIsNotNone(r.get('videos'))
+        self.assertTrue("video_lists" in r)
+
+        r = genius.videos(video_id=self.video_id)
+        self.assertTrue("videos" in r)
+
+class TestMiscMethods(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        print("\n---------------------\nSetting up misc methods tests...\n")
+        cls.line_item_id = 146262999
+        cls.annotation_id = 10225840
+
+    # def test_line_item(self):
+    #    r = genius.line_item(self.line_item_id)
+    #    self.assertTrue("line_item" in r)
+
+    def test_voters(self):
+        r = genius.voters(annotation_id=self.annotation_id)
+        self.assertTrue("voters" in r)

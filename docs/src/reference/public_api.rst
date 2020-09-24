@@ -228,16 +228,6 @@ Video Methods
 .. automethod:: PublicAPI.videos
 
 
-Voter Methods
--------------
-.. autosummary::
-   :nosignatures:
-
-   PublicAPI.voters
-
-.. automethod:: PublicAPI.voters
-
-
 Misc. Methods
 -------------
 Miscellaneous methods that are mostly standalones.
@@ -246,5 +236,7 @@ Miscellaneous methods that are mostly standalones.
    :nosignatures:
 
    PublicAPI.line_item
+   PublicAPI.voters
 
 .. automethod:: PublicAPI.line_item
+.. automethod:: PublicAPI.voters

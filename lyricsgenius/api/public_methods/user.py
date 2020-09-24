@@ -20,7 +20,7 @@ class UserMethods(object):
     def user_accomplishments(self,
                              user_id,
                              per_page=None,
-                             next_curosr=None,):
+                             next_cursor=None,):
         """Gets user's accomplishments.
 
         This methods gets the section titled "TOP ACCOMPLISHMENTS" in
@@ -30,7 +30,7 @@ class UserMethods(object):
             user_id (:obj:`int`): Genius user ID
             per_page (:obj:`int`, optional): Number of results to
                 return per request. It can't be more than 50.
-            next_curosr (:obj:`str`, optional): Paginated offset
+            next_cursor (:obj:`str`, optional): Paginated offset
                 (address of the next cursor).
 
         Returns:
@@ -38,7 +38,7 @@ class UserMethods(object):
 
         """
         endpoint = 'users/{}/accomplishments'.format(user_id)
-        params = {'next_curosr': next_curosr,
+        params = {'next_cursor': next_cursor,
                   'per_page': per_page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
@@ -87,7 +87,7 @@ class UserMethods(object):
     def user_contributions(self,
                            user_id,
                            per_page=None,
-                           next_curosr=None,
+                           next_cursor=None,
                            sort=None,
                            text_format=None,
                            type_=None):
@@ -97,7 +97,7 @@ class UserMethods(object):
             user_id (:obj:`int`): Genius user ID
             per_page (:obj:`int`, optional): Number of results to
                 return per request. It can't be more than 50.
-            next_curosr (:obj:`str`, optional): Paginated offset
+            next_cursor (:obj:`str`, optional): Paginated offset
                 (address of the next cursor).
             sort (:obj:`str`, optional): Sorting preference.
                 ('title' or 'popularity')
@@ -127,7 +127,7 @@ class UserMethods(object):
         endpoint = 'users/{}/contributions'.format(user_id)
         if type_ is not None:
             endpoint += '/{}'.format(type_)
-        params = {'next_curosr': next_curosr,
+        params = {'next_cursor': next_cursor,
                   'per_page': per_page,
                   'sort': sort,
                   'text_format': text_format or self.response_format}
@@ -136,7 +136,7 @@ class UserMethods(object):
     def user_annotations(self,
                          user_id,
                          per_page=None,
-                         next_curosr=None,
+                         next_cursor=None,
                          sort='popularity',
                          text_format=None
                          ):
@@ -148,7 +148,7 @@ class UserMethods(object):
             user_id (:obj:`int`): Genius user ID
             per_page (:obj:`int`, optional): Number of results to
                 return per request. It can't be more than 50.
-            next_curosr (:obj:`str`, optional): Paginated offset
+            next_cursor (:obj:`str`, optional): Paginated offset
                 (address of the next cursor).
             sort (:obj:`str`, optional): Sorting preference.
                 ('title' or 'popularity')
@@ -161,7 +161,7 @@ class UserMethods(object):
         """
         return self.user_contributions(
             user_id=user_id,
-            next_curosr=next_curosr,
+            next_cursor=next_cursor,
             per_page=per_page,
             sort=sort,
             text_format=text_format,
@@ -171,7 +171,7 @@ class UserMethods(object):
     def user_articles(self,
                       user_id,
                       per_page=None,
-                      next_curosr=None,
+                      next_cursor=None,
                       sort='popularity',
                       text_format=None
                       ):
@@ -183,7 +183,7 @@ class UserMethods(object):
             user_id (:obj:`int`): Genius user ID
             per_page (:obj:`int`, optional): Number of results to
                 return per request. It can't be more than 50.
-            next_curosr (:obj:`str`, optional): Paginated offset
+            next_cursor (:obj:`str`, optional): Paginated offset
                 (address of the next cursor).
             sort (:obj:`str`, optional): Sorting preference.
                 ('title' or 'popularity')
@@ -196,7 +196,7 @@ class UserMethods(object):
         """
         return self.user_contributions(
             user_id=user_id,
-            next_curosr=next_curosr,
+            next_cursor=next_cursor,
             per_page=per_page,
             sort=sort,
             text_format=text_format,
@@ -206,7 +206,7 @@ class UserMethods(object):
     def user_pyongs(self,
                     user_id,
                     per_page=None,
-                    next_curosr=None,
+                    next_cursor=None,
                     text_format=None):
         """Gets user's Pyongs.
 
@@ -216,7 +216,7 @@ class UserMethods(object):
             user_id (:obj:`int`): Genius user ID
             per_page (:obj:`int`, optional): Number of results to
                 return per request. It can't be more than 50.
-            next_curosr (:obj:`str`, optional): Paginated offset
+            next_cursor (:obj:`str`, optional): Paginated offset
                 (address of the next cursor).
             text_format (:obj:`str`, optional): Text format of the results
                 ('dom', 'html', 'markdown' or 'plain').
@@ -227,7 +227,7 @@ class UserMethods(object):
         """
         return self.user_contributions(
             user_id=user_id,
-            next_cursor=next_curosr,
+            next_cursor=next_cursor,
             per_page=per_page,
             text_format=text_format,
             type_='pyongs'
@@ -236,7 +236,7 @@ class UserMethods(object):
     def user_questions_and_answers(self,
                                    user_id,
                                    per_page=None,
-                                   next_curosr=None,
+                                   next_cursor=None,
                                    text_format=None):
         """Gets user's Q&As.
 
@@ -246,7 +246,7 @@ class UserMethods(object):
             user_id (:obj:`int`): Genius user ID
             per_page (:obj:`int`, optional): Number of results to
                 return per request. It can't be more than 50.
-            next_curosr (:obj:`str`, optional): Paginated offset
+            next_cursor (:obj:`str`, optional): Paginated offset
                 (address of the next cursor).
             text_format (:obj:`str`, optional): Text format of the results
                 ('dom', 'html', 'markdown' or 'plain').
@@ -257,7 +257,7 @@ class UserMethods(object):
         """
         return self.user_contributions(
             user_id=user_id,
-            next_cursor=next_curosr,
+            next_cursor=next_cursor,
             per_page=per_page,
             text_format=text_format,
             type_='questions_and_answers'
@@ -266,7 +266,7 @@ class UserMethods(object):
     def user_suggestions(self,
                          user_id,
                          per_page=None,
-                         next_curosr=None,
+                         next_cursor=None,
                          text_format=None):
         """Gets user's suggestions (comments).
 
@@ -276,7 +276,7 @@ class UserMethods(object):
             user_id (:obj:`int`): Genius user ID
             per_page (:obj:`int`, optional): Number of results to
                 return per request. It can't be more than 50.
-            next_curosr (:obj:`str`, optional): Paginated offset
+            next_cursor (:obj:`str`, optional): Paginated offset
                 (address of the next cursor).
             text_format (:obj:`str`, optional): Text format of the results
                 ('dom', 'html', 'markdown' or 'plain').
@@ -287,7 +287,7 @@ class UserMethods(object):
         """
         return self.user_contributions(
             user_id=user_id,
-            next_cursor=next_curosr,
+            next_cursor=next_cursor,
             per_page=per_page,
             text_format=text_format,
             type_='comments'
@@ -296,7 +296,7 @@ class UserMethods(object):
     def user_transcriptions(self,
                             user_id,
                             per_page=None,
-                            next_curosr=None,
+                            next_cursor=None,
                             sort='popularity',
                             text_format=None):
         """Gets user's transcriptions.
@@ -307,7 +307,7 @@ class UserMethods(object):
             user_id (:obj:`int`): Genius user ID
             per_page (:obj:`int`, optional): Number of results to
                 return per request. It can't be more than 50.
-            next_curosr (:obj:`str`, optional): Paginated offset
+            next_cursor (:obj:`str`, optional): Paginated offset
                 (address of the next cursor).
             sort (:obj:`str`, optional): Sorting preference.
                 ('title' or 'popularity')
@@ -320,7 +320,7 @@ class UserMethods(object):
         """
         return self.user_contributions(
             user_id=user_id,
-            next_curosr=next_curosr,
+            next_cursor=next_cursor,
             per_page=per_page,
             sort=sort,
             text_format=text_format,
@@ -330,7 +330,7 @@ class UserMethods(object):
     def user_unreviewed(self,
                         user_id,
                         per_page=None,
-                        next_curosr=None,
+                        next_cursor=None,
                         sort='popularity',
                         text_format=None):
         """Gets user's unreviewed annotations.
@@ -344,7 +344,7 @@ class UserMethods(object):
             user_id (:obj:`int`): Genius user ID
             per_page (:obj:`int`, optional): Number of results to
                 return per request. It can't be more than 50.
-            next_curosr (:obj:`str`, optional): Paginated offset
+            next_cursor (:obj:`str`, optional): Paginated offset
                 (address of the next cursor).
             sort (:obj:`str`, optional): Sorting preference.
                 ('title' or 'popularity')
@@ -357,7 +357,7 @@ class UserMethods(object):
         """
         return self.user_contributions(
             user_id=user_id,
-            next_curosr=next_curosr,
+            next_cursor=next_cursor,
             per_page=per_page,
             sort=sort,
             text_format=text_format,

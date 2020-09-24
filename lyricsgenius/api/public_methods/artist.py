@@ -52,7 +52,7 @@ class ArtistMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'artsits/{}/albums'.format(artist_id)
+        endpoint = 'artists/{}/albums'.format(artist_id)
         params = {'per_page': per_page,
                   'page': page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
@@ -77,6 +77,7 @@ class ArtistMethods(object):
             :obj:`dict`
 
         """
+        raise NotImplementedError('This action requires a logged in user.')
         endpoint = 'artists/{}/contribution_opportunities'.format(artist_id)
         params = {'per_page': per_page,
                   'next_curosr': next_curosr,

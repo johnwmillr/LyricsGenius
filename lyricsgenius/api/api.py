@@ -13,7 +13,7 @@ from .public_methods import (
     SongMethods,
     UserMethods,
     VideoMethods,
-    VoterMethods
+    MiscMethods
 )
 
 
@@ -240,7 +240,7 @@ class PublicAPI(
         SongMethods,
         UserMethods,
         VideoMethods,
-        VoterMethods):
+        MiscMethods):
     """Genius public API.
 
     The :obj:`PublicAPI` class is in charge of making all the requests
