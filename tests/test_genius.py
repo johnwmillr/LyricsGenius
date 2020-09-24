@@ -77,74 +77,26 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(real, expected, msg)
 
 
-class TestPublicEndpoints(unittest.TestCase):
+class TestAlbumMethods(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        print("\n---------------------\nSetting up Public Endpoint tests...\n")
+        print("\n---------------------\nSetting up album methods tests...\n")
         cls.search_term = "Ezra Furman"
         cls.song_title_only = "99 Problems"
 
-    def test_search_all(self):
-        # TODO: test more than just a 200 response
-        msg = "Response was None."
-        r = genius.search_all(self.search_term)
-        self.assertTrue(r is not None, msg)
+    def test_album(self):
+        album_id = 104614
+        msg = "Album ID did not match."
+        r = genius.album(album_id)
+        self.assertTrue(r['id'] == album_id, msg)
 
-    def test_search_song(self):
-        artist = "Jay-Z"
-        # Empty response
-        response = genius.search_song('')
-        self.assertIsNone(response)
+    def test_albums_charts(self):
+        album_id = 104614
+        msg = "Album ID did not match."
+        r = genius.album(album_id)
+        self.assertTrue(r['id'] == album_id, msg)
 
-        # Exact match exact search
-        response = genius.search_song(self.song_title_only)
-        self.assertTrue(response.title.lower() == self.song_title_only.lower())
-
-        # Song with artist name
-        response = genius.search_song(self.song_title_only, artist)
-        self.assertTrue(response.title.lower() == self.song_title_only.lower())
-
-        # Spaced out search
-        response = genius.search_song("  \t 99  \t \t\tProblems   ", artist)
-        self.assertTrue(response.title.lower() == self.song_title_only.lower())
-
-        # No title match because of artist
-        response = genius.search_song(self.song_title_only, artist="Drake")
-        self.assertFalse(response.title.lower() == self.song_title_only.lower())
-
-    def test_referents_web_page(self):
-        msg = "Returned referent API path is different than expected."
-        id_ = 10347
-        r = genius.referents(web_page_id=id_)
-        real = r['referents'][0]['api_path']
-        expected = '/referents/11828416'
-        self.assertTrue(real == expected, msg)
-
-    def test_referents_invalid_input(self):
-        # Method should prevent inputs for both song and web_pag ID.
-        with self.assertRaises(AssertionError):
-            genius.referents(song_id=1, web_page_id=1)
-
-    def test_referents_no_inputs(self):
-        # Must supply `song_id`, `web_page_id`, or `created_by_id`.
-        with self.assertRaises(AssertionError):
-            genius.referents()
-
-    def test_annotation(self):
-        msg = "Returned annotation API path is different than expected."
-        id_ = 10225840
-        r = genius.annotation(id_)
-        real = r['annotation']['api_path']
-        expected = '/annotations/10225840'
-        self.assertEqual(real, expected, msg)
-
-    def test_song_annotations(self):
-        msg = "Incorrect song annotation response."
-        r = sorted(genius.song_annotations(1))
-        real = r[0][0]
-        expected = "And I’ma keep ya fresh"
-        self.assertEqual(real, expected, msg)
 
 class TestArtist(unittest.TestCase):
 
@@ -362,19 +314,3 @@ class TestSong(unittest.TestCase):
         except Exception:
             self.fail("Failed {} overwrite test".format(extension))
         os.remove(expected_filename)
-
-    # def test_bad_chars_in_filename(self):
-    #     print("\n")
-    #     extension = "json"
-    #     msg = "Could not save {} file.".format(extension)
-    #     song = genius.search_song("Blessed rainbow", "Ariana Grande")
-    #     expected_filename = "lyrics_arianagrande_blessedrainbow.json"
-
-    #     # Remove the test file if it already exists
-    #     if os.path.isfile(expected_filename):
-    #         os.remove(expected_filename)
-
-    #     # Test saving txt file
-    #     song.save_lyrics(extension=extension, overwrite=True)
-    #     self.assertTrue(os.path.isfile(expected_filename), msg)
-    #     os.remove(expected_filename)
