@@ -46,7 +46,7 @@ class API(Sender):
 
     def __init__(self, client_access_token,
                  response_format='plain', timeout=5, sleep_time=0.5):
-        Sender.__init__(self,
+        super().__init__(
             client_access_token=client_access_token,
             response_format=response_format,
             timeout=timeout,
@@ -177,9 +177,11 @@ class API(Sender):
                             for y in x['annotations'] if y['verified']]
         """
         msg = "Must supply `song_id`, `web_page_id`, or `created_by_id`."
-        assert any([song_id, web_page_id, created_by_id]), msg
+        if not any([song_id, web_page_id, created_by_id]):
+            raise ValueError(msg)
         msg = "Pass only one of `song_id` and `web_page_id`, not both."
-        assert bool(song_id) ^ bool(web_page_id), msg
+        if not (bool(song_id) ^ bool(web_page_id)):
+            raise ValueError(msg)
 
         # Construct the URI
         endpoint = "referents?"
@@ -218,7 +220,7 @@ class API(Sender):
             :obj:`dict`
 
         """
-        endpoint = "search/"
+        endpoint = "search"
         params = {'q': search_term,
                   'per_page': per_page,
                   'page': page}
@@ -269,11 +271,13 @@ class PublicAPI(
         self,
         response_format='plain',
         timeout=5,
-        sleep_time=0.5
+        sleep_time=0.5,
+        **kwargs
     ):
         # Genius PublicAPI Constructor
         super().__init__(
             response_format=response_format,
             timeout=timeout,
-            sleep_time=sleep_time
+            sleep_time=sleep_time,
+            **kwargs
         )
