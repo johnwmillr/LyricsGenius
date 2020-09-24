@@ -181,14 +181,14 @@ Song Methods
    :nosignatures:
 
    Genius.song
-   Genius.song_iq_earners
+   Genius.song_activity
+   Genius.song_annotations
    Genius.song_comments
    Genius.song_contributors
-   Genius.song_annotations
 
 .. automethod:: Genius.song
+.. automethod:: Genius.song_activity
 .. automethod:: Genius.song_annotations
-.. automethod:: Genius.song_iq_earners
 .. automethod:: Genius.song_comments
 .. automethod:: Genius.song_contributors
 
@@ -245,3 +245,15 @@ Voter Methods
    Genius.voters
 
 .. automethod:: Genius.voters
+
+
+Misc. Methods
+-------------
+Miscellaneous methods that are mostly standalones.
+
+.. autosummary::
+   :nosignatures:
+
+   Genius.line_item
+
+.. automethod:: Genius.line_item

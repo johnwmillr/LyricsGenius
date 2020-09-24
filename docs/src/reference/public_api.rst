@@ -174,13 +174,12 @@ Song Methods
 .. autosummary::
    :nosignatures:
 
-   PublicAPI.song
-   PublicAPI.song_iq_earners
+   PublicAPI.song_activity
    PublicAPI.song_comments
    PublicAPI.song_contributors
 
 .. automethod:: PublicAPI.song
-.. automethod:: PublicAPI.song_iq_earners
+.. automethod:: PublicAPI.song_activity
 .. automethod:: PublicAPI.song_comments
 .. automethod:: PublicAPI.song_contributors
 
@@ -237,3 +236,15 @@ Voter Methods
    PublicAPI.voters
 
 .. automethod:: PublicAPI.voters
+
+
+Misc. Methods
+-------------
+Miscellaneous methods that are mostly standalones.
+
+.. autosummary::
+   :nosignatures:
+
+   PublicAPI.line_item
+
+.. automethod:: PublicAPI.line_item

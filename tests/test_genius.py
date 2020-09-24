@@ -77,27 +77,6 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(real, expected, msg)
 
 
-class TestAlbumMethods(unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        print("\n---------------------\nSetting up album methods tests...\n")
-        cls.search_term = "Ezra Furman"
-        cls.song_title_only = "99 Problems"
-
-    def test_album(self):
-        album_id = 104614
-        msg = "Album ID did not match."
-        r = genius.album(album_id)
-        self.assertTrue(r['id'] == album_id, msg)
-
-    def test_albums_charts(self):
-        album_id = 104614
-        msg = "Album ID did not match."
-        r = genius.album(album_id)
-        self.assertTrue(r['id'] == album_id, msg)
-
-
 class TestArtist(unittest.TestCase):
 
     @classmethod

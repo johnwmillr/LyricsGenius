@@ -17,22 +17,25 @@ class SongMethods(object):
         params = {'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def song_iq_earners(self, song_id, page=None):
-        """Gets the IQ earners of a song.
-
-        This method will get users who have earned IQ by contributing,
-        asking or answering questions or etc from the song.
+    def song_activity(self, song_id, per_page=None, page=None, text_format=None):
+        """Gets activities on a song.
 
         Args:
             song_id (:obj:`int`): Genius song ID
+            per_page (:obj:`int`, optional): Number of results to
+                return per request. It can't be more than 50.
             page (:obj:`int`, optional): Paginated offset (number of the page).
+            text_format (:obj:`str`, optional): Text format of the results
+                ('dom', 'html', 'markdown' or 'plain').
 
         Returns:
             :obj:`dict`
 
         """
-        endpoint = 'songs/{}/contributors'.format(song_id)
-        params = {'page': page}
+        endpoint = 'songs/{}/activity_stream/line_items'.format(song_id)
+        params = {'text_format': text_format or self.response_format,
+                  'per_page': per_page,
+                  'page': page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def song_comments(self, song_id, per_page=None, page=None, text_format=None):

@@ -107,9 +107,7 @@ class AlbumMethods(object):
                 cover_art = requests.get(res['cover_arts'][0]['image_url'])
 
         """
-        endpoint = 'cover_arts'
-        params = {'text_format': text_format or self.response_format}
-        return self._make_request(path=endpoint, params_=params, public_api=True)
+        return self.cover_arts(self, album_id=album_id, text_format=text_format)
 
     def album_leaderboard(self, album_id, per_page=None, page=None):
         """Gets the leaderboard of an album.
