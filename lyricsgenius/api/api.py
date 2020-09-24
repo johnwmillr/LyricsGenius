@@ -177,11 +177,9 @@ class API(Sender):
                             for y in x['annotations'] if y['verified']]
         """
         msg = "Must supply `song_id`, `web_page_id`, or `created_by_id`."
-        if not any([song_id, web_page_id, created_by_id]):
-            raise ValueError(msg)
+        assert any([song_id, web_page_id, created_by_id]), msg
         msg = "Pass only one of `song_id` and `web_page_id`, not both."
-        if not (bool(song_id) ^ bool(web_page_id)):
-            raise ValueError(msg)
+        assert bool(song_id) ^ bool(web_page_id), msg
 
         # Construct the URI
         endpoint = "referents?"
