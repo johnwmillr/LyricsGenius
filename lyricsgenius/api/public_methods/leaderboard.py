@@ -7,6 +7,7 @@ class LeaderboardMethods(object):
                     page=None,
                     text_format=None):
         """Gets the Genius community leaderboard.
+
         This method gets data of the community charts on the Genius.com page.
 
         Args:
@@ -37,6 +38,7 @@ class LeaderboardMethods(object):
                text_format=None,
                type_='songs'):
         """Gets the Genius charts.
+
         This method gets data of the chart on the Genius.com page.
 
         Args:
