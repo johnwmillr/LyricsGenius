@@ -63,4 +63,4 @@ class MiscMethods:
             params['article_id'] = article_id
         elif comment_id:
             params['comment_id'] = comment_id
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(path=endpoint, params_=params, public_api=True)
