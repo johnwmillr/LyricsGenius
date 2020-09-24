@@ -11,4 +11,4 @@ from .search import SearchMethods
 from .song import SongMethods
 from .user import UserMethods
 from .video import VideoMethods
-from .voter import VoterMethods
+from .misc import MiscMethods
