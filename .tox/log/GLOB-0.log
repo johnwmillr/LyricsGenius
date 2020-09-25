@@ -33,6 +33,7 @@ copying lyricsgenius.egg-info\requires.txt -> lyricsgenius-2.0.0\lyricsgenius.eg
 copying lyricsgenius.egg-info\top_level.txt -> lyricsgenius-2.0.0\lyricsgenius.egg-info
 copying lyricsgenius\api\__init__.py -> lyricsgenius-2.0.0\lyricsgenius\api
 copying lyricsgenius\api\api.py -> lyricsgenius-2.0.0\lyricsgenius\api
+copying lyricsgenius\api\base.py -> lyricsgenius-2.0.0\lyricsgenius\api
 copying lyricsgenius\api\public_methods\__init__.py -> lyricsgenius-2.0.0\lyricsgenius\api\public_methods
 copying lyricsgenius\api\public_methods\album.py -> lyricsgenius-2.0.0\lyricsgenius\api\public_methods
 copying lyricsgenius\api\public_methods\annotation.py -> lyricsgenius-2.0.0\lyricsgenius\api\public_methods
@@ -41,13 +42,13 @@ copying lyricsgenius\api\public_methods\artist.py -> lyricsgenius-2.0.0\lyricsge
 copying lyricsgenius\api\public_methods\cover_art.py -> lyricsgenius-2.0.0\lyricsgenius\api\public_methods
 copying lyricsgenius\api\public_methods\discussion.py -> lyricsgenius-2.0.0\lyricsgenius\api\public_methods
 copying lyricsgenius\api\public_methods\leaderboard.py -> lyricsgenius-2.0.0\lyricsgenius\api\public_methods
+copying lyricsgenius\api\public_methods\misc.py -> lyricsgenius-2.0.0\lyricsgenius\api\public_methods
 copying lyricsgenius\api\public_methods\question.py -> lyricsgenius-2.0.0\lyricsgenius\api\public_methods
 copying lyricsgenius\api\public_methods\referent.py -> lyricsgenius-2.0.0\lyricsgenius\api\public_methods
 copying lyricsgenius\api\public_methods\search.py -> lyricsgenius-2.0.0\lyricsgenius\api\public_methods
 copying lyricsgenius\api\public_methods\song.py -> lyricsgenius-2.0.0\lyricsgenius\api\public_methods
 copying lyricsgenius\api\public_methods\user.py -> lyricsgenius-2.0.0\lyricsgenius\api\public_methods
 copying lyricsgenius\api\public_methods\video.py -> lyricsgenius-2.0.0\lyricsgenius\api\public_methods
-copying lyricsgenius\api\public_methods\voter.py -> lyricsgenius-2.0.0\lyricsgenius\api\public_methods
 Writing lyricsgenius-2.0.0\setup.cfg
 creating '.tox\dist\lyricsgenius-2.0.0.zip' and adding 'lyricsgenius-2.0.0' to it
 adding 'lyricsgenius-2.0.0'
@@ -66,6 +67,7 @@ adding 'lyricsgenius-2.0.0\lyricsgenius\__init__.py'
 adding 'lyricsgenius-2.0.0\lyricsgenius\__main__.py'
 adding 'lyricsgenius-2.0.0\lyricsgenius\api\public_methods'
 adding 'lyricsgenius-2.0.0\lyricsgenius\api\api.py'
+adding 'lyricsgenius-2.0.0\lyricsgenius\api\base.py'
 adding 'lyricsgenius-2.0.0\lyricsgenius\api\__init__.py'
 adding 'lyricsgenius-2.0.0\lyricsgenius\api\public_methods\album.py'
 adding 'lyricsgenius-2.0.0\lyricsgenius\api\public_methods\annotation.py'
@@ -74,13 +76,13 @@ adding 'lyricsgenius-2.0.0\lyricsgenius\api\public_methods\artist.py'
 adding 'lyricsgenius-2.0.0\lyricsgenius\api\public_methods\cover_art.py'
 adding 'lyricsgenius-2.0.0\lyricsgenius\api\public_methods\discussion.py'
 adding 'lyricsgenius-2.0.0\lyricsgenius\api\public_methods\leaderboard.py'
+adding 'lyricsgenius-2.0.0\lyricsgenius\api\public_methods\misc.py'
 adding 'lyricsgenius-2.0.0\lyricsgenius\api\public_methods\question.py'
 adding 'lyricsgenius-2.0.0\lyricsgenius\api\public_methods\referent.py'
 adding 'lyricsgenius-2.0.0\lyricsgenius\api\public_methods\search.py'
 adding 'lyricsgenius-2.0.0\lyricsgenius\api\public_methods\song.py'
 adding 'lyricsgenius-2.0.0\lyricsgenius\api\public_methods\user.py'
 adding 'lyricsgenius-2.0.0\lyricsgenius\api\public_methods\video.py'
-adding 'lyricsgenius-2.0.0\lyricsgenius\api\public_methods\voter.py'
 adding 'lyricsgenius-2.0.0\lyricsgenius\api\public_methods\__init__.py'
 adding 'lyricsgenius-2.0.0\lyricsgenius.egg-info\dependency_links.txt'
 adding 'lyricsgenius-2.0.0\lyricsgenius.egg-info\entry_points.txt'

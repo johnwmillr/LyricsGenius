@@ -33,7 +33,7 @@ extras_require = {
         'pytest~=6.0',
     ],
     'checks': [
-        'tox~=3.1',
+        'tox~=3.2',
         'doc8',
         'flake8',
         'flake8-bugbear',

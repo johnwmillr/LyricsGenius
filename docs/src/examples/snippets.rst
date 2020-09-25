@@ -1,18 +1,45 @@
 .. _snippets:
+.. currentmodule:: lyricsgenius
 
 Snippets
 ==================
 Here are some snippets showcasing how the library can be used.
 
-
+- `Getting artist using API, PublicAPI and Genius`
 - `All the songs of an artist`_
 - `Artist's least popular song`_
 - `YouTube URL of artist's songs`_
 - `Searching for a song by lyrics`_
 
 
+Getting artist using API, PublicAPI and Genius
+-------------------------------------------------
+The following snippet will be the same for all
+methods that are available in :class:`API` and :class:`PublicAPI`
+(or have a ``public_api`` parameter if you're using :class:`Genius`).
+
+.. code:: python
+
+    from lyricsgenius import API, PublicAPI, Genius
+
+    api = API(token)
+    public = PublicAPI()
+    genius = Genius(token)
+
+    # API
+    api.artist(1665)
+
+    # PublicAPI
+    public.artist(1665)
+
+    # Genius
+    # can get it using both API and PublicAPI
+    genius.artist(1665)
+    genius.artist(1665, public_api=True)
+
+
 All the songs of an artist
-------------------------------
+--------------------------
 
 .. code:: python
 
@@ -24,7 +51,7 @@ All the songs of an artist
 
 
 Artist's least popular song
-----------------------------
+---------------------------
 .. code:: python
 
     genius = Genius(token)
@@ -37,9 +64,9 @@ Artist's least popular song
                                           sort='popularity',
                                           per_page=50,
                                           page=page,
-                                          # public_api=True
-    # this will make the call using the public API 
+                                          # public_api=Tru
                                           )
+        # public_api=True will make the call using the public API 
         songs.extend(request['songs'])
         page = request['next_page']
     least_popular_song = genius.search_song(songs[-1]['title'], artist.name)
@@ -47,7 +74,7 @@ Artist's least popular song
 
 
 YouTube URL of artist's songs
-------------------------------
+-----------------------------
 .. code:: python
 
     import json
@@ -64,9 +91,9 @@ YouTube URL of artist's songs
 
 
 Searching for a song by lyrics
--------------------------------
+------------------------------
 Using :meth:`search_lyrics
-<lyricsgenius.api.public_methods.search.search_lyrics`:
+<Genius.search_lyrics>`:
 
 .. code:: python
     
@@ -78,8 +105,7 @@ Using :meth:`search_lyrics
     for hit in request['sections'][0]['hits']:
         print(hit['result']['title'])
 
-Using :meth:`search_all
-<lyricsgenius.api.public_methods.search.search_all`:
+Using :meth:`search_all <Genius.search_all>`:
 
 .. code:: python
     
