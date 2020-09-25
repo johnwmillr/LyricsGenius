@@ -18,9 +18,10 @@ class Artist(object):
 
     """
 
-    def __init__(self, json_dict):
+    def __init__(self, client, json_dict):
         # Artist Constructor
 
+        self._client = client
         self._body = json_dict['artist']
         self._url = self._body['url']
         self._api_path = self._body['api_path']
@@ -116,13 +117,9 @@ class Artist(object):
         return 1  # Failure
 
     def get_song(self, song_name):
-        """Search Genius.com for *song_name* and add it to artist"""
-        msg = ("I need to figure out how to allow Artist() to"
-               "access Genius.search_song().")
-        raise NotImplementedError(msg)
-        # song = Genius.search_song(song_name, self.name)
-        # self.add_song(song)
-        # return
+        """Searches Genius for song_name and adds it to artist"""
+        song = self._client.search_song(song_name, self.name)
+        self.add_song(song)
 
     def to_json(self,
                 filename=None,

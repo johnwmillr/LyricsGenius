@@ -39,13 +39,22 @@ results. Let's give it a try:
     genius = lyricsgenius.Genius('token') # you can also set the attribute here
     genius.response_format = 'plain,html'
 
-    res = genius.get_annotation(10225840)
+    res = genius.annotation(10225840)
 
     # Annotation in plain formatting
     print(res['annotation']['body']['plain'])
 
     # Annotation in html formatting
     print(res['annotation']['body']['html'])
+
+You can also specify the text formatting in the call:
+
+.. code:: python
+    genius.annotation(10225840, text_format='html')
+
+Using this will override ``response_format`` for this specific call.
+If you pass no ``text_format``, the formatting will default to
+the ``response_format`` attribute if the method supports text formatting.
 
 
 Available Formats
