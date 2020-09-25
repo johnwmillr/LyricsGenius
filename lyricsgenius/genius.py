@@ -78,20 +78,40 @@ class Genius(API, PublicAPI):
         self.excluded_terms = excluded_terms
         self.replace_default_terms = replace_default_terms
 
-    def _scrape_song_lyrics_from_url(self, url):
+    def lyrics(self, urlthing):
         """Uses BeautifulSoup to scrape song info off of a Genius song URL
 
         Args:
-            url (:obj:`str`, optional): URL for the web page to scrape lyrics from.
+            urlthing (:obj:`str` | :obj:`int`):
+                Song ID or song URL.
 
         Returns:
-            :obj:`str` \\|‌ :obj:`None`: If it can find the lyrics, otherwise `None`
+            :obj:`str` \\|‌ :obj:`None`:
+                :obj:`str` If it can find the lyrics, otherwise `None`
+
+        Note:
+            If you pass a song ID, the method will have to make an extra request
+            to obtain the song's URL and scrape the lyrics off of it. So it's best
+            to pass the method a song's URL.
+
+            If you want to get a song's lyrics by searching for it,
+            use :meth:`Genius.search_song` instead.
 
         Note:
             This method removes the song headers based on the value of the
             :attr:`remove_section_headers` attribute.
 
         """
+        if isinstance(urlthing, int):
+            url = self.song(urlthing)['song']['url']
+        else:
+            url = urlthing
+
+        if not url.startswith("https://genius.com/"):
+            if self.verbose:
+                print("Song URL is not valid.")
+            return None
+
         page = requests.get(url)
         if page.status_code == 404:
             if self.verbose:
@@ -482,7 +502,7 @@ class Genius(API, PublicAPI):
         song_info = result.copy()
         if get_full_info:
             song_info.update(self.song(result['id'])['song'])
-        lyrics = self._scrape_song_lyrics_from_url(song_info['url'])
+        lyrics = self.lyrics(song_info['url'])
 
         # Skip results when URL is a 404 or lyrics are missing
         if not lyrics:
@@ -602,7 +622,7 @@ class Genius(API, PublicAPI):
                     continue
 
                 # Create the Song object from lyrics and metadata
-                lyrics = self._scrape_song_lyrics_from_url(song_info['url'])
+                lyrics = self.lyrics(song_info['url'])
                 if get_full_info:
                     info = self.song(song_info['id'])
                 else:

@@ -1,6 +1,6 @@
 import unittest
 
-from .test_genius import genius
+from test_genius import genius
 
 
 class TestAlbumMethods(unittest.TestCase):
