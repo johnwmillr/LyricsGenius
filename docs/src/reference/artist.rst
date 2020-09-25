@@ -25,6 +25,7 @@ Methods
 .. autosummary::
    :nosignatures:
 
+   Artist.song
    Artist.add_song
    Artist.to_json
    Artist.to_text
@@ -32,6 +33,5 @@ Methods
 
 .. autoclass:: lyricsgenius.artist.Artist
     :members:
-    :exclude-members: get_song
     :member-order: bysource
     :no-show-inheritance:
