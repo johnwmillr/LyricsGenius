@@ -293,3 +293,26 @@ class TestSong(unittest.TestCase):
         except Exception:
             self.fail("Failed {} overwrite test".format(extension))
         os.remove(expected_filename)
+
+
+class TestLyrics(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        print("\n---------------------\nSetting up lyrics tests...\n")
+        cls.song_url = "https://genius.com/Andy-shauf-begin-again-lyrics"
+        cls.song_id = 2885745
+        cls.lyrics_ending = (
+            "[Outro]"
+            "\nNow I’m kicking leaves"
+            "\nCursing the one that I love and the one I don’t"
+            "\nI wonder who you’re thinking of"
+        )
+
+    def test_lyrics_with_url(self):
+        lyrics = genius.lyrics(self.song_url)
+        self.assertTrue(lyrics.endswith(self.lyrics_ending))
+
+    def test_lyrics_with_id(self):
+        lyrics = genius.lyrics(self.song_id)
+        self.assertTrue(lyrics.endswith(self.lyrics_ending))

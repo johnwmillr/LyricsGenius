@@ -33,10 +33,13 @@ Artist's least popular song
     page = 1
     songs = []
     while page:
-        request = genius.get_artist_songs(artist._id,
+        request = genius.artist_songs(artist._id,
                                           sort='popularity',
                                           per_page=50,
-                                          page=page)
+                                          page=page,
+                                          # public_api=True
+    # this will make the call using the public API 
+                                          )
         songs.extend(request['songs'])
         page = request['next_page']
     least_popular_song = genius.search_song(songs[-1]['title'], artist.name)
@@ -62,12 +65,28 @@ YouTube URL of artist's songs
 
 Searching for a song by lyrics
 -------------------------------
+Using :meth:`search_lyrics
+<lyricsgenius.api.public_methods.search.search_lyrics`:
+
 .. code:: python
     
     from lyricsgenius import Genius
 
     genius = Genius(token)
 
-    request = genius.search_genius_web('Jeremy can we talk a minute?')
+    request = genius.search_lyrics('Jeremy can we talk a minute?')
+    for hit in request['sections'][0]['hits']:
+        print(hit['result']['title'])
+
+Using :meth:`search_all
+<lyricsgenius.api.public_methods.search.search_all`:
+
+.. code:: python
+    
+    from lyricsgenius import Genius
+
+    genius = Genius(token)
+
+    request = genius.search_all('Jeremy can we talk a minute?')
     for hit in request['sections'][2]['hits']:
         print(hit['result']['title'])

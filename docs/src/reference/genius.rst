@@ -185,12 +185,14 @@ Song Methods
    Genius.song_annotations
    Genius.song_comments
    Genius.song_contributors
+   Genius.lyrics
 
 .. automethod:: Genius.song
 .. automethod:: Genius.song_activity
 .. automethod:: Genius.song_annotations
 .. automethod:: Genius.song_comments
 .. automethod:: Genius.song_contributors
+.. automethod:: Genius.lyrics
 
 
 User Methods
