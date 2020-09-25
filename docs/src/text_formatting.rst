@@ -50,6 +50,7 @@ results. Let's give it a try:
 You can also specify the text formatting in the call:
 
 .. code:: python
+
     genius.annotation(10225840, text_format='html')
 
 Using this will override ``response_format`` for this specific call.
