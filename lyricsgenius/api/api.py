@@ -68,7 +68,7 @@ class API(Sender):
             .. code:: python
 
                 genius = Genius(token)
-                song = genius.get_song(2857381)
+                song = genius.song(2857381)
                 print(song['full_title'])
 
         Note:
@@ -95,7 +95,7 @@ class API(Sender):
             .. code:: python
 
                 genius = Genius(token)
-                artist = genius.get_artist(380491)
+                artist = genius.artist(380491)
                 print(artist['name'])
 
         """
@@ -125,17 +125,17 @@ class API(Sender):
                 page = 1
                 songs = []
                 while page:
-                    request = genius.get_artist_songs(380491,
-                                                        sort='popularity',
-                                                        per_page=50,
-                                                        page=page)
+                    request = genius.artist_songs(380491,
+                                                  sort='popularity',
+                                                  per_page=50,
+                                                  page=page)
                 songs.extend(request['songs'])
                 page = request['next_page']
                 least_popular_song = songs[-1]['title']
 
 
                 # getting songs 11-15
-                songs = genius.get_artist_songs(380491, per_page=5, page=3)
+                songs = genius.artist_songs(380491, per_page=5, page=3)
 
         """
         endpoint = "artists/{id}/songs".format(id=artist_id)
@@ -171,8 +171,8 @@ class API(Sender):
 
                 # getting all verified annotations of a song (artist annotations)
                 genius = Genius(token)
-                request = genius.get_referents(song_id=235729,
-                                                per_page=50)
+                request = genius.referents(song_id=235729,
+                                           per_page=50)
                 verified = [y for x in request['referents']
                             for y in x['annotations'] if y['verified']]
         """
