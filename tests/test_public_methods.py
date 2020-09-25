@@ -126,6 +126,7 @@ class TestArtistMethods(unittest.TestCase):
         r = genius.search_artist_songs(self.artist_id, 'test')
         self.assertTrue("songs" in r)
 
+
 class TestCoverArtMethods(unittest.TestCase):
 
     @classmethod
@@ -136,6 +137,7 @@ class TestCoverArtMethods(unittest.TestCase):
     def test_cover_arts(self):
         r = genius.cover_arts(self.album_id)
         self.assertTrue("cover_arts" in r)
+
 
 class TestDiscussionMethods(unittest.TestCase):
 
@@ -152,6 +154,7 @@ class TestDiscussionMethods(unittest.TestCase):
         r = genius.discussion_replies(self.discussion_id)
         self.assertTrue("forum_posts" in r)
 
+
 class TestLeaderboardMethods(unittest.TestCase):
 
     @classmethod
@@ -166,6 +169,7 @@ class TestLeaderboardMethods(unittest.TestCase):
         r = genius.charts()
         self.assertTrue("chart_items" in r)
 
+
 class TestQuestionMethods(unittest.TestCase):
 
     @classmethod
@@ -176,6 +180,7 @@ class TestQuestionMethods(unittest.TestCase):
     def test_questions(self):
         r = genius.questions(self.album_id)
         self.assertIsNotNone(r.get('questions'))
+
 
 class TestReferentMethods(unittest.TestCase):
 
@@ -193,6 +198,7 @@ class TestReferentMethods(unittest.TestCase):
     def test_referents(self):
         r = genius.referents(web_page_id=self.web_page_id, public_api=True)
         self.assertIsNotNone(r.get('referents'))
+
 
 class TestSearchMethods(unittest.TestCase):
 
@@ -236,6 +242,7 @@ class TestSearchMethods(unittest.TestCase):
     def test_search_all(self):
         r = genius.search_all(self.search_term)
         self.assertEqual(r['sections'][0]['type'], 'top_hit')
+
 
 class TestSongMethods(unittest.TestCase):
 
@@ -341,6 +348,7 @@ class TestVideoMethods(unittest.TestCase):
 
         r = genius.videos(video_id=self.video_id)
         self.assertTrue("videos" in r)
+
 
 class TestMiscMethods(unittest.TestCase):
 
