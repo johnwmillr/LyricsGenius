@@ -399,24 +399,16 @@ class Genius(API):
 
         # Determine the class of the div
         old_div = html.find("div", class_="lyrics")
-
         if old_div:
             lyrics = old_div.get_text()
         else:
-            lyrics = ''
-            for tag in html.find_all('div'):
-                for attribute, value in list(tag.attrs.items()):
-                    if attribute == 'class' and 'Lyrics__Root' in str(value):
-                        lyrics = tag
-                        break
-                if lyrics:
-                    break
+            new_div = html.find("div", class_=re.compile("Lyrics__Root"))
+            if new_div:
+                lyrics = new_div.get_text('\n').replace('\n[', '\n\n[')
             else:
                 if self.verbose:
                     print("Couldn't find the lyrics section.")
                 return None
-
-            lyrics = lyrics.get_text('\n').replace('\n[', '\n\n[')
 
         if self.remove_section_headers:  # Remove [Verse], [Bridge], etc.
             lyrics = re.sub(r'(\[.*?\])*', '', lyrics)
@@ -715,7 +707,8 @@ class Genius(API):
             print('Done. Found {n} songs.'.format(n=artist.num_songs))
         return artist
 
-    def save_artists(self, artists, filename="artist_lyrics", overwrite=False):
+    def save_artists(self, artists, filename="artist_lyrics", overwrite=False,
+                     ensure_ascii=True):
         """Saves lyrics from multiple Artist objects as JSON object.
 
         Args:
@@ -724,6 +717,9 @@ class Genius(API):
             filename (:obj:`str`, optional): Name of the output file.
             overwrite (:obj:`bool`, optional): Overwrites preexisting file if `True`.
                 Otherwise prompts user for input.
+            ensure_ascii (:obj:`bool`, optional): If ensure_ascii is true
+              (the default), the output is guaranteed to have all incoming
+              non-ASCII characters escaped.
 
         Examples:
             .. code:: python
@@ -770,7 +766,7 @@ class Genius(API):
 
         # Save all of the lyrics
         with open(filename + '.json', 'w') as outfile:
-            json.dump(all_lyrics, outfile)
+            json.dump(all_lyrics, outfile, ensure_ascii=ensure_ascii)
 
         # Delete the temporary directory
         shutil.rmtree(tmp_dir)
