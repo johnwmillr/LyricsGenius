@@ -693,7 +693,8 @@ class Genius(API):
             print('Done. Found {n} songs.'.format(n=artist.num_songs))
         return artist
 
-    def save_artists(self, artists, filename="artist_lyrics", overwrite=False):
+    def save_artists(self, artists, filename="artist_lyrics", overwrite=False,
+                     ensure_ascii=True):
         """Saves lyrics from multiple Artist objects as JSON object.
 
         Args:
@@ -702,6 +703,9 @@ class Genius(API):
             filename (:obj:`str`, optional): Name of the output file.
             overwrite (:obj:`bool`, optional): Overwrites preexisting file if `True`.
                 Otherwise prompts user for input.
+            ensure_ascii (:obj:`bool`, optional): If ensure_ascii is true
+              (the default), the output is guaranteed to have all incoming
+              non-ASCII characters escaped.
 
         Examples:
             .. code:: python
@@ -748,7 +752,7 @@ class Genius(API):
 
         # Save all of the lyrics
         with open(filename + '.json', 'w') as outfile:
-            json.dump(all_lyrics, outfile)
+            json.dump(all_lyrics, outfile, ensure_ascii=ensure_ascii)
 
         # Delete the temporary directory
         shutil.rmtree(tmp_dir)
