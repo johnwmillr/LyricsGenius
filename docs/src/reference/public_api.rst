@@ -15,7 +15,7 @@ can use the methods of this class.
 .. autoclass:: PublicAPI
    :members:
    :member-order: bysource
-   :no-show-inheritance:
+   :show-inheritance:
 
 
 Album Methods

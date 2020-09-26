@@ -14,4 +14,4 @@ class directly.
 .. autoclass:: API
    :members:
    :member-order: bysource
-   :no-show-inheritance:
+   :show-inheritance:
