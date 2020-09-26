@@ -339,8 +339,7 @@ class Song(object):
             self.to_json(filename, full_data=full_data, sanitize=sanitize,
                          ensure_ascii=ensure_ascii)
         else:
-            self.to_text(filename, binary_encoding=binary_encoding, sanitize=sanitize,
-                         ensure_ascii=ensure_ascii)
+            self.to_text(filename, binary_encoding=binary_encoding, sanitize=sanitize)
 
         if verbose:
             print('Wrote {} to {}.'.format(self.title, filename))
