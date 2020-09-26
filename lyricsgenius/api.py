@@ -385,24 +385,16 @@ class Genius(API):
 
         # Determine the class of the div
         old_div = html.find("div", class_="lyrics")
-
         if old_div:
             lyrics = old_div.get_text()
         else:
-            lyrics = ''
-            for tag in html.find_all('div'):
-                for attribute, value in list(tag.attrs.items()):
-                    if attribute == 'class' and 'Lyrics__Root' in str(value):
-                        lyrics = tag
-                        break
-                if lyrics:
-                    break
+            new_div = html.find("div", class_=re.compile("Lyrics__Root"))
+            if new_div:
+                lyrics = new_div.get_text('\n').replace('\n[', '\n\n[')
             else:
                 if self.verbose:
                     print("Couldn't find the lyrics section.")
                 return None
-
-            lyrics = lyrics.get_text('\n').replace('\n[', '\n\n[')
 
         if self.remove_section_headers:  # Remove [Verse], [Bridge], etc.
             lyrics = re.sub(r'(\[.*?\])*', '', lyrics)
