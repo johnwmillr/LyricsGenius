@@ -167,14 +167,18 @@ class Song(object):
     def to_json(self,
                 filename=None,
                 full_data=True,
-                sanitize=True):
+                sanitize=True,
+                ensure_ascii=True):
         """Converts the Song object to a json string.
 
         Args:
-            filename (:obj:`str`): Output filename, a string. If not specified,
-                the result is returned as a string.
+            filename (:obj:`str`, optional): Output filename, a string.
+                If not specified, the result is returned as a string.
             full_data (:obj:`str`): Provides full song metadata when set to `True`.
-            sanitize (:obj:`str`): Sanitizes the filename if `True`.
+            sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
+            ensure_ascii (:obj:`bool`, optional): If ensure_ascii is true
+              (the default), the output is guaranteed to have all incoming
+              non-ASCII characters escaped.
 
         Returns:
             :obj:`str` \\| :obj:`None`: If filename is None, returns the lyrics as
@@ -189,12 +193,12 @@ class Song(object):
 
         # Return the json string if no output path was specified
         if not filename:
-            return json.dumps(data, indent=1)
+            return json.dumps(data, indent=1, ensure_ascii=ensure_ascii)
 
         # Save Song object to a json file
         filename = sanitize_filename(filename) if sanitize else filename
         with open(filename, 'w') as ff:
-            json.dump(data, ff, indent=1)
+            json.dump(data, ff, indent=1, ensure_ascii=ensure_ascii)
         return None
 
     def to_text(self,
@@ -204,10 +208,11 @@ class Song(object):
         """Saves the song lyrics as a text file.
 
         Args:
-            filename (:obj:`str`): Output filename. If not specified, the result will
-                be returned as a string.
-            binary_encoding (:obj:`bool`): Enable binary encoding of text data.
-            sanitize (:obj:`str`): Sanitizes the filename if `True`.
+            filename (:obj:`str`, optional): Output filename, a string.
+                If not specified, the result is returned as a string.
+            binary_encoding (:obj:`bool`, optional): Enables binary encoding
+                of text data.
+            sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
 
         Returns:
             :obj:`str` \\| :obj:`None`: If :obj:`filename` is
@@ -237,6 +242,7 @@ class Song(object):
                     extension='json',
                     overwrite=None,
                     binary_encoding=False,
+                    ensure_ascii=True,
                     full_data=True,
                     sanitize=True,
                     verbose=True):
@@ -246,15 +252,19 @@ class Song(object):
         alongside the song's information. Take a look at the example below.
 
         Args:
-            filename (:obj:`str`): Output filename, a string. If not specified, the
-                result is returned as a string.
-            extension (:obj:`str`): Format of the file (`json` or `txt`).
+            filename (:obj:`str`, optional): Output filename, a string.
+                If not specified, the result is returned as a string.
+            extension (:obj:`str`, optional): Format of the file (`json` or `txt`).
             overwrite (:obj:`bool`, optional): Overwrites preexisting file if `True`.
                 Otherwise prompts user for input.
-            binary_encoding (:obj:`bool`): Enables binary encoding of text data.
+            binary_encoding (:obj:`bool`, optional): Enables binary encoding
+                of text data.
+            ensure_ascii (:obj:`bool`, optional): If ensure_ascii is true
+                (the default), the output is guaranteed to have all incoming
+                non-ASCII characters escaped.
             full_data (:obj:`str`): Provides full song metadata when set to `True`.
-            sanitize (:obj:`bool`): Sanitizes the filename if `True`.
-            verbose (:obj:`bool`): prints operation result.
+            sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
+            verbose (:obj:`bool`, optional): prints operation result.
 
         Examples:
             .. code:: python
@@ -308,7 +318,8 @@ class Song(object):
 
         # Save the lyrics to a file
         if extension == 'json':
-            self.to_json(filename, full_data=full_data, sanitize=sanitize)
+            self.to_json(filename, full_data=full_data, sanitize=sanitize,
+                         ensure_ascii=ensure_ascii)
         else:
             self.to_text(filename, binary_encoding=binary_encoding, sanitize=sanitize)
 
