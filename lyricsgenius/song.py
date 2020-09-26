@@ -308,26 +308,6 @@ class Song(object):
             if input(msg).lower() == 'y':
                 write_file = True
 
-        # Format lyrics as either .txt or .json
-        if extension == 'json':
-            lyrics_to_write = {'songs': [], 'artist': self.artist}
-            lyrics_to_write['songs'].append(self.to_dict())
-        else:
-            lyrics_to_write = self.lyrics
-
-        if binary_encoding:
-            lyrics_to_write = lyrics_to_write.encode('utf8')
-
-        # Write the lyrics to either a .json or .txt file
-        if write_file:
-            with open(filename, 'wb' if binary_encoding else 'w') as lyrics_file:
-                if extension == 'json':
-                    json.dump(lyrics_to_write, lyrics_file, ensure_ascii=ensure_ascii)
-                else:
-                    lyrics_file.write(lyrics_to_write)
-            if verbose:
-                print('Wrote {} to {}.'.format(self.title, filename))
-        else:
         # Exit if we won't be saving a file
         if not write_file:
             if verbose:
