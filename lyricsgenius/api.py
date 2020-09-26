@@ -703,9 +703,9 @@ class Genius(API):
             filename (:obj:`str`, optional): Name of the output file.
             overwrite (:obj:`bool`, optional): Overwrites preexisting file if `True`.
                 Otherwise prompts user for input.
-            ensure_ascii (:obj:`bool`): If ensure_ascii is true (the default),
-              the output is guaranteed to have all incoming non-ASCII characters
-              escaped.
+            ensure_ascii (:obj:`bool`, optional): If ensure_ascii is true
+              (the default), the output is guaranteed to have all incoming
+              non-ASCII characters escaped.
 
         Examples:
             .. code:: python
