@@ -126,13 +126,17 @@ class Artist(object):
 
     def to_json(self,
                 filename=None,
-                sanitize=True):
+                sanitize=True,
+                ensure_ascii=True):
         """Converts the Song object to a json string.
 
         Args:
             filename (:obj:`str`): Output filename, a string. If not specified,
                 the result is returned as a string.
             sanitize (:obj:`bool`): Sanitizes the filename if `True`.
+            ensure_ascii (:obj:`bool`): If ensure_ascii is true (the default),
+              the output is guaranteed to have all incoming non-ASCII characters
+              escaped.
 
         Returns:
             :obj:`str` \\|‌ :obj:`None`: If :obj:`filename` is `None`,
@@ -148,12 +152,12 @@ class Artist(object):
 
         # Return the json string if no output path was specified
         if not filename:
-            return json.dumps(data, indent=1)
+            return json.dumps(data, indent=1, ensure_ascii=ensure_ascii)
 
         # Save Song object to a json file
         filename = sanitize_filename(filename) if sanitize else filename
         with open(filename, 'w') as ff:
-            json.dump(data, ff, indent=1)
+            json.dump(data, ff, indent=1, ensure_ascii=ensure_ascii)
         return None
 
     def to_text(self,
@@ -196,6 +200,7 @@ class Artist(object):
                     extension='json',
                     overwrite=False,
                     binary_encoding=False,
+                    ensure_ascii=True,
                     sanitize=True,
                     verbose=True):
         """Saves all lyrics within an Artist object to a single file.
@@ -214,6 +219,9 @@ class Artist(object):
             overwrite (:obj:`bool`, optional): Overwrites preexisting file if `True`.
                 Otherwise prompts user for input.
             binary_encoding (:obj:`bool`): Enables binary encoding of text data.
+            ensure_ascii (:obj:`bool`): If ensure_ascii is true (the default),
+              the output is guaranteed to have all incoming non-ASCII characters
+              escaped.
             sanitize (:obj:`bool`): Sanitizes the filename if `True`.
             verbose (:obj:`bool`): prints operation result.
 
@@ -259,7 +267,7 @@ class Artist(object):
 
         # Save the lyrics to a file
         if extension == 'json':
-            self.to_json(filename)
+            self.to_json(filename, ensure_ascii=ensure_ascii)
         else:
             self.to_text(filename, binary_encoding=binary_encoding)
 
