@@ -2,7 +2,7 @@ class MiscMethods:
     """Miscellaneous Methods"""
 
     def line_item(self, line_item_id, text_format=None):
-        """Gets data for a specific song.
+        """Gets data for a specific line item.
 
         Args:
             line_item_id (:obj:`int`): Genius line item ID
@@ -11,6 +11,10 @@ class MiscMethods:
 
         Returns:
             :obj:`dict`
+
+        Warning:
+            This method requires a logged in user and will raise
+            ``NotImplementedError``.
 
         """
         raise NotImplementedError('This action requires a logged in user.')
