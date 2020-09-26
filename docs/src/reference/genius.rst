@@ -10,7 +10,7 @@ Genius
 =======================
 The Genius class provides a high-level interface to the Genius
 API. This class provides convenient access to the standard API,
-the public API and additional features such as downloading lyrics.
+the public API, and additional features such as downloading lyrics.
 
 .. autoclass:: Genius
    :show-inheritance:
