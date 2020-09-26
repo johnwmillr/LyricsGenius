@@ -358,7 +358,7 @@ class TestMiscMethods(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up misc methods tests...\n")
-        cls.line_item_id = 146262999
+        # cls.line_item_id = 146262999
         cls.annotation_id = 10225840
 
     # def test_line_item(self):

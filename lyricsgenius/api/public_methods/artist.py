@@ -76,6 +76,10 @@ class ArtistMethods(object):
         Returns:
             :obj:`dict`
 
+        Warning:
+            This method requires a logged in user and will raise
+            ``NotImplementedError``.
+
         """
         raise NotImplementedError('This action requires a logged in user.')
         endpoint = 'artists/{}/contribution_opportunities'.format(artist_id)
