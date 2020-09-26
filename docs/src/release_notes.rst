@@ -13,7 +13,7 @@ Added
    :meth:`Song.save_lyrics <song.Song.save_lyrics>`,
    :meth:`Song.to_json <song.Song.to_json>`,
    :meth:`Artist.save_lyrics <artist.Artist.save_lyrics>`
-   and :meth:`Artist.to_json <artist.Artist.save_lyrics>`
+   and :meth:`Artist.to_json <artist.Artist.to_json>`
 
 
 2.0.1 (2020-09-20)
