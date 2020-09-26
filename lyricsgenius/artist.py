@@ -84,7 +84,7 @@ class Artist(object):
 
         Args:
             new_song (:class:`Song <lyricsgenius.song.Song>`): Song to be added.
-            verbose (:obj:`bool`): prints operation result.
+            verbose (:obj:`bool`, optional): prints operation result.
             include_features (:obj:`bool`, optional): If True, includes tracks
                 featuring the artist.
 
@@ -131,12 +131,12 @@ class Artist(object):
         """Converts the Song object to a json string.
 
         Args:
-            filename (:obj:`str`): Output filename, a string. If not specified,
-                the result is returned as a string.
-            sanitize (:obj:`bool`): Sanitizes the filename if `True`.
-            ensure_ascii (:obj:`bool`): If ensure_ascii is true (the default),
-              the output is guaranteed to have all incoming non-ASCII characters
-              escaped.
+            filename (:obj:`str`, optional): Output filename, a string.
+                If not specified, the result is returned as a string.
+            sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
+            ensure_ascii (:obj:`bool`, optional): If ensure_ascii is true
+              (the default), the output is guaranteed to have all incoming
+              non-ASCII characters escaped.
 
         Returns:
             :obj:`str` \\|‌ :obj:`None`: If :obj:`filename` is `None`,
@@ -167,10 +167,11 @@ class Artist(object):
         """Converts all song lyrics to a single string.
 
         Args:
-            filename (:obj:`str`): Output filename, a string. If not specified, the
-                result is returned as a string.
-            binary_encoding (:obj:`bool`): Enables binary encoding of text data.
-            sanitize (:obj:`bool`): Sanitizes the filename if `True`.
+            filename (:obj:`str`, optional): Output filename, a string.
+                If not specified, the result is returned as a string.
+            binary_encoding (:obj:`bool`, optional): Enables binary encoding
+                of text data.
+            sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
 
         Returns:
             :obj:`str` \\| ‌:obj:`None`: If :obj:`filename` is `None`,
@@ -213,17 +214,18 @@ class Artist(object):
         Take a look at the example below.
 
         Args:
-            filename (:obj:`str`): Output filename, a string. If not specified, the
-                result is returned as a string.
-            extension (:obj:`str`): Format of the file (`json` or `txt`).
+            filename (:obj:`str`, optional): Output filename, a string.
+                If not specified, the result is returned as a string.
+            extension (:obj:`str`, optional): Format of the file (`json` or `txt`).
             overwrite (:obj:`bool`, optional): Overwrites preexisting file if `True`.
                 Otherwise prompts user for input.
-            binary_encoding (:obj:`bool`): Enables binary encoding of text data.
-            ensure_ascii (:obj:`bool`): If ensure_ascii is true (the default),
-              the output is guaranteed to have all incoming non-ASCII characters
-              escaped.
-            sanitize (:obj:`bool`): Sanitizes the filename if `True`.
-            verbose (:obj:`bool`): prints operation result.
+            binary_encoding (:obj:`bool`, optional): Enables binary encoding
+                of text data.
+            ensure_ascii (:obj:`bool`, optional): If ensure_ascii is true
+                (the default), the output is guaranteed to have all incoming
+                non-ASCII characters escaped.
+            sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
+            verbose (:obj:`bool`, optional): prints operation result.
 
         Examples:
             .. code:: python
