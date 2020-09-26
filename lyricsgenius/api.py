@@ -403,8 +403,7 @@ class Genius(API):
 
     def _clean_str(self, s):
         """Returns a lowercase string with punctuation and bad chars removed."""
-        punctuation_ = punctuation + "’"
-        return (s.translate(str.maketrans('', '', punctuation_))
+        return (s.translate(str.maketrans('', '', punctuation))
                 .replace('\u200b', " ").strip().lower())
 
     def _result_is_lyrics(self, song_title):
@@ -442,11 +441,13 @@ class Genius(API):
         return not regex.search(self._clean_str(song_title))
 
     def _get_item_from_search_response(self, response, search_term, type_, result_type):
-        """Gets the desired item from the search results.
+        """Returns either a :class:`lyricsgenius.Song` or
+        :class:`lyricsgenius.artist.Artist` result from
+        :meth:`Genius.search_genius_web`.
 
         This method tries to match the `hits` of the :obj:`response` to
-            the :obj:`response_term`, and if it finds no match, returns the first
-            appropriate hit if there are any.
+            the :obj:`response_term`, and if it finds no match, returns the first hit
+            if there are any.
 
         Args:
             response (:obj:`dict`): A response from
@@ -465,29 +466,20 @@ class Genius(API):
         """
 
         # Convert list to dictionary
-        top_hits = response['sections'][0]['hits']
+        hits = response['sections'][0]['hits']
 
         # Check rest of results if top hit wasn't the search type
         sections = sorted(response['sections'],
-                          key=lambda sect: sect['type'] == type_)
+                          key=lambda sect: sect['type'] == type_,
+                          reverse=True)
 
-        hits = [hit for hit in top_hits if hit['type'] == type_]
-        hits.extend([hit for section in sections
-                     for hit in section['hits']
-                     if hit['type'] == type_])
+        hits = [hit for section in sections
+                for hit in section['hits']
+                if hit['type'] == type_]
 
         for hit in hits:
-            item = hit['result']
-            if self._clean_str(item[result_type]) == self._clean_str(search_term):
-                return item
-
-        # If the desired type is song lyrics and none of the results matched,
-        # return the first result that has lyrics
-        if type_ == 'song' and self.skip_non_songs:
-            for hit in hits:
-                song = hit['result']
-                if self._result_is_lyrics(song['title']):
-                    return song
+            if hit['result'][result_type] == search_term:
+                return hit['result']
 
         return hits[0]['result'] if hits else None
 
@@ -544,13 +536,7 @@ class Genius(API):
             return None
 
         # Reject non-songs (Liner notes, track lists, etc.)
-        if (self.skip_non_songs
-                and (result['lyrics_state'] != 'complete'
-                    or not self._result_is_lyrics(result['title']))):
-            valid = False
-        else:
-            valid = True
-
+        valid = self._result_is_lyrics(result['title']) if self.skip_non_songs else True
         if not valid:
             if self.verbose:
                 print('Specified song does not contain lyrics. Rejecting.')
