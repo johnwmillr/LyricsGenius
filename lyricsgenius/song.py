@@ -149,10 +149,13 @@ class Song(object):
 
         # Save song lyrics to a text file
         filename = sanitize_filename(filename) if sanitize else filename
-        with open(filename, 'wb' if binary_encoding else 'w') as ff:
-            if binary_encoding:
+        if binary_encoding:
+            with open(filename, 'wb') as ff:
                 data = data.encode('utf8')
-            ff.write(data)
+                ff.write(data)
+        else:
+            with open(filename, 'w', encoding='utf8') as ff:
+                ff.write(data)
         return None
 
     def save_lyrics(self,

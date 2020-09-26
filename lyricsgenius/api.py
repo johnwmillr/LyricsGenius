@@ -19,6 +19,7 @@ import time
 
 from lyricsgenius.song import Song
 from lyricsgenius.artist import Artist
+from lyricsgenius.utils import print_unicode
 
 
 class API(object):
@@ -239,9 +240,9 @@ class Genius(API):
         # Search the Genius API for the specified song
         if self.verbose:
             if artist:
-                print('Searching for "{s}" by {a}...'.format(s=title, a=artist))
+                print_unicode('Searching for "{s}" by {a}...'.format(s=title, a=artist))
             else:
-                print('Searching for "{s}"...'.format(s=title))
+                print_unicode('Searching for "{s}"...'.format(s=title))
         search_term = "{s} {a}".format(s=title, a=artist).strip()
         response = self.search_genius_web(search_term)
 
@@ -251,7 +252,7 @@ class Genius(API):
         # Exit search if there were no results returned from API
         if not result:
             if self.verbose:
-                print("No results found for: '{s}'".format(s=search_term))
+                print_unicode("No results found for: '{s}'".format(s=search_term))
             return None
 
         # Reject non-songs (Liner notes, track lists, etc.)
@@ -297,7 +298,7 @@ class Genius(API):
         """
         def find_artist_id(search_term):
             if self.verbose:
-                print('Searching for songs by {0}...\n'.format(search_term))
+                print_unicode('Searching for songs by {0}...\n'.format(search_term))
 
             # Perform a Genius API search for the artist
             found_artist = None
@@ -307,7 +308,7 @@ class Genius(API):
             # Exit the search if we couldn't find an artist by the given name
             if not found_artist:
                 if self.verbose:
-                    print("No results found for '{a}'.".format(a=search_term))
+                    print_unicode("No results found for '{a}'.".format(a=search_term))
                 return None
             # Assume the top search result is the intended artist
             return found_artist['id']
@@ -321,7 +322,7 @@ class Genius(API):
         found_name = artist_info['artist']['name']
         if found_name != artist_name and allow_name_change:
             if self.verbose:
-                print("Changing artist name to '{a}'".format(a=found_name))
+                print_unicode("Changing artist name to '{a}'".format(a=found_name))
             artist_name = found_name
 
         # Create the Artist object
@@ -343,7 +344,7 @@ class Genius(API):
                 if not valid:
                     if self.verbose:
                         s = song_info['title'] if has_title else "MISSING TITLE"
-                        print('"{s}" is not valid. Skipping.'.format(s=s).encode('utf8'))
+                        print_unicode('"{}" is not valid. Skipping.'.format(s))
                     continue
 
                 # Create the Song object from lyrics and metadata
@@ -357,8 +358,8 @@ class Genius(API):
                 # Attempt to add the Song to the Artist
                 result = artist.add_song(song, verbose=False)
                 if result == 0 and self.verbose:
-                    print('Song {n}: "{t}"'.format(n=artist.num_songs,
-                                                   t=song.title).encode('utf8'))
+                    print_unicode('Song {n}: "{t}"'.format(n=artist.num_songs,
+                                                           t=song.title).encode('utf8'))
 
                 # Exit search if the max number of songs has been met
                 reached_max_songs = max_songs and artist.num_songs >= max_songs

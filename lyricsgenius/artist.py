@@ -4,7 +4,7 @@
 
 import os
 import json
-from lyricsgenius.utils import sanitize_filename
+from lyricsgenius.utils import sanitize_filename, print_unicode
 
 
 class Artist(object):
@@ -56,16 +56,20 @@ class Artist(object):
 
         if any([song.title == new_song.title for song in self._songs]):
             if verbose:
-                print('{s} already in {a}, not adding song.'.format(s=new_song.title,
-                                                                    a=self.name))
+                print_unicode('{s} already in {a}, not adding song.'.format(
+                    s=new_song.title,
+                    a=self.name)
+                )
             return 1  # Failure
         if new_song.artist == self.name:
             self._songs.append(new_song)
             self._num_songs += 1
             return 0  # Success
         if verbose:
-            print("Can't add song by {b}, artist must be {a}.".format(b=new_song.artist,
-                                                                      a=self.name))
+            print_unicode("Can't add song by {b}, artist must be {a}.".format(
+                b=new_song.artist,
+                a=self.name)
+            )
         return 1  # Failure
 
     def get_song(self, song_name):
@@ -126,10 +130,13 @@ class Artist(object):
 
         # Save song lyrics to a text file
         filename = sanitize_filename(filename) if sanitize else filename
-        with open(filename, 'wb' if binary_encoding else 'w') as ff:
-            if binary_encoding:
+        if binary_encoding:
+            with open(filename, 'wb') as ff:
                 data = data.encode('utf8')
-            ff.write(data)
+                ff.write(data)
+        else:
+            with open(filename, 'w', encoding='utf8') as ff:
+                ff.write(data)
         return None
 
     def save_lyrics(self,
