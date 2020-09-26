@@ -3,7 +3,7 @@ from requests.exceptions import Timeout
 import time
 
 
-class Sender:
+class Sender(object):
     """Sends requests to Genius."""
     # Create a persistent requests connection
     _session = requests.Session()
