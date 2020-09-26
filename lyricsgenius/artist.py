@@ -18,9 +18,10 @@ class Artist(object):
 
     """
 
-    def __init__(self, json_dict):
+    def __init__(self, client, json_dict):
         # Artist Constructor
 
+        self._client = client
         self._body = json_dict['artist']
         self._url = self._body['url']
         self._api_path = self._body['api_path']
@@ -58,7 +59,7 @@ class Artist(object):
         """Song objects saved for the artist.
 
         Returns:
-            :obj:`list`: A list contatining :class:`Song <lyricsgenius.song.Song>`
+            :obj:`list`: A list contatining :class:`Song <song.Song>`
             objects.
 
         """
@@ -76,7 +77,7 @@ class Artist(object):
         return self._num_songs
 
     def add_song(self, new_song, verbose=True, include_features=False):
-        """Adds a Song object to the Artist object.
+        """Adds a song to the Artist.
 
         This method adds a new song to the artist object. It checks
         if the song is already in artist's songs and whether the
@@ -96,10 +97,19 @@ class Artist(object):
 
                 genius = Genius(token)
                 artist = genius.search_artist('Andy Shauf', max_songs=3)
+
+                # Way 1
                 song = genius.search_song('To You', artist.name)
                 artist.add_song(song)
 
+                # Way 2
+                artist.add_song('To You')
+
         """
+        if isinstance(new_song, str):
+            new_song = self._client.search_song(new_song)
+            if new_song is None:
+                return 1  # Failure
         if any([song.title == new_song.title for song in self._songs]):
             if verbose:
                 print('{s} already in {a}, not adding song.'.format(s=new_song.title,
@@ -115,14 +125,28 @@ class Artist(object):
                                                                       a=self.name))
         return 1  # Failure
 
-    def get_song(self, song_name):
-        """Search Genius.com for *song_name* and add it to artist"""
-        msg = ("I need to figure out how to allow Artist() to"
-               "access Genius.search_song().")
-        raise NotImplementedError(msg)
-        # song = Genius.search_song(song_name, self.name)
-        # self.add_song(song)
-        # return
+    def song(self, song_name):
+        """Gets the artist's song.
+
+        If the song is in the artist's songs, returns the song. Otherwise searches
+        Genius for the song and then returns the song.
+
+        Args:
+            song_name (:obj:`str`): name of the song.
+                the result is returned as a string.
+            sanitize (:obj:`bool`): Sanitizes the filename if `True`.
+
+        Returns:
+            :obj:`Song <song.Song>` \\|‌ :obj:`None`: If it can't find the song,
+                returns *None*.
+
+        """
+        for song in self.songs:
+            if song.title == song_name:
+                return song
+
+        song = self._client.search_song(song_name, self.name)
+        return song
 
     def to_json(self,
                 filename=None,
@@ -209,7 +233,7 @@ class Artist(object):
         artist songs.
         If you only want the songs lyrics, set :obj:`extension` to `txt`.
         If you choose to go with JSON (which is the default extension), you can access
-        the lyrics by accessing the :class:`Song <lyricsgenius.song.Song>`
+        the lyrics by accessing the :class:`Song <song.Song>`
         objects inside the `songs` key of the JSON file.
         Take a look at the example below.
 
