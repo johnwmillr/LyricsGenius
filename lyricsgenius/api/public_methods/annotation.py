@@ -1,4 +1,4 @@
-class AnnotationMethods():
+class AnnotationMethods(object):
     """Annotation methods of the public API."""
 
     def annotation(self, annotation_id, text_format=None):
