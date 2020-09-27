@@ -18,9 +18,10 @@ class Artist(object):
 
     """
 
-    def __init__(self, json_dict):
+    def __init__(self, client, json_dict):
         # Artist Constructor
 
+        self._client = client
         self._body = json_dict['artist']
         self._url = self._body['url']
         self._api_path = self._body['api_path']
@@ -58,7 +59,7 @@ class Artist(object):
         """Song objects saved for the artist.
 
         Returns:
-            :obj:`list`: A list contatining :class:`Song <lyricsgenius.song.Song>`
+            :obj:`list`: A list contatining :class:`Song <song.Song>`
             objects.
 
         """
@@ -76,7 +77,7 @@ class Artist(object):
         return self._num_songs
 
     def add_song(self, new_song, verbose=True, include_features=False):
-        """Adds a Song object to the Artist object.
+        """Adds a song to the Artist.
 
         This method adds a new song to the artist object. It checks
         if the song is already in artist's songs and whether the
@@ -84,7 +85,7 @@ class Artist(object):
 
         Args:
             new_song (:class:`Song <lyricsgenius.song.Song>`): Song to be added.
-            verbose (:obj:`bool`): prints operation result.
+            verbose (:obj:`bool`, optional): prints operation result.
             include_features (:obj:`bool`, optional): If True, includes tracks
                 featuring the artist.
 
@@ -96,10 +97,19 @@ class Artist(object):
 
                 genius = Genius(token)
                 artist = genius.search_artist('Andy Shauf', max_songs=3)
+
+                # Way 1
                 song = genius.search_song('To You', artist.name)
                 artist.add_song(song)
 
+                # Way 2
+                artist.add_song('To You')
+
         """
+        if isinstance(new_song, str):
+            new_song = self._client.search_song(new_song)
+            if new_song is None:
+                return 1  # Failure
         if any([song.title == new_song.title for song in self._songs]):
             if verbose:
                 print('{s} already in {a}, not adding song.'.format(s=new_song.title,
@@ -115,24 +125,42 @@ class Artist(object):
                                                                       a=self.name))
         return 1  # Failure
 
-    def get_song(self, song_name):
-        """Search Genius.com for *song_name* and add it to artist"""
-        msg = ("I need to figure out how to allow Artist() to"
-               "access Genius.search_song().")
-        raise NotImplementedError(msg)
-        # song = Genius.search_song(song_name, self.name)
-        # self.add_song(song)
-        # return
+    def song(self, song_name):
+        """Gets the artist's song.
+
+        If the song is in the artist's songs, returns the song. Otherwise searches
+        Genius for the song and then returns the song.
+
+        Args:
+            song_name (:obj:`str`): name of the song.
+                the result is returned as a string.
+            sanitize (:obj:`bool`): Sanitizes the filename if `True`.
+
+        Returns:
+            :obj:`Song <song.Song>` \\|‌ :obj:`None`: If it can't find the song,
+                returns *None*.
+
+        """
+        for song in self.songs:
+            if song.title == song_name:
+                return song
+
+        song = self._client.search_song(song_name, self.name)
+        return song
 
     def to_json(self,
                 filename=None,
-                sanitize=True):
+                sanitize=True,
+                ensure_ascii=True):
         """Converts the Song object to a json string.
 
         Args:
-            filename (:obj:`str`): Output filename, a string. If not specified,
-                the result is returned as a string.
-            sanitize (:obj:`bool`): Sanitizes the filename if `True`.
+            filename (:obj:`str`, optional): Output filename, a string.
+                If not specified, the result is returned as a string.
+            sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
+            ensure_ascii (:obj:`bool`, optional): If ensure_ascii is true
+              (the default), the output is guaranteed to have all incoming
+              non-ASCII characters escaped.
 
         Returns:
             :obj:`str` \\|‌ :obj:`None`: If :obj:`filename` is `None`,
@@ -148,12 +176,12 @@ class Artist(object):
 
         # Return the json string if no output path was specified
         if not filename:
-            return json.dumps(data, indent=1)
+            return json.dumps(data, indent=1, ensure_ascii=ensure_ascii)
 
         # Save Song object to a json file
         filename = sanitize_filename(filename) if sanitize else filename
         with open(filename, 'w') as ff:
-            json.dump(data, ff, indent=1)
+            json.dump(data, ff, indent=1, ensure_ascii=ensure_ascii)
         return None
 
     def to_text(self,
@@ -163,10 +191,11 @@ class Artist(object):
         """Converts all song lyrics to a single string.
 
         Args:
-            filename (:obj:`str`): Output filename, a string. If not specified, the
-                result is returned as a string.
-            binary_encoding (:obj:`bool`): Enables binary encoding of text data.
-            sanitize (:obj:`bool`): Sanitizes the filename if `True`.
+            filename (:obj:`str`, optional): Output filename, a string.
+                If not specified, the result is returned as a string.
+            binary_encoding (:obj:`bool`, optional): Enables binary encoding
+                of text data.
+            sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
 
         Returns:
             :obj:`str` \\| ‌:obj:`None`: If :obj:`filename` is `None`,
@@ -196,6 +225,7 @@ class Artist(object):
                     extension='json',
                     overwrite=False,
                     binary_encoding=False,
+                    ensure_ascii=True,
                     sanitize=True,
                     verbose=True):
         """Saves all lyrics within an Artist object to a single file.
@@ -203,19 +233,23 @@ class Artist(object):
         artist songs.
         If you only want the songs lyrics, set :obj:`extension` to `txt`.
         If you choose to go with JSON (which is the default extension), you can access
-        the lyrics by accessing the :class:`Song <lyricsgenius.song.Song>`
+        the lyrics by accessing the :class:`Song <song.Song>`
         objects inside the `songs` key of the JSON file.
         Take a look at the example below.
 
         Args:
-            filename (:obj:`str`): Output filename, a string. If not specified, the
-                result is returned as a string.
-            extension (:obj:`str`): Format of the file (`json` or `txt`).
+            filename (:obj:`str`, optional): Output filename, a string.
+                If not specified, the result is returned as a string.
+            extension (:obj:`str`, optional): Format of the file (`json` or `txt`).
             overwrite (:obj:`bool`, optional): Overwrites preexisting file if `True`.
                 Otherwise prompts user for input.
-            binary_encoding (:obj:`bool`): Enables binary encoding of text data.
-            sanitize (:obj:`bool`): Sanitizes the filename if `True`.
-            verbose (:obj:`bool`): prints operation result.
+            binary_encoding (:obj:`bool`, optional): Enables binary encoding
+                of text data.
+            ensure_ascii (:obj:`bool`, optional): If ensure_ascii is true
+                (the default), the output is guaranteed to have all incoming
+                non-ASCII characters escaped.
+            sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
+            verbose (:obj:`bool`, optional): prints operation result.
 
         Examples:
             .. code:: python
@@ -259,7 +293,7 @@ class Artist(object):
 
         # Save the lyrics to a file
         if extension == 'json':
-            self.to_json(filename)
+            self.to_json(filename, ensure_ascii=ensure_ascii)
         else:
             self.to_text(filename, binary_encoding=binary_encoding)
 
