@@ -5,6 +5,7 @@
 import json
 import os
 from filecmp import cmp
+
 from lyricsgenius.utils import sanitize_filename
 
 
