@@ -1,5 +1,5 @@
 .. _api:
-.. currentmodule:: lyricsgenius.api
+.. currentmodule:: lyricsgenius
 .. toctree::
    :maxdepth: 2
    :hidden:
@@ -14,4 +14,4 @@ class directly.
 .. autoclass:: API
    :members:
    :member-order: bysource
-   :no-show-inheritance:
+   :show-inheritance:
