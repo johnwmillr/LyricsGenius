@@ -1,7 +1,6 @@
-from urllib.parse import parse_qs, urlparse
-import re
+"""utility functions"""
 
-"""Utility functions."""
+from datetime import datetime
 
 
 def sanitize_filename(f):
@@ -19,30 +18,17 @@ def sanitize_filename(f):
     return "".join(c for c in f if c.isalnum() or c in keepchars).rstrip()
 
 
-def parse_redirected_url(url, flow):
-    """
-    Parse a URL for parameter 'code'/'token'.
+def _convert_to_datetime(f):
+    if f is None:
+        return None
 
-    Args:
-        url (:obj:`str`): The redirect URL.
-        flow (:obj:`str`): authorization flow ('code' or 'token')
+    if '-' in f:
+        date_format = "%Y-%m-%d"
+    elif ',' in f:
+        date_format = "%B %d, %Y"
+    elif f.isdigit():
+        date_format = "%Y"
+    else:
+        date_format = "%B %Y"
 
-    Returns:
-        :obj:`str`: value of 'code'/'token'.
-
-    Raises:
-        KeyError: if 'code'/'token' is not available or has multiple values.
-    """
-    if flow == 'code':
-        query = urlparse(url).query
-    elif flow == 'token':
-        query = re.sub(r'.*#access_', '', url)
-    parameters = parse_qs(query)
-    code = parameters.get(flow, None)
-
-    if code is None:
-        raise KeyError("Parameter {} not available!".format(flow))
-    elif len(code) > 1:
-        raise KeyError("Multiple values for {}!".format(flow))
-
-    return code[0]
+    return datetime.strptime(f, date_format)
