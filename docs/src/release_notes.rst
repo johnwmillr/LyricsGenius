@@ -15,10 +15,9 @@ Added
    :meth:`Artist.save_lyrics <artist.Artist.save_lyrics>`
    and :meth:`Artist.to_json <artist.Artist.to_json>`
 
-
 2.0.1 (2020-09-20)
 ------------------
 Changed
 *******
-- :func:`Genius._scrape_song_lyrics_from_url`- Switched to using
+- :func:`Genius.lyrics`- Switched to using
   regular expressions to find the ``new_div`` (:issue:`154`).
