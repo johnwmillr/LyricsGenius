@@ -123,7 +123,7 @@ Authenticating using OAuth2
 Authenticating yourself
 ^^^^^^^^^^^^^^^^^^^^^^^
 Whitelist a redirect URI in your app's page on Genius. Any redirect
-URI will work (for example `http://example.com/callback`)
+URI will work (for example ``http://example.com/callback``)
 
 .. code:: python
 
@@ -157,7 +157,7 @@ Authenticating another user
 
     # this part is the same
     url_for_user = auth.url
-    print('Redirecting you to {}'.format(url_for_user))
+    print('Redirecting you to ' + url_for_user)
     redirected_url = 'https://example.com/?code=some_code'
     token = auth.get_user_token(redirected_url)
 

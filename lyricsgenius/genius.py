@@ -23,7 +23,7 @@ class Genius(API, PublicAPI):
     """User-level interface with the Genius.com API and public API.
 
     Args:
-        client_access_token (:obj:`str`): API key provided by Genius.
+        access_token (:obj:`str`): API key provided by Genius.
         response_format (:obj:`str`, optional): API response format (dom, plain, html).
         timeout (:obj:`int`, optional): time before quitting on response (seconds).
         sleep_time (:obj:`str`, optional): time to wait between requests.
@@ -59,7 +59,7 @@ class Genius(API, PublicAPI):
 
     """
 
-    def __init__(self, client_access_token,
+    def __init__(self, access_token,
                  response_format='plain', timeout=5, sleep_time=0.5,
                  verbose=True, remove_section_headers=False,
                  skip_non_songs=True, excluded_terms=None,
@@ -67,7 +67,7 @@ class Genius(API, PublicAPI):
         # Genius Client Constructor
 
         super().__init__(
-            client_access_token=client_access_token,
+            access_token=access_token,
             response_format=response_format,
             timeout=timeout,
             sleep_time=sleep_time
