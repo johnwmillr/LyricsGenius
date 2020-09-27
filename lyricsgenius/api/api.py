@@ -52,6 +52,10 @@ class API(Sender):
             timeout=timeout,
             sleep_time=sleep_time
         )
+        self._validate_token()
+
+    def _validate_token(self):
+        self.song(378195)
 
     def song(self, song_id, text_format=None):
         """Gets data for a specific song.
