@@ -7,6 +7,8 @@
 import os
 import re
 import requests
+from requests.exceptions import Timeout, HTTPError
+from urllib.parse import urlencode
 import shutil
 import json
 from bs4 import BeautifulSoup
@@ -181,7 +183,7 @@ class Genius(API, PublicAPI):
     def _get_item_from_search_response(self, response, search_term, type_, result_type):
         """Returns either a :class:`lyricsgenius.Song` or
         :class:`lyricsgenius.artist.Artist` result from
-        :meth:`Genius.search_genius_web`.
+        :meth:`Genius.search_all`.
 
         This method tries to match the `hits` of the :obj:`response` to
             the :obj:`response_term`, and if it finds no match, returns the first hit
@@ -189,7 +191,7 @@ class Genius(API, PublicAPI):
 
         Args:
             response (:obj:`dict`): A response from
-                :meth:‍‍‍‍`Genius.search_genius_web` to go through.
+                :meth:‍‍‍‍`Genius.search_all` to go through.
             search_term (:obj:`str`): The search term to match with the hit.
             type_ (:obj:`str`): Type of the hit we're looking for (e.g. song, artist).
             result_type (:obj:`str`): The part of the hit we want to match
