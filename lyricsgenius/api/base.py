@@ -1,6 +1,7 @@
+import time
+
 import requests
 from requests.exceptions import HTTPError, Timeout
-import time
 
 
 class Sender(object):
