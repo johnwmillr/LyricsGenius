@@ -19,6 +19,7 @@ from .public_methods import (
 
 class API(Sender):
     """Genius API.
+
     The :obj:`API` class is in charge of making all the requests
     to the developers' API (api.genius.com)
     Use the methods of this class if you already have information
@@ -26,10 +27,10 @@ class API(Sender):
     the :class:`Genius` class provides a friendlier front-end
     to search and retrieve data from Genius.com.
 
-    | All methods of this class are available through the :class:`Genius` class.
+    All methods of this class are available through the :class:`Genius` class.
 
     Args:
-        client_access_token (:obj:`str`): API key provided by Genius.
+        access_token (:obj:`str`): API key provided by Genius.
         response_format (:obj:`str`, optional): API response format (dom, plain, html).
         timeout (:obj:`int`, optional): time before quitting on response (seconds).
         sleep_time (:obj:`str`, optional): time to wait between requests.
@@ -44,10 +45,10 @@ class API(Sender):
 
     """
 
-    def __init__(self, client_access_token,
+    def __init__(self, access_token,
                  response_format='plain', timeout=5, sleep_time=0.5):
         super().__init__(
-            client_access_token=client_access_token,
+            access_token=access_token,
             response_format=response_format,
             timeout=timeout,
             sleep_time=sleep_time
@@ -57,33 +58,200 @@ class API(Sender):
     def _validate_token(self):
         self.song(378195)
 
-    def song(self, song_id, text_format=None):
-        """Gets data for a specific song.
+    def account(self):
+        """Gets details about the current user.
+
+        Requires scope: :obj:`me`.
+
+        Returns:
+            :obj:`dict`
+
+        """
+        endpoint = 'account'
+        return self._make_request(path=endpoint)
+
+    def annotation(self, annotation_id, text_format=None):
+        """Gets data for a specific annotation.
 
         Args:
-            song_id (:obj:`int`): Genius song ID
+            annotation_id (:obj:`int`): annotation ID
             text_format (:obj:`str`, optional): Text format of the results
                 ('dom', 'html', 'markdown' or 'plain').
 
         Returns:
-            :obj:`dict`: Song details from Genius.
+            :obj:`dict`
+
+        """
+        params = {'text_format': text_format or self.response_format}
+        endpoint = "annotations/{id}".format(id=annotation_id)
+        return self._make_request(endpoint, params_=params)
+
+    def create_annotation(self, text, raw_annotatable_url, fragment,
+                          before_html=None, after_html=None,
+                          canonical_url=None, og_url=None, title=None):
+        """Creates an annotation for a web page.
+
+        Requires scope: :obj:`create_annotation`.
+
+        Args:
+            text (:obj:`str`): Annotation text in Markdown format.
+            raw_annotatable_url (:obj:`str`): The original URL of the page.
+            fragment (:obj:`str`): The highlighted fragment (the referent).
+            before_html (:obj:`str`, optional): The HTML before the highlighted fragment
+                (prefer up to 200 characters).
+            after_html (:obj:`str`, optional): The HTML after the highlighted fragment
+                (prefer up to 200 characters).
+            canonical_url (:obj:`str`, optional): The href property of the
+                :obj:`<link rel="canonical">` tag on the page.
+            og_url (:obj:`str`, optional): The content property of the
+                :obj:`<meta property="og:url">` tag on the page.
+            title (:obj:`str`, optional): The title of the page.
+
+        Returns:
+            :obj:`dict`: The annotation.
 
         Examples:
             .. code:: python
 
                 genius = Genius(token)
-                song = genius.song(2857381)
-                print(song['full_title'])
-
-        Note:
-            This pure API method is used for fetching songs when you have their ID,
-            and only makes a request to the API, therefore provides no lyrics.
-            If you want the lyrics as well, use :meth:`Genius.search_song` instead.
+                new = genius.update_annotation('The annotation',
+                'https://example.com', 'illustrative examples', title='test')
+                print(new['id'])
 
         """
-        endpoint = "songs/{id}".format(id=song_id)
-        params = {'text_format': text_format or self.response_format}
-        return self._make_request(endpoint, params_=params)
+        msg = "Must supply `canonical_url`, `og_url`, or `title`."
+        assert any([canonical_url, og_url, title]), msg
+
+        endpoint = 'annotations'
+        payload = {
+            'annotation': {
+                'body': {'markdown': text}
+            },
+            'referent': {
+                'raw_annotatable_url': raw_annotatable_url,
+                'fragment': fragment,
+                'context_for_display': {
+                    'before_html': before_html if before_html else None,
+                    'after_html': after_html if after_html else None
+                }
+            },
+            'web_page': {
+                'canonical_url': canonical_url if canonical_url else None,
+                'og_url': og_url if og_url else None,
+                'title': title if title else None
+            }
+        }
+        return self._make_request(path=endpoint, method='POST', json=payload)
+
+    def delete_annotation(self, annotation_id):
+        """Deletes an annotation created by the authenticated user.
+
+        Requires scope: :obj:`manage_annotation`.
+
+        Args:
+            annotation_id (:obj:`int`): Annotation ID.
+
+        Returns:
+            :obj:`int`: 204 - which is the response's status code
+
+        """
+        endpoint = 'annotations/{}'.format(annotation_id)
+        return self._make_request(path=endpoint, method='DELETE')
+
+    def downvote_annotation(self, annotation_id):
+        """Downvotes an annotation.
+
+        Requires scope: :obj:`vote`.
+
+        Args:
+            annotation_id (:obj:`int`): Annotation ID.
+
+        Returns:
+            :obj:`dict`: The annotation.
+
+        """
+        endpoint = 'annotations/{}/downvote'.format(annotation_id)
+        return self._make_request(path=endpoint, method='PUT')
+
+    def unvote_annotation(self, annotation_id):
+        """Removes user's vote for the annotation.
+
+        Requires scope: :obj:`vote`.
+
+        Args:
+            annotation_id (:obj:`int`): Annotation ID.
+
+        Returns:
+            :obj:`dict`: The annotation.
+
+        """
+        endpoint = 'annotations/{}/unvote'.format(annotation_id)
+        return self._make_request(path=endpoint, method='PUT')
+
+    def update_annotation(self, annotation_id, text, raw_annotatable_url, fragment,
+                          before_html=None, after_html=None,
+                          canonical_url=None, og_url=None, title=None):
+        """Updates an annotation created by the authenticated user.
+
+        Requires scope: :obj:`manage_annotation`.
+
+        Args:
+            annotation_id (:obj:`int`): ID of the annotation that will be updated.
+            text (:obj:`str`): Annotation text in Markdown format.
+            raw_annotatable_url (:obj:`str`): The original URL of the page.
+            fragment (:obj:`str`): The highlighted fragment (the referent).
+            before_html (:obj:`str`, optional): The HTML before the highlighted fragment
+                (prefer up to 200 characters).
+            after_html (:obj:`str`, optional): The HTML after the highlighted fragment
+                (prefer up to 200 characters).
+            canonical_url (:obj:`str`, optional): The href property of the
+                :obj:`<link rel="canonical">` tag on the page.
+            og_url (:obj:`str`, optional): The content property of the
+                :obj:`<meta property="og:url">` tag on the page.
+            title (:obj:`str`, optional): The title of the page.
+
+        Returns:
+            :obj:`dict`: The annotation.
+
+        """
+        msg = "Must supply `canonical_url`, `og_url`, or `title`."
+        assert any([canonical_url, og_url, title]), msg
+
+        endpoint = 'annotations/{}'.format(annotation_id)
+        payload = {
+            'annotation': {
+                'body': {'markdown': text}
+            },
+            'referent': {
+                'raw_annotatable_url': raw_annotatable_url,
+                'fragment': fragment,
+                'context_for_display': {
+                    'before_html': before_html if before_html else None,
+                    'after_html': after_html if after_html else None
+                }
+            },
+            'web_page': {
+                'canonical_url': canonical_url if canonical_url else None,
+                'og_url': og_url if og_url else None,
+                'title': title if title else None
+            }
+        }
+        return self._make_request(path=endpoint, method='PUT', json=payload)
+
+    def upvote_annotation(self, annotation_id):
+        """Upvotes an annotation.
+
+        Requires scope: :obj:`vote`.
+
+        Args:
+            annotation_id (:obj:`int`): Annotation ID.
+
+        Returns:
+            :obj:`dict`: The annotation.
+
+        """
+        endpoint = 'annotations/{}/upvote'.format(annotation_id)
+        return self._make_request(path=endpoint, method='PUT')
 
     def artist(self, artist_id, text_format=None):
         """Gets data for a specific artist.
@@ -92,6 +260,7 @@ class API(Sender):
             artist_id (:obj:`int`): Genius artist ID
             text_format (:obj:`str`, optional): Text format of the results
                 ('dom', 'html', 'markdown' or 'plain').
+
         Returns:
             :obj:`dict`
 
@@ -179,6 +348,7 @@ class API(Sender):
                                            per_page=50)
                 verified = [y for x in request['referents']
                             for y in x['annotations'] if y['verified']]
+
         """
         msg = "Must supply `song_id`, `web_page_id`, or `created_by_id`."
         assert any([song_id, web_page_id, created_by_id]), msg
@@ -191,22 +361,6 @@ class API(Sender):
                   'created_by_id': created_by_id,
                   'per_page': per_page, 'page': page,
                   'text_format': text_format or self.response_format}
-        return self._make_request(endpoint, params_=params)
-
-    def annotation(self, annotation_id, text_format=None):
-        """Gets data for a specific annotation.
-
-        Args:
-            annotation_id (:obj:`int`): annotation ID
-            text_format (:obj:`str`, optional): Text format of the results
-                ('dom', 'html', 'markdown' or 'plain').
-
-        Returns:
-            :obj:`dict`
-
-        """
-        params = {'text_format': text_format or self.response_format}
-        endpoint = "annotations/{id}".format(id=annotation_id)
         return self._make_request(endpoint, params_=params)
 
     def search_songs(self, search_term, per_page=None, page=None):
@@ -227,6 +381,66 @@ class API(Sender):
                   'per_page': per_page,
                   'page': page}
         return self._make_request(endpoint, params_=params)
+
+    def song(self, song_id, text_format=None):
+        """Gets data for a specific song.
+
+        Args:
+            song_id (:obj:`int`): Genius song ID
+            text_format (:obj:`str`, optional): Text format of the results
+                ('dom', 'html', 'markdown' or 'plain').
+
+        Returns:
+            :obj:`dict`
+
+        Examples:
+            .. code:: python
+
+                genius = Genius(token)
+                song = genius.song(2857381)
+                print(song['full_title'])
+
+        """
+        endpoint = "songs/{id}".format(id=song_id)
+        params = {'text_format': text_format or self.response_format}
+        return self._make_request(endpoint, params_=params)
+
+    def web_page(self, raw_annotatable_url=None, canonical_url=None, og_url=None):
+        """Gets data for a specific web page.
+
+        Args:
+            raw_annotatable_url (:obj:`str`): The URL as it would appear in a browser.
+            canonical_url (:obj:`str`): The URL as specified by an appropriate <link>
+                tag in a page's <head>.
+            og_url (:obj:`str`): The URL as specified by an og:url <meta> tag in
+                a page's <head>.
+
+        Returns:
+            :obj:`dict`
+
+        Examples:
+            .. code:: python
+
+                genius = Genius(token)
+                webpage = genius.web_page('docs.genius.com')
+                print(webpage['full_title'])
+
+        Note:
+            * Data is only available for pages that already have at
+              least one annotation.
+            * You must at least pass one argument to the method.
+            * You can pass more than one or all arguments (provided they're the address
+              of the same webpage).
+
+        """
+        msg = "Must supply `raw_annotatable_url`, `canonical_url`, or `og_url`."
+        assert any([raw_annotatable_url, canonical_url, og_url]), msg
+
+        endpoint = 'web_pages/lookup'
+        params = {'raw_annotatable_url': raw_annotatable_url,
+                  'canonical_url': canonical_url,
+                  'og_url': og_url}
+        return self._make_request(path=endpoint, params_=params)
 
 
 class PublicAPI(
@@ -252,7 +466,7 @@ class PublicAPI(
     You can use this method without an access token since calls are made
     to the public API.
 
-    | All methods of this class are available through the :class:`Genius` class.
+    All methods of this class are available through the :class:`Genius` class.
 
     Args:
         response_format (:obj:`str`, optional): API response format (dom, plain, html).
