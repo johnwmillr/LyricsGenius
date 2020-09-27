@@ -6,14 +6,13 @@
 
 import os
 import re
-import requests
-from requests.exceptions import Timeout, HTTPError
-from urllib.parse import urlencode
 import shutil
 import json
-from bs4 import BeautifulSoup
-from string import punctuation
 import time
+from string import punctuation
+
+import requests
+from bs4 import BeautifulSoup
 
 from lyricsgenius.song import Song
 from lyricsgenius.artist import Artist
