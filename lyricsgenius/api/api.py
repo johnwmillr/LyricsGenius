@@ -88,7 +88,8 @@ class API(Sender):
 
     def create_annotation(self, text, raw_annotatable_url, fragment,
                           before_html=None, after_html=None,
-                          canonical_url=None, og_url=None, title=None):
+                          canonical_url=None, og_url=None, title=None,
+                          text_format=None):
         """Creates an annotation for a web page.
 
         Requires scope: :obj:`create_annotation`.
@@ -106,6 +107,8 @@ class API(Sender):
             og_url (:obj:`str`, optional): The content property of the
                 :obj:`<meta property="og:url">` tag on the page.
             title (:obj:`str`, optional): The title of the page.
+            text_format (:obj:`str`, optional): Text format of the response
+                ('dom', 'html', 'markdown' or 'plain').
 
         Returns:
             :obj:`dict`: The annotation.
@@ -123,6 +126,7 @@ class API(Sender):
         assert any([canonical_url, og_url, title]), msg
 
         endpoint = 'annotations'
+        params = {'text_format': text_format or self.response_format}
         payload = {
             'annotation': {
                 'body': {'markdown': text}
@@ -141,7 +145,8 @@ class API(Sender):
                 'title': title if title else None
             }
         }
-        return self._make_request(path=endpoint, method='POST', json=payload)
+        return self._make_request(path=endpoint, method='POST',
+                                  params_=params, json=payload)
 
     def delete_annotation(self, annotation_id):
         """Deletes an annotation created by the authenticated user.
@@ -158,39 +163,46 @@ class API(Sender):
         endpoint = 'annotations/{}'.format(annotation_id)
         return self._make_request(path=endpoint, method='DELETE')
 
-    def downvote_annotation(self, annotation_id):
+    def downvote_annotation(self, annotation_id, text_format=None):
         """Downvotes an annotation.
 
         Requires scope: :obj:`vote`.
 
         Args:
             annotation_id (:obj:`int`): Annotation ID.
+            text_format (:obj:`str`, optional): Text format of the response
+                ('dom', 'html', 'markdown' or 'plain').
 
         Returns:
             :obj:`dict`: The annotation.
 
         """
         endpoint = 'annotations/{}/downvote'.format(annotation_id)
-        return self._make_request(path=endpoint, method='PUT')
+        params = {'text_format': text_format or self.response_format}
+        return self._make_request(path=endpoint, method='PUT', params_=params)
 
-    def unvote_annotation(self, annotation_id):
+    def unvote_annotation(self, annotation_id, text_format=None):
         """Removes user's vote for the annotation.
 
         Requires scope: :obj:`vote`.
 
         Args:
             annotation_id (:obj:`int`): Annotation ID.
+            text_format (:obj:`str`, optional): Text format of the response
+                ('dom', 'html', 'markdown' or 'plain').
 
         Returns:
             :obj:`dict`: The annotation.
 
         """
         endpoint = 'annotations/{}/unvote'.format(annotation_id)
-        return self._make_request(path=endpoint, method='PUT')
+        params = {'text_format': text_format or self.response_format}
+        return self._make_request(path=endpoint, method='PUT', params_=params)
 
     def update_annotation(self, annotation_id, text, raw_annotatable_url, fragment,
                           before_html=None, after_html=None,
-                          canonical_url=None, og_url=None, title=None):
+                          canonical_url=None, og_url=None, title=None,
+                          text_format=None):
         """Updates an annotation created by the authenticated user.
 
         Requires scope: :obj:`manage_annotation`.
@@ -209,6 +221,8 @@ class API(Sender):
             og_url (:obj:`str`, optional): The content property of the
                 :obj:`<meta property="og:url">` tag on the page.
             title (:obj:`str`, optional): The title of the page.
+            text_format (:obj:`str`, optional): Text format of the response
+                ('dom', 'html', 'markdown' or 'plain').
 
         Returns:
             :obj:`dict`: The annotation.
@@ -218,6 +232,7 @@ class API(Sender):
         assert any([canonical_url, og_url, title]), msg
 
         endpoint = 'annotations/{}'.format(annotation_id)
+        params = {'text_format': text_format or self.response_format}
         payload = {
             'annotation': {
                 'body': {'markdown': text}
@@ -236,22 +251,26 @@ class API(Sender):
                 'title': title if title else None
             }
         }
-        return self._make_request(path=endpoint, method='PUT', json=payload)
+        return self._make_request(path=endpoint, method='PUT',
+                                  params_=params, json=payload)
 
-    def upvote_annotation(self, annotation_id):
+    def upvote_annotation(self, annotation_id, text_format=None):
         """Upvotes an annotation.
 
         Requires scope: :obj:`vote`.
 
         Args:
             annotation_id (:obj:`int`): Annotation ID.
+            text_format (:obj:`str`, optional): Text format of the response
+                ('dom', 'html', 'markdown' or 'plain').
 
         Returns:
             :obj:`dict`: The annotation.
 
         """
         endpoint = 'annotations/{}/upvote'.format(annotation_id)
-        return self._make_request(path=endpoint, method='PUT')
+        params = {'text_format': text_format or self.response_format}
+        return self._make_request(path=endpoint, method='PUT', params_=params)
 
     def artist(self, artist_id, text_format=None):
         """Gets data for a specific artist.
@@ -356,7 +375,8 @@ class API(Sender):
         assert bool(song_id) ^ bool(web_page_id), msg
 
         # Construct the URI
-        endpoint = "referents?"
+        endpoint = "referents"
+        params = {'text_format': text_format or self.response_format}
         params = {'song_id': song_id, 'web_page_id': web_page_id,
                   'created_by_id': created_by_id,
                   'per_page': per_page, 'page': page,
