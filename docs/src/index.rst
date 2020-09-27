@@ -61,11 +61,11 @@ to :ref:`setup` to get started.
 
 .. toctree::
    :maxdepth: 1
-   :hidden:
    :caption: Library
 
    reference
    release_notes
+
 
 .. toctree::
    :maxdepth: 1
@@ -75,8 +75,14 @@ to :ref:`setup` to get started.
    usage
    how_it_works
    text_formatting
-   contributing
+   other_guides
 
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Misc
+
+   contributing
 
 .. _Genius.com: https://www.genius.com
 .. _“Words are flowing out like endless rain into a paper cup”:

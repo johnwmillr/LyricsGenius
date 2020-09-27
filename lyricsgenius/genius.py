@@ -7,6 +7,8 @@
 import os
 import re
 import requests
+from requests.exceptions import Timeout, HTTPError
+from urllib.parse import urlencode
 import shutil
 import json
 from bs4 import BeautifulSoup

@@ -1,5 +1,7 @@
 import os
 import unittest
+from requests.exceptions import HTTPError
+
 from lyricsgenius import Genius
 from lyricsgenius.song import Song
 from lyricsgenius.artist import Artist
@@ -20,6 +22,18 @@ class TestEndpoints(unittest.TestCase):
         print("\n---------------------\nSetting up Endpoint tests...\n")
         cls.search_term = "Ezra Furman"
         cls.song_title_only = "99 Problems"
+
+    def test_search_genius_web(self):
+        msg = "Response was None."
+        r = genius.search_genius_web(self.search_term)
+        self.assertTrue(r.get('sections'), msg)
+
+    def test_http_error_handler(self):
+        try:
+            genius.get_annotation(0)
+        except HTTPError as e:
+            status_code = e.args[0]
+            self.assertEqual(status_code, 404)
 
     def test_search_song(self):
         artist = "Jay-Z"
