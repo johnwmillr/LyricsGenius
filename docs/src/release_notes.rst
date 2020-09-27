@@ -3,11 +3,21 @@
 
 Release notes
 =============
-1.8.6 (2020-05-27)
+2.0.2 (2020-09-26)
 ------------------
-Fixed
+Added
 *****
-- :ref:`Genius` - Genius.com sometimes returns the new song page for lyrics
-  So a new *div* class was added to :func:`Genius._scrape_song_lyrics_from_url`
-  (:issue:`139`)
+-  Added optional ``ensure_ascii`` parameter to the
+   following methods:
+   :meth:`Genius.save_artists <api.Genius.save_artists>`,
+   :meth:`Song.save_lyrics <song.Song.save_lyrics>`,
+   :meth:`Song.to_json <song.Song.to_json>`,
+   :meth:`Artist.save_lyrics <artist.Artist.save_lyrics>`
+   and :meth:`Artist.to_json <artist.Artist.to_json>`
 
+2.0.1 (2020-09-20)
+------------------
+Changed
+*******
+- :func:`Genius.lyrics`- Switched to using
+  regular expressions to find the ``new_div`` (:issue:`154`).
