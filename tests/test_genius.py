@@ -1,17 +1,18 @@
 import os
 import unittest
 from requests.exceptions import HTTPError
-from lyricsgenius.api import Genius
+
+from lyricsgenius import Genius
 from lyricsgenius.song import Song
 from lyricsgenius.artist import Artist
 from lyricsgenius.utils import sanitize_filename
 
 
 # Import client access token from environment variable
-access_token = os.environ.get("GENIUS_ACCESS_TOKEN", None)
-assert access_token is not None, (
-    "Must declare environment variable: GENIUS_ACCESS_TOKEN")
-genius = Genius(access_token, sleep_time=1.0, timeout=15)
+client_access_token = os.environ.get("GENIUS_CLIENT_ACCESS_TOKEN", None)
+assert client_access_token is not None, (
+    "Must declare environment variable: GENIUS_CLIENT_ACCESS_TOKEN")
+genius = Genius(client_access_token, sleep_time=1.0, timeout=15)
 
 
 class TestEndpoints(unittest.TestCase):
@@ -22,20 +23,9 @@ class TestEndpoints(unittest.TestCase):
         cls.search_term = "Ezra Furman"
         cls.song_title_only = "99 Problems"
 
-    def test_get_account(self):
-        msg = ("No user detail was returned. "
-               "Are you sure you're using a user access token?")
-        acc = genius.get_account()
-        self.assertTrue(acc is not None, msg)
-
-    def test_search_genius_web(self):
-        msg = "Response was None."
-        r = genius.search_genius_web(self.search_term)
-        self.assertTrue(r.get('sections'), msg)
-
     def test_http_error_handler(self):
         try:
-            genius.get_annotation(0)
+            genius.annotation(0)
         except HTTPError as e:
             status_code = e.args[0]
             self.assertEqual(status_code, 404)
@@ -62,83 +52,38 @@ class TestEndpoints(unittest.TestCase):
         response = genius.search_song(self.song_title_only, artist="Drake")
         self.assertFalse(response.title.lower() == self.song_title_only.lower())
 
-    def test_get_referents_web_page(self):
+    def test_referents_web_page(self):
         msg = "Returned referent API path is different than expected."
         id_ = 10347
-        r = genius.get_referents(web_page_id=id_)
+        r = genius.referents(web_page_id=id_)
         real = r['referents'][0]['api_path']
         expected = '/referents/11828416'
         self.assertTrue(real == expected, msg)
 
-    def test_get_referents_invalid_input(self):
+    def test_referents_invalid_input(self):
         # Method should prevent inputs for both song and web_pag ID.
         with self.assertRaises(AssertionError):
-            genius.get_referents(song_id=1, web_page_id=1)
+            genius.referents(song_id=1, web_page_id=1)
 
-    def test_get_referents_no_inputs(self):
+    def test_referents_no_inputs(self):
         # Must supply `song_id`, `web_page_id`, or `created_by_id`.
         with self.assertRaises(AssertionError):
-            genius.get_referents()
+            genius.referents()
 
-    def test_get_annotation(self):
+    def test_annotation(self):
         msg = "Returned annotation API path is different than expected."
         id_ = 10225840
-        r = genius.get_annotation(id_)
+        r = genius.annotation(id_)
         real = r['annotation']['api_path']
         expected = '/annotations/10225840'
         self.assertEqual(real, expected, msg)
 
-    def test_get_song_annotations(self):
+    def test_song_annotations(self):
         msg = "Incorrect song annotation response."
-        r = sorted(genius.get_song_annotations(1))
+        r = sorted(genius.song_annotations(1))
         real = r[0][0]
         expected = "And I’ma keep ya fresh"
         self.assertEqual(real, expected, msg)
-
-    def test_get_webpage(self):
-        msg = "Returned webpage API path is different than expected."
-        url = "https://docs.genius.com"
-        r = genius.get_webpage(raw_annotatable_url=url)
-        real = r['web_page']['api_path']
-        expected = '/web_pages/10347'
-        self.assertEqual(real, expected, msg)
-
-    def test_manage_annotation(self):
-        example_text = 'The annotation'
-        new_annotation = genius.create_annotation(
-            example_text,
-            'https://example.com',
-            'illustrative examples',
-            title='test')['annotation']
-        msg = 'Annotation text did not match the one that was passed.'
-        self.assertEqual(new_annotation['body']['plain'], example_text, msg)
-
-        example_text_two = 'Updated annotation'
-        annotation = genius.update_annotation(
-            new_annotation['id'],
-            example_text_two,
-            'https://example.com',
-            'illustrative examples',
-            title='test')['annotation']
-        msg = 'Updated annotation text did not match the one that was passed.'
-        self.assertEqual(annotation['body']['plain'], example_text_two, msg)
-
-        annotation = genius.upvote_annotation(11828417)
-        msg = 'Upvote was not registered.'
-        self.assertTrue(annotation is not None, msg)
-
-        annotation = genius.downvote_annotation(11828417)
-        msg = 'Downvote was not registered.'
-        self.assertTrue(annotation is not None, msg)
-
-        annotation = genius.unvote_annotation(11828417)
-        msg = 'Vote was not removed.'
-        self.assertTrue(annotation is not None, msg)
-
-        annotation = genius.delete_annotation(new_annotation['id'])
-        # this method returns a 204 HTTP response and
-        # its response can't be tested since
-        # _make_request() returns None either way (successful or failed).
 
 
 class TestArtist(unittest.TestCase):
@@ -176,6 +121,11 @@ class TestArtist(unittest.TestCase):
         msg = "The new song was not added to the artist object."
         self.artist.add_song(genius.search_song(self.new_song, self.artist_name))
         self.assertEqual(self.artist.num_songs, self.max_songs + 1, msg)
+
+    def test_song(self):
+        msg = "Song was not in artist's songs."
+        song = self.artist.song(self.new_song)
+        self.assertIsNotNone(song, msg)
 
     def test_add_song_from_different_artist(self):
         msg = "A song from a different artist was incorrectly allowed to be added."
@@ -358,21 +308,25 @@ class TestSong(unittest.TestCase):
             self.fail("Failed {} overwrite test".format(extension))
         os.remove(expected_filename)
 
-    def test_tearDown(self):
-        genius._session.close()
 
-    # def test_bad_chars_in_filename(self):
-    #     print("\n")
-    #     extension = "json"
-    #     msg = "Could not save {} file.".format(extension)
-    #     song = genius.search_song("Blessed rainbow", "Ariana Grande")
-    #     expected_filename = "lyrics_arianagrande_blessedrainbow.json"
+class TestLyrics(unittest.TestCase):
 
-    #     # Remove the test file if it already exists
-    #     if os.path.isfile(expected_filename):
-    #         os.remove(expected_filename)
+    @classmethod
+    def setUpClass(cls):
+        print("\n---------------------\nSetting up lyrics tests...\n")
+        cls.song_url = "https://genius.com/Andy-shauf-begin-again-lyrics"
+        cls.song_id = 2885745
+        cls.lyrics_ending = (
+            "[Outro]"
+            "\nNow I’m kicking leaves"
+            "\nCursing the one that I love and the one I don’t"
+            "\nI wonder who you’re thinking of"
+        )
 
-    #     # Test saving txt file
-    #     song.save_lyrics(extension=extension, overwrite=True)
-    #     self.assertTrue(os.path.isfile(expected_filename), msg)
-    #     os.remove(expected_filename)
+    def test_lyrics_with_url(self):
+        lyrics = genius.lyrics(self.song_url)
+        self.assertTrue(lyrics.endswith(self.lyrics_ending))
+
+    def test_lyrics_with_id(self):
+        lyrics = genius.lyrics(self.song_id)
+        self.assertTrue(lyrics.endswith(self.lyrics_ending))

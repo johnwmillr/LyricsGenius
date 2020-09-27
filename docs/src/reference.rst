@@ -6,7 +6,9 @@ Reference
 All public objects are documented in these sections.
 
 ================== =============================
+:ref:`sender`      Sender
 :ref:`api`         API
+:ref:`public_api`  Public API
 :ref:`Genius`      Genius
 :ref:`Artist`	   Artist object
 :ref:`Song`        Song object
@@ -19,7 +21,9 @@ All public objects are documented in these sections.
    :caption: Index
    :hidden:
 
+   reference/sender
    reference/api
+   reference/public_api
    reference/genius
    reference/artist
    reference/song
