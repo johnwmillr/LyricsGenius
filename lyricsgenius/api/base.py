@@ -74,7 +74,8 @@ class Sender(object):
         time.sleep(max(self._SLEEP_MIN, self.sleep_time))
 
         if response.status_code == 200:
-            return response.json()['response']
+            res = response.json()
+            return res['response'] if "response" in res else res
         elif response.status_code == 204:
             return 204
         else:
