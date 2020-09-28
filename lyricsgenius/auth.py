@@ -109,5 +109,4 @@ class OAuth2(object):
         webbrowser.open(url)
         redirected = input('Please paste redirect URL: ').strip()
 
-        code = parse_redirected_url(redirected, self.flow)
-        return code if self.client_only_app else self.get_user_token(code)
+        return self.get_user_token(redirected)
