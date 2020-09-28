@@ -65,30 +65,6 @@ class TestOAuth2(unittest.TestCase):
                       client_secret, scope='all')
         self.assertEqual(auth.scope, scope)
 
-    def test_url_client_flow(self):
-        token_flow_url = ('https://api.genius.com/oauth/authorize?'
-                          'client_id=' + client_id + ''
-                          '&redirect_uri=' + urlencode(redirect_uri) + ''
-                          '&response_type=token'
-                          '&scope=me+create_annotation+manage_annotation+vote'
-                          )
-        auth = OAuth2(client_id, redirect_uri,
-                      scope='all', client_only_app=True)
-
-        self.assertEqual(token_flow_url, auth.url)
-
-    def test_url_code_flow(self):
-        code_flow_url = ('https://api.genius.com/oauth/authorize?'
-                         'client_id=' + client_id + ''
-                         '&redirect_uri=' + urlencode(redirect_uri) + ''
-                         '&response_type=code'
-                         '&scope=me+create_annotation+manage_annotation+vote'
-                         )
-        auth = OAuth2(client_id, redirect_uri,
-                      client_secret, scope='all')
-
-        self.assertEqual(code_flow_url, auth.url)
-
     def test_get_user_token_client_flow(self):
         # client-only flow
         auth = OAuth2(client_id, redirect_uri, client_only_app=True)
