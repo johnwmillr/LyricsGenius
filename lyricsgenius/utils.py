@@ -37,15 +37,18 @@ def _convert_to_datetime(f):
 
 
 def parse_redirected_url(url, flow):
-    """
-    Parse a URL for parameter 'code'/'token'.
+    """Parse a URL for parameter 'code'/'token'.
+ 
     Args:
         url (:obj:`str`): The redirect URL.
         flow (:obj:`str`): authorization flow ('code' or 'token')
+
     Returns:
         :obj:`str`: value of 'code'/'token'.
+
     Raises:
         KeyError: if 'code'/'token' is not available or has multiple values.
+
     """
     if flow == 'code':
         query = urlparse(url).query
