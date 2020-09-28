@@ -1,9 +1,6 @@
 import unittest
 
-try:
-    from test_genius import genius
-except ModuleNotFoundError:
-    from .test_genius import genius
+from .test_genius import genius
 
 
 class TestAlbumMethods(unittest.TestCase):

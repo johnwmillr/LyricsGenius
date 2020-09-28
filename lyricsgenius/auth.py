@@ -1,11 +1,11 @@
-from lyricsgenius.utils import parse_redirected_url
-
 from urllib.parse import urlencode
 import webbrowser
-import requests
+
+from lyricsgenius.utils import parse_redirected_url
+from lyricsgenius.api.base import Sender
 
 
-class OAuth2(object):
+class OAuth2(Sender):
     """Genius OAuth2 authorization flow.
 
     Using this class you can authenticate a user,
@@ -15,7 +15,7 @@ class OAuth2(object):
         client_id (:obj:`str`): Client ID
         redirect_uri (:obj:`str`): Whitelisted redirect URI.
         client_secret (:obj:`str`, optional): Client secret.
-        scope (:obj:`list` | :obj:`all`, optional) : Token privilages.
+        scope (:obj:`tuple` | :obj:`all`, optional) : Token privilages.
         state (:obj:`str`, optional): Request state.
         client_only_app (:obj:`bool`, optional): `True` to use the client-only
             authorization flow, otherwise `False`.
@@ -30,9 +30,9 @@ class OAuth2(object):
 
     def __init__(self, client_id, redirect_uri,
                  client_secret=None, scope=None, state=None, client_only_app=False):
-
+        super().__init__()
         msg = ("You must provide a client_secret "
-               "if you intend to use the normal authorization flow"
+               "if you intend to use the full code exchange."
                "\nIf you meant to use the client-only flow, "
                "set the client_only_app parameter to True.")
         assert any([client_secret, client_only_app]), msg
@@ -41,7 +41,7 @@ class OAuth2(object):
         self.redirect_uri = redirect_uri
         if scope == 'all':
             scope = ('me', 'create_annotation', 'manage_annotation', 'vote')
-        self.scope = scope
+        self.scope = scope if scope else ()
         self.state = state
         self.flow = 'token' if client_only_app else 'code'
         self.client_only_app = client_only_app
@@ -86,9 +86,9 @@ class OAuth2(object):
                        'redirect_uri': self.redirect_uri,
                        'grant_type': 'authorization_code',
                        'response_type': 'code'}
-            res = requests.post(OAuth2.token_url, payload, **kwargs)
-            res.raise_for_status()
-            return res.json()['access_token']
+            url = OAuth2.token_url.replace('https://api.genius.com/', '')
+            res = self._make_request(url, 'POST', data=payload, **kwargs)
+            return res['access_token']
         elif self.flow == 'token':
             return parse_redirected_url(url, self.flow)
 
