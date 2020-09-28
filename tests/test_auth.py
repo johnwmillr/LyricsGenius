@@ -1,5 +1,6 @@
 import os
 import unittest
+from urllib.parse import urlparse
 from unittest.mock import MagicMock, patch
 
 from lyricsgenius import OAuth2
@@ -67,7 +68,7 @@ class TestOAuth2(unittest.TestCase):
     def test_url_client_flow(self):
         token_flow_url = ('https://api.genius.com/oauth/authorize?'
                           'client_id=' + client_id + ''
-                          '&redirect_uri=https%3A%2F%2Fexample.com%2Fcallback'
+                          '&redirect_uri=' + urlparse(redirect_uri) + ''
                           '&response_type=token'
                           '&scope=me+create_annotation+manage_annotation+vote'
                           )
@@ -79,7 +80,7 @@ class TestOAuth2(unittest.TestCase):
     def test_url_code_flow(self):
         code_flow_url = ('https://api.genius.com/oauth/authorize?'
                          'client_id=' + client_id + ''
-                         '&redirect_uri=https%3A%2F%2Fexample.com%2Fcallback'
+                         '&redirect_uri=' + urlparse(redirect_uri) + ''
                          '&response_type=code'
                          '&scope=me+create_annotation+manage_annotation+vote'
                          )
