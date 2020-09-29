@@ -11,7 +11,7 @@
 `lyricsgenius`'s full documentation is online at [Read the Docs](https://lyricsgenius.readthedocs.io/en/master/).
 
 ## Setup
-Before using this package you'll need to sign up for a (free) account that authorizes access to [the Genius API](http://genius.com/api-clients). The Genius account provides a `client_access_token` that is required by the package. See the [Usage section](https://github.com/johnwmillr/LyricsGenius#usage) below for examples.
+Before using this package you'll need to sign up for a (free) account that authorizes access to [the Genius API](http://genius.com/api-clients). The Genius account provides a `access_token` that is required by the package. See the [Usage section](https://github.com/johnwmillr/LyricsGenius#usage) below for examples.
 
 ## Installation
 `lyricsgenius` requires Python 3.
@@ -33,7 +33,7 @@ Import the package and search for songs by a given artist:
 
 ```python
 import lyricsgenius
-genius = lyricsgenius.Genius("my_client_access_token_here")
+genius = lyricsgenius.Genius("my_access_token_here")
 artist = genius.search_artist("Andy Shauf", max_songs=3, sort="title")
 print(artist.songs)
 ```
@@ -77,7 +77,7 @@ genius.excluded_terms = ["(Remix)", "(Live)"] # Exclude songs with these words i
 You can also call the package from the command line:
 
 ```bash
-export GENIUS_CLIENT_ACCESS_TOKEN="my_client_access_token_here"
+export GENIUS_ACCESS_TOKEN="my_access_token_here"
 python3 -m lyricsgenius --help
 ```
 

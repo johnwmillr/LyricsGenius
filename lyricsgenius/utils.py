@@ -1,6 +1,8 @@
 """utility functions"""
 
+import re
 from datetime import datetime
+from urllib.parse import parse_qs, urlparse
 
 
 def sanitize_filename(f):
@@ -32,3 +34,32 @@ def _convert_to_datetime(f):
         date_format = "%B %Y"
 
     return datetime.strptime(f, date_format)
+
+
+def parse_redirected_url(url, flow):
+    """Parse a URL for parameter 'code'/'token'.
+
+    Args:
+        url (:obj:`str`): The redirect URL.
+        flow (:obj:`str`): authorization flow ('code' or 'token')
+
+    Returns:
+        :obj:`str`: value of 'code'/'token'.
+
+    Raises:
+        KeyError: if 'code'/'token' is not available or has multiple values.
+
+    """
+    if flow == 'code':
+        query = urlparse(url).query
+    elif flow == 'token':
+        query = re.sub(r'.*#access_', '', url)
+    parameters = parse_qs(query)
+    code = parameters.get(flow, None)
+
+    if code is None:
+        raise KeyError("Parameter {} not available!".format(flow))
+    elif len(code) > 1:
+        raise KeyError("Multiple values for {}!".format(flow))
+
+    return code[0]

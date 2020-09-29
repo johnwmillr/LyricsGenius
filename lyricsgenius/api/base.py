@@ -16,19 +16,26 @@ class Sender(object):
 
     def __init__(
         self,
-        client_access_token=None,
+        access_token=None,
         response_format='plain',
         timeout=5,
         sleep_time=0.5
     ):
-        if client_access_token is not None:
-            self._ACCESS_TOKEN = client_access_token
-            self._session.headers['authorization'] = 'Bearer ' + self._ACCESS_TOKEN
+        if access_token is not None:
+            self.access_token = access_token
+            self._session.headers['authorization'] = 'Bearer ' + self.access_token
         self.response_format = response_format.lower()
         self.timeout = timeout
         self.sleep_time = sleep_time
 
-    def _make_request(self, path, method='GET', params_=None, public_api=False):
+    def _make_request(
+        self,
+        path,
+        method='GET',
+        params_=None,
+        public_api=False,
+        **kwargs
+    ):
         """Makes a request to the API."""
         if public_api:
             uri = self.PUBLIC_API_ROOT
@@ -45,7 +52,8 @@ class Sender(object):
         try:
             response = self._session.request(method, uri,
                                              timeout=self.timeout,
-                                             params=params_)
+                                             params=params_,
+                                             **kwargs)
             response.raise_for_status()
         except Timeout as e:
             error = "Request timed out:\n{e}".format(e=e)
@@ -64,4 +72,11 @@ class Sender(object):
 
         # Enforce rate limiting
         time.sleep(max(self._SLEEP_MIN, self.sleep_time))
-        return response.json()['response']
+
+        if response.status_code == 200:
+            res = response.json()
+            return res['response'] if "response" in res else res
+        elif response.status_code == 204:
+            return 204
+        else:
+            raise AssertionError('Response status code was neither 200, nor 204!')
