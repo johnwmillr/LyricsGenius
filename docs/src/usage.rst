@@ -8,7 +8,7 @@ Import the package and search for songs by a given artist:
 .. code:: python
 
    import lyricsgenius
-   genius = lyricsgenius.Genius("my_client_access_token_here")
+   genius = lyricsgenius.Genius("my_access_token_here")
    artist = genius.search_artist("Andy Shauf", max_songs=3, sort="title")
    print(artist.songs)
 
@@ -52,7 +52,7 @@ You can also call the package from the command line:
 
 .. code:: bash
 
-   export GENIUS_CLIENT_ACCESS_TOKEN="my_client_access_token_here"
+   export GENIUS_ACCESS_TOKEN="my_access_token_here"
    python3 -m lyricsgenius --help
 
 Search for and save lyrics to a given song:
