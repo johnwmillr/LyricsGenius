@@ -9,10 +9,10 @@ from lyricsgenius.utils import sanitize_filename
 
 
 # Import client access token from environment variable
-client_access_token = os.environ.get("GENIUS_CLIENT_ACCESS_TOKEN", None)
-assert client_access_token is not None, (
-    "Must declare environment variable: GENIUS_CLIENT_ACCESS_TOKEN")
-genius = Genius(client_access_token, sleep_time=1.0, timeout=15)
+access_token = os.environ.get("GENIUS_ACCESS_TOKEN", None)
+assert access_token is not None, (
+    "Must declare environment variable: GENIUS_ACCESS_TOKEN")
+genius = Genius(access_token, sleep_time=1.0, timeout=15)
 
 
 class TestEndpoints(unittest.TestCase):
@@ -22,6 +22,12 @@ class TestEndpoints(unittest.TestCase):
         print("\n---------------------\nSetting up Endpoint tests...\n")
         cls.search_term = "Ezra Furman"
         cls.song_title_only = "99 Problems"
+
+    def test_account(self):
+        msg = ("No user detail was returned. "
+               "Are you sure you're using a user access token?")
+        r = genius.account()
+        self.assertTrue("user" in r, msg)
 
     def test_http_error_handler(self):
         try:
@@ -84,6 +90,51 @@ class TestEndpoints(unittest.TestCase):
         real = r[0][0]
         expected = "And I’ma keep ya fresh"
         self.assertEqual(real, expected, msg)
+
+    def test_get_webpage(self):
+        msg = "Returned web page API path is different than expected."
+        url = "https://docs.genius.com"
+        r = genius.web_page(raw_annotatable_url=url)
+        real = r['web_page']['api_path']
+        expected = '/web_pages/10347'
+        self.assertEqual(real, expected, msg)
+
+    def test_manage_annotation(self):
+        example_text = 'The annotation'
+        new_annotation = genius.create_annotation(
+            example_text,
+            'https://example.com',
+            'illustrative examples',
+            title='test')['annotation']
+        msg = 'Annotation text did not match the one that was passed.'
+        self.assertEqual(new_annotation['body']['plain'], example_text, msg)
+
+        example_text_two = 'Updated annotation'
+        r = genius.update_annotation(
+            new_annotation['id'],
+            example_text_two,
+            'https://example.com',
+            'illustrative examples',
+            title='test'
+        )['annotation']
+        msg = 'Updated annotation text did not match the one that was passed.'
+        self.assertEqual(r['body']['plain'], example_text_two, msg)
+
+        r = genius.upvote_annotation(11828417)
+        msg = 'Upvote was not registered.'
+        self.assertTrue(r is not None, msg)
+
+        r = genius.downvote_annotation(11828417)
+        msg = 'Downvote was not registered.'
+        self.assertTrue(r is not None, msg)
+
+        r = genius.unvote_annotation(11828417)
+        msg = 'Vote was not removed.'
+        self.assertTrue(r is not None, msg)
+
+        msg = 'Annotation was not deleted.'
+        r = genius.delete_annotation(new_annotation['id'])
+        self.assertEqual(r, 204, msg)
 
 
 class TestArtist(unittest.TestCase):
