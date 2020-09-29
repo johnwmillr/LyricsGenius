@@ -1,15 +1,15 @@
 import time
+from functools import wraps
 
 import requests
 from requests.exceptions import HTTPError, Timeout
+
+from lyricsgenius.exceptions import TokenRequiredError
 
 
 class Sender(object):
     """Sends requests to Genius."""
     # Create a persistent requests connection
-    _session = requests.Session()
-    _session.headers = {'application': 'LyricsGenius',
-                        'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'}
     _SLEEP_MIN = 0.2  # Enforce minimum wait time between API calls (seconds)
     API_ROOT = 'https://api.genius.com/'
     PUBLIC_API_ROOT = 'https://genius.com/api/'
@@ -21,8 +21,13 @@ class Sender(object):
         timeout=5,
         sleep_time=0.5
     ):
+        self._session = requests.Session()
+        self._session.headers = {
+            'application': 'LyricsGenius',
+            'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'
+        }
+        self.access_token = access_token
         if access_token is not None:
-            self.access_token = access_token
             self._session.headers['authorization'] = 'Bearer ' + self.access_token
         self.response_format = response_format.lower()
         self.timeout = timeout
@@ -80,3 +85,13 @@ class Sender(object):
             return 204
         else:
             raise AssertionError('Response status code was neither 200, nor 204!')
+
+
+def check_token(func):
+
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        if self.access_token is None:
+            raise TokenRequiredError()
+        return func(self, *args, **kwargs)
+    return wrapper

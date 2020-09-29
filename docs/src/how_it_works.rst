@@ -25,7 +25,7 @@ The public API is the API that doesn't require an access token and can be
 accessed by anyone (end-users use this on their browsers). The public API
 can be called at `genius.com/api <http://genius.com/api>`_. This API
 exposes a whole other set of features (and sometimes access to the same) than
-the *token API*. These methods are available throught the
+developers API. These methods are available throught the
 :class:`PublicAPI` class.
 
 Although these two calls can provide you with a lot of information,

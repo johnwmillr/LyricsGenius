@@ -2,7 +2,7 @@ from urllib.parse import urlencode
 import webbrowser
 
 from lyricsgenius.utils import parse_redirected_url
-from lyricsgenius.api.base import Sender
+from lyricsgenius.api import Sender
 
 
 class OAuth2(Sender):

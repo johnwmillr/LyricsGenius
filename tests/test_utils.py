@@ -1,7 +1,5 @@
-import os
 import unittest
 
-from lyricsgenius import OAuth2
 from lyricsgenius.utils import parse_redirected_url, sanitize_filename
 
 

@@ -14,16 +14,15 @@ from string import punctuation
 import requests
 from bs4 import BeautifulSoup
 
-from lyricsgenius.song import Song
-from lyricsgenius.artist import Artist
-from lyricsgenius.api import API, PublicAPI
+from .types import Artist, Song
+from .api import API, PublicAPI
 
 
 class Genius(API, PublicAPI):
     """User-level interface with the Genius.com API and public API.
 
     Args:
-        access_token (:obj:`str`): API key provided by Genius.
+        access_token (:obj:`str`, optional): API key provided by Genius.
         response_format (:obj:`str`, optional): API response format (dom, plain, html).
         timeout (:obj:`int`, optional): time before quitting on response (seconds).
         sleep_time (:obj:`str`, optional): time to wait between requests.
@@ -59,7 +58,7 @@ class Genius(API, PublicAPI):
 
     """
 
-    def __init__(self, access_token,
+    def __init__(self, access_token=None,
                  response_format='plain', timeout=5, sleep_time=0.5,
                  verbose=True, remove_section_headers=False,
                  skip_non_songs=True, excluded_terms=None,
@@ -259,7 +258,7 @@ class Genius(API, PublicAPI):
             because sometimes both artists and Genius users annotate them).
 
         """
-        if public_api:
+        if self.access_token is None or public_api:
             referents = super(PublicAPI, self).referents(song_id=song_id,
                                                          text_format=text_format)
         else:
@@ -296,7 +295,7 @@ class Genius(API, PublicAPI):
             - Public API: Annotation will have 32 fields and referent 20.
 
         """
-        if public_api:
+        if self.access_token is None or public_api:
             return super(PublicAPI, self).annotation(annotation_id, text_format)
         else:
             return super().annotation(annotation_id, text_format)
@@ -321,7 +320,7 @@ class Genius(API, PublicAPI):
             - Public API: Result will have 24 fields.
 
         """
-        if public_api:
+        if self.access_token is None or public_api:
             return super(PublicAPI, self).artist(artist_id, text_format)
         else:
             return super().artist(artist_id, text_format)
@@ -350,7 +349,7 @@ class Genius(API, PublicAPI):
             - Public API: Song will have 21 fields.
 
         """
-        if public_api:
+        if self.access_token is None or public_api:
             return super(PublicAPI, self).artist_songs(artist_id=artist_id,
                                                        per_page=per_page,
                                                        page=page,
@@ -388,7 +387,7 @@ class Genius(API, PublicAPI):
             - Public API: Referent will have 20 fields.
 
         """
-        if public_api:
+        if self.access_token is None or public_api:
             return super(PublicAPI, self).referents(song_id, web_page_id, created_by_id,
                                                     per_page, page, text_format)
         else:
@@ -415,7 +414,7 @@ class Genius(API, PublicAPI):
             - Public API: Song will have 68 fields.
 
         """
-        if public_api:
+        if self.access_token is None or public_api:
             return super(PublicAPI, self).song(song_id, text_format)
         else:
             return super().song(song_id, text_format)
@@ -444,7 +443,7 @@ class Genius(API, PublicAPI):
               through ``response['sections'][0]['hits']``
 
         """
-        if public_api:
+        if self.access_token is None or public_api:
             return super(PublicAPI, self).search_songs(search_term, per_page, page)
         else:
             return super().search_songs(search_term, per_page, page)
@@ -458,7 +457,7 @@ class Genius(API, PublicAPI):
             get_full_info (:obj:`bool`, optional): Get full info for each song (slower).
 
         Returns:
-            :class:`Song <song.Song>` \\| :obj:`None`: On success,
+            :class:`Song <types.Song>` \\| :obj:`None`: On success,
             the song object is returned, otherwise `None`.
 
         Tip:
@@ -536,7 +535,7 @@ class Genius(API, PublicAPI):
 
         This method looks for the artist by the name or by the
         ID if it's provided in ``artist_id``. It returrns an
-        :class:`Artist <artist.Artist>` object if the search is successful.
+        :class:`Artist <types.Artist>` object if the search is successful.
         If :obj:`allow_name_change` is True, the name of the artist is changed to the
         artist name on Genius.
 
@@ -554,7 +553,7 @@ class Genius(API, PublicAPI):
                 featuring the artist.
 
         Returns:
-            :class:`Artist <artist.Artist>`: Artist object containing
+            :class:`Artist <types.Artist>`: Artist object containing
             artist's songs.
 
         Examples:
@@ -566,7 +565,7 @@ class Genius(API, PublicAPI):
                 for song in artist.songs:
                     print(song.lyrics)
 
-            Visit :class:`Aritst <artist.Artist>` for more examples.
+            Visit :class:`Aritst <types.Artist>` for more examples.
         """
         def find_artist_id(search_term):
             """Finds the ID of the artist, returns the first
@@ -667,7 +666,7 @@ class Genius(API, PublicAPI):
         """Saves lyrics from multiple Artist objects as JSON object.
 
         Args:
-            artists (:obj:`list`): List of :class:`Artist <artist.Artist>`
+            artists (:obj:`list`): List of :class:`Artist <types.Artist>`
                 objects to save lyrics from.
             filename (:obj:`str`, optional): Name of the output file.
             overwrite (:obj:`bool`, optional): Overwrites preexisting file if `True`.

@@ -5,7 +5,7 @@ Snippets
 ==================
 Here are some snippets showcasing how the library can be used.
 
-- `Getting artist using API, PublicAPI and Genius`
+- `Getting artist using API, PublicAPI and Genius`_
 - `All the songs of an artist`_
 - `Artist's least popular song`_
 - `YouTube URL of artist's songs`_
@@ -16,7 +16,8 @@ Getting artist using API, PublicAPI and Genius
 -------------------------------------------------
 The following snippet will be the same for all
 methods that are available in :class:`API` and :class:`PublicAPI`
-(or have a ``public_api`` parameter if you're using :class:`Genius`).
+(or methods that have a ``public_api`` parameter
+if you're using :class:`Genius`).
 
 .. code:: python
 
@@ -34,6 +35,17 @@ methods that are available in :class:`API` and :class:`PublicAPI`
 
     # Genius
     # can get it using both API and PublicAPI
+    genius.artist(1665)
+    genius.artist(1665, public_api=True)
+
+Note that if you use :class:`Genius` without a token, all calls will be
+made using the public API. Therefore the following calls to
+:meth:`Genius.artist` -and all methods that have a ``public_api`` parameter-
+will be equivolant:
+
+.. code:: python
+    
+    genius = Genius()
     genius.artist(1665)
     genius.artist(1665, public_api=True)
 

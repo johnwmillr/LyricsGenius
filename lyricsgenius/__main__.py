@@ -26,8 +26,6 @@ def main(args=None):
 
     # Create an instance of the Genius class
     access_token = os.environ.get("GENIUS_ACCESS_TOKEN", None)
-    msg = "Must declare environment variable: GENIUS_ACCESS_TOKEN"
-    assert access_token, msg
     api = Genius(access_token)
     if args.quiet:
         api.verbose = False

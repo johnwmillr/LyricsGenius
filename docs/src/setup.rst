@@ -3,11 +3,22 @@
 
 Setup
 =====
-Before we start installing the package, we'll need to get an access token.
+There are three ways to use the package: Without an access token, with a
+client access token or with a user access token. User access tokens
+provide the most functionality but they are really useful if you're
+planning to use Genius's `Web Annotator`_. If you're not planning to use
+it (or don't even know what it is), that leaves you with using a client
+access token or no tokens. Genius's API has two interaces: the
+developer's API and the tokenfree, undocumented public API. The
+developer's API has limited endpoints and needs a token (client- or user
+access token). On the other hand the public API is not limited and needs
+no token to work. If you prefer to get information using the developer's
+API you need an access token. If you want to use an access token,
+read the following section; otherwise skip to `Installation`_.
 
 Authorization
 -------------
-First you’ll need to sign up for a (free) account
+First you’ll need to sign up for a -free- account
 that authorizes access to `the Genius API`_. After signing up/
 logging in to your account, head out to the API section on Genius
 and `create a new API client`_. After creating your client, you can
@@ -54,7 +65,7 @@ Or, install the latest version of the package from GitHub:
 Now that you have the library intalled, you can get started with using
 the library. See the :ref:`usage` for examples.
 
-
+.. _Web Annotator: https://genius.com/web-annotator
 .. _the Genius API: http://genius.com/api-clients
 .. _API Clients: https://genius.com/api-clients
 .. _Web Annotator: https://genius.com/web-annotator

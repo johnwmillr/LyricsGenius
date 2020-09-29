@@ -1,4 +1,4 @@
-from .base import Sender
+from .base import Sender, check_token
 from .public_methods import (
     AlbumMethods,
     AnnotationMethods,
@@ -56,8 +56,9 @@ class API(Sender):
         self._validate_token()
 
     def _validate_token(self):
-        self.song(378195)
+        self.annotation(10225840)
 
+    @check_token
     def account(self):
         """Gets details about the current user.
 
@@ -86,6 +87,7 @@ class API(Sender):
         endpoint = "annotations/{id}".format(id=annotation_id)
         return self._make_request(endpoint, params_=params)
 
+    @check_token
     def create_annotation(self, text, raw_annotatable_url, fragment,
                           before_html=None, after_html=None,
                           canonical_url=None, og_url=None, title=None,
@@ -148,6 +150,7 @@ class API(Sender):
         return self._make_request(path=endpoint, method='POST',
                                   params_=params, json=payload)
 
+    @check_token
     def delete_annotation(self, annotation_id):
         """Deletes an annotation created by the authenticated user.
 
@@ -163,6 +166,7 @@ class API(Sender):
         endpoint = 'annotations/{}'.format(annotation_id)
         return self._make_request(path=endpoint, method='DELETE')
 
+    @check_token
     def downvote_annotation(self, annotation_id, text_format=None):
         """Downvotes an annotation.
 
@@ -181,6 +185,7 @@ class API(Sender):
         params = {'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, method='PUT', params_=params)
 
+    @check_token
     def unvote_annotation(self, annotation_id, text_format=None):
         """Removes user's vote for the annotation.
 
@@ -199,6 +204,7 @@ class API(Sender):
         params = {'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, method='PUT', params_=params)
 
+    @check_token
     def update_annotation(self, annotation_id, text, raw_annotatable_url, fragment,
                           before_html=None, after_html=None,
                           canonical_url=None, og_url=None, title=None,
@@ -254,6 +260,7 @@ class API(Sender):
         return self._make_request(path=endpoint, method='PUT',
                                   params_=params, json=payload)
 
+    @check_token
     def upvote_annotation(self, annotation_id, text_format=None):
         """Upvotes an annotation.
 
