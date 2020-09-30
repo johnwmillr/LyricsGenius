@@ -143,8 +143,7 @@ URI will work (for example ``http://example.com/callback``)
     auth = OAuth2('my_client_id',
                   'my_redirect_uri',
                   scope='all',
-                  client_only_app=True)  # if we don't set this,
-                  we'll also have to provide client_secret
+                  client_only_app=True)
     token = auth.prompt_user()
 
     genius = Genius(token)
