@@ -540,7 +540,7 @@ class Genius(API, PublicAPI):
         artist name on Genius.
 
         Args:
-            artist_name (:obj:`str`|:obj:`int`): Name of the artist to search for.
+            artist_name (:obj:`str`): Name of the artist to search for.
             max_songs (obj:`int`, optional): Maximum number of songs to search for.
             sort (:obj:`str`, optional): Sort by 'title' or 'popularity'.
             per_page (:obj:`int`, optional): Number of results to return
