@@ -249,7 +249,7 @@ class Song(object):
                     verbose=True):
         """Save Song lyrics and metadata to a JSON or TXT file.
 
-        If the extension is 'json' (which the default), the lyrics will be saved
+        If the extension is 'json' (the default), the lyrics will be saved
         alongside the song's information. Take a look at the example below.
 
         Args:
