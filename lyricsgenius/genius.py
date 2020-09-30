@@ -92,14 +92,14 @@ class Genius(API, PublicAPI):
         Note:
             If you pass a song ID, the method will have to make an extra request
             to obtain the song's URL and scrape the lyrics off of it. So it's best
-            to pass the method a song's URL.
+            to pass the method the song's URL if its available.
 
             If you want to get a song's lyrics by searching for it,
             use :meth:`Genius.search_song` instead.
 
         Note:
             This method removes the song headers based on the value of the
-            :attr:`remove_section_headers` attribute.
+            :attr:`Genius.remove_section_headers` attribute.
 
         """
         if isinstance(urlthing, int):
@@ -470,7 +470,7 @@ class Genius(API, PublicAPI):
                 artist = genius.search_artist('Andy Shauf', max_songs=0)
                 song = genius.search_song('Toy You', artist.name)
                 # same as: song = genius.search_song('To You', 'Andy Shauf')
-                print(song['lyrics'])
+                print(song.lyrics)
 
         """
         if self.verbose:
