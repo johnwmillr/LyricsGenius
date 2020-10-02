@@ -53,7 +53,7 @@ class API(Sender):
             timeout=timeout,
             sleep_time=sleep_time
         )
-        self._validate_token()
+        # self._validate_token()
 
     def _validate_token(self):
         self.annotation(10225840)
