@@ -16,6 +16,7 @@ from .public_methods import (
     MiscMethods
 )
 
+
 class API(Sender):
     """Genius API.
 
