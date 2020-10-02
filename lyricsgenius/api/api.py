@@ -16,7 +16,6 @@ from .public_methods import (
     MiscMethods
 )
 
-
 class API(Sender):
     """Genius API.
 
@@ -53,10 +52,11 @@ class API(Sender):
             timeout=timeout,
             sleep_time=sleep_time
         )
-        # self._validate_token()
+        self._validate_token()
 
     def _validate_token(self):
-        self.annotation(10225840)
+        if "Genius" not in str(self):
+            self.annotation(10225840)
 
     @check_token
     def account(self):
@@ -71,6 +71,7 @@ class API(Sender):
         endpoint = 'account'
         return self._make_request(path=endpoint)
 
+    @check_token
     def annotation(self, annotation_id, text_format=None):
         """Gets data for a specific annotation.
 
@@ -279,6 +280,7 @@ class API(Sender):
         params = {'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, method='PUT', params_=params)
 
+    @check_token
     def artist(self, artist_id, text_format=None):
         """Gets data for a specific artist.
 
@@ -302,6 +304,7 @@ class API(Sender):
         endpoint = "artists/{id}".format(id=artist_id)
         return self._make_request(endpoint, params_=params)
 
+    @check_token
     def artist_songs(self, artist_id, per_page=None, page=None, sort='title'):
         """Gets artist's songs.
 
@@ -344,6 +347,7 @@ class API(Sender):
                   'page': page}
         return self._make_request(endpoint, params_=params)
 
+    @check_token
     def referents(self, song_id=None, web_page_id=None,
                   created_by_id=None, per_page=None, page=None, text_format=None):
         """Gets item's referents
@@ -390,6 +394,7 @@ class API(Sender):
                   'text_format': text_format or self.response_format}
         return self._make_request(endpoint, params_=params)
 
+    @check_token
     def search_songs(self, search_term, per_page=None, page=None):
         """Searches songs hosted on Genius.
 
@@ -409,6 +414,7 @@ class API(Sender):
                   'page': page}
         return self._make_request(endpoint, params_=params)
 
+    @check_token
     def song(self, song_id, text_format=None):
         """Gets data for a specific song.
 
@@ -432,6 +438,7 @@ class API(Sender):
         params = {'text_format': text_format or self.response_format}
         return self._make_request(endpoint, params_=params)
 
+    @check_token
     def web_page(self, raw_annotatable_url=None, canonical_url=None, og_url=None):
         """Gets data for a specific web page.
 

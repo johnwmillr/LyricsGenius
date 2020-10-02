@@ -16,6 +16,7 @@ from bs4 import BeautifulSoup
 
 from .types import Artist, Song
 from .api import API, PublicAPI, check_token
+from .exceptions import TokenRequiredError
 
 
 class Genius(API, PublicAPI):
@@ -248,7 +249,6 @@ class Genius(API, PublicAPI):
         result_artist = self._clean_str(result['primary_artist']['name'])
         return title_is_match and result_artist == self._clean_str(artist)
 
-    @check_token
     def song_annotations(self, song_id, text_format=None, public_api=False):
         """Return song's annotations with associated fragment in list of tuple.
 
@@ -269,7 +269,7 @@ class Genius(API, PublicAPI):
             because sometimes both artists and Genius users annotate them).
 
         """
-        if public_api:
+        if public_api or self.public_api:
             referents = super(PublicAPI, self).referents(song_id=song_id,
                                                          text_format=text_format)
         else:
@@ -285,7 +285,6 @@ class Genius(API, PublicAPI):
             all_annotations.append((fragment, annotations))
         return all_annotations
 
-    @check_token
     def annotation(self, annotation_id, text_format=None, public_api=False):
         """Searches songs hosted on Genius.
 
@@ -308,12 +307,14 @@ class Genius(API, PublicAPI):
 
         """
 
-        if public_api:
+        if public_api or self.public_api or self.public_api:
             return super(PublicAPI, self).annotation(annotation_id, text_format)
         else:
-            return super().annotation(annotation_id, text_format)
+            try:
+                return super().annotation(annotation_id, text_format)
+            except TokenRequiredError:
+                raise TokenRequiredError(public_api=True)
 
-    @check_token
     def artist(self, artist_id, text_format=None, public_api=False):
         """Gets data for a specific artist.
 
@@ -334,12 +335,14 @@ class Genius(API, PublicAPI):
             - Public API: Result will have 24 fields.
 
         """
-        if public_api:
+        if public_api or self.public_api:
             return super(PublicAPI, self).artist(artist_id, text_format)
         else:
-            return super().artist(artist_id, text_format)
+            try:
+                return super().artist(artist_id, text_format)
+            except TokenRequiredError:
+                raise TokenRequiredError(public_api=True)
 
-    @check_token
     def artist_songs(self, artist_id, per_page=None, page=None,
                      sort='title', public_api=False):
         """Gets artist's songs.
@@ -364,18 +367,20 @@ class Genius(API, PublicAPI):
             - Public API: Song will have 21 fields.
 
         """
-        if public_api:
+        if public_api or self.public_api:
             return super(PublicAPI, self).artist_songs(artist_id=artist_id,
                                                        per_page=per_page,
                                                        page=page,
                                                        sort=sort)
         else:
-            return super().artist_songs(artist_id=artist_id,
-                                        per_page=per_page,
-                                        page=page,
-                                        sort=sort)
+            try:
+                return super().artist_songs(artist_id=artist_id,
+                                            per_page=per_page,
+                                            page=page,
+                                            sort=sort)
+            except TokenRequiredError:
+                raise TokenRequiredError(public_api=True)
 
-    @check_token
     def referents(self, song_id=None, web_page_id=None,
                   created_by_id=None, per_page=None,
                   page=None, text_format=None, public_api=False):
@@ -403,14 +408,16 @@ class Genius(API, PublicAPI):
             - Public API: Referent will have 20 fields.
 
         """
-        if public_api:
+        if public_api or self.public_api:
             return super(PublicAPI, self).referents(song_id, web_page_id, created_by_id,
                                                     per_page, page, text_format)
         else:
-            return super().referents(song_id, web_page_id, created_by_id,
-                                     per_page, page, text_format)
+            try:
+                return super().referents(song_id, web_page_id, created_by_id,
+                                         per_page, page, text_format)
+            except TokenRequiredError:
+                raise TokenRequiredError(public_api=True)
 
-    @check_token
     def song(self, song_id, text_format=None, public_api=False):
         """Gets data for a specific song.
 
@@ -431,12 +438,14 @@ class Genius(API, PublicAPI):
             - Public API: Song will have 68 fields.
 
         """
-        if public_api:
+        if public_api or self.public_api:
             return super(PublicAPI, self).song(song_id, text_format)
         else:
-            return super().song(song_id, text_format)
+            try:
+                return super().song(song_id, text_format)
+            except TokenRequiredError:
+                raise TokenRequiredError(public_api=True)
 
-    @check_token
     def search_songs(self, search_term, per_page=None, page=None, public_api=False):
         """Searches songs hosted on Genius.
 
@@ -461,12 +470,14 @@ class Genius(API, PublicAPI):
               through ``response['sections'][0]['hits']``
 
         """
-        if public_api:
+        if public_api or self.public_api:
             return super(PublicAPI, self).search_songs(search_term, per_page, page)
         else:
-            return super().search_songs(search_term, per_page, page)
+            try:
+                return super().search_songs(search_term, per_page, page)
+            except TokenRequiredError:
+                raise TokenRequiredError(public_api=True)
 
-    @check_token
     def search_song(self, title, artist="", get_full_info=True, public_api=False):
         """Searches for a specific song and gets its lyrics.
 
@@ -546,7 +557,6 @@ class Genius(API, PublicAPI):
             print('Done.')
         return song
 
-    @check_token
     def search_artist(self, artist_name, max_songs=None,
                       sort='popularity', per_page=20,
                       get_full_info=True,

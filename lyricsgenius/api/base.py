@@ -87,24 +87,17 @@ class Sender(object):
             raise AssertionError('Response status code was neither 200, nor 204!')
 
 
-public_api_msg = (
-    "Using this method with the developers API needs an access token."
-    " Get an access token or"
-    " use the public API by setting"
-    " public_api=True in method parameters."
-)
-
 def check_token(func):
 
     @wraps(func)
     def wrapper(self, *args, **kwargs):
         if self.access_token is None:
-            public_method = "public_api" in func.__code__.co_varnames
-            if public_method:
-                if kwargs.get("public_api", False) is False:
-                    msg = public_api_msg
-                    raise TokenRequiredError(msg)
-            else:
-                raise TokenRequiredError()
+            #    public_method = "public_api" in func.__code__.co_varnames
+            #    if public_method:
+            #        if kwargs.get("public_api", False) is False \
+            #                and getattr(self, "public_api", False) is False:
+            #            raise TokenRequiredError(public_method)
+            #    else:
+            raise TokenRequiredError()
         return func(self, *args, **kwargs)
     return wrapper
