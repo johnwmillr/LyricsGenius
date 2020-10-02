@@ -77,7 +77,8 @@ class Artist(object):
         """
         return self._num_songs
 
-    def add_song(self, new_song, verbose=True, include_features=False):
+    def add_song(self, new_song, verbose=True,
+                 include_features=False, public_api=False):
         """Adds a song to the Artist.
 
         This method adds a new song to the artist object. It checks
@@ -108,7 +109,7 @@ class Artist(object):
 
         """
         if isinstance(new_song, str):
-            new_song = self._client.search_song(new_song)
+            new_song = self._client.search_song(new_song, public_api=public_api)
             if new_song is None:
                 return 1  # Failure
         if any([song.title == new_song.title for song in self._songs]):
@@ -126,7 +127,7 @@ class Artist(object):
                                                                       a=self.name))
         return 1  # Failure
 
-    def song(self, song_name):
+    def song(self, song_name, public_api=False):
         """Gets the artist's song.
 
         If the song is in the artist's songs, returns the song. Otherwise searches
@@ -146,7 +147,7 @@ class Artist(object):
             if song.title == song_name:
                 return song
 
-        song = self._client.search_song(song_name, self.name)
+        song = self._client.search_song(song_name, self.name, public_api=public_api)
         return song
 
     def to_json(self,

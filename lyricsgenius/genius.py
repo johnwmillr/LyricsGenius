@@ -35,6 +35,8 @@ class Genius(API, PublicAPI):
             as non-lyrics.
         replace_default_terms (:obj:`list`, optional): if True, replaces default
             excluded terms with user's. Default excluded terms are listed below.
+        public_api(:obj:`bool`, optional): If `True`, performs the operation
+            using the public API if the method supports it.
 
     Attributes:
         verbose (:obj:`bool`, optional): Turn printed messages on or off.
@@ -46,6 +48,8 @@ class Genius(API, PublicAPI):
             as non-lyrics.
         replace_default_terms (:obj:`list`, optional): if True, replaces default
             excluded terms with user's.
+        public_api(:obj:`bool`, optional): If `True`, performs the operation
+            using the public API if the method supports it.
 
     Returns:
         :class:`Genius`
@@ -62,7 +66,9 @@ class Genius(API, PublicAPI):
                  response_format='plain', timeout=5, sleep_time=0.5,
                  verbose=True, remove_section_headers=False,
                  skip_non_songs=True, excluded_terms=None,
-                 replace_default_terms=False):
+                 replace_default_terms=False,
+                 public_api=False,
+                 ):
         # Genius Client Constructor
 
         super().__init__(
@@ -77,13 +83,16 @@ class Genius(API, PublicAPI):
         self.skip_non_songs = skip_non_songs
         self.excluded_terms = excluded_terms
         self.replace_default_terms = replace_default_terms
+        self.public_api = public_api
 
-    def lyrics(self, urlthing):
+    def lyrics(self, urlthing, public_api=False):
         """Uses BeautifulSoup to scrape song info off of a Genius song URL
 
         Args:
             urlthing (:obj:`str` | :obj:`int`):
                 Song ID or song URL.
+        public_api(:obj:`bool`, optional): If `True` and :obj:`urlthing` is
+        a song ID, gets the song URL using the public API.
 
         Returns:
             :obj:`str` \\|‌ :obj:`None`:
@@ -103,7 +112,8 @@ class Genius(API, PublicAPI):
 
         """
         if isinstance(urlthing, int):
-            url = self.song(urlthing)['song']['url']
+            public_api = public_api or self.public_api
+            url = self.song(urlthing, public_api=public_api)['song']['url']
         else:
             url = urlthing
 
@@ -464,6 +474,8 @@ class Genius(API, PublicAPI):
             title (:obj:`str`): Song title to search for.
             artist (:obj:`str`, optional): Name of the artist.
             get_full_info (:obj:`bool`, optional): Get full info for each song (slower).
+            public_api(:obj:`bool`, optional): If `True`, performs the search
+                using the public API endpoint.
 
         Returns:
             :class:`Song <types.Song>` \\| :obj:`None`: On success,
@@ -562,6 +574,8 @@ class Genius(API, PublicAPI):
             artist_id (:obj:`int`, optional): Allows user to pass an artist ID.
             include_features (:obj:`bool`, optional): If True, includes tracks
                 featuring the artist.
+            public_api(:obj:`bool`, optional): If `True`, performs the search
+                using the public API endpoint.
 
         Returns:
             :class:`Artist <types.Artist>`: Artist object containing
