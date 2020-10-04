@@ -1,6 +1,10 @@
 import unittest
 
 from lyricsgenius.utils import parse_redirected_url, sanitize_filename
+try:
+    from .test_genius import genius
+except ModuleNotFoundError:
+    from test_genius import genius
 
 
 class TestUtils(unittest.TestCase):
@@ -27,3 +31,6 @@ class TestUtils(unittest.TestCase):
         code = 'test'
         r = parse_redirected_url(redirected, flow)
         self.assertEqual(r, code)
+
+    def tearDown():
+        genius._session.close()
