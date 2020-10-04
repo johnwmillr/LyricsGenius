@@ -9,7 +9,7 @@ the API that requires an access token, and the other one to the public API.
 
 
 API
-**********
+***
 This API is available through
 `api.genius.com <http://api.genius.com>`_, and provides access to features like
 searching songs, getting song or annotation data by
@@ -20,7 +20,7 @@ This is not the case for the second kind of calls: the ones to the public API.
 
 
 Public API
-***************
+**********
 The public API is the API that doesn't require an access token and can be
 accessed by anyone (end-users use this on their browsers). The public API
 can be called at `genius.com/api <http://genius.com/api>`_. This API
@@ -33,8 +33,34 @@ they still don't let you anywhere near what's probably the most important
 thing you may want from Genius: the lyrics.
 
 
+Genius Class
+************
+The :ref:`genius` class inherits :class:`API` and :class:`PublicAPI` and
+also provides methods for getting lyrics. This class is a high-level
+interface that can be used with/without a token. It also convenient
+access to methods that are available through both APIs. For example both
+APIs have an ``artist()`` method and the Genius class provides an easy
+way to access both of them. As for the methods in the developers API,
+you will need a token for those; and for the PublicAPI methods it won't
+matter if there is a token or not. This is how you'd access an
+overlapping method using the Genius class:
+
+.. code:: python
+
+    genius = Genius(token)
+
+    # API
+    genius.artist(1665)
+
+    # PublicAPI
+    genius.artist(1665, public_api=True)
+
+Also have a look at the :ref:`snippets` to read about the
+:attr:`Genius.public_api` attribute and more.
+
+
 Lyrics
-**********
+******
 Genius has legal agreements with music publishers and considers the lyrics
 on their website to be a legal property of Genius, and won't allow you
 to re-use their lyrics without explicit licensing. They even 

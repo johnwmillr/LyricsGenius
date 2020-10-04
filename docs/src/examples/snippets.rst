@@ -38,16 +38,19 @@ if you're using :class:`Genius`).
     genius.artist(1665)
     genius.artist(1665, public_api=True)
 
-Note that if you use :class:`Genius` without a token, all calls will be
-made using the public API. Therefore the following calls to
-:meth:`Genius.artist` -and all methods that have a ``public_api`` parameter-
-will be equivolant:
+Note that if you use :class:`Genius` without a token, you won't be able
+to use the developers API. So you'll either have to set ``public_api=True`` if
+the method supports it, or set ``Genius.public_api`` to ``True`` to have
+all the calls that support it be made using the public API.
 
 .. code:: python
-    
-    genius = Genius()
+
+    genius = Genius(public_api=True)
+
+    # the following calls will be equivalent
     genius.artist(1665)
     genius.artist(1665, public_api=True)
+
 
 
 All the songs of an artist
