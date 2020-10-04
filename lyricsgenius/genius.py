@@ -15,7 +15,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from .types import Artist, Song
-from .api import API, PublicAPI, check_token
+from .api import API, PublicAPI
 from .exceptions import TokenRequiredError
 
 
@@ -539,7 +539,7 @@ class Genius(API, PublicAPI):
             return None
 
         # Download full song info (an API call) unless told not to by user
-        song_info = result.copy()
+        song_info = result
         if get_full_info:
             song_info.update(self.song(result['id'])['song'], public_api=public_api)
         lyrics = self.lyrics(song_info['url'])

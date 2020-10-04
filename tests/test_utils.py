@@ -32,5 +32,6 @@ class TestUtils(unittest.TestCase):
         r = parse_redirected_url(redirected, flow)
         self.assertEqual(r, code)
 
-    def tearDown():
+    @classmethod
+    def tearDownClass(cls):
         genius._session.close()

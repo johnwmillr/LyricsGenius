@@ -2,12 +2,13 @@ import unittest
 
 from requests.exceptions import HTTPError
 
+from lyricsgenius import Genius
+from lyricsgenius.exceptions import TokenRequiredError
+
 try:
     from .test_genius import genius
 except ModuleNotFoundError:
     from test_genius import genius
-from lyricsgenius import Genius
-from lyricsgenius.exceptions import TokenRequiredError
 
 
 class TestAPIBase(unittest.TestCase):
