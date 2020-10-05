@@ -666,7 +666,7 @@ class Genius(API, PublicAPI):
                 # Attempt to add the Song to the Artist
                 result = artist.add_song(song, verbose=False,
                                          include_features=include_features)
-                if result == 0 and self.verbose:
+                if result is not None and self.verbose:
                     print('Song {n}: "{t}"'.format(n=artist.num_songs,
                                                    t=song.title))
 

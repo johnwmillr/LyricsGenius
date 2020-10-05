@@ -111,21 +111,21 @@ class Artist(object):
         if isinstance(new_song, str):
             new_song = self._client.search_song(new_song, public_api=public_api)
             if new_song is None:
-                return 1  # Failure
+                return None
         if any([song.title == new_song.title for song in self._songs]):
             if verbose:
                 print('{s} already in {a}, not adding song.'.format(s=new_song.title,
                                                                     a=self.name))
-            return 1  # Failure
+            return None
         if (new_song.artist == self.name
                 or (include_features and any(new_song.featured_artists))):
             self._songs.append(new_song)
             self._num_songs += 1
-            return 0  # Success
+            return new_song
         if verbose:
             print("Can't add song by {b}, artist must be {a}.".format(b=new_song.artist,
                                                                       a=self.name))
-        return 1  # Failure
+        return None
 
     def song(self, song_name, public_api=False):
         """Gets the artist's song.
