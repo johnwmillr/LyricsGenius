@@ -98,7 +98,7 @@ class TestArtistMethods(unittest.TestCase):
         cls.artist_id = 1665
 
     def test_artist(self):
-        r = genius.artist(self.artist_id)
+        r = genius.artist(self.artist_id, public_api=True)
         self.assertEqual(r['artist']['id'], self.artist_id)
 
     def test_artist_activity(self):
