@@ -3,18 +3,26 @@
 
 Setup
 =====
-There are three ways to use the package: Without an access token, with a
-client access token or with a user access token. User access tokens
-provide the most functionality but they are really useful if you're
-planning to use Genius's `Web Annotator`_. If you're not planning to use
-it (or don't even know what it is), that leaves you with using a client
-access token or no tokens. Genius's API has two interaces: the
-developer's API and the tokenfree, undocumented public API. The
-developer's API has limited endpoints and needs a token (client- or user
-access token). On the other hand the public API is not limited and needs
-no token to work. If you prefer to get information using the developer's
-API you need an access token. If you want to use an access token,
-read the following section; otherwise skip to `Installation`_.
+Genius's API has two interaces: the developer's API and the tokenfree,
+undocumented public API. The developer's API has limited endpoints and
+needs a token (client- or user access token). On the other hand the
+public API is not limited and needs no token to work. There are three
+ways to use the package:
+
+-  **With a user access token**: User access tokens provide the most
+   functionality but they are really useful if you're planning to use
+   Genius's `Web Annotator`_. If you're not planning to use it (or don't
+   even know what it is), that leaves you with using a client access
+   token or no tokens.
+-  **With a client access token**: With a client access token you can
+   get information using both the developers and the public API.
+-  **Without an access token**: Without an access token you won't be
+   able to get information using the developers API, but the public API
+   -which doesn't need a token- covers all of the developers API
+   endpoints and many more! So you'll be okay.
+
+If you don't plan to use an access token, you can skip to `Installation`_
+
 
 Authorization
 -------------
@@ -71,3 +79,5 @@ the library. See the :ref:`usage` for examples.
 .. _Web Annotator: https://genius.com/web-annotator
 .. _documentation: https://docs.genius.com/#/authentication-h1
 .. _create a new API client: https://genius.com/api-clients/new
+.. _create an app: http://genius.com/api-clients
+.. _OAuth2: https://lyricsgenius.readthedocs.io/en/latest/reference/auth.html#auth

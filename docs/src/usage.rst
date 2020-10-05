@@ -59,11 +59,16 @@ There are various options configurable as parameters within the
    # Exclude songs with these words in their title
    genius.excluded_terms = ["(Remix)", "(Live)"]
 
+   # Use the public API whenever possible (useful for token-less users)
+   genius.public_api = False
+
 You can also call the package from the command line:
 
 .. code:: bash
 
+   # if you plan to use a token
    export GENIUS_ACCESS_TOKEN="my_access_token_here"
+
    python3 -m lyricsgenius --help
 
 Search for and save lyrics to a given song:
@@ -72,11 +77,11 @@ Search for and save lyrics to a given song:
 
    python3 -m lyricsgenius song "Begin Again" "Andy Shauf" --save
 
-Search for five songs by ‘The Beatles’ and save the lyrics:
+Search for five songs by ‘The Beatles’ and save the lyrics withouta token:
 
 .. code:: bash
 
-   python3 -m lyricsgenius artist "The Beatles" --max-songs 5 --save
+   python3 -m lyricsgenius artist "The Beatles" --max-songs 5 --save -tl
 
 
 There also examples under the docs of some methods.

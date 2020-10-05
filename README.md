@@ -18,9 +18,12 @@ There are three ways to use the package:
 * **Without an access token**: Without an access token you won't be able to get information using the developers API, but the public API -which doesn't need a token- covers all of the developers API endpoints and many more! So you'll be okay.
 
 Here's what you need to do for each approach:
-- User Access Tokens: You need to sign up/log in on Genius, [create an app](http://genius.com/api-clients) and get a user token using OAuth2 (our [OAuth2](https://lyricsgenius.readthedocs.io/en/latest/reference/auth.html#auth) class can help you with that).
-- Client Access Tokens: You need to sign up/log in on Genius and [create an app](http://genius.com/api-clients). Then on your app's page, click *GENERATE CLIENT ACCESS TOKEN* and you'll get a client access token.
-- No Tokens: No need to do anything.
+- **To Get a User Access Tokens**:
+    You need to sign up/log in on Genius, [create an app](http://genius.com/api-clients) and get a user token using OAuth2 (our [OAuth2](https://lyricsgenius.readthedocs.io/en/latest/reference/auth.html#auth) class can help you with that).
+- **To Get a Client Access Token**:
+    You need to sign up/log in on Genius and [create an app](http://genius.com/api-clients). Then on your app's page, click *GENERATE CLIENT ACCESS TOKEN* and you'll get a client access token.
+- **No Token**:
+    No need to do anything.
 
 
 ## Installation
@@ -43,7 +46,7 @@ Import the package and search for songs by a given artist:
 
 ```python
 import lyricsgenius
-genius = lyricsgenius.Genius() # or Genius(token)
+genius = lyricsgenius.Genius(token) # or Genius()
 artist = genius.search_artist("Andy Shauf", max_songs=3, sort="title")
 print(artist.songs)
 ```
@@ -84,13 +87,15 @@ genius.verbose = False # Turn off status messages
 genius.remove_section_headers = True # Remove section headers (e.g. [Chorus]) from lyrics when searching
 genius.skip_non_songs = False # Include hits thought to be non-songs (e.g. track lists)
 genius.excluded_terms = ["(Remix)", "(Live)"] # Exclude songs with these words in their title
+genius.public_api = False # Use the public API whenever possible (useful for token-less users)
 ```
+Many methods have a `public_api` parameter that makes your client make the call using the public API. But as it can be inconvenient to set this parameter every time there is one, you can set `genius.public_api=True` and all methods that support it, will automatically make the call using the public API.
 
 You can also call the package from the command line:
 
 With a token:
 ```bash
-export GENIUS_ACCESS_TOKEN="my_access_token_here"
+export GENIUS_ACCESS_TOKEN="my_access_token_here"  # if you plan to use a token
 python3 -m lyricsgenius --help
 ```
 Without a token:
@@ -104,10 +109,10 @@ Search for and save lyrics to a given song:
 python3 -m lyricsgenius song "Begin Again" "Andy Shauf" --save
 ```
 
-Search for five songs by 'The Beatles' and save the lyrics:
+Search for five songs by 'The Beatles' and save the lyrics without a token:
 
 ```bash
-python3 -m lyricsgenius artist "The Beatles" --max-songs 5 --save
+python3 -m lyricsgenius artist "The Beatles" --max-songs 5 --save -tl
 ```
 
 ## Example projects
