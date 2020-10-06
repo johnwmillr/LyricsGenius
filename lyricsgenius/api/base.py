@@ -26,7 +26,7 @@ class Sender(object):
             'application': 'LyricsGenius',
             'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'
         }
-        self.access_token = 'Bearer ' + access_token
+        self.access_token = 'Bearer ' + access_token if access_token else None
         self.response_format = response_format.lower()
         self.timeout = timeout
         self.sleep_time = sleep_time
