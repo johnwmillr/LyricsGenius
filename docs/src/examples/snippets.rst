@@ -6,14 +6,16 @@ Snippets
 Here are some snippets showcasing how the library can be used.
 
 - `Getting artist using API, PublicAPI and Genius`_
+- `Getting song lyrics by URL or ID`_
 - `All the songs of an artist`_
 - `Artist's least popular song`_
 - `YouTube URL of artist's songs`_
 - `Searching for a song by lyrics`_
+- `Getting the lyrics for all songs of a search`_
 - `Authenticating using OAuth2`_
 
 Getting artist using API, PublicAPI and Genius
--------------------------------------------------
+----------------------------------------------
 The following snippet will be the same for all
 methods that are available in :class:`API` and :class:`PublicAPI`
 (or methods that have a ``public_api`` parameter
@@ -52,6 +54,22 @@ all the calls that support it be made using the public API.
     genius.artist(1665, public_api=True)
 
 
+Getting song lyrics by URL or ID
+--------------------------------
+.. code:: python
+
+    from lyricsgenius import Genius
+
+    genius = Genius(token)
+
+    # Using Song URL
+    url = "https://genius.com/Andy-shauf-begin-again-lyrics"
+    genius.lyrics(url)
+
+    # Using Song ID
+    # Requires an extra request to get song URL
+    id = 2885745
+    genius.lyrics(id)
 
 All the songs of an artist
 --------------------------
@@ -133,8 +151,34 @@ Using :meth:`search_all <Genius.search_all>`:
         print(hit['result']['title'])
 
 
+Getting the lyrics for all songs of a search
+--------------------------------------------
+.. code:: python
+
+    from lyricsgenius import Genius
+
+    genius = Genius(token)
+    lyrics = []
+
+    songs = genius.search_songs('Begin Again Andy Shauf')
+    for song in songs['hits']:
+        url = song['result']['url']
+        song_lyrics = genius.lyrics(url)
+        # id = song['result']['id']
+        # song_lyrics = genius.lyrics(id)
+        lyrics.append(song_lyrics)
+
+
 Authenticating using OAuth2
 ---------------------------
+Genius provides two flows for getting a user token: the code flow
+(called full code exchange) and the token flow (called client-only app).
+LyricsGenius provides two class methods
+:meth:`OAuth2.full_code_exchange` and :meth:`OAuth2.client_only_app` for
+the aforementioned flow. Visit the `Authentication section`_ in the
+Genius API documentation read more about the code and the token flow.
+
+
 Authenticating yourself
 ^^^^^^^^^^^^^^^^^^^^^^^
 Whitelist a redirect URI in your app's page on Genius. Any redirect
@@ -143,10 +187,14 @@ URI will work (for example ``http://example.com/callback``)
 .. code:: python
 
     from lyricsgenius import OAuth2, Genius
-    auth = OAuth2('my_client_id',
-                  'my_redirect_uri',
-                  scope='all',
-                  client_only_app=True)
+
+    # you can also use OAuth2.full_code_exchange()
+    auth = OAuth2.client_only_app(
+        'my_client_id',
+        'my_redirect_uri',
+        scope='all'
+    )
+
     token = auth.prompt_user()
 
     genius = Genius(token)
@@ -158,16 +206,19 @@ Authenticating another user
     from lyricsgenius import OAuth2, Genius
 
     # client-only app
-    auth = OAuth2('my_client_id',
-                  'my_redirect_uri',
-                  scope='all',
-                  client_only_app=True)
+    auth = OAuth2.client_only_app(
+        'my_client_id',
+        'my_redirect_uri',
+        scope='all'
+    )
 
     # full code exhange app
-    auth = OAuth2('my_client_id',
-                  'my_redirect_uri',
-                  'my_client_secret',
-                  scope='all')
+    auth = OAuth2.full_code_exchange(
+        'my_client_id',
+        'my_redirect_uri',
+        'my_client_secret',
+        scope='all'
+    )
 
     # this part is the same
     url_for_user = auth.url
@@ -176,23 +227,5 @@ Authenticating another user
     token = auth.get_user_token(redirected_url)
 
     genius = Genius(token)
-
-.. Note:: 
-    The only difference the process of getting the user token
-    using a client-only application or the full code exchange
-    is in the parameters you pass to the OAuth2 object.
-    In the example above we're using a client-only app
-    that doesn't need the client secret and we also have to
-    set :obj:`client_only_app` to *True*.
-    If you intend to use the full code exchange which is safer,
-    set :obj:`client_secret` when instantiating the OAUTH2 object
-    and set :obj:`client_only_app` to *False* (it's *False* by
-    default).
-
-.. Note::
-    Visit the `Authentication section`_ in the Genius API documentation
-    to find out more about client-only apps and the full code exchange
-    process.
-
 
 .. _`Authentication section`: https://docs.genius.com/#/authentication-h1

@@ -29,7 +29,8 @@ class OAuth2(Sender):
     token_url = 'https://api.genius.com/oauth/token'
 
     def __init__(self, client_id, redirect_uri,
-                 client_secret=None, scope=None, state=None, client_only_app=False):
+                 client_secret=None, scope=None,
+                 state=None, client_only_app=False):
         super().__init__()
         msg = ("You must provide a client_secret "
                "if you intend to use the full code exchange."
@@ -110,3 +111,34 @@ class OAuth2(Sender):
         redirected = input('Please paste redirect URL: ').strip()
 
         return self.get_user_token(redirected)
+
+    @classmethod
+    def client_only_app(cls, client_id, redirect_uri, scope=None, state=None):
+        return cls(client_id=client_id,
+                   redirect_uri=redirect_uri,
+                   scope=scope,
+                   state=state,
+                   client_only_app=True)
+
+    @classmethod
+    def full_code_exchange(cls, client_id, client_secret,
+                           redirect_uri, scope=None, state=None):
+        return cls(client_id=client_id,
+                   client_secret=client_secret,
+                   redirect_uri=redirect_uri,
+                   scope=scope,
+                   state=state)
+
+    def __repr__(self):
+        return ("{name}("
+                "flow={flow!r}, "
+                "scope={scope!r}, "
+                "state={state!r}, "
+                "client_only_app={client_only_app!r})"
+                ).format(
+            name=self.__class__.__name__,
+            flow=self.flow,
+            scope=self.scope,
+            state=self.state,
+            client_only_app=self.client_only_app
+        )
