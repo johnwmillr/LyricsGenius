@@ -88,7 +88,7 @@ Song Methods
 .. automethod:: API.song
 
 
-Web Pages Methods
+Web Page Methods
 -----------------
 .. autosummary::
    :nosignatures:

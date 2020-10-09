@@ -8,12 +8,24 @@
 
 Genius
 =======================
-The Genius class provides a high-level interface to the Genius
-API. This class provides convenient access to the standard API,
-the public API, and additional features such as downloading lyrics.
+The Genius class provides a high-level interface to the Genius API. This
+class provides convenient access to the standard API (:class:`API`), the
+public API (:class:`PublicAPI`), and additional features such as
+downloading lyrics.
 
 .. autoclass:: Genius
    :show-inheritance:
+
+
+Account Methods
+---------------
+.. autosummary::
+   :nosignatures:
+
+   Genius.account
+
+
+.. automethod:: Genius.account
 
 
 Album Methods
@@ -45,10 +57,20 @@ Annotation Methods
    Genius.annotation
    Genius.annotation_edits
    Genius.annotation_comments
+   Genius.create_annotation
+   Genius.delete_annotation
+   Genius.downvote_annotation
+   Genius.unvote_annotation
+   Genius.upvote_annotation
 
 .. automethod:: Genius.annotation
 .. automethod:: Genius.annotation_edits
 .. automethod:: Genius.annotation_comments
+.. automethod:: Genius.create_annotation
+.. automethod:: Genius.delete_annotation
+.. automethod:: Genius.downvote_annotation
+.. automethod:: Genius.unvote_annotation
+.. automethod:: Genius.upvote_annotation
 
 
 Article Methods
@@ -237,6 +259,16 @@ Video Methods
 
 .. automethod:: Genius.video
 .. automethod:: Genius.videos
+
+
+Web Page Methods
+-----------------
+.. autosummary::
+   :nosignatures:
+
+   Genius.web_page
+
+.. automethod:: Genius.web_page
 
 
 Misc. Methods

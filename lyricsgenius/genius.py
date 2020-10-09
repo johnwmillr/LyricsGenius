@@ -36,7 +36,7 @@ class Genius(API, PublicAPI):
             as non-lyrics.
         replace_default_terms (:obj:`list`, optional): if True, replaces default
             excluded terms with user's. Default excluded terms are listed below.
-        public_api(:obj:`bool`, optional): If `True`, performs the operation
+        public_api (:obj:`bool`, optional): If `True`, performs the operation
             using the public API if the method supports it.
 
     Attributes:
@@ -49,7 +49,7 @@ class Genius(API, PublicAPI):
             as non-lyrics.
         replace_default_terms (:obj:`list`, optional): if True, replaces default
             excluded terms with user's.
-        public_api(:obj:`bool`, optional): If `True`, performs the operation
+        public_api (:obj:`bool`, optional): If `True`, performs the operation
             using the public API if the method supports it.
 
     Returns:
@@ -92,8 +92,8 @@ class Genius(API, PublicAPI):
         Args:
             urlthing (:obj:`str` | :obj:`int`):
                 Song ID or song URL.
-        public_api(:obj:`bool`, optional): If `True` and :obj:`urlthing` is
-        a song ID, gets the song URL using the public API.
+            public_api (:obj:`bool`, optional): If `True` and :obj:`urlthing` is
+                a song ID, gets the song URL using the public API.
 
         Returns:
             :obj:`str` \\|‌ :obj:`None`:
@@ -255,7 +255,7 @@ class Genius(API, PublicAPI):
             song_id (:obj:`int`): song ID
             text_format (:obj:`str`, optional): Text format of the results
                 ('dom', 'html', 'markdown' or 'plain').
-            public_api(:obj:`bool`, optional): If `True`, performs the search
+            public_api (:obj:`bool`, optional): If `True`, performs the search
                 using the public API endpoint.
 
         Returns:
@@ -288,7 +288,7 @@ class Genius(API, PublicAPI):
             annotation_id (:obj:`int`): annotation ID
             text_format (:obj:`str`, optional): Text format of the results
                 ('dom', 'html', 'markdown' or 'plain').
-            public_api(:obj:`bool`, optional): If `True`, performs the search
+            public_api (:obj:`bool`, optional): If `True`, performs the search
                 using the public API endpoint.
 
         Returns:
@@ -317,7 +317,7 @@ class Genius(API, PublicAPI):
             artist_id (:obj:`int`): Genius artist ID
             text_format (:obj:`str`, optional): Text format of the results
                 ('dom', 'html', 'markdown' or 'plain').
-            public_api(:obj:`bool`, optional): If `True`, performs the search
+            public_api (:obj:`bool`, optional): If `True`, performs the search
                 using the public API endpoint.
 
         Returns:
@@ -348,7 +348,7 @@ class Genius(API, PublicAPI):
             per_page (:obj:`int`, optional): Number of results to
                 return per request. It can't be more than 50.
             page (:obj:`int`, optional): Paginated offset (number of the page).
-            public_api(:obj:`bool`, optional): If `True`, performs the search
+            public_api (:obj:`bool`, optional): If `True`, performs the search
                 using the public API endpoint.
 
         Returns:
@@ -388,7 +388,7 @@ class Genius(API, PublicAPI):
                 return per page. It can't be more than 50.
             text_format (:obj:`str`, optional): Text format of the results
                 ('dom', 'html', 'markdown' or 'plain').
-            public_api(:obj:`bool`, optional): If `True`, performs the search
+            public_api (:obj:`bool`, optional): If `True`, performs the search
                 using the public API endpoint.
 
         Returns:
@@ -417,7 +417,7 @@ class Genius(API, PublicAPI):
             song_id (:obj:`int`): Genius song ID
             text_format (:obj:`str`, optional): Text format of the results
                 ('dom', 'html', 'markdown' or 'plain').
-            public_api(:obj:`bool`, optional): If `True`, performs the search
+            public_api (:obj:`bool`, optional): If `True`, performs the search
                 using the public API endpoint.
 
         Returns:
@@ -445,7 +445,7 @@ class Genius(API, PublicAPI):
             per_page (:obj:`int`, optional): Number of results to
                 return per page. It can't be more than 5 for this method.
             page (:obj:`int`, optional): Number of the page.
-            public_api(:obj:`bool`, optional): If `True`, performs the search
+            public_api (:obj:`bool`, optional): If `True`, performs the search
                 using the public API endpoint.
 
         Returns:
@@ -475,7 +475,7 @@ class Genius(API, PublicAPI):
             title (:obj:`str`): Song title to search for.
             artist (:obj:`str`, optional): Name of the artist.
             get_full_info (:obj:`bool`, optional): Get full info for each song (slower).
-            public_api(:obj:`bool`, optional): If `True`, performs the search
+            public_api (:obj:`bool`, optional): If `True`, performs the search
                 using the public API endpoint.
 
         Returns:
@@ -574,7 +574,7 @@ class Genius(API, PublicAPI):
             artist_id (:obj:`int`, optional): Allows user to pass an artist ID.
             include_features (:obj:`bool`, optional): If True, includes tracks
                 featuring the artist.
-            public_api(:obj:`bool`, optional): If `True`, performs the search
+            public_api (:obj:`bool`, optional): If `True`, performs the search
                 using the public API endpoint.
 
         Returns:
