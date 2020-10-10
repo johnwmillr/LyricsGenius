@@ -17,6 +17,7 @@
 .cache/
 .tox
 lyricsgenius.egg-info
+fixtures
 
 # Python module things
 *.pyc
