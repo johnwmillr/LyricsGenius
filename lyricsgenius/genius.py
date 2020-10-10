@@ -277,7 +277,7 @@ class Genius(API, PublicAPI):
             fragment = r["fragment"]
             annotations = []
             for a in r["annotations"]:
-                annotations.append((x for x in a["body"].values()))
+                annotations.append([x for x in a["body"].values()])
             all_annotations.append((fragment, annotations))
         return all_annotations
 

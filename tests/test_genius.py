@@ -45,7 +45,7 @@ class TestEndpoints(unittest.TestCase):
         msg = "Incorrect song annotation response."
         r = sorted(genius.song_annotations(1))
         real = r[0][0]
-        expected = "And I’ma keep ya fresh"
+        expected = "(I’m at bat)"
         self.assertEqual(real, expected, msg)
 
 
