@@ -94,12 +94,11 @@ Artist's least popular song
     songs = []
     while page:
         request = genius.artist_songs(artist._id,
-                                          sort='popularity',
-                                          per_page=50,
-                                          page=page,
-                                          # public_api=Tru
-                                          )
-        # public_api=True will make the call using the public API 
+                                      sort='popularity',
+                                      per_page=50,
+                                      page=page,
+                                      # public_api=True
+                                      )
         songs.extend(request['songs'])
         page = request['next_page']
     least_popular_song = genius.search_song(songs[-1]['title'], artist.name)

@@ -34,13 +34,13 @@ class TestSong(unittest.TestCase):
         # The returned artist name does not match the artist of the requested song.
         self.assertEqual(self.song.artist, self.artist_name)
 
-    def test_album(self):
-        msg = "The returned album name does not match the album of the requested song."
-        self.assertEqual(self.song.album, self.album, msg)
+    # def test_album(self):
+    #    msg = "The returned album name does not match the album of the requested song."
+    #    self.assertEqual(self.song.album, self.album, msg)
 
-    def test_year(self):
-        msg = "The returned year does not match the year of the requested song"
-        self.assertEqual(self.song.year, self.year, msg)
+    # def test_year(self):
+    #    msg = "The returned year does not match the year of the requested song"
+    #    self.assertEqual(self.song.year, self.year, msg)
 
     def test_lyrics_raw(self):
         lyrics = '[Verse 1: Andy Shauf]'
@@ -50,17 +50,17 @@ class TestSong(unittest.TestCase):
         lyrics = 'Begin again\nThis time you should take a bow at the'
         self.assertTrue(self.song_trimmed.lyrics.startswith(lyrics))
 
-    def test_media(self):
-        msg = "The returned song does not have a media attribute."
-        self.assertTrue(hasattr(self.song, 'media'), msg)
+    # def test_media(self):
+    #    msg = "The returned song does not have a media attribute."
+    #    self.assertTrue(hasattr(self.song, 'media'), msg)
 
     def test_result_is_lyrics(self):
         msg = "Did not reject a false-song."
         self.assertFalse(genius._result_is_lyrics('Beatles Tracklist'), msg)
 
-    def test_producer_artists(self):
-        # Producer artist should be 'Andy Shauf'.
-        self.assertEqual(self.song.producer_artists[0]["name"], "Andy Shauf")
+    # def test_producer_artists(self):
+    #    # Producer artist should be 'Andy Shauf'.
+    #    self.assertEqual(self.song.producer_artists[0]["name"], "Andy Shauf")
 
     def test_saving_json_file(self):
         print('\n')

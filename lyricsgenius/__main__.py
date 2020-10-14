@@ -45,7 +45,7 @@ def main(args=None):
             if not args.quiet:
                 print("Saving lyrics to '{s}'...".format(s=song.title))
             song.save_lyrics()
-    else:
+    elif args.search_type == "artist":
         artist = api.search_artist(args.terms[0],
                                    max_songs=args.max_songs,
                                    sort='popularity')
@@ -53,6 +53,12 @@ def main(args=None):
             if not args.quiet:
                 print("Saving '{a}'' lyrics...".format(a=artist.name))
             api.save_artists(artist)
+    elif args.search_type == "album":
+        album = api.search_album(*args.terms)
+        if args.save:
+            if not args.quiet:
+                print("Saving '{a}'' lyrics...".format(a=album.name))
+            album.save_lyrics()
 
 
 if __name__ == "__main__":

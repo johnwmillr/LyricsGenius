@@ -58,13 +58,11 @@ class TestArtist(unittest.TestCase):
     def test_artist_with_includes_features(self):
         # The artist did not get songs returned that they were featured in.
         name = "Swae Lee"
-        result = (genius
-                  .search_artist(
-                      name,
-                      max_songs=1,
-                      include_features=True)
-                  .songs[0]
-                  ._body['primary_artist']['name'])
+        result = genius.search_artist(
+            name,
+            max_songs=1,
+            include_features=True)
+        result = result.songs[0].artist
         self.assertNotEqual(result, name)
 
     def determine_filenames(self, extension):
