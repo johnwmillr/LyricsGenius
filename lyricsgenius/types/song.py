@@ -2,10 +2,8 @@
 # Copyright 2018 John W. Miller
 # See LICENSE for details.
 
-import os
 from filecmp import cmp
 
-from ..utils import sanitize_filename
 from .base import BaseEntity, Stats
 from .artist import Artist
 
@@ -142,84 +140,24 @@ class Song(BaseEntity):
                     ensure_ascii=True,
                     sanitize=True,
                     verbose=True):
-        """Save Song lyrics and metadata to a JSON or TXT file.
-
-        If the extension is 'json' (the default), the lyrics will be saved
-        alongside the song's information. Take a look at the example below.
-
-        Args:
-            filename (:obj:`str`, optional): Output filename, a string.
-                If not specified, the result is returned as a string.
-            extension (:obj:`str`, optional): Format of the file (`json` or `txt`).
-            overwrite (:obj:`bool`, optional): Overwrites preexisting file if `True`.
-                Otherwise prompts user for input.
-            binary_encoding (:obj:`bool`, optional): Enables binary encoding
-                of text data.
-            ensure_ascii (:obj:`bool`, optional): If ensure_ascii is true
-                (the default), the output is guaranteed to have all incoming
-                non-ASCII characters escaped.
-            sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
-            verbose (:obj:`bool`, optional): prints operation result.
-
-        Examples:
-            .. code:: python
-
-                # getting songs lyrics from saved JSON file
-                import json
-                with open('song.json', 'r') as f:
-                    data = json.load(f)
-
-                print(data['lyrics'])
-
-        Note:
-            If :obj:`full_data` is set to `False`, only the following attributes
-            of the song will be available: :obj:`title`, :attr:`album`, :attr:`year`,
-            :attr:`lyrics`, and :attr:`song_art_image_url`
-
-        Warning:
-            If you set :obj:`sanitize` to `False`, the file name may contain
-            invalid characters, and thefore cause the saving to fail.
-
-        """
-        extension = extension.lstrip(".").lower()
-        msg = "extension must be JSON or TXT"
-        assert (extension == 'json') or (extension == 'txt'), msg
-
-        # Determine the filename
         if filename:
             for ext in ["txt", "TXT", "json", "JSON"]:
                 filename = filename.replace("." + ext, "")
+            alt_filename = None
             filename += "." + extension
         else:
-            filename = "Lyrics_{}_{}.{}".format(self.artist.replace(" ", ""),
+            alt_filename = "Lyrics_{}_{}.{}".format(self.artist.replace(" ", ""),
                                                 self.title.replace(" ", ""),
                                                 extension).lower()
-        filename = sanitize_filename(filename) if sanitize else filename
 
-        # Check if file already exists
-        write_file = False
-        if overwrite or not os.path.isfile(filename):
-            write_file = True
-        elif verbose:
-            msg = "{} already exists. Overwrite?\n(y/n): ".format(filename)
-            if input(msg).lower() == 'y':
-                write_file = True
-
-        # Exit if we won't be saving a file
-        if not write_file:
-            if verbose:
-                print('Skipping file save.\n')
-            return
-
-        # Save the lyrics to a file
-        if extension == 'json':
-            self.to_json(filename, ensure_ascii=ensure_ascii, sanitize=sanitize)
-        else:
-            self.to_text(filename, binary_encoding=binary_encoding, sanitize=sanitize)
-
-        if verbose:
-            print('Wrote {} to {}.'.format(self.title, filename))
-        return None
+        return super().save_lyrics(alt_filename=alt_filename,
+                                   filename=filename,
+                                   extension=extension,
+                                   overwrite=overwrite,
+                                   binary_encoding=binary_encoding,
+                                   ensure_ascii=ensure_ascii,
+                                   sanitize=sanitize,
+                                   verbose=verbose)
 
     def __str__(self):
         """Return a string representation of the Song object."""

@@ -1,4 +1,5 @@
 import json
+import os
 from abc import ABC, abstractmethod
 
 from ..utils import sanitize_filename
@@ -9,6 +10,88 @@ class BaseEntity(ABC):
 
     def __init__(self, id):
         self.id = id
+
+    @abstractmethod
+    def save_lyrics(self,
+                    alt_filename,
+                    filename=None,
+                    extension='json',
+                    overwrite=False,
+                    binary_encoding=False,
+                    ensure_ascii=True,
+                    sanitize=True,
+                    verbose=True):
+        """Save Song(s) lyrics and metadata to a JSON or TXT file.
+
+        If the extension is 'json' (the default), the lyrics will be saved
+        alongside the song's information. Take a look at the example below.
+
+        Args:
+            filename (:obj:`str`, optional): Output filename, a string.
+                If not specified, the result is returned as a string.
+            extension (:obj:`str`, optional): Format of the file (`json` or `txt`).
+            overwrite (:obj:`bool`, optional): Overwrites preexisting file if `True`.
+                Otherwise prompts user for input.
+            binary_encoding (:obj:`bool`, optional): Enables binary encoding
+                of text data.
+            ensure_ascii (:obj:`bool`, optional): If ensure_ascii is true
+                (the default), the output is guaranteed to have all incoming
+                non-ASCII characters escaped.
+            sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
+            verbose (:obj:`bool`, optional): prints operation result.
+
+        Examples:
+            .. code:: python
+
+                # getting songs lyrics from saved JSON file
+                import json
+                with open('song.json', 'r') as f:
+                    data = json.load(f)
+
+                print(data['lyrics'])
+
+        Note:
+            If :obj:`full_data` is set to `False`, only the following attributes
+            of the song will be available: :obj:`title`, :attr:`album`, :attr:`year`,
+            :attr:`lyrics`, and :attr:`song_art_image_url`
+
+        Warning:
+            If you set :obj:`sanitize` to `False`, the file name may contain
+            invalid characters, and thefore cause the saving to fail.
+
+        """
+        extension = extension.lstrip(".").lower()
+        msg = "extension must be JSON or TXT"
+        assert (extension == 'json') or (extension == 'txt'), msg
+
+        # Determine the filename
+        filename = filename if filename else alt_filename
+        filename = sanitize_filename(filename) if sanitize else filename
+
+        # Check if file already exists
+        write_file = False
+        if overwrite or not os.path.isfile(filename):
+            write_file = True
+        elif verbose:
+            msg = "{} already exists. Overwrite?\n(y/n): ".format(filename)
+            if input(msg).lower() == 'y':
+                write_file = True
+
+        # Exit if we won't be saving a file
+        if not write_file:
+            if verbose:
+                print('Skipping file save.\n')
+            return
+
+        # Save the lyrics to a file
+        if extension == 'json':
+            self.to_json(filename, ensure_ascii=ensure_ascii, sanitize=sanitize)
+        else:
+            self.to_text(filename, binary_encoding=binary_encoding, sanitize=sanitize)
+
+        if verbose:
+            print('Wrote {}.'.format(filename))
+        return None
 
     @abstractmethod
     def to_dict(self):

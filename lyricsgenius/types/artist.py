@@ -4,9 +4,6 @@
 
 """Artist object"""
 
-import os
-
-from ..utils import sanitize_filename
 from .base import BaseEntity
 
 
@@ -200,78 +197,20 @@ class Artist(BaseEntity):
                     ensure_ascii=True,
                     sanitize=True,
                     verbose=True):
-        """Saves all lyrics within an Artist object to a single file.
-        If the extension is 'json', the method will save artist information and
-        artist songs.
-        If you only want the songs lyrics, set :obj:`extension` to `txt`.
-        If you choose to go with JSON (which is the default extension), you can access
-        the lyrics by accessing the :class:`Song <types.Song>`
-        objects inside the `songs` key of the JSON file.
-        Take a look at the example below.
-
-        Args:
-            filename (:obj:`str`, optional): Output filename, a string.
-                If not specified, the result is returned as a string.
-            extension (:obj:`str`, optional): Format of the file (`json` or `txt`).
-            overwrite (:obj:`bool`, optional): Overwrites preexisting file if `True`.
-                Otherwise prompts user for input.
-            binary_encoding (:obj:`bool`, optional): Enables binary encoding
-                of text data.
-            ensure_ascii (:obj:`bool`, optional): If ensure_ascii is true
-                (the default), the output is guaranteed to have all incoming
-                non-ASCII characters escaped.
-            sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
-            verbose (:obj:`bool`, optional): prints operation result.
-
-        Examples:
-            .. code:: python
-
-                # getting songs lyrics from saved JSON file
-                import json
-                with open('file.json', 'r') as f:
-                    data = json.load(f)
-
-                for song in data['songs']:
-                    print(song.lyrics)
-
-        Warning:
-            If you set :obj:`sanitize` to `False`, the file name may contain
-            invalid characters, and thefore cause the saving process to fail.
-
-        """
-        extension = extension.lstrip(".").lower()
-        msg = "extension must be JSON or TXT"
-        assert (extension == 'json') or (extension == 'txt'), msg
-
         # Determine the filename
-        if not filename:
-            filename = 'Lyrics_' + self.name.replace(' ', '') + '.' + extension
-        filename = sanitize_filename(filename) if sanitize else filename
-
-        # Check if file already exists
-        write_file = False
-        if overwrite or not os.path.isfile(filename):
-            write_file = True
-        elif verbose:
-            msg = "{} already exists. Overwrite?\n(y/n): ".format(filename)
-            if input(msg).lower() == 'y':
-                write_file = True
-
-        # Exit if we won't be saving a file
-        if not write_file:
-            if verbose:
-                print('Skipping file save.\n')
-            return
-
-        # Save the lyrics to a file
-        if extension == 'json':
-            self.to_json(filename, ensure_ascii=ensure_ascii)
+        if filename:
+            alt_filename = None
         else:
-            self.to_text(filename, binary_encoding=binary_encoding)
+            alt_filename = 'Lyrics_' + self.name.replace(' ', '') + '.' + extension
 
-        if verbose:
-            print('Wrote `{}`'.format(filename))
-        return None
+        return super().save_lyrics(alt_filename=alt_filename,
+                                   filename=filename,
+                                   extension=extension,
+                                   overwrite=overwrite,
+                                   binary_encoding=binary_encoding,
+                                   ensure_ascii=ensure_ascii,
+                                   sanitize=sanitize,
+                                   verbose=verbose)
 
     def __str__(self):
         """Return a string representation of the Artist object."""

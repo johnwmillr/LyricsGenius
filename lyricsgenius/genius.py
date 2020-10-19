@@ -38,6 +38,8 @@ class Genius(API, PublicAPI):
             excluded terms with user's. Default excluded terms are listed below.
         public_api (:obj:`bool`, optional): If `True`, performs the operation
             using the public API if the method supports it.
+        retries (:obj:`int`, optional): Number of retries in case of timeouts and
+            errors with a >= 500 response code. By default, requests are only made once.
 
     Attributes:
         verbose (:obj:`bool`, optional): Turn printed messages on or off.
@@ -51,6 +53,8 @@ class Genius(API, PublicAPI):
             excluded terms with user's.
         public_api (:obj:`bool`, optional): If `True`, performs the operation
             using the public API if the method supports it.
+        retries (:obj:`int`, optional): Number of retries in case of timeouts and
+            errors with a >= 500 response code. By default, requests are only made once.
 
     Returns:
         :class:`Genius`
@@ -69,14 +73,17 @@ class Genius(API, PublicAPI):
                  skip_non_songs=True, excluded_terms=None,
                  replace_default_terms=False,
                  public_api=False,
+                 retries=0,
                  ):
         # Genius Client Constructor
+        self.public_api = public_api
 
         super().__init__(
             access_token=access_token,
             response_format=response_format,
             timeout=timeout,
-            sleep_time=sleep_time
+            sleep_time=sleep_time,
+            retries=retries
         )
 
         self.verbose = verbose
@@ -84,14 +91,15 @@ class Genius(API, PublicAPI):
         self.skip_non_songs = skip_non_songs
         self.excluded_terms = excluded_terms
         self.replace_default_terms = replace_default_terms
-        self.public_api = public_api
 
-    def lyrics(self, urlthing, public_api=False):
+    def lyrics(self, urlthing, remove_section_headers=False, public_api=False):
         """Uses BeautifulSoup to scrape song info off of a Genius song URL
 
         Args:
             urlthing (:obj:`str` | :obj:`int`):
                 Song ID or song URL.
+            remove_section_headers (:obj:`bool`, optional):
+                If `True`, removes [Chorus], [Bridge], etc. headers from lyrics.
             public_api (:obj:`bool`, optional): If `True` and :obj:`urlthing` is
                 a song ID, gets the song URL using the public API.
 
@@ -144,7 +152,8 @@ class Genius(API, PublicAPI):
                     print("Couldn't find the lyrics section.")
                 return None
 
-        if self.remove_section_headers:  # Remove [Verse], [Bridge], etc.
+        # Remove [Verse], [Bridge], etc.
+        if self.remove_section_headers or remove_section_headers:
             lyrics = re.sub(r'(\[.*?\])*', '', lyrics)
             lyrics = re.sub('\n{2}', '\n', lyrics)  # Gaps between verses
         return lyrics.strip("\n")
