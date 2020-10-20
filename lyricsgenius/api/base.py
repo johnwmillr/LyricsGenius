@@ -82,7 +82,8 @@ class Sender(object):
         elif response.status_code == 204:
             return 204
         else:
-            raise AssertionError('Response status code was neither 200, nor 204!')
+            raise AssertionError("Response status code was neither 200, nor 204! "
+                                 "It was {}".format(response.status_code))
 
 
 def get_description(e):
