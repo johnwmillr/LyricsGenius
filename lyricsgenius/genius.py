@@ -35,6 +35,8 @@ class Genius(API, PublicAPI):
             as non-lyrics.
         replace_default_terms (:obj:`list`, optional): if True, replaces default
             excluded terms with user's. Default excluded terms are listed below.
+        retries (:obj:`int`, optional): Number of retries in case of timeouts and
+            errors with a >= 500 response code. By default, requests are only made once.
 
     Attributes:
         verbose (:obj:`bool`, optional): Turn printed messages on or off.
@@ -46,6 +48,8 @@ class Genius(API, PublicAPI):
             as non-lyrics.
         replace_default_terms (:obj:`list`, optional): if True, replaces default
             excluded terms with user's.
+        retries (:obj:`int`, optional): Number of retries in case of timeouts and
+            errors with a >= 500 response code. By default, requests are only made once.
 
     Returns:
         :class:`Genius`
@@ -63,14 +67,15 @@ class Genius(API, PublicAPI):
                  verbose=True, remove_section_headers=False,
                  skip_non_songs=True, excluded_terms=None,
                  replace_default_terms=False,
+                 retries=0,
                  ):
         # Genius Client Constructor
-
         super().__init__(
             access_token=access_token,
             response_format=response_format,
             timeout=timeout,
-            sleep_time=sleep_time
+            sleep_time=sleep_time,
+            retries=retries
         )
 
         self.verbose = verbose
@@ -79,12 +84,14 @@ class Genius(API, PublicAPI):
         self.excluded_terms = excluded_terms
         self.replace_default_terms = replace_default_terms
 
-    def lyrics(self, urlthing):
+    def lyrics(self, urlthing, remove_section_headers=False):
         """Uses BeautifulSoup to scrape song info off of a Genius song URL
 
         Args:
             urlthing (:obj:`str` | :obj:`int`):
                 Song ID or song URL.
+            remove_section_headers (:obj:`bool`, optional):
+                If `True`, removes [Chorus], [Bridge], etc. headers from lyrics.
 
         Returns:
             :obj:`str` \\|‌ :obj:`None`:
@@ -135,7 +142,8 @@ class Genius(API, PublicAPI):
                     print("Couldn't find the lyrics section.")
                 return None
 
-        if self.remove_section_headers:  # Remove [Verse], [Bridge], etc.
+        # Remove [Verse], [Bridge], etc.
+        if self.remove_section_headers or remove_section_headers:
             lyrics = re.sub(r'(\[.*?\])*', '', lyrics)
             lyrics = re.sub('\n{2}', '\n', lyrics)  # Gaps between verses
         return lyrics.strip("\n")

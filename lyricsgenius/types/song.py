@@ -147,8 +147,8 @@ class Song(BaseEntity):
             filename += "." + extension
         else:
             alt_filename = "Lyrics_{}_{}.{}".format(self.artist.replace(" ", ""),
-                                                    self.title.replace(" ", ""),
-                                                    extension).lower()
+                                                self.title.replace(" ", ""),
+                                                extension).lower()
 
         return super().save_lyrics(alt_filename=alt_filename,
                                    filename=filename,

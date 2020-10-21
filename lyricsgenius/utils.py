@@ -20,12 +20,39 @@ def sanitize_filename(f):
     return "".join(c for c in f if c.isalnum() or c in keepchars).rstrip()
 
 
-def _convert_to_datetime(f):
+def convert_to_datetime(f):
+    """Converts argument to a datetime object.
+
+    Args:
+        f (:obj:`str`| :obj:`dict`): string or dictionary containing
+            date components.
+
+    Returns:
+        :class:`datetime`: datetime object.
+
+    """
     if f is None:
         return None
 
-    if '-' in f:
+    if isinstance(f, dict):
+        components = f
+        year = str(components['year']) if components.get('year') else None
+        month = str(components['month']).zfill(2) if components.get('month') else None
+        day = str(components['day']).zfill(2) if components.get('day') else None
+        if year and month:
+            date = '{year}-{month}'.format(year=year, month=month)
+            if day:
+                date += '-' + day
+        elif year:
+            date = int(year)
+        else:
+            date = '0000-00-00'
+        f = date
+
+    if f.count('-') == 2:
         date_format = "%Y-%m-%d"
+    elif f.count('-') == 1:
+        date_format = "%Y-%m"
     elif ',' in f:
         date_format = "%B %d, %Y"
     elif f.isdigit():

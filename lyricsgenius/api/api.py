@@ -34,29 +34,42 @@ class API(Sender):
         response_format (:obj:`str`, optional): API response format (dom, plain, html).
         timeout (:obj:`int`, optional): time before quitting on response (seconds).
         sleep_time (:obj:`str`, optional): time to wait between requests.
+        retries (:obj:`int`, optional): Number of retries in case of timeouts and
+            errors with a >= 500 response code. By default, requests are only made once.
 
     Attributes:
         response_format (:obj:`str`, optional): API response format (dom, plain, html).
         timeout (:obj:`int`, optional): time before quitting on response (seconds).
         sleep_time (:obj:`str`, optional): time to wait between requests.
+        retries (:obj:`int`, optional): Number of retries in case of timeouts and
+            errors with a >= 500 response code. By default, requests are only made once.
 
     Returns:
         :class:`API`: An object of the `API` class.
 
     """
 
-    def __init__(self, access_token,
-                 response_format='plain', timeout=5, sleep_time=0.5):
+    def __init__(self,
+                 access_token,
+                 response_format='plain',
+                 timeout=5,
+                 sleep_time=0.5,
+                 retries=0,
+                 ):
         super().__init__(
             access_token=access_token,
             response_format=response_format,
             timeout=timeout,
-            sleep_time=sleep_time
+            sleep_time=sleep_time,
+            retries=retries,
         )
         self._validate_token()
 
     def _validate_token(self):
-        self.annotation(10225840)
+        # Should we make an extra request if the user
+        # is notified anyway in the first request they make?
+        if self.access_token is not None:
+            self.annotation(10225840)
 
     def account(self):
         """Gets details about the current user.
@@ -492,11 +505,15 @@ class PublicAPI(
         response_format (:obj:`str`, optional): API response format (dom, plain, html).
         timeout (:obj:`int`, optional): time before quitting on response (seconds).
         sleep_time (:obj:`str`, optional): time to wait between requests.
+        retries (:obj:`int`, optional): Number of retries in case of timeouts and
+            errors with a >= 500 response code. By default, requests are only made once.
 
     Attributes:
         response_format (:obj:`str`, optional): API response format (dom, plain, html).
         timeout (:obj:`int`, optional): time before quitting on response (seconds).
         sleep_time (:obj:`str`, optional): time to wait between requests.
+        retries (:obj:`int`, optional): Number of retries in case of timeouts and
+            errors with a >= 500 response code. By default, requests are only made once.
 
     Returns:
         :class:`PublicAPI`: An object of the `PublicAPI` class.
@@ -508,6 +525,7 @@ class PublicAPI(
         response_format='plain',
         timeout=5,
         sleep_time=0.5,
+        retries=0,
         **kwargs
     ):
         # Genius PublicAPI Constructor
@@ -515,5 +533,6 @@ class PublicAPI(
             response_format=response_format,
             timeout=timeout,
             sleep_time=sleep_time,
+            retries=retries,
             **kwargs
         )

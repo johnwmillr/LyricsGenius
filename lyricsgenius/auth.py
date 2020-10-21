@@ -1,8 +1,8 @@
 from urllib.parse import urlencode
 import webbrowser
 
-from lyricsgenius.utils import parse_redirected_url
-from lyricsgenius.api import Sender
+from .utils import parse_redirected_url
+from .api import Sender
 
 
 class OAuth2(Sender):

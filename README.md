@@ -70,6 +70,13 @@ Save the artist's songs to a JSON file:
 artist.save_lyrics()
 ```
 
+Searching for an album and saving it:
+
+```python
+album = genius.search_album("The Party", "Andy Shauf")
+album.save_lyrics()
+```
+
 There are various options configurable as parameters within the `Genius` class:
 
 ```python
@@ -86,10 +93,11 @@ export GENIUS_ACCESS_TOKEN="my_access_token_here"
 python3 -m lyricsgenius --help
 ```
 
-Search for and save lyrics to a given song:
+Search for and save lyrics to a given song and album:
 
 ```bash
 python3 -m lyricsgenius song "Begin Again" "Andy Shauf" --save
+python3 -m lyricsgenius album "The Party" "Andy Shauf" --save
 ```
 
 Search for five songs by 'The Beatles' and save the lyrics:
