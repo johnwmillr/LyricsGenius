@@ -27,7 +27,7 @@ class TestEndpoints(unittest.TestCase):
 
         # Pass no title and ID
         with self.assertRaises(AssertionError):
-            genius.song()
+            genius.search_song()
 
         # Search by song ID
         response = genius.search_song(song_id=1)
