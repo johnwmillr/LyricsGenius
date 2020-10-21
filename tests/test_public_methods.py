@@ -4,6 +4,7 @@ from lyricsgenius import PublicAPI
 
 client = PublicAPI()
 
+
 class TestAlbumMethods(unittest.TestCase):
 
     @classmethod
