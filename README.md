@@ -11,20 +11,7 @@
 `lyricsgenius`'s full documentation is online at [Read the Docs](https://lyricsgenius.readthedocs.io/en/master/).
 
 ## Setup
-Genius's API has two interaces: the developer's API and the tokenfree, undocumented public API. The developer's API has limited endpoints and needs a token (client- or user access token). On the other hand the public API is not limited and needs no token to work.
-There are three ways to use the package:
-* **With a user access token**: User access tokens provide the most functionality but they are really useful if you're planning to use Genius's [Web Annotator](https://genius.com/web-annotator). If you're not planning to use it (or don't even know what it is), that leaves you with using a client access token or no tokens.
-* **With a client access token**: With a client access token you can get information using both the developers and the public API.
-* **Without an access token**: Without an access token you won't be able to get information using the developers API, but the public API -which doesn't need a token- covers all of the developers API endpoints and many more! So you'll be okay.
-
-Here's what you need to do for each approach:
-- **To Get a User Access Tokens**:
-    You need to sign up/log in on Genius, [create an app](http://genius.com/api-clients) and get a user token using OAuth2 (our [OAuth2](https://lyricsgenius.readthedocs.io/en/latest/reference/auth.html#auth) class can help you with that).
-- **To Get a Client Access Token**:
-    You need to sign up/log in on Genius and [create an app](http://genius.com/api-clients). Then on your app's page, click *GENERATE CLIENT ACCESS TOKEN* and you'll get a client access token.
-- **No Token**:
-    No need to do anything.
-
+Before using this package you'll need to sign up for a (free) account that authorizes access to [the Genius API](http://genius.com/api-clients). The Genius account provides a `access_token` that is required by the package. See the [Usage section](https://github.com/johnwmillr/LyricsGenius#usage) below for examples.
 
 ## Installation
 `lyricsgenius` requires Python 3.
@@ -46,7 +33,7 @@ Import the package and search for songs by a given artist:
 
 ```python
 import lyricsgenius
-genius = lyricsgenius.Genius(token) # or Genius()
+genius = lyricsgenius.Genius(token)
 artist = genius.search_artist("Andy Shauf", max_songs=3, sort="title")
 print(artist.songs)
 ```
@@ -63,6 +50,8 @@ Search for a single song by the same artist:
 
 ```python
 song = artist.song("To You")
+# or:
+# song = genius.search_song("To You", artist.name)
 print(song.lyrics)
 ```
 
@@ -74,6 +63,7 @@ artist.add_song(song)
 # artist.add_song("To You")
 ```
 
+Save the artist's songs to a JSON file:
 Save the artist's songs to a JSON file:
 
 ```python
@@ -87,19 +77,12 @@ genius.verbose = False # Turn off status messages
 genius.remove_section_headers = True # Remove section headers (e.g. [Chorus]) from lyrics when searching
 genius.skip_non_songs = False # Include hits thought to be non-songs (e.g. track lists)
 genius.excluded_terms = ["(Remix)", "(Live)"] # Exclude songs with these words in their title
-genius.public_api = False # Use the public API whenever possible (useful for token-less users)
 ```
-Many methods have a `public_api` parameter that makes your client make the call using the public API. But as it can be inconvenient to set this parameter every time there is one, you can set `genius.public_api=True` and all methods that support it, will automatically make the call using the public API.
 
 You can also call the package from the command line:
 
-With a token:
 ```bash
-export GENIUS_ACCESS_TOKEN="my_access_token_here"  # if you plan to use a token
-python3 -m lyricsgenius --help
-```
-Without a token:
-```bash
+export GENIUS_ACCESS_TOKEN="my_access_token_here"
 python3 -m lyricsgenius --help
 ```
 
@@ -109,10 +92,10 @@ Search for and save lyrics to a given song:
 python3 -m lyricsgenius song "Begin Again" "Andy Shauf" --save
 ```
 
-Search for five songs by 'The Beatles' and save the lyrics without a token:
+Search for five songs by 'The Beatles' and save the lyrics:
 
 ```bash
-python3 -m lyricsgenius artist "The Beatles" --max-songs 5 --save -tl
+python3 -m lyricsgenius artist "The Beatles" --max-songs 5 --save
 ```
 
 ## Example projects

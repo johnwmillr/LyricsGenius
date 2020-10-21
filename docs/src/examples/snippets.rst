@@ -5,7 +5,6 @@ Snippets
 ==================
 Here are some snippets showcasing how the library can be used.
 
-- `Getting artist using API, PublicAPI and Genius`_
 - `Getting song lyrics by URL or ID`_
 - `All the songs of an artist`_
 - `Artist's least popular song`_
@@ -14,51 +13,10 @@ Here are some snippets showcasing how the library can be used.
 - `Getting the lyrics for all songs of a search`_
 - `Authenticating using OAuth2`_
 
-Getting artist using API, PublicAPI and Genius
-----------------------------------------------
-The following snippet will be the same for all
-methods that are available in :class:`API` and :class:`PublicAPI`
-(or methods that have a ``public_api`` parameter
-if you're using :class:`Genius`).
-
-.. code:: python
-
-    from lyricsgenius import API, PublicAPI, Genius
-
-    api = API(token)
-    public = PublicAPI()
-    genius = Genius(token)
-
-    # API
-    api.artist(1665)
-
-    # PublicAPI
-    public.artist(1665)
-
-    # Genius
-    # can get it using both API and PublicAPI
-    genius.artist(1665)
-    genius.artist(1665, public_api=True)
-
-Note that if you use :class:`Genius` without a token, you won't be able
-to use the developers API. So you'll either have to set ``public_api=True`` if
-the method supports it, or set ``Genius.public_api`` to ``True`` to have
-all the calls that support it be made using the public API.
-
-.. code:: python
-
-    genius = Genius(public_api=True)
-
-    # the following calls will be equivalent
-    genius.artist(1665)
-    genius.artist(1665, public_api=True)
-
 
 Getting song lyrics by URL or ID
 --------------------------------
 .. code:: python
-
-    from lyricsgenius import Genius
 
     genius = Genius(token)
 
@@ -76,8 +34,6 @@ All the songs of an artist
 
 .. code:: python
 
-    from lyricsgenius import Genius
-
     genius = Genius(token)
     genius.search_artist('Andy Shauf')
     artist.save_lyrics()
@@ -94,12 +50,10 @@ Artist's least popular song
     songs = []
     while page:
         request = genius.artist_songs(artist._id,
-                                          sort='popularity',
-                                          per_page=50,
-                                          page=page,
-                                          # public_api=Tru
-                                          )
-        # public_api=True will make the call using the public API 
+                                      sort='popularity',
+                                      per_page=50,
+                                      page=page,
+                                      )
         songs.extend(request['songs'])
         page = request['next_page']
     least_popular_song = genius.search_song(songs[-1]['title'], artist.name)
@@ -129,8 +83,6 @@ Using :meth:`search_lyrics
 <Genius.search_lyrics>`:
 
 .. code:: python
-    
-    from lyricsgenius import Genius
 
     genius = Genius(token)
 
@@ -141,8 +93,6 @@ Using :meth:`search_lyrics
 Using :meth:`search_all <Genius.search_all>`:
 
 .. code:: python
-    
-    from lyricsgenius import Genius
 
     genius = Genius(token)
 
@@ -154,8 +104,6 @@ Using :meth:`search_all <Genius.search_all>`:
 Getting the lyrics for all songs of a search
 --------------------------------------------
 .. code:: python
-
-    from lyricsgenius import Genius
 
     genius = Genius(token)
     lyrics = []

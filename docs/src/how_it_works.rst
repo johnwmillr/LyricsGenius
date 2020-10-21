@@ -37,26 +37,9 @@ Genius Class
 ************
 The :ref:`genius` class inherits :class:`API` and :class:`PublicAPI` and
 also provides methods for getting lyrics. This class is a high-level
-interface that can be used with/without a token. It also convenient
-access to methods that are available through both APIs. For example both
-APIs have an ``artist()`` method and the Genius class provides an easy
-way to access both of them. As for the methods in the developers API,
-you will need a token for those; and for the PublicAPI methods it won't
-matter if there is a token or not. This is how you'd access an
-overlapping method using the Genius class:
-
-.. code:: python
-
-    genius = Genius(token)
-
-    # API
-    genius.artist(1665)
-
-    # PublicAPI
-    genius.artist(1665, public_api=True)
-
-Also have a look at the :ref:`snippets` to read about the
-:attr:`Genius.public_api` attribute and more.
+interface that provides methods from the two API classes mentioned above
+alongside useful methods like :meth:`Genius.search_song` to access song
+lyrics and more.
 
 
 Lyrics

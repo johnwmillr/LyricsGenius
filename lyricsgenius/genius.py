@@ -36,8 +36,6 @@ class Genius(API, PublicAPI):
             as non-lyrics.
         replace_default_terms (:obj:`list`, optional): if True, replaces default
             excluded terms with user's. Default excluded terms are listed below.
-        public_api (:obj:`bool`, optional): If `True`, performs the operation
-            using the public API if the method supports it.
 
     Attributes:
         verbose (:obj:`bool`, optional): Turn printed messages on or off.
@@ -49,8 +47,6 @@ class Genius(API, PublicAPI):
             as non-lyrics.
         replace_default_terms (:obj:`list`, optional): if True, replaces default
             excluded terms with user's.
-        public_api (:obj:`bool`, optional): If `True`, performs the operation
-            using the public API if the method supports it.
 
     Returns:
         :class:`Genius`
@@ -68,7 +64,6 @@ class Genius(API, PublicAPI):
                  verbose=True, remove_section_headers=False,
                  skip_non_songs=True, excluded_terms=None,
                  replace_default_terms=False,
-                 public_api=False,
                  ):
         # Genius Client Constructor
 
@@ -84,16 +79,13 @@ class Genius(API, PublicAPI):
         self.skip_non_songs = skip_non_songs
         self.excluded_terms = excluded_terms
         self.replace_default_terms = replace_default_terms
-        self.public_api = public_api
 
-    def lyrics(self, urlthing, public_api=False):
+    def lyrics(self, urlthing):
         """Uses BeautifulSoup to scrape song info off of a Genius song URL
 
         Args:
             urlthing (:obj:`str` | :obj:`int`):
                 Song ID or song URL.
-            public_api (:obj:`bool`, optional): If `True` and :obj:`urlthing` is
-                a song ID, gets the song URL using the public API.
 
         Returns:
             :obj:`str` \\|‌ :obj:`None`:
@@ -113,7 +105,7 @@ class Genius(API, PublicAPI):
 
         """
         if isinstance(urlthing, int):
-            url = self.song(urlthing, public_api=public_api)['song']['url']
+            url = self.song(urlthing)['song']['url']
         else:
             url = urlthing
 
@@ -248,15 +240,13 @@ class Genius(API, PublicAPI):
         result_artist = self._clean_str(result['primary_artist']['name'])
         return title_is_match and result_artist == self._clean_str(artist)
 
-    def song_annotations(self, song_id, text_format=None, public_api=False):
+    def song_annotations(self, song_id, text_format=None):
         """Return song's annotations with associated fragment in list of tuple.
 
         Args:
             song_id (:obj:`int`): song ID
             text_format (:obj:`str`, optional): Text format of the results
                 ('dom', 'html', 'markdown' or 'plain').
-            public_api (:obj:`bool`, optional): If `True`, performs the search
-                using the public API endpoint.
 
         Returns:
             :obj:`list`: list of tuples(fragment, [annotations])
@@ -269,8 +259,7 @@ class Genius(API, PublicAPI):
 
         """
         referents = self.referents(song_id=song_id,
-                                   text_format=text_format,
-                                   public_api=public_api)
+                                   text_format=text_format)
 
         all_annotations = []  # list of tuples(fragment, annotations[])
         for r in referents["referents"]:
@@ -281,202 +270,13 @@ class Genius(API, PublicAPI):
             all_annotations.append((fragment, annotations))
         return all_annotations
 
-    def annotation(self, annotation_id, text_format=None, public_api=False):
-        """Searches songs hosted on Genius.
-
-        Args:
-            annotation_id (:obj:`int`): annotation ID
-            text_format (:obj:`str`, optional): Text format of the results
-                ('dom', 'html', 'markdown' or 'plain').
-            public_api (:obj:`bool`, optional): If `True`, performs the search
-                using the public API endpoint.
-
-        Returns:
-            :obj:`dict`
-
-        Note:
-            Using the public API will return the same annotation
-            and referent but with more fields:
-
-            - API: Annotation will have 19 fields and the referent 15.
-            - Public API: Annotation will have 32 fields and referent 20.
-
-        """
-
-        if public_api or self.public_api:
-            return super(PublicAPI, self).annotation(annotation_id, text_format)
-        else:
-            if self.access_token is None:
-                raise TokenRequiredError(public_api=True)
-            return super().annotation(annotation_id, text_format)
-
-    def artist(self, artist_id, text_format=None, public_api=False):
-        """Gets data for a specific artist.
-
-        Args:
-            artist_id (:obj:`int`): Genius artist ID
-            text_format (:obj:`str`, optional): Text format of the results
-                ('dom', 'html', 'markdown' or 'plain').
-            public_api (:obj:`bool`, optional): If `True`, performs the search
-                using the public API endpoint.
-
-        Returns:
-            :obj:`dict`
-
-        Note:
-            Using the public API will return the same artist but with more fields:
-
-            - API: Result will have 19 fields.
-            - Public API: Result will have 24 fields.
-
-        """
-        if public_api or self.public_api:
-            return super(PublicAPI, self).artist(artist_id, text_format)
-        else:
-            if self.access_token is None:
-                raise TokenRequiredError(public_api=True)
-            return super().artist(artist_id, text_format)
-
-    def artist_songs(self, artist_id, per_page=None, page=None,
-                     sort='title', public_api=False):
-        """Gets artist's songs.
-
-        Args:
-            artist_id (:obj:`int`): Genius artist ID
-            sort (:obj:`str`, optional): Sorting preference.
-                Either based on 'title' or 'popularity'.
-            per_page (:obj:`int`, optional): Number of results to
-                return per request. It can't be more than 50.
-            page (:obj:`int`, optional): Paginated offset (number of the page).
-            public_api (:obj:`bool`, optional): If `True`, performs the search
-                using the public API endpoint.
-
-        Returns:
-            :obj:`dict`
-
-        Note:
-            Using the public API will return the same songs but with more fields:
-
-            - API: Song will have 17 fields.
-            - Public API: Song will have 21 fields.
-
-        """
-        if public_api or self.public_api:
-            return super(PublicAPI, self).artist_songs(artist_id=artist_id,
-                                                       per_page=per_page,
-                                                       page=page,
-                                                       sort=sort)
-        else:
-            if self.access_token is None:
-                raise TokenRequiredError(public_api=True)
-            return super().artist_songs(artist_id=artist_id,
-                                        per_page=per_page,
-                                        page=page,
-                                        sort=sort)
-
-    def referents(self, song_id=None, web_page_id=None,
-                  created_by_id=None, per_page=None,
-                  page=None, text_format=None, public_api=False):
-        """Gets item's referents
-
-        Args:
-            song_id (:obj:`int`, optional): song ID
-            web_page_id (:obj:`int`, optional): web page ID
-            created_by_id (:obj:`int`, optional): User ID of the contributer
-                who created the annotation(s).
-            per_page (:obj:`int`, optional): Number of results to
-                return per page. It can't be more than 50.
-            text_format (:obj:`str`, optional): Text format of the results
-                ('dom', 'html', 'markdown' or 'plain').
-            public_api (:obj:`bool`, optional): If `True`, performs the search
-                using the public API endpoint.
-
-        Returns:
-            :obj:`dict`
-
-        Note:
-            Using the public API will return the same referents but with more fields:
-
-            - API: Referent will have 15 fields.
-            - Public API: Referent will have 20 fields.
-
-        """
-        if public_api or self.public_api:
-            return super(PublicAPI, self).referents(song_id, web_page_id, created_by_id,
-                                                    per_page, page, text_format)
-        else:
-            if self.access_token is None:
-                raise TokenRequiredError(public_api=True)
-            return super().referents(song_id, web_page_id, created_by_id,
-                                     per_page, page, text_format)
-
-    def song(self, song_id, text_format=None, public_api=False):
-        """Gets data for a specific song.
-
-        Args:
-            song_id (:obj:`int`): Genius song ID
-            text_format (:obj:`str`, optional): Text format of the results
-                ('dom', 'html', 'markdown' or 'plain').
-            public_api (:obj:`bool`, optional): If `True`, performs the search
-                using the public API endpoint.
-
-        Returns:
-            :obj:`dict`
-
-        Note:
-            Using the public API will return the same song but with more fields:
-
-            - API: Song will have 39 fields.
-            - Public API: Song will have 68 fields.
-
-        """
-        if public_api or self.public_api:
-            return super(PublicAPI, self).song(song_id, text_format)
-        else:
-            if self.access_token is None:
-                raise TokenRequiredError(public_api=True)
-            return super().song(song_id, text_format)
-
-    def search_songs(self, search_term, per_page=None, page=None, public_api=False):
-        """Searches songs hosted on Genius.
-
-        Args:
-            search_term (:obj:`str`): A term to search on Genius.
-            per_page (:obj:`int`, optional): Number of results to
-                return per page. It can't be more than 5 for this method.
-            page (:obj:`int`, optional): Number of the page.
-            public_api (:obj:`bool`, optional): If `True`, performs the search
-                using the public API endpoint.
-
-        Returns:
-            :obj:`dict`
-
-        Note:
-            Using the API or the public API returns the same results. The only
-            difference is in the number of values each API returns.
-
-            - API: Each song has 17 fields and songs are
-              accessable through ``response['hits']``
-            - Public API: Each song has 21 fields and songs are accessible
-              through ``response['sections'][0]['hits']``
-
-        """
-        if public_api or self.public_api:
-            return super(PublicAPI, self).search_songs(search_term, per_page, page)
-        else:
-            if self.access_token is None:
-                raise TokenRequiredError(public_api=True)
-            return super().search_songs(search_term, per_page, page)
-
-    def search_song(self, title, artist="", get_full_info=True, public_api=False):
+    def search_song(self, title, artist="", get_full_info=True):
         """Searches for a specific song and gets its lyrics.
 
         Args:
             title (:obj:`str`): Song title to search for.
             artist (:obj:`str`, optional): Name of the artist.
             get_full_info (:obj:`bool`, optional): Get full info for each song (slower).
-            public_api (:obj:`bool`, optional): If `True`, performs the search
-                using the public API endpoint.
 
         Returns:
             :class:`Song <types.Song>` \\| :obj:`None`: On success,
@@ -531,7 +331,7 @@ class Genius(API, PublicAPI):
         # Download full song info (an API call) unless told not to by user
         song_info = result
         if get_full_info:
-            song_info.update(self.song(result['id'])['song'], public_api=public_api)
+            song_info.update(self.song(result['id'])['song'])
         lyrics = self.lyrics(song_info['url'])
 
         # Skip results when URL is a 404 or lyrics are missing
@@ -553,7 +353,7 @@ class Genius(API, PublicAPI):
                       allow_name_change=True,
                       artist_id=None,
                       include_features=False,
-                      public_api=False):
+                      ):
         """Searches for a specific artist and gets their songs.
 
         This method looks for the artist by the name or by the
@@ -574,8 +374,6 @@ class Genius(API, PublicAPI):
             artist_id (:obj:`int`, optional): Allows user to pass an artist ID.
             include_features (:obj:`bool`, optional): If True, includes tracks
                 featuring the artist.
-            public_api (:obj:`bool`, optional): If `True`, performs the search
-                using the public API endpoint.
 
         Returns:
             :class:`Artist <types.Artist>`: Artist object containing
@@ -622,7 +420,7 @@ class Genius(API, PublicAPI):
         if not artist_id:
             return None
 
-        artist_info = self.artist(artist_id, public_api=public_api)
+        artist_info = self.artist(artist_id)
         found_name = artist_info['artist']['name']
         if found_name != artist_name and allow_name_change:
             if self.verbose:
@@ -639,7 +437,7 @@ class Genius(API, PublicAPI):
                                               per_page=per_page,
                                               page=page,
                                               sort=sort,
-                                              public_api=public_api)
+                                              )
 
             # Loop through each song on page of search results
             for song_info in songs_on_page['songs']:
@@ -658,13 +456,14 @@ class Genius(API, PublicAPI):
                 # Create the Song object from lyrics and metadata
                 lyrics = self.lyrics(song_info['url'])
                 if get_full_info:
-                    info = self.song(song_info['id'], public_api=public_api)
+                    info = self.song(song_info['id'])
                 else:
                     info = {'song': song_info}
                 song = Song(info, lyrics)
 
                 # Attempt to add the Song to the Artist
-                result = artist.add_song(song, verbose=False,
+                result = artist.add_song(song,
+                                         verbose=False,
                                          include_features=include_features)
                 if result is not None and self.verbose:
                     print('Song {n}: "{t}"'.format(n=artist.num_songs,

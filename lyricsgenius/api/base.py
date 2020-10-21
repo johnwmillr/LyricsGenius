@@ -1,10 +1,7 @@
 import time
-from functools import wraps
 
 import requests
 from requests.exceptions import HTTPError, Timeout
-
-from lyricsgenius.exceptions import TokenRequiredError
 
 
 class Sender(object):
@@ -26,7 +23,7 @@ class Sender(object):
             'application': 'LyricsGenius',
             'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'
         }
-        self.access_token = 'Bearer ' + access_token if access_token else None
+        self.access_token = 'Bearer ' + access_token
         self.response_format = response_format.lower()
         self.timeout = timeout
         self.sleep_time = sleep_time
@@ -45,7 +42,7 @@ class Sender(object):
             header = None
         else:
             uri = self.API_ROOT
-            header = {'Authorization': self.access_token}
+            header = {'authorization': self.access_token}
         uri += path
 
         params_ = params_ if params_ else {}
@@ -81,19 +78,3 @@ class Sender(object):
             return 204
         else:
             raise AssertionError('Response status code was neither 200, nor 204!')
-
-
-def check_token(func):
-
-    @wraps(func)
-    def wrapper(self, *args, **kwargs):
-        if self.access_token is None:
-            #    public_method = "public_api" in func.__code__.co_varnames
-            #    if public_method:
-            #        if kwargs.get("public_api", False) is False \
-            #                and getattr(self, "public_api", False) is False:
-            #            raise TokenRequiredError(public_method)
-            #    else:
-            raise TokenRequiredError()
-        return func(self, *args, **kwargs)
-    return wrapper

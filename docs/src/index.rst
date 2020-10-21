@@ -52,11 +52,12 @@ file:
 
    from lyricsgenius import Genius
 
-   genius = Genius(token)  # the token is optional
+   genius = Genius(token)
    genius.search_artist('Andy Shauf')
    artist.save_lyrics()
 
-Head over to :ref:`setup` to get started.
+But before using the library you will need to get an access token. Head over
+to :ref:`setup` to get started.
 
 .. toctree::
    :maxdepth: 1

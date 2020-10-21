@@ -22,17 +22,15 @@ def main(args=None):
                         help="Specify number of songs when searching for artist")
     parser.add_argument("-q", "--quiet", action="store_true",
                         help="Turn off the API verbosity")
-    parser.add_argument("-tl", "--tokenless", action="store_true",
-                        help="Token-less Genius (makes the calls using the public API)")
     args = parser.parse_args()
 
     # Create an instance of the Genius class
     access_token = os.environ.get("GENIUS_ACCESS_TOKEN", None)
+    msg = "Must declare environment variable: GENIUS_ACCESS_TOKEN"
+    assert access_token, msg
     api = Genius(access_token)
     if args.quiet:
         api.verbose = False
-    if args.tokenless:
-        api.public_api = True
 
     # Handle the command-line inputs
     if args.search_type == "song":

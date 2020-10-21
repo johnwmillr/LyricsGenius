@@ -8,10 +8,9 @@ All public objects are documented in these sections.
 ================== =============================
 :ref:`api`         API and PublicAPI classes
 :ref:`auth`        OAuth2 class
-:ref:`exceptions`  Exceptions
 :ref:`Genius`      Genius class
 :ref:`sender`      Request sender
-:ref:`types`	    Types
+:ref:`types`	   Types
 :ref:`utils`       Utility functions
 ================== =============================
 

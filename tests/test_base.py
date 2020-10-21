@@ -2,9 +2,6 @@ import unittest
 
 from requests.exceptions import HTTPError
 
-from lyricsgenius import Genius
-from lyricsgenius.exceptions import TokenRequiredError
-
 try:
     from .test_genius import genius
 except ModuleNotFoundError:
@@ -25,7 +22,3 @@ class TestAPIBase(unittest.TestCase):
             status_code = e.args[0]
 
         self.assertEqual(status_code, 404)
-
-    def test_check_token(self):
-        with self.assertRaises(TokenRequiredError):
-            Genius().account()

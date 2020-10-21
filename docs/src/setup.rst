@@ -3,30 +3,11 @@
 
 Setup
 =====
-Genius's API has two interaces: the developer's API and the tokenfree,
-undocumented public API. The developer's API has limited endpoints and
-needs a token (client- or user access token). On the other hand the
-public API is not limited and needs no token to work. There are three
-ways to use the package:
-
--  **With a user access token**: User access tokens provide the most
-   functionality but they are really useful if you're planning to use
-   Genius's `Web Annotator`_. If you're not planning to use it (or don't
-   even know what it is), that leaves you with using a client access
-   token or no tokens.
--  **With a client access token**: With a client access token you can
-   get information using both the developers and the public API.
--  **Without an access token**: Without an access token you won't be
-   able to get information using the developers API, but the public API
-   -which doesn't need a token- covers all of the developers API
-   endpoints and many more! So you'll be okay.
-
-If you don't plan to use an access token, you can skip to `Installation`_
-
+Before we start installing the package, we'll need to get an access token.
 
 Authorization
 -------------
-First you’ll need to sign up for a -free- account
+First you’ll need to sign up for a (free) account
 that authorizes access to `the Genius API`_. After signing up/
 logging in to your account, head out to the API section on Genius
 and `create a new API client`_. After creating your client, you can
