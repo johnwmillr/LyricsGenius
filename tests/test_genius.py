@@ -25,6 +25,14 @@ class TestEndpoints(unittest.TestCase):
         response = genius.search_song('')
         self.assertIsNone(response)
 
+        # Pass no title and ID
+        with self.assertRaises(AssertionError):
+            genius.song()
+
+        # Search by song ID
+        response = genius.search_song(song_id=1)
+        self.assertIsNotNone(response)
+
         # Exact match exact search
         response = genius.search_song(self.song_title_only)
         self.assertTrue(response.title.lower() == self.song_title_only.lower())
