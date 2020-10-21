@@ -16,7 +16,6 @@ from bs4 import BeautifulSoup
 
 from .types import Artist, Song
 from .api import API, PublicAPI
-from .exceptions import TokenRequiredError
 
 
 class Genius(API, PublicAPI):
