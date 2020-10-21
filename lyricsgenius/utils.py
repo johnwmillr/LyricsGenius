@@ -1,6 +1,7 @@
 """utility functions"""
 
 import re
+import os
 from datetime import datetime
 from urllib.parse import parse_qs, urlparse
 
@@ -90,3 +91,20 @@ def parse_redirected_url(url, flow):
         raise KeyError("Multiple values for {}!".format(flow))
 
     return code[0]
+
+
+def auth_from_environment():
+    """Gets credentials from environment variables.
+
+    Uses the following env vars: ``GENIUS_CLIENT_ID``,
+    ``GENIUS_REDIRECT_URI`` and ``GENIUS_CLIENT_SECRET``.
+
+    Returns:
+        :obj:`tuple`: client ID, redirect URI and client secret.
+        Replaces variables that are not present with :obj:`None`.
+
+    """
+    client_id = os.environ.get('GENIUS_CLIENT_ID')
+    redirect_uri = os.environ.get('GENIUS_REDIRECT_URI')
+    client_secret = os.environ.get('GENIUS_CLIENT_SECRET')
+    return client_id, redirect_uri, client_secret

@@ -29,11 +29,22 @@ pip install git+https://github.com/johnwmillr/LyricsGenius.git
 ```
 
 ## Usage
-Import the package and search for songs by a given artist:
+Import the package and initiate Genius:
 
 ```python
 import lyricsgenius
 genius = lyricsgenius.Genius(token)
+```
+
+If you have an environment variable called `GENIUS_ACCESS_TOKEN`, the package wil use that if you pass no token:
+
+```python
+genius = Genius()
+```
+
+Search for songs by a given artist:
+
+```python
 artist = genius.search_artist("Andy Shauf", max_songs=3, sort="title")
 print(artist.songs)
 ```

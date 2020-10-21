@@ -1,6 +1,10 @@
 import unittest
 
-from lyricsgenius.utils import parse_redirected_url, sanitize_filename
+from lyricsgenius.utils import (
+    parse_redirected_url,
+    sanitize_filename,
+    auth_from_environment
+)
 try:
     from .test_genius import genius
 except ModuleNotFoundError:
@@ -31,6 +35,10 @@ class TestUtils(unittest.TestCase):
         code = 'test'
         r = parse_redirected_url(redirected, flow)
         self.assertEqual(r, code)
+
+    def test_auth_from_environment(self):
+        credentials = auth_from_environment()
+        self.asserTrue(all(credentials))
 
     @classmethod
     def tearDownClass(cls):

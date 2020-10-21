@@ -1,5 +1,5 @@
 os: linux
-dist: focal
+dist: xenial
 group: edge
 arch: arm64-graviton2
 virt: lxd

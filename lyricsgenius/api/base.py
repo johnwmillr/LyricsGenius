@@ -1,4 +1,5 @@
 import time
+import os
 
 import requests
 from requests.exceptions import HTTPError, Timeout
@@ -24,6 +25,8 @@ class Sender(object):
             'application': 'LyricsGenius',
             'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'
         }
+        if access_token is None:
+            access_token = os.environ.get('GENIUS_ACCESS_TOKEN')
         self.access_token = 'Bearer ' + access_token if access_token else None
         self.response_format = response_format.lower()
         self.timeout = timeout

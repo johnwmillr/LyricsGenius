@@ -126,6 +126,16 @@ LyricsGenius provides two class methods
 the aforementioned flow. Visit the `Authentication section`_ in the
 Genius API documentation read more about the code and the token flow.
 
+You'll need the client ID and the redirect URI for a client-only app.
+For the full-code exchange you'll also need the client secret. The package
+can get them for using these environment variables:
+``GENIU_CLIENT_ID``, ``GENIUS_REDIRECT_URI``, ``GENIUS_CLIENT_SECRET``
+
+.. code:: python
+
+    import lyricsgenius as lg
+
+    client_id, redirect_uri, client_secret = lg.auth_from_environment() 
 
 Authenticating yourself
 ^^^^^^^^^^^^^^^^^^^^^^^
