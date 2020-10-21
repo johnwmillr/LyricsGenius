@@ -14,7 +14,7 @@ from string import punctuation
 import requests
 from bs4 import BeautifulSoup
 
-from .types import Artist, Song
+from .types import Album, Artist, Song
 from .api import API, PublicAPI
 
 
@@ -269,13 +269,95 @@ class Genius(API, PublicAPI):
             all_annotations.append((fragment, annotations))
         return all_annotations
 
-    def search_song(self, title, artist="", get_full_info=True):
+    def search_album(self, name=None, artist="",
+                     album_id=None, get_full_info=True, text_format=None):
+        """Searches for a specific album and gets its songs.
+
+        You must pass either a :obj:`name` or an :obj:`album_id`.
+
+        Args:
+            name (:obj:`str`, optional): Album name to search for.
+            artist (:obj:`str`, optional): Name of the artist.
+            album_id (:obj:`int`, optional): Album ID.
+            get_full_info (:obj:`bool`, optional): Get full info
+                for the album (slower if no album_id present).
+            text_format (:obj:`bool`, optional): If ``True``,
+                gets each song's lyrics.
+
+        Returns:
+            :class:`Album <types.Album>` \\| :obj:`None`: On success,
+            the album object is returned, otherwise `None`.
+
+        Tip:
+            Set :attr:`Genius.verbose` to `True` to read why the search fails.
+
+        Examples:
+            .. code:: python
+
+                genius = Genius(token)
+                album = genius.search_album("Andy Shauf", "The Party")
+                print(album.name)
+
+        """
+        msg = "You must pass either a `name` or an `album_id`."
+        assert any([name, album_id]), msg
+
+        if self.verbose and name:
+            if artist:
+                print('Searching for "{s}" by {a}...'.format(s=name, a=artist))
+            else:
+                print('Searching for "{s}"...'.format(s=name))
+
+        if album_id:
+            album_info = self.album(album_id, text_format).get('album')
+        else:
+            search_term = "{s} {a}".format(s=name, a=artist).strip()
+            response = self.search_all(search_term)
+            album_info = self._get_item_from_search_response(response, name,
+                                                             type_="album",
+                                                             result_type="name")
+
+        # Exit search if there were no results returned from API
+        # Otherwise, move forward with processing the search results
+        if album_info is None:
+            if self.verbose and name:
+                print("No results found for: '{s}'".format(s=search_term))
+            return None
+
+        album_id = album_info['id']
+
+        songs = []
+        next_page = 1
+        while next_page:
+            tracks = self.album_tracks(album_id=album_id,
+                                       per_page=50,
+                                       page=next_page,
+                                       text_format=text_format)
+            for track in tracks['tracks']:
+                song_info = track['song']
+                song_lyrics = self.lyrics(song_info['url'])
+                song = Song(self, song_info, song_lyrics)
+                songs.append(song)
+
+            next_page = tracks['next_page']
+
+        if album_id is None and get_full_info is True:
+            new_info = self.album(album_id, text_format=text_format)['album']
+            album_info.update(new_info)
+
+        return Album(self, album_info, songs)
+
+    def search_song(self, title=None, artist="", song_id=None,
+                    get_full_info=True):
         """Searches for a specific song and gets its lyrics.
+
+        You must pass either a :obj:`title` or a :obj:`song_id`.
 
         Args:
             title (:obj:`str`): Song title to search for.
             artist (:obj:`str`, optional): Name of the artist.
             get_full_info (:obj:`bool`, optional): Get full info for each song (slower).
+            song_id (:obj:`int`, optional): Song ID.
 
         Returns:
             :class:`Song <types.Song>` \\| :obj:`None`: On success,
@@ -294,26 +376,34 @@ class Genius(API, PublicAPI):
                 print(song.lyrics)
 
         """
-        if self.verbose:
+        msg = "You must pass either a `title` or a `song_id`."
+        if title is None and song_id is None:
+            assert any([title, song_id]), msg
+
+        if self.verbose and title:
             if artist:
                 print('Searching for "{s}" by {a}...'.format(s=title, a=artist))
             else:
                 print('Searching for "{s}"...'.format(s=title))
-        search_term = "{s} {a}".format(s=title, a=artist).strip()
-        response = self.search_all(search_term)
 
-        # Otherwise, move forward with processing the search results
-        result = self._get_item_from_search_response(response, title, type_="song",
-                                                     result_type="title")
+        if song_id:
+            result = self.song(song_id)['song']
+        else:
+            search_term = "{s} {a}".format(s=title, a=artist).strip()
+            search_response = self.search_all(search_term)
+            result = self._get_item_from_search_response(search_response,
+                                                         title,
+                                                         type_="song",
+                                                         result_type="title")
 
         # Exit search if there were no results returned from API
-        if not result:
-            if self.verbose:
+        # Otherwise, move forward with processing the search results
+        if result is None:
+            if self.verbose and title:
                 print("No results found for: '{s}'".format(s=search_term))
             return None
 
         # Reject non-songs (Liner notes, track lists, etc.)
-
         if (self.skip_non_songs
             and (result['lyrics_state'] != 'complete'
                  or not self._result_is_lyrics(result['title'])
@@ -327,10 +417,13 @@ class Genius(API, PublicAPI):
                 print('Specified song does not contain lyrics. Rejecting.')
             return None
 
+        song_id = result['id']
+
         # Download full song info (an API call) unless told not to by user
         song_info = result
-        if get_full_info:
-            song_info.update(self.song(result['id'])['song'])
+        if song_id is None and get_full_info is True:
+            new_info = self.song(song_id)['song']
+            song_info.update(new_info)
         lyrics = self.lyrics(song_info['url'])
 
         # Skip results when URL is a 404 or lyrics are missing
@@ -341,7 +434,7 @@ class Genius(API, PublicAPI):
             return None
 
         # Return a Song object with lyrics if we've made it this far
-        song = Song(song_info, lyrics)
+        song = Song(self, song_info, lyrics)
         if self.verbose:
             print('Done.')
         return song
@@ -419,8 +512,8 @@ class Genius(API, PublicAPI):
         if not artist_id:
             return None
 
-        artist_info = self.artist(artist_id)
-        found_name = artist_info['artist']['name']
+        artist_info = self.artist(artist_id)['artist']
+        found_name = artist_info['name']
         if found_name != artist_name and allow_name_change:
             if self.verbose:
                 print("Changing artist name to '{a}'".format(a=found_name))
@@ -455,14 +548,12 @@ class Genius(API, PublicAPI):
                 # Create the Song object from lyrics and metadata
                 lyrics = self.lyrics(song_info['url'])
                 if get_full_info:
-                    info = self.song(song_info['id'])
-                else:
-                    info = {'song': song_info}
-                song = Song(info, lyrics)
+                    new_info = self.song(song_info['id'])['song']
+                    song_info.update(new_info)
+                song = Song(self, song_info, lyrics)
 
                 # Attempt to add the Song to the Artist
-                result = artist.add_song(song,
-                                         verbose=False,
+                result = artist.add_song(song, verbose=False,
                                          include_features=include_features)
                 if result is not None and self.verbose:
                     print('Song {n}: "{t}"'.format(n=artist.num_songs,
