@@ -140,18 +140,13 @@ class Song(BaseEntity):
                     ensure_ascii=True,
                     sanitize=True,
                     verbose=True):
-        if filename:
-            for ext in ["txt", "TXT", "json", "JSON"]:
-                filename = filename.replace("." + ext, "")
-            alt_filename = None
-            filename += "." + extension
-        else:
-            alt_filename = "Lyrics_{}_{}.{}".format(self.artist.replace(" ", ""),
-                                                self.title.replace(" ", ""),
-                                                extension).lower()
 
-        return super().save_lyrics(alt_filename=alt_filename,
-                                   filename=filename,
+        if filename is None:
+            filename = "Lyrics_{}_{}".format(self.artist.replace(" ", ""),
+                                             self.title.replace(" ", "")
+                                             ).lower()
+
+        return super().save_lyrics(filename=filename,
                                    extension=extension,
                                    overwrite=overwrite,
                                    binary_encoding=binary_encoding,

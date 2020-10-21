@@ -197,13 +197,10 @@ class Artist(BaseEntity):
                     sanitize=True,
                     verbose=True):
         # Determine the filename
-        if filename:
-            alt_filename = None
-        else:
-            alt_filename = 'Lyrics_' + self.name.replace(' ', '') + '.' + extension
+        if filename is None:
+            filename = 'Lyrics_' + self.name.replace(' ', '')
 
-        return super().save_lyrics(alt_filename=alt_filename,
-                                   filename=filename,
+        return super().save_lyrics(filename=filename,
                                    extension=extension,
                                    overwrite=overwrite,
                                    binary_encoding=binary_encoding,

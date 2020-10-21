@@ -13,8 +13,7 @@ class BaseEntity(ABC):
 
     @abstractmethod
     def save_lyrics(self,
-                    alt_filename,
-                    filename=None,
+                    filename,
                     extension='json',
                     overwrite=False,
                     binary_encoding=False,
@@ -65,7 +64,11 @@ class BaseEntity(ABC):
         assert (extension == 'json') or (extension == 'txt'), msg
 
         # Determine the filename
-        filename = filename if filename else alt_filename
+        for ext in [".txt", ".TXT", ".json", ".JSON"]:
+            if ext in filename:
+                filename = filename.replace(ext, "")
+                break
+        filename += "." + extension
         filename = sanitize_filename(filename) if sanitize else filename
 
         # Check if file already exists
