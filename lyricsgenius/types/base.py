@@ -98,7 +98,7 @@ class BaseEntity(ABC):
 
     @abstractmethod
     def to_dict(self):
-        """Returns a shallow copy of the object's body."""
+        """Converts the object to a dictionary."""
         return self._body.copy()
 
     @abstractmethod
@@ -145,10 +145,9 @@ class BaseEntity(ABC):
                 filename=None,
                 binary_encoding=False,
                 sanitize=True):
-        """Converts data to a single string.
+        """Converts song(s) lyrics to a single string.
 
         Args:
-            data (:obj:`str`): Data to save (or return if no filename).
             filename (:obj:`str`, optional): Output filename, a string.
                 If not specified, the result is returned as a string.
             binary_encoding (:obj:`bool`, optional): Enables binary encoding

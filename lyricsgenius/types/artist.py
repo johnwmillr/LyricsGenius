@@ -119,12 +119,6 @@ class Artist(BaseEntity):
         return song
 
     def to_dict(self):
-        """Creates a dictionary from the artist object.
-
-        Returns:
-            :obj:`dict`
-
-        """
         body = super().to_dict()
         body['songs'] = [song.to_dict() for song in self.songs]
         return body
@@ -133,27 +127,7 @@ class Artist(BaseEntity):
                 filename=None,
                 sanitize=True,
                 ensure_ascii=True):
-        """Converts the Song object to a json string.
-
-        Args:
-            filename (:obj:`str`, optional): Output filename, a string.
-                If not specified, the result is returned as a string.
-            sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
-            ensure_ascii (:obj:`bool`, optional): If ensure_ascii is true
-              (the default), the output is guaranteed to have all incoming
-              non-ASCII characters escaped.
-
-        Returns:
-            :obj:`str` \\|‌ :obj:`None`: If :obj:`filename` is `None`,
-            returns the lyrics as a plain string, otherwise `None`.
-
-        Warning:
-            If you set :obj:`sanitize` to `False`, the file name may contain
-            invalid characters, and thefore cause the saving to fail.
-
-        """
         data = self.to_dict()
-
         return super().to_json(data=data,
                                filename=filename,
                                sanitize=sanitize,
@@ -163,26 +137,7 @@ class Artist(BaseEntity):
                 filename=None,
                 binary_encoding=False,
                 sanitize=True):
-        """Converts all song lyrics to a single string.
-
-        Args:
-            filename (:obj:`str`, optional): Output filename, a string.
-                If not specified, the result is returned as a string.
-            binary_encoding (:obj:`bool`, optional): Enables binary encoding
-                of text data.
-            sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
-
-        Returns:
-            :obj:`str` \\| ‌:obj:`None`: If :obj:`filename` is `None`,
-            returns the lyrics as a plain string. Otherwise `None`.
-
-        Warning:
-            If you set :obj:`sanitize` to `False`, the file name may contain
-            invalid characters, and thefore cause the saving to fail.
-
-        """
         data = ' '.join(song.lyrics for song in self.songs)
-
         return super().to_text(data=data,
                                filename=filename,
                                binary_encoding=binary_encoding,
