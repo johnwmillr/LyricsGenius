@@ -38,7 +38,8 @@ class TestUtils(unittest.TestCase):
 
     def test_auth_from_environment(self):
         credentials = auth_from_environment()
-        self.asserTrue(all(credentials))
+        self.assertTrue(len(credentials) == 3)
+        self.assertTrue(all(credentials))
 
     @classmethod
     def tearDownClass(cls):
