@@ -15,7 +15,7 @@ class OAuth2(Sender):
         client_id (:obj:`str`): Client ID
         redirect_uri (:obj:`str`): Whitelisted redirect URI.
         client_secret (:obj:`str`, optional): Client secret.
-        scope (:obj:`tuple` | :obj:`all`, optional) : Token privilages.
+        scope (:obj:`tuple` | :obj:`"all"`, optional): Token privilages.
         state (:obj:`str`, optional): Request state.
         client_only_app (:obj:`bool`, optional): `True` to use the client-only
             authorization flow, otherwise `False`.
@@ -114,6 +114,18 @@ class OAuth2(Sender):
 
     @classmethod
     def client_only_app(cls, client_id, redirect_uri, scope=None, state=None):
+        """Returns an OAuth2 instance for a client-only app.
+
+        Args:
+            client_id (:obj:`str`): Client ID.
+            redirect_uri (:obj:`str`): Whitelisted redirect URI.
+            scope (:obj:`tuple` | :obj:`"all"`, optional): Token privilages.
+            state (:obj:`str`, optional): Request state.
+
+        returns:
+            :class:`OAuth2`
+
+        """
         return cls(client_id=client_id,
                    redirect_uri=redirect_uri,
                    scope=scope,
@@ -121,8 +133,21 @@ class OAuth2(Sender):
                    client_only_app=True)
 
     @classmethod
-    def full_code_exchange(cls, client_id, client_secret,
-                           redirect_uri, scope=None, state=None):
+    def full_code_exchange(cls, client_id, redirect_uri,
+                           client_secret, scope=None, state=None):
+        """Returns an OAuth2 instance for a full-code exchange app.
+
+        Args:
+            client_id (:obj:`str`): Client ID.
+            redirect_uri (:obj:`str`): Whitelisted redirect URI.
+            client_secret (:obj:`str`): Client secret.
+            scope (:obj:`tuple` | :obj:`"all"`, optional): Token privilages.
+            state (:obj:`str`, optional): Request state.
+
+        returns:
+            :class:`OAuth2`
+
+        """
         return cls(client_id=client_id,
                    client_secret=client_secret,
                    redirect_uri=redirect_uri,
