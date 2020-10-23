@@ -39,21 +39,6 @@ class BaseEntity(ABC):
             sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
             verbose (:obj:`bool`, optional): prints operation result.
 
-        Examples:
-            .. code:: python
-
-                # getting songs lyrics from saved JSON file
-                import json
-                with open('song.json', 'r') as f:
-                    data = json.load(f)
-
-                print(data['lyrics'])
-
-        Note:
-            If :obj:`full_data` is set to `False`, only the following attributes
-            of the song will be available: :obj:`title`, :attr:`album`, :attr:`year`,
-            :attr:`lyrics`, and :attr:`song_art_image_url`
-
         Warning:
             If you set :obj:`sanitize` to `False`, the file name may contain
             invalid characters, and thefore cause the saving to fail.
@@ -110,7 +95,6 @@ class BaseEntity(ABC):
         """Converts the object to a json string.
 
         Args:
-            data (:obj:`str`): Data to save (or return if no filename).
             filename (:obj:`str`, optional): Output filename, a string.
                 If not specified, the result is returned as a string.
             sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
@@ -155,7 +139,7 @@ class BaseEntity(ABC):
             sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
 
         Returns:
-            :obj:`str` \\| ‌:obj:`None`: If :obj:`filename` is `None`,
+            :obj:`str` \\|‌ :obj:`None`: If :obj:`filename` is `None`,
             returns the lyrics as a plain string. Otherwise `None`.
 
         Warning:

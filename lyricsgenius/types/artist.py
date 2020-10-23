@@ -104,11 +104,10 @@ class Artist(BaseEntity):
         Args:
             song_name (:obj:`str`): name of the song.
                 the result is returned as a string.
-            sanitize (:obj:`bool`): Sanitizes the filename if `True`.
 
         Returns:
             :obj:`Song <types.Song>` \\|‌ :obj:`None`: If it can't find the song,
-                returns *None*.
+            returns *None*.
 
         """
         for song in self.songs:
