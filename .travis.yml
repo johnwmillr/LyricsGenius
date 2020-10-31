@@ -1,8 +1,3 @@
-os: linux
-dist: xenial
-group: edge
-arch: arm64-graviton2
-virt: lxd
 language: python
 
 install: pip install .[dev]
