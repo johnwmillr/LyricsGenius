@@ -160,6 +160,7 @@ class TestDiscussionMethods(unittest.TestCase):
         r = client.discussions()
         self.assertTrue("discussions" in r)
 
+
 class TestLeaderboardMethods(unittest.TestCase):
 
     @classmethod
