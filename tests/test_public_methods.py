@@ -146,16 +146,19 @@ class TestDiscussionMethods(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up discussion methods tests...\n")
-        cls.discussion_id = 123
+#        cls.discussion_id = 123
+#
+#    def test_discussion(self):
+#        r = client.discussion(self.discussion_id)
+#        self.assertEqual(r['discussion']['id'], self.discussion_id)
+#
+#    def test_discussion_replies(self):
+#        r = client.discussion_replies(self.discussion_id)
+#        self.assertTrue("forum_posts" in r)
 
-    def test_discussion(self):
-        r = client.discussion(self.discussion_id)
-        self.assertEqual(r['discussion']['id'], self.discussion_id)
-
-    def test_discussion_replies(self):
-        r = client.discussion_replies(self.discussion_id)
-        self.assertTrue("forum_posts" in r)
-
+    def test_discussions(self):
+        r = client.discussions()
+        self.assertTrue("discussions" in r)
 
 class TestLeaderboardMethods(unittest.TestCase):
 

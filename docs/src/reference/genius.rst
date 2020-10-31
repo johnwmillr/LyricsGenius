@@ -129,7 +129,12 @@ Discussion Methods
 .. autosummary::
    :nosignatures:
 
+   Genius.discussion
+   Genius.discussions
+   Genius.discussion_replies
+
 .. automethod:: Genius.discussion
+.. automethod:: Genius.discussions
 .. automethod:: Genius.discussion_replies
 
 

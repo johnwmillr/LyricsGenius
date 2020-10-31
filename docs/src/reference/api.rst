@@ -198,7 +198,12 @@ Discussion Methods
 .. autosummary::
    :nosignatures:
 
+   PublicAPI.discussion
+   PublicAPI.discussions
+   PublicAPI.discussion_replies
+
 .. automethod:: PublicAPI.discussion
+.. automethod:: PublicAPI.discussions
 .. automethod:: PublicAPI.discussion_replies
 
 

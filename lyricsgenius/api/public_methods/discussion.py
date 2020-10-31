@@ -12,9 +12,29 @@ class DiscussionMethods(object):
         Returns:
             :obj:`dict`
 
+        Note:
+            This request returns a 403 error and will raise ``NotImplementedError``.
+
         """
+        raise NotImplementedError("This request returns a 403 error.")
+
         endpoint = 'discussions/{}'.format(disscussion_id)
         params = {'text_format': text_format or self.response_format}
+        return self._make_request(path=endpoint, params_=params, public_api=True)
+
+    def discussions(self, page=None):
+        """Gets discussions.
+
+        Args:
+            page (:obj:`int`, optional): Paginated offset (number of the page).
+
+        Returns:
+            :obj:`dict`
+
+        """
+
+        endpoint = 'discussions'
+        params = {'page': page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def discussion_replies(self,
@@ -35,7 +55,12 @@ class DiscussionMethods(object):
         Returns:
             :obj:`dict`
 
+        Note:
+            This request returns a 403 error and will raise ``NotImplementedError``.
+
         """
+        raise NotImplementedError("This request returns a 403 error.")
+
         endpoint = 'discussions/{}/forum_posts'.format(disscussion_id)
         params = {'per_page': per_page,
                   'page': page,
