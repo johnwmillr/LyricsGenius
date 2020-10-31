@@ -36,13 +36,13 @@ class Song(BaseEntity):
 
     """
 
-    def __init__(self, client, json_dict, lyrics=''):
+    def __init__(self, client, json_dict, lyrics=""):
         body = json_dict
         super().__init__(body['id'])
         self._body = body
         self._client = client
         self.artist = body['primary_artist']['name']
-        self.lyrics = lyrics
+        self.lyrics = lyrics if lyrics else ""
         self.primary_artist = Artist(client, body['primary_artist'])
         self.stats = Stats(body['stats'])
 

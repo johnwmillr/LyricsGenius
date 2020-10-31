@@ -63,13 +63,6 @@ class API(Sender):
             sleep_time=sleep_time,
             retries=retries,
         )
-        self._validate_token()
-
-    def _validate_token(self):
-        # Should we make an extra request if the user
-        # is notified anyway in the first request they make?
-        if self.access_token is not None:
-            self.annotation(10225840)
 
     def account(self):
         """Gets details about the current user.

@@ -35,7 +35,7 @@ All the songs of an artist
 .. code:: python
 
     genius = Genius(token)
-    genius.search_artist('Andy Shauf')
+    artist = genius.search_artist('Andy Shauf')
     artist.save_lyrics()
 
 

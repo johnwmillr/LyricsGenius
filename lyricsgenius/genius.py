@@ -139,7 +139,9 @@ class Genius(API, PublicAPI):
                 lyrics = new_div.get_text('\n').replace('\n[', '\n\n[')
             else:
                 if self.verbose:
-                    print("Couldn't find the lyrics section.")
+                    print("Couldn't find the lyrics section. "
+                          "Please report this if the song has lyrics.\n"
+                          "Song URL: {}".format(url))
                 return None
 
         # Remove [Verse], [Bridge], etc.
