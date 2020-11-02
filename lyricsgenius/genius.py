@@ -9,9 +9,9 @@ import re
 import shutil
 import json
 import time
+import unicodedata
 from string import punctuation
 
-import requests
 from bs4 import BeautifulSoup
 
 from .types import Album, Artist, Song
@@ -63,7 +63,7 @@ class Genius(API, PublicAPI):
     """
 
     def __init__(self, access_token=None,
-                 response_format='plain', timeout=5, sleep_time=0.5,
+                 response_format='plain', timeout=5, sleep_time=0.2,
                  verbose=True, remove_section_headers=False,
                  skip_non_songs=True, excluded_terms=None,
                  replace_default_terms=False,
@@ -111,38 +111,26 @@ class Genius(API, PublicAPI):
 
         """
         if isinstance(urlthing, int):
-            url = self.song(urlthing)['song']['url']
+            path = self.song(urlthing)['song']['path'][1:]
         else:
-            url = urlthing
-
-        if not url.startswith("https://genius.com/"):
-            if self.verbose:
-                print("Song URL is not valid.")
-            return None
-
-        page = requests.get(url)
-        if page.status_code == 404:
-            if self.verbose:
-                print("Song URL returned 404.")
-            return None
+            path = urlthing.replace("https://genius.com/", "")
 
         # Scrape the song lyrics from the HTML
-        html = BeautifulSoup(page.text, "html.parser")
+        html = BeautifulSoup(
+            self._make_request(path, web=True).replace('<br/>', '\n'),
+            "html.parser"
+        )
 
         # Determine the class of the div
-        old_div = html.find("div", class_="lyrics")
-        if old_div:
-            lyrics = old_div.get_text()
-        else:
-            new_div = html.find("div", class_=re.compile("Lyrics__Root"))
-            if new_div:
-                lyrics = new_div.get_text('\n').replace('\n[', '\n\n[')
-            else:
-                if self.verbose:
-                    print("Couldn't find the lyrics section. "
-                          "Please report this if the song has lyrics.\n"
-                          "Song URL: {}".format(url))
-                return None
+        div = html.find("div", class_=re.compile("^lyrics$|Lyrics__Root"))
+        if div is None:
+            if self.verbose:
+                print("Couldn't find the lyrics section. "
+                      "Please report this if the song has lyrics.\n"
+                      "Song URL: https://genius.com/{}".format(path))
+            return None
+
+        lyrics = div.get_text()
 
         # Remove [Verse], [Bridge], etc.
         if self.remove_section_headers or remove_section_headers:
@@ -651,3 +639,66 @@ class Genius(API, PublicAPI):
         shutil.rmtree(tmp_dir)
         elapsed = (time.time() - start) / 60 / 60
         print("Time elapsed: {t} hours".format(t=elapsed))
+
+    def tag(self, name, page=None):
+        """Gets a tag's songs.
+
+        This method parses HTML to extract the hits on the page, so it's
+        slower than a normal API call which returns the results as JSON.
+
+        Args:
+            name (:obj:`int`): Name of the tag e.g. ``pop`` or ``r-b``.
+            page (:obj:`int`, optional): Paginated offset (number of the page).
+
+        Returns:
+            :obj:`dict`: A dictionary with the following keys:
+            ``hits``: A list of dictionaries.
+            ``next_page``: Either ``int`` or ``None``.
+
+        Examples:
+            .. code:: python
+
+                # getting the lyrics of all the songs in the pop tag.
+                genius = Genius(token)
+                page = 1
+                lyrics = []
+                while page:
+                    hits = genius.tag('pop', page=page)
+                    for hit in hits:
+                        song_lyrics = genius.lyrics(hit['url'])
+                        lyrics.append(song_lyrics)
+                    page = request['next_page']
+
+        """
+        path = 'tags/{}/all'.format(name)
+        params = {'page': page}
+        soup = BeautifulSoup(
+            self._make_request(path, params_=params, web=True),
+            'html.parser'
+        )
+        hits = []
+
+        ul = soup.find('ul', class_='song_list')
+        for li in ul.find_all('li'):
+            url = li.a.attrs['href']
+            song = [unicodedata.normalize("NFKD", x)
+                    for x in li.a.span.stripped_strings]
+
+            title = song[0]
+            artists = song[2].split(' & ')
+            featured_artists = [name for name in song[4:-1] if len(name) > 1]
+            title_with_artists = ' '.join(song)
+
+            hit = {'url': url,
+                   'title_with_artists': title_with_artists,
+                   'title': title,
+                   'artists': artists,
+                   'featured_artists': featured_artists,
+                   }
+            hits.append(hit)
+
+        res = {'hits': hits}
+        page = page if page is not None else 1
+        res['next_page'] = page + 1 if len(hits) == 20 else None
+
+        return res

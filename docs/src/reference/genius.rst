@@ -283,8 +283,10 @@ Miscellaneous methods that are mostly standalones.
 .. autosummary::
    :nosignatures:
 
+   Genius.tag
    Genius.line_item
    Genius.voters
 
+.. automethod:: Genius.tag
 .. automethod:: Genius.line_item
 .. automethod:: Genius.voters

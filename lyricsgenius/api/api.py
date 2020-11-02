@@ -53,7 +53,7 @@ class API(Sender):
                  access_token,
                  response_format='plain',
                  timeout=5,
-                 sleep_time=0.5,
+                 sleep_time=0.2,
                  retries=0,
                  ):
         super().__init__(
@@ -517,7 +517,7 @@ class PublicAPI(
         self,
         response_format='plain',
         timeout=5,
-        sleep_time=0.5,
+        sleep_time=0.2,
         retries=0,
         **kwargs
     ):

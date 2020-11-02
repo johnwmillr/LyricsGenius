@@ -8,16 +8,16 @@ from requests.exceptions import HTTPError, Timeout
 class Sender(object):
     """Sends requests to Genius."""
     # Create a persistent requests connection
-    _SLEEP_MIN = 0.2  # Enforce minimum wait time between API calls (seconds)
     API_ROOT = 'https://api.genius.com/'
     PUBLIC_API_ROOT = 'https://genius.com/api/'
+    WEB_ROOT = 'https://genius.com/'
 
     def __init__(
         self,
         access_token=None,
         response_format='plain',
         timeout=5,
-        sleep_time=0.5,
+        sleep_time=0.2,
         retries=0
     ):
         self._session = requests.Session()
@@ -28,9 +28,10 @@ class Sender(object):
         if access_token is None:
             access_token = os.environ.get('GENIUS_ACCESS_TOKEN')
         self.access_token = 'Bearer ' + access_token if access_token else None
+        self.authorization_header = {'authorization': self.access_token}
         self.response_format = response_format.lower()
         self.timeout = timeout
-        self.sleep_time = max(self._SLEEP_MIN, sleep_time)
+        self.sleep_time = sleep_time
         self.retries = retries
 
     def _make_request(
@@ -39,15 +40,19 @@ class Sender(object):
         method='GET',
         params_=None,
         public_api=False,
+        web=False,
         **kwargs
     ):
-        """Makes a request to the API."""
+        """Makes a request to Genius."""
         if public_api:
             uri = self.PUBLIC_API_ROOT
             header = None
+        elif web:
+            uri = self.WEB_ROOT
+            header = None
         else:
             uri = self.API_ROOT
-            header = {'authorization': self.access_token}
+            header = self.authorization_header
         uri += path
 
         params_ = params_ if params_ else {}
@@ -76,7 +81,9 @@ class Sender(object):
             # Enforce rate limiting
             time.sleep(self.sleep_time)
 
-        if response.status_code == 200:
+        if web:
+            return response.text
+        elif response.status_code == 200:
             res = response.json()
             return res.get("response", res)
         elif response.status_code == 204:

@@ -5,13 +5,14 @@ Snippets
 ==================
 Here are some snippets showcasing how the library can be used.
 
-- `Getting song lyrics by URL or ID`_
+- `Authenticating using OAuth2`_
 - `All the songs of an artist`_
 - `Artist's least popular song`_
-- `YouTube URL of artist's songs`_
-- `Searching for a song by lyrics`_
+- `Getting songs that have a tag`
+- `Getting song lyrics by URL or ID`_
 - `Getting the lyrics for all songs of a search`_
-- `Authenticating using OAuth2`_
+- `Searching for a song by lyrics`_
+- `YouTube URL of artist's songs`_
 
 
 Getting song lyrics by URL or ID
@@ -100,6 +101,29 @@ Using :meth:`search_all <Genius.search_all>`:
     for hit in request['sections'][2]['hits']:
         print(hit['result']['title'])
 
+Getting songs that have a tag
+-----------------------------
+Genius has the following main tags:
+``rap``, ``pop``, ``r-b``, ``rock``, ``country``, ``non-music``
+To discover more tags, visit the `Genius Tags`_ page.
+
+Genius returns 20 results per page, but it seems that it won't return
+results past the 50th page if a tag has that many results. So, a popular
+tag like ``pop`` won't return results for the 51st page, even though
+Genius probably has more than 1000 songs with the pop tag.
+
+.. code:: python
+
+    # this gets the lyrics of all the songs that have the pop tag.
+    genius = Genius(token)
+    page = 1
+    lyrics = []
+    while page:
+        hits = genius.tag('pop', page=page)
+        for hit in hits:
+            song_lyrics = genius.lyrics(hit['url'])
+            lyrics.append(song_lyrics)
+        page = request['next_page']
 
 Getting the lyrics for all songs of a search
 --------------------------------------------
@@ -187,3 +211,4 @@ Authenticating another user
     genius = Genius(token)
 
 .. _`Authentication section`: https://docs.genius.com/#/authentication-h1
+.. _`Genius Tags`: https://genius.com/tags/tags`
