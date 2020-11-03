@@ -2,23 +2,27 @@
 
 import re
 import os
+import unicodedata
 from datetime import datetime
+from string import punctuation
 from urllib.parse import parse_qs, urlparse
 
 
-def sanitize_filename(f):
-    """Removes invalid characters from file name.
+def auth_from_environment():
+    """Gets credentials from environment variables.
 
-    Args:
-        f (:obj:`str`): file name to sanitize.
+    Uses the following env vars: ``GENIUS_CLIENT_ID``,
+    ``GENIUS_REDIRECT_URI`` and ``GENIUS_CLIENT_SECRET``.
 
     Returns:
-        :obj:`str`: sanitized file name including only alphanumeric
-        characters, spaces, dots or underlines.
+        :obj:`tuple`: client ID, redirect URI and client secret.
+        Replaces variables that are not present with :obj:`None`.
 
     """
-    keepchars = (" ", ".", "_")
-    return "".join(c for c in f if c.isalnum() or c in keepchars).rstrip()
+    client_id = os.environ.get('GENIUS_CLIENT_ID')
+    redirect_uri = os.environ.get('GENIUS_REDIRECT_URI')
+    client_secret = os.environ.get('GENIUS_CLIENT_SECRET')
+    return client_id, redirect_uri, client_secret
 
 
 def convert_to_datetime(f):
@@ -64,6 +68,24 @@ def convert_to_datetime(f):
     return datetime.strptime(f, date_format)
 
 
+def clean_str(s):
+    """Cleans a string to help with string comparison.
+
+    Removes punctuation and returns
+    a stripped, NFKD normalized string in lowercase.
+
+    Args:
+        s (:obj:`str`): A string.
+
+    Returns:
+        :obj:`str`: Cleaned string.
+
+    """
+    punctuation_ = punctuation + "’"
+    string = s.translate(str.maketrans('', '', punctuation_)).strip().lower()
+    return unicodedata.normalize("NFKD", string)
+
+
 def parse_redirected_url(url, flow):
     """Parse a URL for parameter 'code'/'token'.
 
@@ -93,18 +115,16 @@ def parse_redirected_url(url, flow):
     return code[0]
 
 
-def auth_from_environment():
-    """Gets credentials from environment variables.
+def sanitize_filename(f):
+    """Removes invalid characters from file name.
 
-    Uses the following env vars: ``GENIUS_CLIENT_ID``,
-    ``GENIUS_REDIRECT_URI`` and ``GENIUS_CLIENT_SECRET``.
+    Args:
+        f (:obj:`str`): file name to sanitize.
 
     Returns:
-        :obj:`tuple`: client ID, redirect URI and client secret.
-        Replaces variables that are not present with :obj:`None`.
+        :obj:`str`: sanitized file name including only alphanumeric
+        characters, spaces, dots or underlines.
 
     """
-    client_id = os.environ.get('GENIUS_CLIENT_ID')
-    redirect_uri = os.environ.get('GENIUS_REDIRECT_URI')
-    client_secret = os.environ.get('GENIUS_CLIENT_SECRET')
-    return client_id, redirect_uri, client_secret
+    keepchars = (" ", ".", "_")
+    return "".join(c for c in f if c.isalnum() or c in keepchars).rstrip()

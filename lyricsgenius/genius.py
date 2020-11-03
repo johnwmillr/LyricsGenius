@@ -4,18 +4,18 @@
 
 """API documentation: https://docs.genius.com/"""
 
+import json
 import os
 import re
 import shutil
-import json
 import time
 import unicodedata
-from string import punctuation
 
 from bs4 import BeautifulSoup
 
-from .types import Album, Artist, Song
 from .api import API, PublicAPI
+from .types import Album, Artist, Song
+from .utils import clean_str
 
 
 class Genius(API, PublicAPI):
@@ -62,6 +62,10 @@ class Genius(API, PublicAPI):
 
     """
 
+    default_terms = ['track\\s?list', 'album art(work)?', 'liner notes',
+                     'booklet', 'credits', 'interview', 'skit',
+                     'instrumental', 'setlist']
+
     def __init__(self, access_token=None,
                  response_format='plain', timeout=5, sleep_time=0.2,
                  verbose=True, remove_section_headers=False,
@@ -81,8 +85,13 @@ class Genius(API, PublicAPI):
         self.verbose = verbose
         self.remove_section_headers = remove_section_headers
         self.skip_non_songs = skip_non_songs
-        self.excluded_terms = excluded_terms
-        self.replace_default_terms = replace_default_terms
+
+        excluded_terms = excluded_terms if excluded_terms is not None else []
+        if replace_default_terms:
+            self.excluded_terms = excluded_terms
+        else:
+            self.excluded_terms = self.default_terms.copy()
+            self.excluded_terms.extend(excluded_terms)
 
     def lyrics(self, urlthing, remove_section_headers=False):
         """Uses BeautifulSoup to scrape song info off of a Genius song URL
@@ -138,13 +147,7 @@ class Genius(API, PublicAPI):
             lyrics = re.sub('\n{2}', '\n', lyrics)  # Gaps between verses
         return lyrics.strip("\n")
 
-    def _clean_str(self, s):
-        """Returns a lowercase string with punctuation and bad chars removed."""
-        punctuation_ = punctuation + "’"
-        return (s.translate(str.maketrans('', '', punctuation_))
-                .replace('\u200b', " ").strip().lower())
-
-    def _result_is_lyrics(self, song_title):
+    def _result_is_lyrics(self, song):
         """Returns False if result from Genius is not actually song lyrics.
 
         Sets the :attr:`lyricsgenius.Genius.excluded_terms` and
@@ -163,20 +166,13 @@ class Genius(API, PublicAPI):
             'interview', 'skit', 'instrumental', and 'setlist'.
 
         """
+        if song['lyrics_state'] != 'complete':
+            return False
 
-        default_terms = ['track\\s?list', 'album art(work)?', 'liner notes',
-                         'booklet', 'credits', 'interview', 'skit',
-                         'instrumental', 'setlist']
-        if self.excluded_terms:
-            if self.replace_default_terms:
-                default_terms = self.excluded_terms
-            else:
-                default_terms.extend(self.excluded_terms)
-
-        expression = r"".join(["({})|".format(term) for term in default_terms])
+        expression = r"".join(["({})|".format(term) for term in self.excluded_terms])
         expression = expression.strip('|')
         regex = re.compile(expression, re.IGNORECASE)
-        return not regex.search(self._clean_str(song_title))
+        return not regex.search(clean_str(song['title']))
 
     def _get_item_from_search_response(self, response, search_term, type_, result_type):
         """Gets the desired item from the search results.
@@ -215,7 +211,7 @@ class Genius(API, PublicAPI):
 
         for hit in hits:
             item = hit['result']
-            if self._clean_str(item[result_type]) == self._clean_str(search_term):
+            if clean_str(item[result_type]) == clean_str(search_term):
                 return item
 
         # If the desired type is song lyrics and none of the results matched,
@@ -223,19 +219,19 @@ class Genius(API, PublicAPI):
         if type_ == 'song' and self.skip_non_songs:
             for hit in hits:
                 song = hit['result']
-                if self._result_is_lyrics(song['title']):
+                if self._result_is_lyrics(song):
                     return song
 
         return hits[0]['result'] if hits else None
 
     def _result_is_match(self, result, title, artist=None):
         """Returns `True` if search result matches searched song."""
-        result_title = self._clean_str(result['title'])
-        title_is_match = result_title == self._clean_str(title)
+        result_title = clean_str(result['title'])
+        title_is_match = result_title == clean_str(title)
         if not artist:
             return title_is_match
-        result_artist = self._clean_str(result['primary_artist']['name'])
-        return title_is_match and result_artist == self._clean_str(artist)
+        result_artist = clean_str(result['primary_artist']['name'])
+        return title_is_match and result_artist == clean_str(artist)
 
     def song_annotations(self, song_id, text_format=None):
         """Return song's annotations with associated fragment in list of tuple.
@@ -333,7 +329,10 @@ class Genius(API, PublicAPI):
                                        text_format=text_format)
             for track in tracks['tracks']:
                 song_info = track['song']
-                song_lyrics = self.lyrics(song_info['url'])
+                if song_info['lyrics_state'] == 'complete':
+                    song_lyrics = self.lyrics(song_info['url'])
+                else:
+                    song_lyrics = ""
                 song = Song(self, song_info, song_lyrics)
                 songs.append(song)
 
@@ -402,10 +401,8 @@ class Genius(API, PublicAPI):
             return None
 
         # Reject non-songs (Liner notes, track lists, etc.)
-        if (self.skip_non_songs
-            and (result['lyrics_state'] != 'complete'
-                 or not self._result_is_lyrics(result['title'])
-                 )):
+        # or songs with uncomplete lyrics (e.g. unreleased songs, instrumentals)
+        if self.skip_non_songs and not self._result_is_lyrics(result):
             valid = False
         else:
             valid = True
@@ -422,13 +419,16 @@ class Genius(API, PublicAPI):
         if song_id is None and get_full_info is True:
             new_info = self.song(song_id)['song']
             song_info.update(new_info)
-        lyrics = self.lyrics(song_info['url'])
+        if song_info['lyrics_state'] == 'complete':
+            lyrics = self.lyrics(song_info['url'])
+        else:
+            lyrics = ""
 
         # Skip results when URL is a 404 or lyrics are missing
-        if not lyrics:
+        if self.skip_non_songs and not lyrics:
             if self.verbose:
-                print(('Specified song does not have a valid URL with lyrics.'
-                       'Rejecting.'))
+                print('Specified song does not have a valid lyrics. '
+                      'Rejecting.')
             return None
 
         # Return a Song object with lyrics if we've made it this far
@@ -531,20 +531,24 @@ class Genius(API, PublicAPI):
 
             # Loop through each song on page of search results
             for song_info in songs_on_page['songs']:
-                # Check if song is valid (e.g. has title, contains lyrics)
-                has_title = ('title' in song_info)
-                has_lyrics = self._result_is_lyrics(song_info['title'])
-                valid = has_title and (has_lyrics or (not self.skip_non_songs))
+                # Check if song is valid (e.g. contains lyrics)
+                if self.skip_non_songs and not self._result_is_lyrics(song_info):
+                    valid = False
+                else:
+                    valid = True
 
                 # Reject non-song results (e.g. Linear Notes, Tracklists, etc.)
                 if not valid:
                     if self.verbose:
-                        s = song_info['title'] if has_title else "MISSING TITLE"
+                        s = song_info['title']
                         print('"{s}" is not valid. Skipping.'.format(s=s))
                     continue
 
                 # Create the Song object from lyrics and metadata
-                lyrics = self.lyrics(song_info['url'])
+                if song_info['lyrics_state'] == 'complete':
+                    lyrics = self.lyrics(song_info['url'])
+                else:
+                    lyrics = ""
                 if get_full_info:
                     new_info = self.song(song_info['id'])['song']
                     song_info.update(new_info)
@@ -648,6 +652,9 @@ class Genius(API, PublicAPI):
 
         Args:
             name (:obj:`int`): Name of the tag e.g. ``pop`` or ``r-b``.
+                The name should be as it appears in the URL. For example,
+                the name supplied for R&B is ``r-b`` as its URL is
+                https://genius.com/tags/r-b.
             page (:obj:`int`, optional): Paginated offset (number of the page).
 
         Returns:
