@@ -119,11 +119,11 @@ Genius probably has more than 1000 songs with the pop tag.
     page = 1
     lyrics = []
     while page:
-        hits = genius.tag('pop', page=page)
-        for hit in hits:
+        res = genius.tag('pop', page=page)
+        for hit in res['hits']:
             song_lyrics = genius.lyrics(hit['url'])
             lyrics.append(song_lyrics)
-        page = request['next_page']
+        page = res['next_page']
 
 Getting the lyrics for all songs of a search
 --------------------------------------------

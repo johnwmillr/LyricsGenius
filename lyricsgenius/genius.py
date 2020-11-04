@@ -670,11 +670,11 @@ class Genius(API, PublicAPI):
                 page = 1
                 lyrics = []
                 while page:
-                    hits = genius.tag('pop', page=page)
-                    for hit in hits:
+                    res = genius.tag('pop', page=page)
+                    for hit in res['hits']:
                         song_lyrics = genius.lyrics(hit['url'])
                         lyrics.append(song_lyrics)
-                    page = request['next_page']
+                    page = res['next_page']
 
         """
         path = 'tags/{}/all'.format(name)
@@ -690,11 +690,13 @@ class Genius(API, PublicAPI):
             url = li.a.attrs['href']
             song = [unicodedata.normalize("NFKD", x)
                     for x in li.a.span.stripped_strings]
-
             title = song[0]
             artists = song[2].split(' & ')
             featured_artists = [name for name in song[4:-1] if len(name) > 1]
-            title_with_artists = ' '.join(song)
+            title_with_artists = unicodedata.normalize(
+                "NFKD",
+                li.a.find('span', class_='title_with_artists').get_text().strip()
+            )
 
             hit = {'url': url,
                    'title_with_artists': title_with_artists,
