@@ -6,14 +6,18 @@
 import os
 import argparse
 
-from lyricsgenius.api import Genius
+from lyricsgenius import Genius
 
 
 def main(args=None):
     msg = "Download song lyrics from Genius.com"
     parser = argparse.ArgumentParser(description=msg)
-    parser.add_argument("search_type", type=str.lower, choices=["song", "artist"],
-                        help="Specify whether search is for 'song' or 'artist'")
+    parser.add_argument(
+        "search_type",
+        type=str.lower,
+        choices=["song", "artist", "album"],
+        help="Specify whether search is for 'song', 'artist' or 'album'."
+    )
     parser.add_argument("terms", type=str, nargs="+",
                         help="Provide terms for search")
     parser.add_argument("--save", action="store_true",
