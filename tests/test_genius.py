@@ -68,7 +68,7 @@ class TestEndpoints(unittest.TestCase):
         featured_artists = ['Justin Bieber']
         song_title = "Despacito (Remix)"
         title_with_artists = (
-            "Despacito (Remix) by Luis Fonsi & Daddy Yankee (Ft. Justin Bieber )"
+            "Despacito (Remix) by Luis Fonsi & Daddy Yankee (Ft. Justin Bieber)"
         )
         url = "https://genius.com/Luis-fonsi-and-daddy-yankee-despacito-remix-lyrics"
 
