@@ -15,7 +15,7 @@ class TestUtils(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        print("\n---------------------\nSetting up ultis tests...\n")
+        print("\n---------------------\nSetting up utils tests...\n")
 
     def test_sanitize_filename(self):
         raw = 'B@ad File#_name'

@@ -109,7 +109,7 @@ class Genius(API, PublicAPI):
         Note:
             If you pass a song ID, the method will have to make an extra request
             to obtain the song's URL and scrape the lyrics off of it. So it's best
-            to pass the method the song's URL if its available.
+            to pass the method the song's URL if it's available.
 
             If you want to get a song's lyrics by searching for it,
             use :meth:`Genius.search_song` instead.

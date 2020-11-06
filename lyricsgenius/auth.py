@@ -15,7 +15,7 @@ class OAuth2(Sender):
         client_id (:obj:`str`): Client ID
         redirect_uri (:obj:`str`): Whitelisted redirect URI.
         client_secret (:obj:`str`, optional): Client secret.
-        scope (:obj:`tuple` | :obj:`"all"`, optional): Token privilages.
+        scope (:obj:`tuple` | :obj:`"all"`, optional): Token privileges.
         state (:obj:`str`, optional): Request state.
         client_only_app (:obj:`bool`, optional): `True` to use the client-only
             authorization flow, otherwise `False`.
