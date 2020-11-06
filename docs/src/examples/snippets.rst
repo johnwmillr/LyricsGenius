@@ -5,48 +5,38 @@ Snippets
 ==================
 Here are some snippets showcasing how the library can be used.
 
-- `Getting artist using API, PublicAPI and Genius`
+- `Authenticating using OAuth2`_
 - `All the songs of an artist`_
 - `Artist's least popular song`_
-- `YouTube URL of artist's songs`_
+- `Getting songs that have a tag`
+- `Getting song lyrics by URL or ID`_
+- `Getting the lyrics for all songs of a search`_
 - `Searching for a song by lyrics`_
-- `Authenticating using OAuth2`_
+- `YouTube URL of artist's songs`_
 
-Getting artist using API, PublicAPI and Genius
--------------------------------------------------
-The following snippet will be the same for all
-methods that are available in :class:`API` and :class:`PublicAPI`
-(or have a ``public_api`` parameter if you're using :class:`Genius`).
 
+Getting song lyrics by URL or ID
+--------------------------------
 .. code:: python
 
-    from lyricsgenius import API, PublicAPI, Genius
-
-    api = API(token)
-    public = PublicAPI()
     genius = Genius(token)
 
-    # API
-    api.artist(1665)
+    # Using Song URL
+    url = "https://genius.com/Andy-shauf-begin-again-lyrics"
+    genius.lyrics(url)
 
-    # PublicAPI
-    public.artist(1665)
-
-    # Genius
-    # can get it using both API and PublicAPI
-    genius.artist(1665)
-    genius.artist(1665, public_api=True)
-
+    # Using Song ID
+    # Requires an extra request to get song URL
+    id = 2885745
+    genius.lyrics(id)
 
 All the songs of an artist
 --------------------------
 
 .. code:: python
 
-    from lyricsgenius import Genius
-
     genius = Genius(token)
-    genius.search_artist('Andy Shauf')
+    artist = genius.search_artist('Andy Shauf')
     artist.save_lyrics()
 
 
@@ -61,12 +51,10 @@ Artist's least popular song
     songs = []
     while page:
         request = genius.artist_songs(artist._id,
-                                          sort='popularity',
-                                          per_page=50,
-                                          page=page,
-                                          # public_api=Tru
-                                          )
-        # public_api=True will make the call using the public API 
+                                      sort='popularity',
+                                      per_page=50,
+                                      page=page,
+                                      )
         songs.extend(request['songs'])
         page = request['next_page']
     least_popular_song = genius.search_song(songs[-1]['title'], artist.name)
@@ -96,8 +84,6 @@ Using :meth:`search_lyrics
 <Genius.search_lyrics>`:
 
 .. code:: python
-    
-    from lyricsgenius import Genius
 
     genius = Genius(token)
 
@@ -108,8 +94,6 @@ Using :meth:`search_lyrics
 Using :meth:`search_all <Genius.search_all>`:
 
 .. code:: python
-    
-    from lyricsgenius import Genius
 
     genius = Genius(token)
 
@@ -117,9 +101,66 @@ Using :meth:`search_all <Genius.search_all>`:
     for hit in request['sections'][2]['hits']:
         print(hit['result']['title'])
 
+Getting songs that have a tag
+-----------------------------
+Genius has the following main tags:
+``rap``, ``pop``, ``r-b``, ``rock``, ``country``, ``non-music``
+To discover more tags, visit the `Genius Tags`_ page.
+
+Genius returns 20 results per page, but it seems that it won't return
+results past the 50th page if a tag has that many results. So, a popular
+tag like ``pop`` won't return results for the 51st page, even though
+Genius probably has more than 1000 songs with the pop tag.
+
+.. code:: python
+
+    # this gets the lyrics of all the songs that have the pop tag.
+    genius = Genius(token)
+    page = 1
+    lyrics = []
+    while page:
+        res = genius.tag('pop', page=page)
+        for hit in res['hits']:
+            song_lyrics = genius.lyrics(hit['url'])
+            lyrics.append(song_lyrics)
+        page = res['next_page']
+
+Getting the lyrics for all songs of a search
+--------------------------------------------
+.. code:: python
+
+    genius = Genius(token)
+    lyrics = []
+
+    songs = genius.search_songs('Begin Again Andy Shauf')
+    for song in songs['hits']:
+        url = song['result']['url']
+        song_lyrics = genius.lyrics(url)
+        # id = song['result']['id']
+        # song_lyrics = genius.lyrics(id)
+        lyrics.append(song_lyrics)
+
 
 Authenticating using OAuth2
 ---------------------------
+Genius provides two flows for getting a user token: the code flow
+(called full code exchange) and the token flow (called client-only app).
+LyricsGenius provides two class methods
+:meth:`OAuth2.full_code_exchange` and :meth:`OAuth2.client_only_app` for
+the aforementioned flow. Visit the `Authentication section`_ in the
+Genius API documentation read more about the code and the token flow.
+
+You'll need the client ID and the redirect URI for a client-only app.
+For the full-code exchange you'll also need the client secret. The package
+can get them for using these environment variables:
+``GENIU_CLIENT_ID``, ``GENIUS_REDIRECT_URI``, ``GENIUS_CLIENT_SECRET``
+
+.. code:: python
+
+    import lyricsgenius as lg
+
+    client_id, redirect_uri, client_secret = lg.auth_from_environment() 
+
 Authenticating yourself
 ^^^^^^^^^^^^^^^^^^^^^^^
 Whitelist a redirect URI in your app's page on Genius. Any redirect
@@ -128,11 +169,14 @@ URI will work (for example ``http://example.com/callback``)
 .. code:: python
 
     from lyricsgenius import OAuth2, Genius
-    auth = OAuth2('my_client_id',
-                  'my_redirect_uri',
-                  scope='all',
-                  client_only_app=True)  # if we don't set this,
-                  we'll also have to provide client_secret
+
+    # you can also use OAuth2.full_code_exchange()
+    auth = OAuth2.client_only_app(
+        'my_client_id',
+        'my_redirect_uri',
+        scope='all'
+    )
+
     token = auth.prompt_user()
 
     genius = Genius(token)
@@ -144,16 +188,19 @@ Authenticating another user
     from lyricsgenius import OAuth2, Genius
 
     # client-only app
-    auth = OAuth2('my_client_id',
-                  'my_redirect_uri',
-                  scope='all',
-                  client_only_app=True)
+    auth = OAuth2.client_only_app(
+        'my_client_id',
+        'my_redirect_uri',
+        scope='all'
+    )
 
     # full code exhange app
-    auth = OAuth2('my_client_id',
-                  'my_redirect_uri',
-                  'my_client_secret',
-                  scope='all')
+    auth = OAuth2.full_code_exchange(
+        'my_client_id',
+        'my_redirect_uri',
+        'my_client_secret',
+        scope='all'
+    )
 
     # this part is the same
     url_for_user = auth.url
@@ -163,22 +210,5 @@ Authenticating another user
 
     genius = Genius(token)
 
-.. Note:: 
-    The only difference the process of getting the user token
-    using a client-only application or the full code exchange
-    is in the parameters you pass to the OAuth2 object.
-    In the example above we're using a client-only app
-    that doesn't need the client secret and we also have to
-    set :obj:`client_only_app` to *True*.
-    If you intend to use the full code exchange which is safer,
-    set :obj:`client_secret` when instantiating the OAUTH2 object
-    and set :obj:`client_only_app` to *False* (it's *False* by
-    default).
-
-.. Note::
-    Visit the `Authentication section`_ in the Genius API documentation
-    to find out more about client-only apps and the full code exchange
-    process.
-
-
 .. _`Authentication section`: https://docs.genius.com/#/authentication-h1
+.. _`Genius Tags`: https://genius.com/tags/tags`
