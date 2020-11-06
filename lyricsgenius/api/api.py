@@ -64,17 +64,22 @@ class API(Sender):
             retries=retries,
         )
 
-    def account(self):
+    def account(self, text_format=None):
         """Gets details about the current user.
 
         Requires scope: :obj:`me`.
+
+        Args:
+            text_format (:obj:`str`, optional): Text format of the results
+                ('dom', 'html', 'markdown' or 'plain').
 
         Returns:
             :obj:`dict`
 
         """
         endpoint = 'account'
-        return self._make_request(path=endpoint)
+        params = {'text_format': text_format or self.response_format}
+        return self._make_request(path=endpoint, params_=params)
 
     def annotation(self, annotation_id, text_format=None):
         """Gets data for a specific annotation.

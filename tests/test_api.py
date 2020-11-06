@@ -36,32 +36,33 @@ class TestAPI(unittest.TestCase):
         msg = 'Annotation text did not match the one that was passed.'
         self.assertEqual(new_annotation['body']['plain'], example_text, msg)
 
-        example_text_two = 'Updated annotation'
-        r = genius.update_annotation(
-            new_annotation['id'],
-            example_text_two,
-            'https://example.com',
-            'illustrative examples',
-            title='test'
-        )['annotation']
-        msg = 'Updated annotation text did not match the one that was passed.'
-        self.assertEqual(r['body']['plain'], example_text_two, msg)
+        try:
+            example_text_two = 'Updated annotation'
+            r = genius.update_annotation(
+                new_annotation['id'],
+                example_text_two,
+                'https://example.com',
+                'illustrative examples',
+                title='test'
+            )['annotation']
+            msg = 'Updated annotation text did not match the one that was passed.'
+            self.assertEqual(r['body']['plain'], example_text_two, msg)
 
-        r = genius.upvote_annotation(11828417)
-        msg = 'Upvote was not registered.'
-        self.assertTrue(r is not None, msg)
+            r = genius.upvote_annotation(11828417)
+            msg = 'Upvote was not registered.'
+            self.assertTrue(r is not None, msg)
 
-        r = genius.downvote_annotation(11828417)
-        msg = 'Downvote was not registered.'
-        self.assertTrue(r is not None, msg)
+            r = genius.downvote_annotation(11828417)
+            msg = 'Downvote was not registered.'
+            self.assertTrue(r is not None, msg)
 
-        r = genius.unvote_annotation(11828417)
-        msg = 'Vote was not removed.'
-        self.assertTrue(r is not None, msg)
-
-        msg = 'Annotation was not deleted.'
-        r = genius.delete_annotation(new_annotation['id'])
-        self.assertEqual(r, 204, msg)
+            r = genius.unvote_annotation(11828417)
+            msg = 'Vote was not removed.'
+            self.assertTrue(r is not None, msg)
+        finally:
+            msg = 'Annotation was not deleted.'
+            r = genius.delete_annotation(new_annotation['id'])
+            self.assertEqual(r, 204, msg)
 
     def test_referents_web_page(self):
         msg = "Returned referent API path is different than expected."
