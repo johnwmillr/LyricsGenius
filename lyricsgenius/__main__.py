@@ -7,6 +7,7 @@ import os
 import argparse
 
 from lyricsgenius import Genius
+from .utils import safe_unicode
 
 
 def main(args=None):
@@ -45,7 +46,7 @@ def main(args=None):
             return
         if args.save:
             if not args.quiet:
-                print("Saving lyrics to '{s}'...".format(s=song.title))
+                print("Saving lyrics to '{s}'...".format(s=safe_unicode(song.title)))
             song.save_lyrics()
     elif args.search_type == "artist":
         artist = api.search_artist(args.terms[0],
@@ -53,13 +54,13 @@ def main(args=None):
                                    sort='popularity')
         if args.save:
             if not args.quiet:
-                print("Saving '{a}'' lyrics...".format(a=artist.name))
+                print("Saving '{a}'' lyrics...".format(a=safe_unicode(artist.name)))
             api.save_artists(artist)
     elif args.search_type == "album":
         album = api.search_album(*args.terms)
         if args.save:
             if not args.quiet:
-                print("Saving '{a}'' lyrics...".format(a=album.name))
+                print("Saving '{a}'' lyrics...".format(a=safe_unicode(album.name)))
             album.save_lyrics()
 
 

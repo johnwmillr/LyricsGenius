@@ -6,7 +6,7 @@
 
 import os
 import json
-from lyricsgenius.utils import sanitize_filename, print_unicode
+from ..utils import sanitize_filename, safe_unicode
 
 
 class Artist(object):
@@ -102,9 +102,9 @@ class Artist(object):
         """
         if any([song.title == new_song.title for song in self._songs]):
             if verbose:
-                print_unicode('{s} already in {a}, not adding song.'.format(
-                    s=new_song.title,
-                    a=self.name)
+                print('{s} already in {a}, not adding song.'.format(
+                    s=safe_unicode(new_song.title),
+                    a=safe_unicode(self.name))
                 )
             return 1  # Failure
         if (new_song.artist == self.name
@@ -113,9 +113,9 @@ class Artist(object):
             self._num_songs += 1
             return 0  # Success
         if verbose:
-            print_unicode("Can't add song by {b}, artist must be {a}.".format(
-                b=new_song.artist,
-                a=self.name)
+            print("Can't add song by {b}, artist must be {a}.".format(
+                b=safe_unicode(new_song.artist),
+                a=safe_unicode(self.name))
             )
         return 1  # Failure
 
@@ -281,12 +281,15 @@ class Artist(object):
             self.to_text(filename, binary_encoding=binary_encoding)
 
         if verbose:
-            print('Wrote `{}`'.format(filename))
+            print('Wrote `{}`'.format(safe_unicode(filename)))
         return None
 
     def __str__(self):
         """Return a string representation of the Artist object."""
-        msg = "{name}, {num} songs".format(name=self.name, num=self._num_songs)
+        msg = "{name}, {num} songs".format(
+            name=safe_unicode(self.name),
+            num=self._num_songs
+        )
         msg = msg[:-1] if self._num_songs == 1 else msg
         return msg
 

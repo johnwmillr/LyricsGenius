@@ -5,7 +5,7 @@
 import json
 import os
 from filecmp import cmp
-from lyricsgenius.utils import sanitize_filename
+from lyricsgenius.utils import safe_unicode, sanitize_filename
 
 
 class Song(object):
@@ -327,7 +327,7 @@ class Song(object):
             self.to_text(filename, binary_encoding=binary_encoding, sanitize=sanitize)
 
         if verbose:
-            print('Wrote {} to {}.'.format(self.title, filename))
+            print('Wrote {} to {}.'.format(safe_unicode(self.title), filename))
         return None
 
     def __str__(self):
@@ -337,7 +337,10 @@ class Song(object):
         else:
             lyr = self.lyrics[:100]
         return '"{title}" by {artist}:\n    {lyrics}'.format(
-            title=self.title, artist=self.artist, lyrics=lyr.replace('\n', '\n    '))
+            title=safe_unicode(self.title),
+            artist=safe_unicode(self.artist),
+            lyrics=lyr.replace('\n', '\n    ')
+        )
 
     def __repr__(self):
         return repr((self.title, self.artist))
