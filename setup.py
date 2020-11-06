@@ -29,11 +29,8 @@ extras_require = {
         'sphinx~=3.2',
         'sphinx-rtd-theme',
     ],
-    'tests': [
-        'pytest~=6.0',
-    ],
     'checks': [
-        'tox~=3.1',
+        'tox~=3.2',
         'doc8',
         'flake8',
         'flake8-bugbear',
@@ -41,7 +38,7 @@ extras_require = {
     ]
 }
 extras_require['dev'] = (
-    extras_require['docs'] + extras_require['tests'] + extras_require['checks']
+    extras_require['docs'] + extras_require['checks']
 )
 
 setup(
@@ -57,7 +54,7 @@ setup(
     keywords='genius api genius-api music lyrics artists albums songs',
     packages=find_packages(exclude=['tests']),
     install_requires=[
-        'beautifulsoup4==4.6.0',
+        'beautifulsoup4>=4.6.0',
         'requests>=2.20.0'
     ],
     extras_require=extras_require,
