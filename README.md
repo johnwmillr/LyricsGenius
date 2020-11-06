@@ -6,9 +6,7 @@
 
 `lyricsgenius` provides a simple interface to the song, artist, and lyrics data stored on [Genius.com](https://www.genius.com).
 
-## Documentation
-
-`lyricsgenius`'s full documentation is online at [Read the Docs](https://lyricsgenius.readthedocs.io/en/master/).
+The full documentation for `lyricsgenius` is available online at [Read the Docs](https://lyricsgenius.readthedocs.io/en/master/).
 
 ## Setup
 Before using this package you'll need to sign up for a (free) account that authorizes access to [the Genius API](http://genius.com/api-clients). The Genius account provides a `access_token` that is required by the package. See the [Usage section](https://github.com/johnwmillr/LyricsGenius#usage) below for examples.
@@ -36,7 +34,7 @@ import lyricsgenius
 genius = lyricsgenius.Genius(token)
 ```
 
-If you have an environment variable called `GENIUS_ACCESS_TOKEN`, the package wil use that if you pass no token:
+If you don't pass a token to the `Genius` class, `lyricsgenus` will look for an environment variable called `GENIUS_ACCESS_TOKEN` and attempt to use that for authentication.
 
 ```python
 genius = Genius()
@@ -74,7 +72,6 @@ artist.add_song(song)
 # artist.add_song("To You")
 ```
 
-Save the artist's songs to a JSON file:
 Save the artist's songs to a JSON file:
 
 ```python
