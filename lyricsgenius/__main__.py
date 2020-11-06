@@ -6,14 +6,18 @@
 import os
 import argparse
 
-from lyricsgenius.api import Genius
+from lyricsgenius import Genius
 
 
 def main(args=None):
     msg = "Download song lyrics from Genius.com"
     parser = argparse.ArgumentParser(description=msg)
-    parser.add_argument("search_type", type=str.lower, choices=["song", "artist"],
-                        help="Specify whether search is for 'song' or 'artist'")
+    parser.add_argument(
+        "search_type",
+        type=str.lower,
+        choices=["song", "artist", "album"],
+        help="Specify whether search is for 'song', 'artist' or 'album'."
+    )
     parser.add_argument("terms", type=str, nargs="+",
                         help="Provide terms for search")
     parser.add_argument("--save", action="store_true",
@@ -43,7 +47,7 @@ def main(args=None):
             if not args.quiet:
                 print("Saving lyrics to '{s}'...".format(s=song.title))
             song.save_lyrics()
-    else:
+    elif args.search_type == "artist":
         artist = api.search_artist(args.terms[0],
                                    max_songs=args.max_songs,
                                    sort='popularity')
@@ -51,6 +55,12 @@ def main(args=None):
             if not args.quiet:
                 print("Saving '{a}'' lyrics...".format(a=artist.name))
             api.save_artists(artist)
+    elif args.search_type == "album":
+        album = api.search_album(*args.terms)
+        if args.save:
+            if not args.quiet:
+                print("Saving '{a}'' lyrics...".format(a=album.name))
+            album.save_lyrics()
 
 
 if __name__ == "__main__":

@@ -1,6 +1,5 @@
 import os
 import unittest
-from urllib.parse import urlencode
 from unittest.mock import MagicMock, patch
 
 from lyricsgenius import OAuth2
@@ -29,8 +28,8 @@ def mocked_requests_post(*args, **kwargs):
     data_client_id = data.get('client_id')
     data_client_secret = data.get('client_secret')
     data_redirect_uri = data.get('redirect_uri')
-    grant_type = data.get('grant_type')
-    response_type = data.get('response_type')
+    data_grant_type = data.get('grant_type')
+    data_response_type = data.get('response_type')
 
     if (method == 'POST'
         and url == OAuth2.token_url
@@ -38,16 +37,11 @@ def mocked_requests_post(*args, **kwargs):
         and data_client_id == client_id
         and data_client_secret == client_secret
         and data_redirect_uri == redirect_uri
-        and grant_type == 'authorization_code'
-            and response_type == 'code'):
+        and data_grant_type == 'authorization_code'
+            and data_response_type == 'code'):
         return MockResponse({"access_token": "test"}, 200)
 
     return MockResponse(None, 403)
-
-
-def patch_request():
-    patch('lyricsgenius.api.base.Sender._session.request',
-          side_effect=mocked_requests_post)
 
 
 class TestOAuth2(unittest.TestCase):
@@ -74,7 +68,7 @@ class TestOAuth2(unittest.TestCase):
         r = auth.get_user_token(redirected)
         self.assertEqual(r, client_flow_token)
 
-    @patch('lyricsgenius.api.base.Sender._session.request',
+    @patch('requests.Session.request',
            side_effect=mocked_requests_post)
     def test_get_user_token_code_flow(self, mock_post):
         # full code exchange flow
@@ -96,7 +90,7 @@ class TestOAuth2(unittest.TestCase):
         with patch(current_module + '.webbrowser', MagicMock()), \
             patch(current_module + '.input', input_), \
             patch(current_module + '.print', MagicMock()), \
-            patch('lyricsgenius.api.base.Sender._session.request',
+            patch('requests.Session.request',
                   side_effect=mocked_requests_post):
             r = auth.prompt_user()
 

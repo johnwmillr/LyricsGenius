@@ -54,9 +54,11 @@ Or, install the latest version of the package from GitHub:
 Now that you have the library intalled, you can get started with using
 the library. See the :ref:`usage` for examples.
 
-
+.. _Web Annotator: https://genius.com/web-annotator
 .. _the Genius API: http://genius.com/api-clients
 .. _API Clients: https://genius.com/api-clients
 .. _Web Annotator: https://genius.com/web-annotator
 .. _documentation: https://docs.genius.com/#/authentication-h1
 .. _create a new API client: https://genius.com/api-clients/new
+.. _create an app: http://genius.com/api-clients
+.. _OAuth2: https://lyricsgenius.readthedocs.io/en/latest/reference/auth.html#auth

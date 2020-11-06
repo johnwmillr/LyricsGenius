@@ -3,10 +3,13 @@
 .. toctree::
    :maxdepth: 2
    :hidden:
-   :caption: OAuth2
+   :caption: Auth
+
+Auth
+====
 
 OAuth2
-=======================
+------
 You can use this class to authenticate yourself or
 get URLs to redirect your users to and get them to
 give your Genius app the premissions you need.

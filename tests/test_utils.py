@@ -1,15 +1,21 @@
-import os
 import unittest
 
-from lyricsgenius import OAuth2
-from lyricsgenius.utils import parse_redirected_url, sanitize_filename
+from lyricsgenius.utils import (
+    parse_redirected_url,
+    sanitize_filename,
+    auth_from_environment
+)
+try:
+    from .test_genius import genius
+except ModuleNotFoundError:
+    from test_genius import genius
 
 
 class TestUtils(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        print("\n---------------------\nSetting up ultis tests...\n")
+        print("\n---------------------\nSetting up utils tests...\n")
 
     def test_sanitize_filename(self):
         raw = 'B@ad File#_name'
@@ -29,3 +35,12 @@ class TestUtils(unittest.TestCase):
         code = 'test'
         r = parse_redirected_url(redirected, flow)
         self.assertEqual(r, code)
+
+    def test_auth_from_environment(self):
+        credentials = auth_from_environment()
+        self.assertTrue(len(credentials) == 3)
+        self.assertTrue(all(credentials))
+
+    @classmethod
+    def tearDownClass(cls):
+        genius._session.close()

@@ -1,31 +1,63 @@
 """utility functions"""
 
 import re
+import os
+import unicodedata
 from datetime import datetime
+from string import punctuation
 from urllib.parse import parse_qs, urlparse
 
 
-def sanitize_filename(f):
-    """Removes invalid characters from file name.
+def auth_from_environment():
+    """Gets credentials from environment variables.
 
-    Args:
-        f (:obj:`str`): file name to sanitize.
+    Uses the following env vars: ``GENIUS_CLIENT_ID``,
+    ``GENIUS_REDIRECT_URI`` and ``GENIUS_CLIENT_SECRET``.
 
     Returns:
-        :obj:`str`: sanitized file name including only alphanumeric
-        characters, spaces, dots or underlines.
+        :obj:`tuple`: client ID, redirect URI and client secret.
+        Replaces variables that are not present with :obj:`None`.
 
     """
-    keepchars = (" ", ".", "_")
-    return "".join(c for c in f if c.isalnum() or c in keepchars).rstrip()
+    client_id = os.environ.get('GENIUS_CLIENT_ID')
+    redirect_uri = os.environ.get('GENIUS_REDIRECT_URI')
+    client_secret = os.environ.get('GENIUS_CLIENT_SECRET')
+    return client_id, redirect_uri, client_secret
 
 
-def _convert_to_datetime(f):
+def convert_to_datetime(f):
+    """Converts argument to a datetime object.
+
+    Args:
+        f (:obj:`str`| :obj:`dict`): string or dictionary containing
+            date components.
+
+    Returns:
+        :class:`datetime`: datetime object.
+
+    """
     if f is None:
         return None
 
-    if '-' in f:
+    if isinstance(f, dict):
+        components = f
+        year = str(components['year']) if components.get('year') else None
+        month = str(components['month']).zfill(2) if components.get('month') else None
+        day = str(components['day']).zfill(2) if components.get('day') else None
+        if year and month:
+            date = '{year}-{month}'.format(year=year, month=month)
+            if day:
+                date += '-' + day
+        elif year:
+            date = int(year)
+        else:
+            date = '0000-00-00'
+        f = date
+
+    if f.count('-') == 2:
         date_format = "%Y-%m-%d"
+    elif f.count('-') == 1:
+        date_format = "%Y-%m"
     elif ',' in f:
         date_format = "%B %d, %Y"
     elif f.isdigit():
@@ -34,6 +66,24 @@ def _convert_to_datetime(f):
         date_format = "%B %Y"
 
     return datetime.strptime(f, date_format)
+
+
+def clean_str(s):
+    """Cleans a string to help with string comparison.
+
+    Removes punctuation and returns
+    a stripped, NFKD normalized string in lowercase.
+
+    Args:
+        s (:obj:`str`): A string.
+
+    Returns:
+        :obj:`str`: Cleaned string.
+
+    """
+    punctuation_ = punctuation + "’"
+    string = s.translate(str.maketrans('', '', punctuation_)).strip().lower()
+    return unicodedata.normalize("NFKD", string)
 
 
 def parse_redirected_url(url, flow):
@@ -63,3 +113,18 @@ def parse_redirected_url(url, flow):
         raise KeyError("Multiple values for {}!".format(flow))
 
     return code[0]
+
+
+def sanitize_filename(f):
+    """Removes invalid characters from file name.
+
+    Args:
+        f (:obj:`str`): file name to sanitize.
+
+    Returns:
+        :obj:`str`: sanitized file name including only alphanumeric
+        characters, spaces, dots or underlines.
+
+    """
+    keepchars = (" ", ".", "_")
+    return "".join(c for c in f if c.isalnum() or c in keepchars).rstrip()
