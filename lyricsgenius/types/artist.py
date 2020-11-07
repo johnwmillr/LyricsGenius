@@ -5,6 +5,7 @@
 """Artist object"""
 
 from .base import BaseEntity
+from ..utils import safe_unicode
 
 
 class Artist(BaseEntity):
@@ -82,8 +83,10 @@ class Artist(BaseEntity):
                 return None
         if any([song.title == new_song.title for song in self.songs]):
             if verbose:
-                print('{s} already in {a}, not adding song.'.format(s=new_song.title,
-                                                                    a=self.name))
+                print('{s} already in {a}, not adding song.'.format(
+                    s=safe_unicode(new_song.title),
+                    a=safe_unicode(self.name))
+                )
             return None
         if (new_song.artist == self.name
                 or (include_features and any(new_song._body['featured_artists']))):
@@ -91,8 +94,9 @@ class Artist(BaseEntity):
             self.num_songs += 1
             return new_song
         if verbose:
-            print("Can't add song by {b}, artist must be {a}.".format(b=new_song.artist,
-                                                                      a=self.name))
+            print("Can't add song by {b}, artist must be {a}.".format(
+                b=safe_unicode(new_song.artist),
+                a=safe_unicode(self.name)))
         return None
 
     def song(self, song_name):
