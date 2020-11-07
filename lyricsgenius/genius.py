@@ -9,6 +9,7 @@ import os
 import re
 import shutil
 import time
+import unicodedata
 
 from bs4 import BeautifulSoup
 
@@ -542,8 +543,7 @@ class Genius(API, PublicAPI):
                     if self.verbose:
                         s = song_info['title']
                         print('"{s}" is not valid. Skipping.'.format(
-                            s=safe_unicode(s)
-                        ))
+                            s=safe_unicode(s)))
                     continue
 
                 # Create the Song object from lyrics and metadata
@@ -690,15 +690,14 @@ class Genius(API, PublicAPI):
         ul = soup.find('ul', class_='song_list')
         for li in ul.find_all('li'):
             url = li.a.attrs['href']
-            song = [x.replace('\xa0', ' ')
+            song = [unicodedata.normalize("NFKD", x)
                     for x in li.a.span.stripped_strings]
             title = song[0]
             artists = song[2].split(' & ')
             featured_artists = [name for name in song[4:-1] if len(name) > 1]
-            title_with_artists = (
-                li.a.find('span', class_='title_with_artists')
-                .get_text().strip().replace('\xa0', ' ')
-            )
+            title_with_artists = unicodedata.normalize(
+                "NFKD",
+                li.a.find('span', class_='title_with_artists').get_text().strip())
 
             hit = {'url': url,
                    'title_with_artists': title_with_artists,

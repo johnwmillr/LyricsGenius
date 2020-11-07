@@ -79,6 +79,7 @@ class BaseEntity(ABC):
 
         if verbose:
             print('Wrote {}.'.format(safe_unicode(filename)))
+
         return None
 
     @abstractmethod
