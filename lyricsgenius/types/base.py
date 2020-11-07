@@ -2,7 +2,7 @@ import json
 import os
 from abc import ABC, abstractmethod
 
-from ..utils import sanitize_filename
+from ..utils import safe_unicode, sanitize_filename
 
 
 class BaseEntity(ABC):
@@ -78,7 +78,7 @@ class BaseEntity(ABC):
             self.to_text(filename, binary_encoding=binary_encoding, sanitize=sanitize)
 
         if verbose:
-            print('Wrote {}.'.format(filename))
+            print('Wrote {}.'.format(safe_unicode(filename)))
         return None
 
     @abstractmethod
