@@ -34,41 +34,52 @@ class API(Sender):
         response_format (:obj:`str`, optional): API response format (dom, plain, html).
         timeout (:obj:`int`, optional): time before quitting on response (seconds).
         sleep_time (:obj:`str`, optional): time to wait between requests.
+        retries (:obj:`int`, optional): Number of retries in case of timeouts and
+            errors with a >= 500 response code. By default, requests are only made once.
 
     Attributes:
         response_format (:obj:`str`, optional): API response format (dom, plain, html).
         timeout (:obj:`int`, optional): time before quitting on response (seconds).
         sleep_time (:obj:`str`, optional): time to wait between requests.
+        retries (:obj:`int`, optional): Number of retries in case of timeouts and
+            errors with a >= 500 response code. By default, requests are only made once.
 
     Returns:
         :class:`API`: An object of the `API` class.
 
     """
 
-    def __init__(self, access_token,
-                 response_format='plain', timeout=5, sleep_time=0.5):
+    def __init__(self,
+                 access_token,
+                 response_format='plain',
+                 timeout=5,
+                 sleep_time=0.2,
+                 retries=0,
+                 ):
         super().__init__(
             access_token=access_token,
             response_format=response_format,
             timeout=timeout,
-            sleep_time=sleep_time
+            sleep_time=sleep_time,
+            retries=retries,
         )
-        self._validate_token()
 
-    def _validate_token(self):
-        self.song(378195)
-
-    def account(self):
+    def account(self, text_format=None):
         """Gets details about the current user.
 
         Requires scope: :obj:`me`.
+
+        Args:
+            text_format (:obj:`str`, optional): Text format of the results
+                ('dom', 'html', 'markdown' or 'plain').
 
         Returns:
             :obj:`dict`
 
         """
         endpoint = 'account'
-        return self._make_request(path=endpoint)
+        params = {'text_format': text_format or self.response_format}
+        return self._make_request(path=endpoint, params_=params)
 
     def annotation(self, annotation_id, text_format=None):
         """Gets data for a specific annotation.
@@ -492,11 +503,15 @@ class PublicAPI(
         response_format (:obj:`str`, optional): API response format (dom, plain, html).
         timeout (:obj:`int`, optional): time before quitting on response (seconds).
         sleep_time (:obj:`str`, optional): time to wait between requests.
+        retries (:obj:`int`, optional): Number of retries in case of timeouts and
+            errors with a >= 500 response code. By default, requests are only made once.
 
     Attributes:
         response_format (:obj:`str`, optional): API response format (dom, plain, html).
         timeout (:obj:`int`, optional): time before quitting on response (seconds).
         sleep_time (:obj:`str`, optional): time to wait between requests.
+        retries (:obj:`int`, optional): Number of retries in case of timeouts and
+            errors with a >= 500 response code. By default, requests are only made once.
 
     Returns:
         :class:`PublicAPI`: An object of the `PublicAPI` class.
@@ -507,7 +522,8 @@ class PublicAPI(
         self,
         response_format='plain',
         timeout=5,
-        sleep_time=0.5,
+        sleep_time=0.2,
+        retries=0,
         **kwargs
     ):
         # Genius PublicAPI Constructor
@@ -515,5 +531,6 @@ class PublicAPI(
             response_format=response_format,
             timeout=timeout,
             sleep_time=sleep_time,
+            retries=retries,
             **kwargs
         )

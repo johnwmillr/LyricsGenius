@@ -1,11 +1,7 @@
 import os
 import unittest
-from requests.exceptions import HTTPError
 
 from lyricsgenius import Genius
-from lyricsgenius.song import Song
-from lyricsgenius.artist import Artist
-from lyricsgenius.utils import sanitize_filename
 
 
 # Import client access token from environment variable
@@ -22,25 +18,21 @@ class TestEndpoints(unittest.TestCase):
         print("\n---------------------\nSetting up Endpoint tests...\n")
         cls.search_term = "Ezra Furman"
         cls.song_title_only = "99 Problems"
-
-    def test_account(self):
-        msg = ("No user detail was returned. "
-               "Are you sure you're using a user access token?")
-        r = genius.account()
-        self.assertTrue("user" in r, msg)
-
-    def test_http_error_handler(self):
-        try:
-            genius.annotation(0)
-        except HTTPError as e:
-            status_code = e.args[0]
-            self.assertEqual(status_code, 404)
+        cls.tag = genius.tag('pop')
 
     def test_search_song(self):
         artist = "Jay-Z"
         # Empty response
         response = genius.search_song('')
         self.assertIsNone(response)
+
+        # Pass no title and ID
+        with self.assertRaises(AssertionError):
+            genius.search_song()
+
+        # Search by song ID
+        response = genius.search_song(song_id=1)
+        self.assertIsNotNone(response)
 
         # Exact match exact search
         response = genius.search_song(self.song_title_only)
@@ -58,306 +50,35 @@ class TestEndpoints(unittest.TestCase):
         response = genius.search_song(self.song_title_only, artist="Drake")
         self.assertFalse(response.title.lower() == self.song_title_only.lower())
 
-    def test_referents_web_page(self):
-        msg = "Returned referent API path is different than expected."
-        id_ = 10347
-        r = genius.referents(web_page_id=id_)
-        real = r['referents'][0]['api_path']
-        expected = '/referents/11828416'
-        self.assertTrue(real == expected, msg)
-
-    def test_referents_invalid_input(self):
-        # Method should prevent inputs for both song and web_pag ID.
-        with self.assertRaises(AssertionError):
-            genius.referents(song_id=1, web_page_id=1)
-
-    def test_referents_no_inputs(self):
-        # Must supply `song_id`, `web_page_id`, or `created_by_id`.
-        with self.assertRaises(AssertionError):
-            genius.referents()
-
-    def test_annotation(self):
-        msg = "Returned annotation API path is different than expected."
-        id_ = 10225840
-        r = genius.annotation(id_)
-        real = r['annotation']['api_path']
-        expected = '/annotations/10225840'
-        self.assertEqual(real, expected, msg)
-
     def test_song_annotations(self):
         msg = "Incorrect song annotation response."
         r = sorted(genius.song_annotations(1))
         real = r[0][0]
-        expected = "And I’ma keep ya fresh"
+        expected = "(I’m at bat)"
         self.assertEqual(real, expected, msg)
 
-    def test_get_webpage(self):
-        msg = "Returned web page API path is different than expected."
-        url = "https://docs.genius.com"
-        r = genius.web_page(raw_annotatable_url=url)
-        real = r['web_page']['api_path']
-        expected = '/web_pages/10347'
-        self.assertEqual(real, expected, msg)
+    def test_tag_results(self):
+        r = self.tag
 
-    def test_manage_annotation(self):
-        example_text = 'The annotation'
-        new_annotation = genius.create_annotation(
-            example_text,
-            'https://example.com',
-            'illustrative examples',
-            title='test')['annotation']
-        msg = 'Annotation text did not match the one that was passed.'
-        self.assertEqual(new_annotation['body']['plain'], example_text, msg)
+        self.assertEqual(r['next_page'], 2)
+        self.assertEqual(len(r['hits']), 20)
 
-        example_text_two = 'Updated annotation'
-        r = genius.update_annotation(
-            new_annotation['id'],
-            example_text_two,
-            'https://example.com',
-            'illustrative examples',
-            title='test'
-        )['annotation']
-        msg = 'Updated annotation text did not match the one that was passed.'
-        self.assertEqual(r['body']['plain'], example_text_two, msg)
+    def test_tag_first_result(self):
+        artists = ['Luis Fonsi', 'Daddy Yankee']
+        featured_artists = ['Justin Bieber']
+        song_title = "Despacito (Remix)"
+        title_with_artists = (
+            "Despacito (Remix) by Luis Fonsi & Daddy Yankee (Ft. Justin Bieber)"
+        )
+        url = "https://genius.com/Luis-fonsi-and-daddy-yankee-despacito-remix-lyrics"
 
-        r = genius.upvote_annotation(11828417)
-        msg = 'Upvote was not registered.'
-        self.assertTrue(r is not None, msg)
+        first_song = self.tag['hits'][0]
 
-        r = genius.downvote_annotation(11828417)
-        msg = 'Downvote was not registered.'
-        self.assertTrue(r is not None, msg)
-
-        r = genius.unvote_annotation(11828417)
-        msg = 'Vote was not removed.'
-        self.assertTrue(r is not None, msg)
-
-        msg = 'Annotation was not deleted.'
-        r = genius.delete_annotation(new_annotation['id'])
-        self.assertEqual(r, 204, msg)
-
-
-class TestArtist(unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        print("\n---------------------\nSetting up Artist tests...\n")
-        cls.artist_name = "The Beatles"
-        cls.new_song = "Paperback Writer"
-        cls.max_songs = 2
-        cls.artist = genius.search_artist(
-            cls.artist_name, max_songs=cls.max_songs)
-
-    def test_artist(self):
-        msg = "The returned object is not an instance of the Artist class."
-        self.assertIsInstance(self.artist, Artist, msg)
-
-    def test_correct_artist_name(self):
-        msg = "Returned artist name does not match searched artist."
-        name = "Queen"
-        result = genius.search_artist(name, max_songs=1).name
-        self.assertEqual(name, result, msg)
-
-    def test_zero_songs(self):
-        msg = "Songs were downloaded even though 0 songs was requested."
-        name = "Queen"
-        result = genius.search_artist(name, max_songs=0).songs
-        self.assertEqual(0, len(result), msg)
-
-    def test_name(self):
-        msg = "The artist object name does not match the requested artist name."
-        self.assertEqual(self.artist.name, self.artist_name, msg)
-
-    def test_add_song_from_same_artist(self):
-        msg = "The new song was not added to the artist object."
-        self.artist.add_song(genius.search_song(self.new_song, self.artist_name))
-        self.assertEqual(self.artist.num_songs, self.max_songs + 1, msg)
-
-    def test_song(self):
-        msg = "Song was not in artist's songs."
-        song = self.artist.song(self.new_song)
-        self.assertIsNotNone(song, msg)
-
-    def test_add_song_from_different_artist(self):
-        msg = "A song from a different artist was incorrectly allowed to be added."
-        self.artist.add_song(genius.search_song("These Days", "Jackson Browne"))
-        self.assertEqual(self.artist.num_songs, self.max_songs, msg)
-
-    def test_artist_with_includes_features(self):
-        # The artist did not get songs returned that they were featured in.
-        name = "Swae Lee"
-        result = (genius
-                  .search_artist(
-                      name,
-                      max_songs=1,
-                      include_features=True)
-                  .songs[0]
-                  ._body['primary_artist']['name'])
-        self.assertNotEqual(result, name)
-
-    def determine_filenames(self, extension):
-        expected_filenames = []
-        for song in self.artist.songs:
-            fn = "lyrics_{name}_{song}.{ext}".format(name=self.artist.name,
-                                                     song=song.title,
-                                                     ext=extension)
-            fn = sanitize_filename(fn.lower().replace(" ", ""))
-            expected_filenames.append(fn)
-        return expected_filenames
-
-    def test_saving_json_file(self):
-        print('\n')
-        extension = 'json'
-        msg = "Could not save {} file.".format(extension)
-        expected_filename = ('Lyrics_'
-                             + self.artist.name.replace(' ', '')
-                             + '.'
-                             + extension)
-
-        # Remove the test file if it already exists
-        if os.path.isfile(expected_filename):
-            os.remove(expected_filename)
-
-        # Test saving json file
-        self.artist.save_lyrics(extension=extension, overwrite=True)
-        self.assertTrue(os.path.isfile(expected_filename), msg)
-
-        # Test overwriting json file (now that file is written)
-        try:
-            self.artist.save_lyrics(extension=extension, overwrite=True)
-        except Exception:
-            self.fail("Failed {} overwrite test".format(extension))
-        os.remove(expected_filename)
-
-    def test_saving_txt_file(self):
-        print('\n')
-        extension = 'txt'
-        msg = "Could not save {} file.".format(extension)
-        expected_filename = ('Lyrics_'
-                             + self.artist.name.replace(' ', '')
-                             + '.'
-                             + extension)
-
-        # Remove the test file if it already exists
-        if os.path.isfile(expected_filename):
-            os.remove(expected_filename)
-
-        # Test saving txt file
-        self.artist.save_lyrics(extension=extension, overwrite=True)
-        self.assertTrue(os.path.isfile(expected_filename), msg)
-
-        # Test overwriting txt file (now that file is written)
-        try:
-            self.artist.save_lyrics(
-                extension=extension, overwrite=True)
-        except Exception:
-            self.fail("Failed {} overwrite test".format(extension))
-        os.remove(expected_filename)
-
-
-class TestSong(unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        print("\n---------------------\nSetting up Song tests...\n")
-        cls.artist_name = 'Andy Shauf'
-        cls.song_title = 'begin again'  # Lowercase is intentional
-        cls.album = 'The Party'
-        cls.year = '2016-05-20'
-        cls.song = genius.search_song(cls.song_title, cls.artist_name)
-        genius.remove_section_headers = True
-        cls.song_trimmed = genius.search_song(cls.song_title, cls.artist_name)
-
-    def test_song(self):
-        msg = "The returned object is not an instance of the Song class."
-        self.assertIsInstance(self.song, Song, msg)
-
-    def test_title(self):
-        msg = "The returned song title does not match the title of the requested song."
-        self.assertEqual(genius._clean_str(self.song.title),
-                         genius._clean_str(self.song_title), msg)
-
-    def test_artist(self):
-        # The returned artist name does not match the artist of the requested song.
-        self.assertEqual(self.song.artist, self.artist_name)
-
-    def test_album(self):
-        msg = "The returned album name does not match the album of the requested song."
-        self.assertEqual(self.song.album, self.album, msg)
-
-    def test_year(self):
-        msg = "The returned year does not match the year of the requested song"
-        self.assertEqual(self.song.year, self.year, msg)
-
-    def test_lyrics_raw(self):
-        lyrics = '[Verse 1: Andy Shauf]'
-        self.assertTrue(self.song.lyrics.startswith(lyrics))
-
-    def test_lyrics_no_section_headers(self):
-        lyrics = 'Begin again\nThis time you should take a bow at the'
-        self.assertTrue(self.song_trimmed.lyrics.startswith(lyrics))
-
-    def test_media(self):
-        msg = "The returned song does not have a media attribute."
-        self.assertTrue(hasattr(self.song, 'media'), msg)
-
-    def test_result_is_lyrics(self):
-        msg = "Did not reject a false-song."
-        self.assertFalse(genius._result_is_lyrics('Beatles Tracklist'), msg)
-
-    def test_producer_artists(self):
-        # Producer artist should be 'Andy Shauf'.
-        self.assertEqual(self.song.producer_artists[0]["name"], "Andy Shauf")
-
-    def test_saving_json_file(self):
-        print('\n')
-        extension = 'json'
-        msg = "Could not save {} file.".format(extension)
-        expected_filename = 'lyrics_save_test_file.' + extension
-        filename = expected_filename.split('.')[0]
-
-        # Remove the test file if it already exists
-        if os.path.isfile(expected_filename):
-            os.remove(expected_filename)
-
-        # Test saving json file
-        self.song.save_lyrics(filename=filename, extension=extension, overwrite=True)
-        self.assertTrue(os.path.isfile(expected_filename), msg)
-
-        # Test overwriting json file (now that file is written)
-        try:
-            self.song.save_lyrics(
-                filename=expected_filename, extension=extension, overwrite=True)
-            os.remove(expected_filename)
-        except Exception:
-            self.fail("Failed {} overwrite test".format(extension))
-            os.remove(expected_filename)
-
-    def test_saving_txt_file(self):
-        print('\n')
-        extension = 'txt'
-        msg = "Could not save {} file.".format(extension)
-        expected_filename = 'lyrics_save_test_file.' + extension
-        filename = expected_filename.split('.')[0]
-
-        # Remove the test file if it already exists
-        if os.path.isfile(expected_filename):
-            os.remove(expected_filename)
-
-        # Test saving txt file
-        self.song.save_lyrics(filename=filename,
-                              extension=extension,
-                              overwrite=True)
-        self.assertTrue(os.path.isfile(expected_filename), msg)
-
-        # Test overwriting txt file (now that file is written)
-        try:
-            self.song.save_lyrics(filename=filename,
-                                  extension=extension,
-                                  overwrite=True)
-        except Exception:
-            self.fail("Failed {} overwrite test".format(extension))
-        os.remove(expected_filename)
+        self.assertEqual(artists, first_song['artists'])
+        self.assertEqual(featured_artists, first_song['featured_artists'])
+        self.assertEqual(song_title, first_song['title'])
+        self.assertEqual(title_with_artists, first_song['title_with_artists'])
+        self.assertEqual(url, first_song['url'])
 
 
 class TestLyrics(unittest.TestCase):
