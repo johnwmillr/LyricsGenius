@@ -2,6 +2,7 @@
 
 import re
 import os
+import sys
 import unicodedata
 from datetime import datetime
 from string import punctuation
@@ -25,7 +26,7 @@ def auth_from_environment():
     return client_id, redirect_uri, client_secret
 
 
-def convert_to_datetime(f):
+  def convert_to_datetime(f):
     """Converts argument to a datetime object.
 
     Args:
@@ -34,7 +35,6 @@ def convert_to_datetime(f):
 
     Returns:
         :class:`datetime`: datetime object.
-
     """
     if f is None:
         return None
@@ -113,6 +113,22 @@ def parse_redirected_url(url, flow):
         raise KeyError("Multiple values for {}!".format(flow))
 
     return code[0]
+
+
+def safe_unicode(s):
+    """Encodes and decodes string based on user's STDOUT.
+
+    Encodes string to ``utf-8`` and then decodes it based
+    on the user's STDOUT's encoding, replacing erros in the process.
+
+    Args:
+        s (:obj:`str`): a string.
+
+    Returns:
+        :obj:`str`
+
+    """
+    return s.encode('utf-8').decode(sys.stdout.encoding, errors='replace')
 
 
 def sanitize_filename(f):

@@ -15,7 +15,7 @@ from bs4 import BeautifulSoup
 
 from .api import API, PublicAPI
 from .types import Album, Artist, Song
-from .utils import clean_str
+from .utils import clean_str, safe_unicode
 
 
 class Genius(API, PublicAPI):
@@ -514,7 +514,8 @@ class Genius(API, PublicAPI):
         found_name = artist_info['name']
         if found_name != artist_name and allow_name_change:
             if self.verbose:
-                print("Changing artist name to '{a}'".format(a=found_name))
+                print("Changing artist name to '{a}'".format(
+                    a=safe_unicode(found_name)))
             artist_name = found_name
 
         # Create the Artist object
@@ -541,7 +542,8 @@ class Genius(API, PublicAPI):
                 if not valid:
                     if self.verbose:
                         s = song_info['title']
-                        print('"{s}" is not valid. Skipping.'.format(s=s))
+                        print('"{s}" is not valid. Skipping.'.format(
+                            s=safe_unicode(s)))
                     continue
 
                 # Create the Song object from lyrics and metadata
@@ -559,7 +561,7 @@ class Genius(API, PublicAPI):
                                          include_features=include_features)
                 if result is not None and self.verbose:
                     print('Song {n}: "{t}"'.format(n=artist.num_songs,
-                                                   t=song.title))
+                                                   t=safe_unicode(song.title)))
 
                 # Exit search if the max number of songs has been met
                 reached_max_songs = max_songs and artist.num_songs >= max_songs
@@ -695,8 +697,7 @@ class Genius(API, PublicAPI):
             featured_artists = [name for name in song[4:-1] if len(name) > 1]
             title_with_artists = unicodedata.normalize(
                 "NFKD",
-                li.a.find('span', class_='title_with_artists').get_text().strip()
-            )
+                li.a.find('span', class_='title_with_artists').get_text().strip())
 
             hit = {'url': url,
                    'title_with_artists': title_with_artists,
