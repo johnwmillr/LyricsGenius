@@ -5,14 +5,20 @@
 
 import os
 import argparse
-from lyricsgenius.api import Genius
+
+from . import Genius
+from .utils import safe_unicode
 
 
 def main(args=None):
     msg = "Download song lyrics from Genius.com"
     parser = argparse.ArgumentParser(description=msg)
-    parser.add_argument("search_type", type=str.lower, choices=["song", "artist"],
-                        help="Specify whether search is for 'song' or 'artist'")
+    parser.add_argument(
+        "search_type",
+        type=str.lower,
+        choices=["song", "artist", "album"],
+        help="Specify whether search is for 'song', 'artist' or 'album'."
+    )
     parser.add_argument("terms", type=str, nargs="+",
                         help="Provide terms for search")
     parser.add_argument("--save", action="store_true",
@@ -24,10 +30,10 @@ def main(args=None):
     args = parser.parse_args()
 
     # Create an instance of the Genius class
-    client_access_token = os.environ.get("GENIUS_CLIENT_ACCESS_TOKEN", None)
-    msg = "Must declare environment variable: GENIUS_CLIENT_ACCESS_TOKEN"
-    assert client_access_token, msg
-    api = Genius(client_access_token)
+    access_token = os.environ.get("GENIUS_ACCESS_TOKEN", None)
+    msg = "Must declare environment variable: GENIUS_ACCESS_TOKEN"
+    assert access_token, msg
+    api = Genius(access_token)
     if args.quiet:
         api.verbose = False
 
@@ -40,16 +46,22 @@ def main(args=None):
             return
         if args.save:
             if not args.quiet:
-                print("Saving lyrics to '{s}'...".format(s=song.title))
+                print("Saving lyrics to '{s}'...".format(s=safe_unicode(song.title)))
             song.save_lyrics()
-    else:
+    elif args.search_type == "artist":
         artist = api.search_artist(args.terms[0],
                                    max_songs=args.max_songs,
                                    sort='popularity')
         if args.save:
             if not args.quiet:
-                print("Saving '{a}'' lyrics...".format(a=artist.name))
+                print("Saving '{a}'' lyrics...".format(a=safe_unicode(artist.name)))
             api.save_artists(artist)
+    elif args.search_type == "album":
+        album = api.search_album(*args.terms)
+        if args.save:
+            if not args.quiet:
+                print("Saving '{a}'' lyrics...".format(a=safe_unicode(album.name)))
+            album.save_lyrics()
 
 
 if __name__ == "__main__":
