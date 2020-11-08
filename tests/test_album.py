@@ -1,16 +1,20 @@
 import unittest
 import os
 
+import vcr
+
 try:
-    from .test_genius import genius
+    from .test_genius import genius, test_vcr
 except ModuleNotFoundError:
-    from test_genius import genius
+    from test_genius import genius, test_vcr
 from lyricsgenius.types import Album
 
 
 class TestAlbum(unittest.TestCase):
 
     @classmethod
+    @test_vcr.use_cassette(path_transformer=vcr.VCR.ensure_suffix(' album.yaml'),
+                           serializer='yaml')
     def setUpClass(cls):
         print("\n---------------------\nSetting up Album tests...\n")
         cls.album_name = "The Party"
