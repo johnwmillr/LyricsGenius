@@ -6,7 +6,7 @@
 import os
 import argparse
 
-from lyricsgenius import Genius
+from . import Genius
 from .utils import safe_unicode
 
 
