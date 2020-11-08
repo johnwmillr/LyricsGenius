@@ -26,7 +26,7 @@ def auth_from_environment():
     return client_id, redirect_uri, client_secret
 
 
-  def convert_to_datetime(f):
+def convert_to_datetime(f):
     """Converts argument to a datetime object.
 
     Args:

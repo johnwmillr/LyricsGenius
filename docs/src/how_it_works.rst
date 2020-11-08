@@ -4,8 +4,8 @@
 
 How It Works
 #############
-LyricsGenius interfaces with Genius.com in two different ways: the authenticated
-developer API and the unauthenticated public API.
+LyricsGenius interfaces with Genius.com in two different ways:
+the authenticated developer API and the unauthenticated public API.
 
 
 Developer API

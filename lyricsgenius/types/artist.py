@@ -138,19 +138,16 @@ class Artist(BaseEntity):
 
     def to_text(self,
                 filename=None,
-                binary_encoding=False,
                 sanitize=True):
         data = ' '.join(song.lyrics for song in self.songs)
         return super().to_text(data=data,
                                filename=filename,
-                               binary_encoding=binary_encoding,
                                sanitize=sanitize)
 
     def save_lyrics(self,
                     filename=None,
                     extension='json',
                     overwrite=False,
-                    binary_encoding=False,
                     ensure_ascii=True,
                     sanitize=True,
                     verbose=True):
@@ -161,7 +158,6 @@ class Artist(BaseEntity):
         return super().save_lyrics(filename=filename,
                                    extension=extension,
                                    overwrite=overwrite,
-                                   binary_encoding=binary_encoding,
                                    ensure_ascii=ensure_ascii,
                                    sanitize=sanitize,
                                    verbose=verbose)

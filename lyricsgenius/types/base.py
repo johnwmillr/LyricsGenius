@@ -16,7 +16,6 @@ class BaseEntity(ABC):
                     filename,
                     extension='json',
                     overwrite=False,
-                    binary_encoding=False,
                     ensure_ascii=True,
                     sanitize=True,
                     verbose=True):
@@ -31,8 +30,6 @@ class BaseEntity(ABC):
             extension (:obj:`str`, optional): Format of the file (`json` or `txt`).
             overwrite (:obj:`bool`, optional): Overwrites preexisting file if `True`.
                 Otherwise prompts user for input.
-            binary_encoding (:obj:`bool`, optional): Enables binary encoding
-                of text data.
             ensure_ascii (:obj:`bool`, optional): If ensure_ascii is true
                 (the default), the output is guaranteed to have all incoming
                 non-ASCII characters escaped.
@@ -75,7 +72,7 @@ class BaseEntity(ABC):
         if extension == 'json':
             self.to_json(filename, ensure_ascii=ensure_ascii, sanitize=sanitize)
         else:
-            self.to_text(filename, binary_encoding=binary_encoding, sanitize=sanitize)
+            self.to_text(filename, sanitize=sanitize)
 
         if verbose:
             print('Wrote {}.'.format(safe_unicode(filename)))
@@ -120,7 +117,7 @@ class BaseEntity(ABC):
 
         # Save Song object to a json file
         filename = sanitize_filename(filename) if sanitize else filename
-        with open(filename, 'w') as ff:
+        with open(filename, 'w', encoding='utf-8') as ff:
             json.dump(data, ff, indent=1, ensure_ascii=ensure_ascii)
         return None
 
@@ -128,15 +125,12 @@ class BaseEntity(ABC):
     def to_text(self,
                 data,
                 filename=None,
-                binary_encoding=False,
                 sanitize=True):
         """Converts song(s) lyrics to a single string.
 
         Args:
             filename (:obj:`str`, optional): Output filename, a string.
                 If not specified, the result is returned as a string.
-            binary_encoding (:obj:`bool`, optional): Enables binary encoding
-                of text data.
             sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
 
         Returns:
@@ -154,9 +148,7 @@ class BaseEntity(ABC):
 
         # Save song lyrics to a text file
         filename = sanitize_filename(filename) if sanitize else filename
-        with open(filename, 'wb' if binary_encoding else 'w') as ff:
-            if binary_encoding:
-                data = data.encode('utf8')
+        with open(filename, 'w', encoding='utf-8') as ff:
             ff.write(data)
         return None
 

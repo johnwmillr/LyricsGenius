@@ -9,7 +9,6 @@ import os
 import re
 import shutil
 import time
-import unicodedata
 
 from bs4 import BeautifulSoup
 
@@ -638,7 +637,7 @@ class Genius(API, PublicAPI):
                 all_lyrics['artists'][-1] = artist.save_lyrics(overwrite=True)
 
         # Save all of the lyrics
-        with open(filename + '.json', 'w') as outfile:
+        with open(filename + '.json', 'w', encoding='utf-8') as outfile:
             json.dump(all_lyrics, outfile, ensure_ascii=ensure_ascii)
 
         # Delete the temporary directory
@@ -690,14 +689,15 @@ class Genius(API, PublicAPI):
         ul = soup.find('ul', class_='song_list')
         for li in ul.find_all('li'):
             url = li.a.attrs['href']
-            song = [unicodedata.normalize("NFKD", x)
+            song = [x.replace('\xa0', ' ')
                     for x in li.a.span.stripped_strings]
             title = song[0]
             artists = song[2].split(' & ')
             featured_artists = [name for name in song[4:-1] if len(name) > 1]
-            title_with_artists = unicodedata.normalize(
-                "NFKD",
-                li.a.find('span', class_='title_with_artists').get_text().strip())
+            title_with_artists = (
+                li.a.find('span', class_='title_with_artists').get_text()
+                .strip().replace('\xa0', ' ')
+            )
 
             hit = {'url': url,
                    'title_with_artists': title_with_artists,
