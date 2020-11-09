@@ -3,10 +3,7 @@ import os
 
 import vcr
 
-try:
-    from .test_genius import genius, test_vcr
-except ModuleNotFoundError:
-    from test_genius import genius, test_vcr
+from .test_genius import genius, test_vcr
 from lyricsgenius.types import Artist
 from lyricsgenius.utils import sanitize_filename
 

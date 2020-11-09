@@ -4,10 +4,8 @@ import vcr
 
 from lyricsgenius import PublicAPI
 
-try:
-    from .test_genius import test_vcr
-except ModuleNotFoundError:
-    from test_genius import test_vcr
+from .test_genius import test_vcr
+
 
 client = PublicAPI()
 
