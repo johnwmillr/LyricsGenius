@@ -2,10 +2,7 @@ import unittest
 
 from requests.exceptions import HTTPError
 
-try:
-    from .test_genius import genius, test_vcr
-except ModuleNotFoundError:
-    from test_genius import genius, test_vcr
+from .test_genius import genius, test_vcr
 
 
 class TestAPIBase(unittest.TestCase):

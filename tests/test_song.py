@@ -3,10 +3,7 @@ import unittest
 
 import vcr
 
-try:
-    from .test_genius import genius, test_vcr
-except ModuleNotFoundError:
-    from test_genius import genius, test_vcr
+from .test_genius import genius, test_vcr
 from lyricsgenius.types import Song
 from lyricsgenius.utils import clean_str
 
