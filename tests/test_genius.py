@@ -12,10 +12,15 @@ assert access_token is not None, (
     "Must declare environment variable: GENIUS_ACCESS_TOKEN")
 genius = Genius(access_token, sleep_time=1.0, timeout=15)
 
+cassettes_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    'fixtures/cassettes'
+)
+
 test_vcr = vcr.VCR(
     path_transformer=vcr.VCR.ensure_suffix('.yaml'),
     serializer='yaml',
-    cassette_library_dir='tests/fixtures/cassettes',
+    cassette_library_dir=cassettes_path,
     filter_headers=['authorization']
 )
 
