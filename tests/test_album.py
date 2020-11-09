@@ -1,18 +1,21 @@
 import unittest
 import os
+import warnings
 
-try:
-    from .test_genius import genius
-except ModuleNotFoundError:
-    from test_genius import genius
+import vcr
+
+from . import genius, test_vcr
 from lyricsgenius.types import Album
 
 
 class TestAlbum(unittest.TestCase):
 
     @classmethod
+    @test_vcr.use_cassette(path_transformer=vcr.VCR.ensure_suffix(' album.yaml'),
+                           serializer='yaml')
     def setUpClass(cls):
         print("\n---------------------\nSetting up Album tests...\n")
+        warnings.simplefilter("ignore", ResourceWarning)
         cls.album_name = "The Party"
         cls.artist_name = "Andy Shauf"
         cls.num_songs = 10

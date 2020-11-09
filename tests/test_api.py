@@ -1,9 +1,7 @@
 import unittest
 
-try:
-    from .test_genius import genius
-except ModuleNotFoundError:
-    from test_genius import genius
+
+from . import genius, test_vcr
 
 
 class TestAPI(unittest.TestCase):
@@ -12,12 +10,14 @@ class TestAPI(unittest.TestCase):
     def setUpClass(cls):
         print("\n---------------------\nSetting up API tests...\n")
 
+    @test_vcr.use_cassette
     def test_account(self):
         msg = ("No user detail was returned. "
                "Are you sure you're using a user access token?")
         r = genius.account()
         self.assertTrue("user" in r, msg)
 
+    @test_vcr.use_cassette
     def test_annotation(self):
         msg = "Returned annotation API path is different than expected."
         id_ = 10225840
@@ -26,6 +26,7 @@ class TestAPI(unittest.TestCase):
         expected = '/annotations/10225840'
         self.assertEqual(real, expected, msg)
 
+    @test_vcr.use_cassette
     def test_manage_annotation(self):
         example_text = 'The annotation'
         new_annotation = genius.create_annotation(
@@ -64,6 +65,7 @@ class TestAPI(unittest.TestCase):
             r = genius.delete_annotation(new_annotation['id'])
             self.assertEqual(r, 204, msg)
 
+    @test_vcr.use_cassette
     def test_referents_web_page(self):
         msg = "Returned referent API path is different than expected."
         id_ = 10347
@@ -82,6 +84,7 @@ class TestAPI(unittest.TestCase):
         with self.assertRaises(AssertionError):
             genius.referents(song_id=1, web_page_id=1)
 
+    @test_vcr.use_cassette
     def test_web_page(self):
         msg = "Returned web page API path is different than expected."
         url = "https://docs.genius.com"
