@@ -1,9 +1,10 @@
 import os
 import unittest
 
+
 import vcr
 
-from .test_genius import genius, test_vcr
+from . import genius, test_vcr
 from lyricsgenius.types import Song
 from lyricsgenius.utils import clean_str
 
@@ -15,6 +16,7 @@ class TestSong(unittest.TestCase):
                            serializer='yaml')
     def setUpClass(cls):
         print("\n---------------------\nSetting up Song tests...\n")
+
         cls.artist_name = 'Andy Shauf'
         cls.song_title = 'begin again'  # Lowercase is intentional
         cls.album = 'The Party'

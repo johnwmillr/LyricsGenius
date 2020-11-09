@@ -1,9 +1,10 @@
 import unittest
 import os
 
+
 import vcr
 
-from .test_genius import genius, test_vcr
+from . import genius, test_vcr
 from lyricsgenius.types import Artist
 from lyricsgenius.utils import sanitize_filename
 
@@ -15,6 +16,7 @@ class TestArtist(unittest.TestCase):
                            serializer='yaml')
     def setUpClass(cls):
         print("\n---------------------\nSetting up Artist tests...\n")
+
         cls.artist_name = "The Beatles"
         cls.new_song = "Paperback Writer"
         cls.max_songs = 2

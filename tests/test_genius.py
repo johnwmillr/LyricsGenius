@@ -1,28 +1,8 @@
-import os
 import unittest
 
 import vcr
 
-from lyricsgenius import Genius
-
-
-# Import client access token from environment variable
-access_token = os.environ.get("GENIUS_ACCESS_TOKEN", None)
-assert access_token is not None, (
-    "Must declare environment variable: GENIUS_ACCESS_TOKEN")
-genius = Genius(access_token, sleep_time=1.0, timeout=15)
-
-cassettes_path = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    'fixtures/cassettes'
-)
-
-test_vcr = vcr.VCR(
-    path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-    serializer='yaml',
-    cassette_library_dir=cassettes_path,
-    filter_headers=['authorization']
-)
+from . import genius, test_vcr
 
 
 class TestEndpoints(unittest.TestCase):
@@ -32,6 +12,7 @@ class TestEndpoints(unittest.TestCase):
                            serializer='yaml')
     def setUpClass(cls):
         print("\n---------------------\nSetting up Endpoint tests...\n")
+
         cls.search_term = "Ezra Furman"
         cls.song_title_only = "99 Problems"
         cls.tag = genius.tag('pop')
@@ -105,6 +86,7 @@ class TestLyrics(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up lyrics tests...\n")
+
         cls.song_url = "https://genius.com/Andy-shauf-begin-again-lyrics"
         cls.song_id = 2885745
         cls.lyrics_ending = (
