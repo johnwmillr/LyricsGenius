@@ -11,7 +11,7 @@ assert access_token is not None, (
     "Must declare environment variable: GENIUS_ACCESS_TOKEN")
 
 # Genius client
-genius = Genius(access_token, sleep_time=1.0, timeout=15)
+genius = Genius(access_token, sleep_time=1.0, timeout=15, retries=3)
 
 cassettes_path = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
