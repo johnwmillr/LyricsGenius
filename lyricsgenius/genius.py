@@ -165,7 +165,8 @@ class Genius(API, PublicAPI):
             'interview', 'skit', 'instrumental', and 'setlist'.
 
         """
-        if song['lyrics_state'] != 'complete':
+        if (song['lyrics_state'] != 'complete'
+                or song.get('instrumental')):
             return False
 
         expression = r"".join(["({})|".format(term) for term in self.excluded_terms])
@@ -321,6 +322,9 @@ class Genius(API, PublicAPI):
 
         songs = []
         next_page = 1
+
+        # It's unlikely for an album to have >=50 songs,
+        # but it's best to check
         while next_page:
             tracks = self.album_tracks(album_id=album_id,
                                        per_page=50,
@@ -328,7 +332,8 @@ class Genius(API, PublicAPI):
                                        text_format=text_format)
             for track in tracks['tracks']:
                 song_info = track['song']
-                if song_info['lyrics_state'] == 'complete':
+                if (song_info['lyrics_state'] == 'complete'
+                        and not song_info.get('instrumental')):
                     song_lyrics = self.lyrics(song_info['url'])
                 else:
                     song_lyrics = ""
@@ -418,7 +423,9 @@ class Genius(API, PublicAPI):
         if song_id is None and get_full_info is True:
             new_info = self.song(song_id)['song']
             song_info.update(new_info)
-        if song_info['lyrics_state'] == 'complete':
+
+        if (song_info['lyrics_state'] == 'complete'
+                and not song_info.get('instrumental')):
             lyrics = self.lyrics(song_info['url'])
         else:
             lyrics = ""
@@ -546,7 +553,8 @@ class Genius(API, PublicAPI):
                     continue
 
                 # Create the Song object from lyrics and metadata
-                if song_info['lyrics_state'] == 'complete':
+                if (song_info['lyrics_state'] == 'complete'
+                        and not song_info.get('instrumental')):
                     lyrics = self.lyrics(song_info['url'])
                 else:
                     lyrics = ""
@@ -689,6 +697,7 @@ class Genius(API, PublicAPI):
         ul = soup.find('ul', class_='song_list')
         for li in ul.find_all('li'):
             url = li.a.attrs['href']
+            # Genius uses \xa0 in the HTML to add spaces
             song = [x.replace('\xa0', ' ')
                     for x in li.a.span.stripped_strings]
             title = song[0]
@@ -709,6 +718,7 @@ class Genius(API, PublicAPI):
 
         res = {'hits': hits}
         page = page if page is not None else 1
+        # Full pages contain 20 items
         res['next_page'] = page + 1 if len(hits) == 20 else None
 
         return res
