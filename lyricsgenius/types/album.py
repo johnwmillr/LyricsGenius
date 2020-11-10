@@ -4,23 +4,7 @@ from .artist import Artist
 
 
 class Album(BaseEntity):
-    """An album from the Genius.com database.
-
-    Attributes:
-        _type (:obj:`str`)
-        api_path (:obj:`str`)
-        artist (:class:`Artist`)
-        cover_art_thumbnail_url (:obj:`str`)
-        cover_art_url (:obj:`str`)
-        full_title (:obj:`str`)
-        id (:obj:`int`)
-        name (:obj:`str`)
-        name_with_artist (:obj:`str`)
-        release_date_components (:class:`datetime`)
-        songs (:obj:`list`):
-            A list of :class:`Song` objects.
-        url (:obj:`str`)
-    """
+    """An album from the Genius.com database."""
 
     def __init__(self, client, json_dict, songs):
         body = json_dict
