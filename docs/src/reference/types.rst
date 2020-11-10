@@ -192,6 +192,9 @@ Attributes
    * - id
      - :obj:`int`
 
+   * - instrumental
+     - :obj:`bool`
+
    * - lyrics
      - :obj:`str`
 
