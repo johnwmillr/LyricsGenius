@@ -51,6 +51,7 @@ class Song(BaseEntity):
         self.full_title = body['full_title']
         self.header_image_thumbnail_url = body['header_image_thumbnail_url']
         self.header_image_url = body['header_image_url']
+        self.instrumental = True if 'instrumental' in body else False
         self.lyrics_owner_id = body['lyrics_owner_id']
         self.lyrics_state = body['lyrics_state']
         self.path = body['path']
