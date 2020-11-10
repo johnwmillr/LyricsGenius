@@ -36,50 +36,6 @@ Album
 ------
 An album from Genius that has the album's songs and their lyrics.
 
-Attributes
-^^^^^^^^^^
-.. list-table::
-   :header-rows: 1
-
-   * - Attribute
-     - Type
-
-   * - _type
-     - :obj:`str`
-
-   * - api_path
-     - :obj:`str`
-
-   * - artist
-     - :class:`Artist`
-
-   * - cover_art_thumbnail_url
-     - :obj:`str`
-
-   * - cover_art_url
-     - :obj:`str`
-
-   * - full_title
-     - :obj:`str`
-
-   * - id
-     - :obj:`int`
-
-   * - name
-     - :obj:`str`
-
-   * - name_with_artist
-     - :obj:`str`
-
-   * - release_date_components
-     - :class:`datetime`
-
-   * - songs
-     - :obj:`list`
-
-   * - url
-     - :obj:`str`
-
 
 Methods
 ^^^^^^^^
@@ -103,41 +59,6 @@ Artist
 The Artist object which holds the details of the artist
 and the `Song`_ objects of that artist.
 
-Attributes
-^^^^^^^^^^
-.. list-table::
-   :header-rows: 1
-
-   * - Attribute
-     - Type
-
-
-   * - api_path
-     - :obj:`str`
-
-   * - header_image_url
-     - :obj:`str`
-
-   * - id
-     - :obj:`int`
-
-   * - image_url
-     - :obj:`str`
-
-   * - is_meme_verified
-     - :obj:`bool`
-
-   * - is_verified
-     - :obj:`bool`
-
-   * - name
-     - :obj:`str`
-
-   * - songs
-     - :obj:`list`
-
-   * - url
-     - :obj:`str`
 
 Methods
 ^^^^^^^^
@@ -161,72 +82,6 @@ Methods
 Song
 ----
 This is the Song object which holds the details of the song.
-
-Attributes
-^^^^^^^^^^
-.. list-table::
-   :header-rows: 1
-
-   * - Attribute
-     - Type
-
-
-   * - annotation_count
-     - :obj:`int`
-
-   * - api_path
-     - :obj:`str`
-
-   * - artist
-     - :obj:`str`
-
-   * - full_title
-     - :obj:`str`
-
-   * - header_image_thumbnail_url
-     - :obj:`str`
-
-   * - header_image_url
-     - :obj:`str`
-
-   * - id
-     - :obj:`int`
-
-   * - lyrics
-     - :obj:`str`
-
-   * - lyrics_owner_id
-     - :obj:`int`
-
-   * - lyrics_state
-     - :obj:`str`
-
-   * - path
-     - :obj:`str`
-
-   * - primary_artist
-     - :class:`Artist`
-
-   * - pyongs_count
-     - :obj:`int`
-
-   * - song_art_image_thumbnail_url
-     - :obj:`str`
-
-   * - song_art_image_url
-     - :obj:`str`
-
-   * - stats
-     - :class:`Stats`
-
-   * - title
-     - :obj:`str`
-
-   * - title_with_featured
-     - :obj:`str`
-
-   * - url
-     - :obj:`str`
 
 Methods
 ^^^^^^^^

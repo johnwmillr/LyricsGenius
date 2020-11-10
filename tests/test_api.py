@@ -1,6 +1,7 @@
 import unittest
 
-from .test_genius import genius, test_vcr
+
+from . import genius, test_vcr
 
 
 class TestAPI(unittest.TestCase):

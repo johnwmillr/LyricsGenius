@@ -6,7 +6,7 @@ from lyricsgenius.utils import (
     auth_from_environment
 )
 
-from .test_genius import genius
+from . import genius
 
 
 class TestUtils(unittest.TestCase):

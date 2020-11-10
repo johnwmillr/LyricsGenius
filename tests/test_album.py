@@ -1,9 +1,10 @@
 import unittest
 import os
+import warnings
 
 import vcr
 
-from .test_genius import genius, test_vcr
+from . import genius, test_vcr
 from lyricsgenius.types import Album
 
 
@@ -14,6 +15,7 @@ class TestAlbum(unittest.TestCase):
                            serializer='yaml')
     def setUpClass(cls):
         print("\n---------------------\nSetting up Album tests...\n")
+        warnings.simplefilter("ignore", ResourceWarning)
         cls.album_name = "The Party"
         cls.artist_name = "Andy Shauf"
         cls.num_songs = 10
