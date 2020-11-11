@@ -5,11 +5,11 @@ Snippets
 ==================
 Here are some snippets showcasing how the library can be used.
 
-- `Authenticating using OAuth2`_
 - `All the songs of an artist`_
 - `Artist's least popular song`_
-- `Getting songs that have a tag`
+- `Authenticating using OAuth2`_
 - `Getting song lyrics by URL or ID`_
+- `Getting songs by tag (genre)`_
 - `Getting the lyrics for all songs of a search`_
 - `Searching for a song by lyrics`_
 - `YouTube URL of artist's songs`_
@@ -101,8 +101,8 @@ Using :meth:`search_all <Genius.search_all>`:
     for hit in request['sections'][2]['hits']:
         print(hit['result']['title'])
 
-Getting songs that have a tag
------------------------------
+Getting songs by tag (genre)
+----------------------------
 Genius has the following main tags:
 ``rap``, ``pop``, ``r-b``, ``rock``, ``country``, ``non-music``
 To discover more tags, visit the `Genius Tags`_ page.

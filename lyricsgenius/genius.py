@@ -553,8 +553,7 @@ class Genius(API, PublicAPI):
                     continue
 
                 # Create the Song object from lyrics and metadata
-                if (song_info['lyrics_state'] == 'complete'
-                        and not song_info.get('instrumental')):
+                if song_info['lyrics_state'] == 'complete':
                     lyrics = self.lyrics(song_info['url'])
                 else:
                     lyrics = ""
