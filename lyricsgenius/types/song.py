@@ -40,7 +40,6 @@ class Song(BaseEntity):
         body = super().to_dict()
         body['artist'] = self.artist
         body['lyrics'] = self.lyrics
-        body['instrumental'] = self.instrumental
         return body
 
     def to_json(self,
