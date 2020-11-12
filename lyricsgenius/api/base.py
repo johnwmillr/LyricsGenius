@@ -27,7 +27,11 @@ class Sender(object):
         }
         if access_token is None:
             access_token = os.environ.get('GENIUS_ACCESS_TOKEN')
-        self.access_token = 'Bearer ' + access_token if access_token else None
+
+        if not access_token or not isinstance(access_token, str):
+            raise TypeError('Invalid token')
+
+        self.access_token = 'Bearer ' + access_token
         self.authorization_header = {'authorization': self.access_token}
         self.response_format = response_format.lower()
         self.timeout = timeout
