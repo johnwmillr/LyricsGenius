@@ -46,7 +46,7 @@ class Album(BaseEntity):
     def to_text(self,
                 filename=None,
                 sanitize=True):
-        data = ' '.join(track.song.lyrics for track in self.track)
+        data = ' '.join(track.song.lyrics for track in self.tracks)
 
         return super().to_text(data=data,
                                filename=filename,
@@ -73,13 +73,13 @@ class Album(BaseEntity):
 class Track(BaseEntity):
     """docstring for Track"""
 
-    def __init__(self, json_dict, lyrics):
+    def __init__(self, client, json_dict, lyrics):
         body = json_dict
         super().__init__(body['song']['id'])
         self._body = body
+        self.song = Song(client, body['song'], lyrics)
 
         self.number = body['number']
-        self.song = Song(body['song'], lyrics)
 
     def to_dict(self):
         body = super().to_dict()
@@ -123,3 +123,7 @@ class Track(BaseEntity):
                                    ensure_ascii=ensure_ascii,
                                    sanitize=sanitize,
                                    verbose=verbose)
+
+    def __repr__(self):
+        name = self.__class__.__name__
+        return "{}(number, song)".format(name)

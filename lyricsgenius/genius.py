@@ -343,7 +343,7 @@ class Genius(API, PublicAPI):
                 track = Track(self, track, song_lyrics)
                 tracks.append(track)
 
-            next_page = tracks['next_page']
+            next_page = tracks_list['next_page']
 
         if album_id is None and get_full_info is True:
             new_info = self.album(album_id, text_format=text_format)['album']
