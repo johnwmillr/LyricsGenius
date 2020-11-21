@@ -18,7 +18,7 @@ class TestAlbum(unittest.TestCase):
         warnings.simplefilter("ignore", ResourceWarning)
         cls.album_name = "The Party"
         cls.artist_name = "Andy Shauf"
-        cls.num_songs = 10
+        cls.num_tracks = 10
         cls.album = genius.search_album(
             cls.album_name,
             cls.artist_name
@@ -33,8 +33,8 @@ class TestAlbum(unittest.TestCase):
     def test_album_artist(self):
         self.assertEqual(self.album.artist.name, self.artist_name)
 
-    def test_songs(self):
-        self.assertEqual(len(self.album.songs), self.num_songs)
+    def test_tracks(self):
+        self.assertEqual(len(self.album.tracks), self.num_tracks)
 
     def test_saving_json_file(self):
         print('\n')

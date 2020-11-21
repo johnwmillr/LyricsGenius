@@ -25,8 +25,14 @@ Classes
    :nosignatures:
 
    Stats
+   Track
 
 .. autoclass:: Stats
+    :members:
+    :member-order: bysource
+    :no-show-inheritance:
+
+.. autoclass:: Track
     :members:
     :member-order: bysource
     :no-show-inheritance:
@@ -74,8 +80,8 @@ Attributes
    * - release_date_components
      - :class:`datetime`
 
-   * - songs
-     - :obj:`list`
+   * - tracks
+     - :obj:`list` of :class:`Track`
 
    * - url
      - :obj:`str`

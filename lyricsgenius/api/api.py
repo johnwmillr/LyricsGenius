@@ -312,7 +312,7 @@ class API(Sender):
         Args:
             artist_id (:obj:`int`): Genius artist ID
             sort (:obj:`str`, optional): Sorting preference.
-                Either based on 'title' or 'popularity'.
+                Either based on 'title', 'popularity' or 'release_date'.
             per_page (:obj:`int`, optional): Number of results to
                 return per request. It can't be more than 50.
             page (:obj:`int`, optional): Paginated offset (number of the page).

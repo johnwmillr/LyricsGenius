@@ -13,7 +13,7 @@ import time
 from bs4 import BeautifulSoup
 
 from .api import API, PublicAPI
-from .types import Album, Artist, Song
+from .types import Album, Artist, Song, Track
 from .utils import clean_str, safe_unicode
 
 
@@ -320,25 +320,28 @@ class Genius(API, PublicAPI):
 
         album_id = album_info['id']
 
-        songs = []
+        tracks = []
         next_page = 1
 
         # It's unlikely for an album to have >=50 songs,
         # but it's best to check
         while next_page:
-            tracks = self.album_tracks(album_id=album_id,
-                                       per_page=50,
-                                       page=next_page,
-                                       text_format=text_format)
-            for track in tracks['tracks']:
+            tracks_list = self.album_tracks(
+                album_id=album_id,
+                per_page=50,
+                page=next_page,
+                text_format=text_format
+            )
+            for track in tracks_list['tracks']:
                 song_info = track['song']
                 if (song_info['lyrics_state'] == 'complete'
                         and not song_info.get('instrumental')):
                     song_lyrics = self.lyrics(song_info['url'])
                 else:
                     song_lyrics = ""
-                song = Song(self, song_info, song_lyrics)
-                songs.append(song)
+
+                track = Track(self, track, song_lyrics)
+                tracks.append(track)
 
             next_page = tracks['next_page']
 
@@ -346,7 +349,7 @@ class Genius(API, PublicAPI):
             new_info = self.album(album_id, text_format=text_format)['album']
             album_info.update(new_info)
 
-        return Album(self, album_info, songs)
+        return Album(self, album_info, tracks)
 
     def search_song(self, title=None, artist="", song_id=None,
                     get_full_info=True):
