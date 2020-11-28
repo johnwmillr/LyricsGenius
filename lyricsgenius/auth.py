@@ -67,11 +67,13 @@ class OAuth2(Sender):
             payload['state'] = self.state
         return OAuth2.auth_url + '?' + urlencode(payload)
 
-    def get_user_token(self, url, **kwargs):
-        """Gets a user token using the redirected URL.
-        This method will either get the value of the *token*
-        parameter in the redirected URL, or use the value of the
+    def get_user_token(self, code, state=None, **kwargs):
+        """Gets a user token using the code parameter.
+        This method will use the value of the
         *code* parameter to request a token from Genius.
+        If you provide a :obj:`state` it will also compare
+        it to initial state and will raise an exception if
+        they're not equal.
 
         Args:
             url (:obj:`str`): 'code' parameter of redirected URL.
@@ -80,25 +82,26 @@ class OAuth2(Sender):
             :obj:`str`: User token.
 
         """
-        if self.flow == 'code':
-            payload = {'code': parse_redirected_url(url, self.flow),
-                       'client_id': self.client_id,
-                       'client_secret': self.client_secret,
-                       'redirect_uri': self.redirect_uri,
-                       'grant_type': 'authorization_code',
-                       'response_type': 'code'}
-            url = OAuth2.token_url.replace('https://api.genius.com/', '')
-            res = self._make_request(url, 'POST', data=payload, **kwargs)
-            return res['access_token']
-        elif self.flow == 'token':
-            return parse_redirected_url(url, self.flow)
+
+        if state is not None and self.state != state:
+            raise InvalidState('States do not match.')
+
+        payload = {'code': code,
+                   'client_id': self.client_id,
+                   'client_secret': self.client_secret,
+                   'redirect_uri': self.redirect_uri,
+                   'grant_type': 'authorization_code',
+                   'response_type': 'code'}
+        url = OAuth2.token_url.replace('https://api.genius.com/', '')
+        res = self._make_request(url, 'POST', data=payload, **kwargs)
+        return res['access_token']
 
     def prompt_user(self):
         """Prompts current user for authentication.
 
         Opens a web browser for you to log in with Genius.
         Prompts to paste the URL after logging in to parse the
-        *code* or *token* URL parameter.
+        *token* URL parameter.
 
         returns:
             :obj:`str`: User token.
@@ -110,7 +113,7 @@ class OAuth2(Sender):
         webbrowser.open(url)
         redirected = input('Please paste redirect URL: ').strip()
 
-        return self.get_user_token(redirected)
+        return parse_redirected_url(redirected, self.flow)
 
     @classmethod
     def client_only_app(cls, client_id, redirect_uri, scope=None, state=None):
@@ -167,3 +170,7 @@ class OAuth2(Sender):
             state=self.state,
             client_only_app=self.client_only_app
         )
+
+
+class InvalidState(Exception):
+    """Exception for non-matching states."""

@@ -170,7 +170,6 @@ URI will work (for example ``http://example.com/callback``)
 
     from lyricsgenius import OAuth2, Genius
 
-    # you can also use OAuth2.full_code_exchange()
     auth = OAuth2.client_only_app(
         'my_client_id',
         'my_redirect_uri',
@@ -199,14 +198,18 @@ Authenticating another user
         'my_client_id',
         'my_redirect_uri',
         'my_client_secret',
-        scope='all'
+        scope='all',
+        state='some_unique_value'
     )
 
     # this part is the same
     url_for_user = auth.url
     print('Redirecting you to ' + url_for_user)
-    redirected_url = 'https://example.com/?code=some_code'
-    token = auth.get_user_token(redirected_url)
+    
+    # If we were using Flask:
+    code = request.args.get('code')
+    state = request.args.get('state')
+    token = auth.get_user_token(code, state)
 
     genius = Genius(token)
 
