@@ -116,7 +116,13 @@ class OAuth2(Sender):
         webbrowser.open(url)
         redirected = input('Please paste redirect URL: ').strip()
 
-        return parse_redirected_url(redirected, self.flow)
+        if self.flow == 'token':
+            token = parse_redirected_url(redirected, self.flow)
+        else:
+            code = parse_redirected_url(redirected, self.flow)
+            token = self.get_user_token(code)
+
+        return token
 
     @classmethod
     def client_only_app(cls, client_id, redirect_uri, scope=None, state=None):
