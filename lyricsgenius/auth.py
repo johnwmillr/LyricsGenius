@@ -3,6 +3,7 @@ import webbrowser
 
 from .utils import parse_redirected_url
 from .api import Sender
+from .errors import InvalidState
 
 
 class OAuth2(Sender):
@@ -76,7 +77,9 @@ class OAuth2(Sender):
         they're not equal.
 
         Args:
-            url (:obj:`str`): 'code' parameter of redirected URL.
+            code (:obj:`str`): 'code' parameter of redirected URL.
+            state (:obj:`str`): state parameter of redirected URL (only
+                provide if you want to compare with initial :obj:`self.state`)
             **kwargs: keywords for the POST request.
         returns:
             :obj:`str`: User token.
@@ -170,7 +173,3 @@ class OAuth2(Sender):
             state=self.state,
             client_only_app=self.client_only_app
         )
-
-
-class InvalidState(Exception):
-    """Exception for non-matching states."""
