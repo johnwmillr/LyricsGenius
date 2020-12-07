@@ -3,7 +3,7 @@ import webbrowser
 
 from .utils import parse_redirected_url
 from .api import Sender
-from .errors import InvalidState
+from .errors import InvalidStateError
 
 
 class OAuth2(Sender):
@@ -68,16 +68,22 @@ class OAuth2(Sender):
             payload['state'] = self.state
         return OAuth2.auth_url + '?' + urlencode(payload)
 
-    def get_user_token(self, code, state=None, **kwargs):
-        """Gets a user token using the code parameter.
-        This method will use the value of the
-        *code* parameter to request a token from Genius.
-        If you provide a :obj:`state` it will also compare
-        it to initial state and will raise an exception if
+    def get_user_token(self, code=None, url=None, state=None, **kwargs):
+        """Gets a user token using the url or the code parameter..
+        If you supply value for :obj:`code`, this method will use the value of the
+        :obj:`code` parameter to request a token from Genius.
+
+        If you use the :method`client_only_app` and supplt the redirected URL,
+        it will already have the token.
+        You could pass the URL to this method or parse it yourself.
+
+        If you provide a :obj:`state` the method will also compare
+        it to the initial state and will raise an exception if
         they're not equal.
 
         Args:
             code (:obj:`str`): 'code' parameter of redirected URL.
+            url (:obj:`str`): Redirected URL (used in client-only apps)
             state (:obj:`str`): state parameter of redirected URL (only
                 provide if you want to compare with initial :obj:`self.state`)
             **kwargs: keywords for the POST request.
@@ -85,19 +91,24 @@ class OAuth2(Sender):
             :obj:`str`: User token.
 
         """
+        assert any(code, url), "You must pass either `code` or `url`."
 
         if state is not None and self.state != state:
-            raise InvalidState('States do not match.')
+            raise InvalidStateError('States do not match.')
 
-        payload = {'code': code,
-                   'client_id': self.client_id,
-                   'client_secret': self.client_secret,
-                   'redirect_uri': self.redirect_uri,
-                   'grant_type': 'authorization_code',
-                   'response_type': 'code'}
-        url = OAuth2.token_url.replace('https://api.genius.com/', '')
-        res = self._make_request(url, 'POST', data=payload, **kwargs)
-        return res['access_token']
+        if code:
+            payload = {'code': code,
+                       'client_id': self.client_id,
+                       'client_secret': self.client_secret,
+                       'redirect_uri': self.redirect_uri,
+                       'grant_type': 'authorization_code',
+                       'response_type': 'code'}
+            url = OAuth2.token_url.replace('https://api.genius.com/', '')
+            res = self._make_request(url, 'POST', data=payload, **kwargs)
+            token = res['access_token']
+        else:
+            token = parse_redirected_url(url, self.flow)
+        return token
 
     def prompt_user(self):
         """Prompts current user for authentication.
