@@ -91,7 +91,7 @@ class OAuth2(Sender):
             :obj:`str`: User token.
 
         """
-        assert any(code, url), "You must pass either `code` or `url`."
+        assert any([code, url]), "You must pass either `code` or `url`."
 
         if state is not None and self.state != state:
             raise InvalidStateError('States do not match.')
