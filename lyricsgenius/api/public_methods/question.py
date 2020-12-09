@@ -9,6 +9,7 @@ class QuestionMethods(object):
                   state=None,
                   text_format=None):
         """Gets the questions on an album or a song.
+
         You must supply one of :obj:`album_id` or :obj:`song_id`.
 
         Args:

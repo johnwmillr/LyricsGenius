@@ -186,6 +186,7 @@ class SearchMethods(object):
 
     def search_all(self, search_term, per_page=None, page=None):
         """Searches all types.
+
         Including: albums, articles, lyrics, songs, users and
         videos.
 

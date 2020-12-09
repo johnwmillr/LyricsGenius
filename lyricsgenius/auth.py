@@ -51,6 +51,7 @@ class OAuth2(Sender):
     @property
     def url(self):
         """Returns the URL you redirect the user to.
+
         You can use this property to get a URL that when opened on the user's
         device, shows Genius's authorization page where user clicks *Agree*
         to give your app access, and then Genius redirects user back to your
@@ -70,6 +71,7 @@ class OAuth2(Sender):
 
     def get_user_token(self, code=None, url=None, state=None, **kwargs):
         """Gets a user token using the url or the code parameter..
+
         If you supply value for :obj:`code`, this method will use the value of the
         :obj:`code` parameter to request a token from Genius.
 
