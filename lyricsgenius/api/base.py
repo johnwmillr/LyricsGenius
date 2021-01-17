@@ -1,5 +1,6 @@
 import time
 import os
+from json.decoder import JSONDecodeError
 
 import requests
 from requests.exceptions import HTTPError, Timeout
@@ -99,7 +100,10 @@ class Sender(object):
 
 def get_description(e):
     error = str(e)
-    res = e.response.json()
+    try:
+        res = e.response.json()
+    except JSONDecodeError:
+        res = {}
     description = (res['meta']['message']
                    if res.get('meta')
                    else res.get('error_description'))
