@@ -5,7 +5,7 @@ import vcr
 
 from lyricsgenius import PublicAPI
 
-from . import test_vcr
+from . import test_vcr, genius
 
 
 client = PublicAPI()
@@ -444,6 +444,24 @@ class TestMiscMethods(unittest.TestCase):
     # def test_line_item(self):
     #    r = client.line_item(self.line_item_id)
     #    self.assertTrue("line_item" in r)
+
+    @test_vcr.use_cassette
+    def test_page_data_album(self):
+        album_path = '/albums/Eminem/Music-to-be-murdered-by'
+
+        page_data = genius.page_data(album=album_path)
+        self.assertTrue('page_data' in page_data)
+
+    @test_vcr.use_cassette
+    def test_page_data_song(self):
+        artist = client.artist(1655)
+        artist_slug = artist['artist']['slug']
+
+        song = genius.song(4558484)
+        song_path = song['song']['path']
+
+        page_data = genius.page_data(artist=artist_slug, song=song_path)
+        self.assertTrue('page_data' in page_data)
 
     @test_vcr.use_cassette
     def test_voters(self):
