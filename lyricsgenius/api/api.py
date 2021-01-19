@@ -529,7 +529,7 @@ class PublicAPI(
 
         # If PublicAPI was instantiated directly
         # there is no need for a token anymore
-        public_api_constructor = False if 'Genius' in str(self) else True
+        public_api_constructor = False if self.__class__.__name__ == 'Genius' else True
 
         # Genius PublicAPI Constructor
         super().__init__(
