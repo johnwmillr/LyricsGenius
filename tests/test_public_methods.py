@@ -454,7 +454,7 @@ class TestMiscMethods(unittest.TestCase):
 
     @test_vcr.use_cassette
     def test_page_data_song(self):
-        artist = client.artist(1655)
+        artist = client.artist(1665)
         artist_slug = artist['artist']['slug']
 
         song = genius.song(4558484)

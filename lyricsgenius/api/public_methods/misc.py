@@ -65,7 +65,7 @@ class MiscMethods(object):
                 public = PublicAPI()
 
                 # We need the PublicAPI to get artist's slug
-                artist = public.artist(1655)
+                artist = public.artist(1665)
                 artist_slug = artist['artist']['slug']
 
                 # The rest can be done using Genius
