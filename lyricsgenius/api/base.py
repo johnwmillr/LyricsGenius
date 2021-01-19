@@ -19,7 +19,8 @@ class Sender(object):
         response_format='plain',
         timeout=5,
         sleep_time=0.2,
-        retries=0
+        retries=0,
+        public_api_constructor=False,
     ):
         self._session = requests.Session()
         self._session.headers = {
@@ -29,11 +30,14 @@ class Sender(object):
         if access_token is None:
             access_token = os.environ.get('GENIUS_ACCESS_TOKEN')
 
-        if not access_token or not isinstance(access_token, str):
-            raise TypeError('Invalid token')
+        if public_api_constructor:
+            self.authorization_header = {}
+        else:
+            if not access_token or not isinstance(access_token, str):
+                raise TypeError('Invalid token')
+            self.access_token = 'Bearer ' + access_token
+            self.authorization_header = {'authorization': self.access_token}
 
-        self.access_token = 'Bearer ' + access_token
-        self.authorization_header = {'authorization': self.access_token}
         self.response_format = response_format.lower()
         self.timeout = timeout
         self.sleep_time = sleep_time

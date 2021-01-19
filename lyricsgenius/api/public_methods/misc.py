@@ -96,7 +96,7 @@ class MiscMethods(object):
             page_type = 'songs'
 
             # item path becomes something like: Artist/Song
-            item_path = song.replace(artist, artist + '/').replace('-lyrics', '')
+            item_path = song[1:].replace(artist + '-', artist + '/').replace('-lyrics', '')
 
         page_path = '/{page_type}/{item_path}'.format(page_type=page_type,
                                                       item_path=item_path)

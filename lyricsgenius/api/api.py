@@ -526,11 +526,17 @@ class PublicAPI(
         retries=0,
         **kwargs
     ):
+
+        # If PublicAPI was instantiated directly
+        # there is no need for a token anymore
+        public_api_constructor = False if 'Genius' in str(self) else True
+
         # Genius PublicAPI Constructor
         super().__init__(
             response_format=response_format,
             timeout=timeout,
             sleep_time=sleep_time,
             retries=retries,
+            public_api_constructor=public_api_constructor,
             **kwargs
         )
