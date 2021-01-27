@@ -92,12 +92,14 @@ class Genius(API, PublicAPI):
             self.excluded_terms = self.default_terms.copy()
             self.excluded_terms.extend(excluded_terms)
 
-    def lyrics(self, urlthing, remove_section_headers=False):
+    def lyrics(self, song_id=None, song_url=None, remove_section_headers=False):
         """Uses BeautifulSoup to scrape song info off of a Genius song URL
 
+        You must supply either `song_id` or song_url`.
+
         Args:
-            urlthing (:obj:`str` | :obj:`int`):
-                Song ID or song URL.
+            song_id (:obj:`int`, optional): Song ID.
+            song_url (:obj:`str`, optional): Song URL.
             remove_section_headers (:obj:`bool`, optional):
                 If `True`, removes [Chorus], [Bridge], etc. headers from lyrics.
 
@@ -118,10 +120,12 @@ class Genius(API, PublicAPI):
             :attr:`Genius.remove_section_headers` attribute.
 
         """
-        if isinstance(urlthing, int):
-            path = self.song(urlthing)['song']['path'][1:]
+        msg = "You must supply either `song_id` or `song_url`."
+        assert any([song_id, song_url]), msg
+        if song_url:
+            path = song_url.replace("https://genius.com/", "")
         else:
-            path = urlthing.replace("https://genius.com/", "")
+            path = self.song(song_id)['song']['path'][1:]
 
         # Scrape the song lyrics from the HTML
         html = BeautifulSoup(
@@ -336,7 +340,7 @@ class Genius(API, PublicAPI):
                 song_info = track['song']
                 if (song_info['lyrics_state'] == 'complete'
                         and not song_info.get('instrumental')):
-                    song_lyrics = self.lyrics(song_info['url'])
+                    song_lyrics = self.lyrics(song_url=song_info['url'])
                 else:
                     song_lyrics = ""
 
@@ -429,7 +433,7 @@ class Genius(API, PublicAPI):
 
         if (song_info['lyrics_state'] == 'complete'
                 and not song_info.get('instrumental')):
-            lyrics = self.lyrics(song_info['url'])
+            lyrics = self.lyrics(song_url=song_info['url'])
         else:
             lyrics = ""
 
@@ -557,7 +561,7 @@ class Genius(API, PublicAPI):
 
                 # Create the Song object from lyrics and metadata
                 if song_info['lyrics_state'] == 'complete':
-                    lyrics = self.lyrics(song_info['url'])
+                    lyrics = self.lyrics(song_url=song_info['url'])
                 else:
                     lyrics = ""
                 if get_full_info:
@@ -683,7 +687,7 @@ class Genius(API, PublicAPI):
                 while page:
                     res = genius.tag('pop', page=page)
                     for hit in res['hits']:
-                        song_lyrics = genius.lyrics(hit['url'])
+                        song_lyrics = genius.lyrics(song_url=hit['url'])
                         lyrics.append(song_lyrics)
                     page = res['next_page']
 

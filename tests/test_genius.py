@@ -99,7 +99,7 @@ class TestLyrics(unittest.TestCase):
     @test_vcr.use_cassette(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
                            serializer='yaml')
     def test_lyrics_with_url(self):
-        lyrics = genius.lyrics(self.song_url)
+        lyrics = genius.lyrics(song_url=self.song_url)
         self.assertTrue(lyrics.endswith(self.lyrics_ending))
 
     @test_vcr.use_cassette(path_transformer=vcr.VCR.ensure_suffix('.yaml'),

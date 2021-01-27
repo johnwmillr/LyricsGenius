@@ -23,7 +23,7 @@ Getting song lyrics by URL or ID
 
     # Using Song URL
     url = "https://genius.com/Andy-shauf-begin-again-lyrics"
-    genius.lyrics(url)
+    genius.lyrics(song_url=url)
 
     # Using Song ID
     # Requires an extra request to get song URL
@@ -121,7 +121,7 @@ Genius probably has more than 1000 songs with the pop tag.
     while page:
         res = genius.tag('pop', page=page)
         for hit in res['hits']:
-            song_lyrics = genius.lyrics(hit['url'])
+            song_lyrics = genius.lyrics(song_url=hit['url'])
             lyrics.append(song_lyrics)
         page = res['next_page']
 
@@ -135,7 +135,7 @@ Getting the lyrics for all songs of a search
     songs = genius.search_songs('Begin Again Andy Shauf')
     for song in songs['hits']:
         url = song['result']['url']
-        song_lyrics = genius.lyrics(url)
+        song_lyrics = genius.lyrics(song_url=url)
         # id = song['result']['id']
         # song_lyrics = genius.lyrics(id)
         lyrics.append(song_lyrics)
