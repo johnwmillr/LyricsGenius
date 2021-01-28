@@ -81,7 +81,7 @@ def clean_str(s):
         :obj:`str`: Cleaned string.
 
     """
-    punctuation_ = punctuation + "’"
+    punctuation_ = punctuation + "’" + "\u200b"
     string = s.translate(str.maketrans('', '', punctuation_)).strip().lower()
     return unicodedata.normalize("NFKC", string)
 
