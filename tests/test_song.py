@@ -1,10 +1,7 @@
 import os
 import unittest
 
-
-import vcr
-
-from . import genius, test_vcr
+from . import genius
 from lyricsgenius.types import Song
 from lyricsgenius.utils import clean_str
 
@@ -12,8 +9,6 @@ from lyricsgenius.utils import clean_str
 class TestSong(unittest.TestCase):
 
     @classmethod
-    @test_vcr.use_cassette(path_transformer=vcr.VCR.ensure_suffix(' song.yaml'),
-                           serializer='yaml')
     def setUpClass(cls):
         print("\n---------------------\nSetting up Song tests...\n")
 

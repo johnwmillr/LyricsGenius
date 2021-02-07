@@ -2,14 +2,12 @@ import unittest
 
 import vcr
 
-from . import genius, test_vcr
+from . import genius
 
 
 class TestEndpoints(unittest.TestCase):
 
     @classmethod
-    @test_vcr.use_cassette(path_transformer=vcr.VCR.ensure_suffix(' endpoints.yaml'),
-                           serializer='yaml')
     def setUpClass(cls):
         print("\n---------------------\nSetting up Endpoint tests...\n")
 
@@ -17,8 +15,6 @@ class TestEndpoints(unittest.TestCase):
         cls.song_title_only = "99 Problems"
         cls.tag = genius.tag('pop')
 
-    @test_vcr.use_cassette(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-                           serializer='yaml')
     def test_search_song(self):
         artist = "Jay-Z"
         # Empty response
@@ -49,7 +45,6 @@ class TestEndpoints(unittest.TestCase):
         response = genius.search_song(self.song_title_only, artist="Drake")
         self.assertFalse(response.title.lower() == self.song_title_only.lower())
 
-    @test_vcr.use_cassette
     def test_song_annotations(self):
         msg = "Incorrect song annotation response."
         r = sorted(genius.song_annotations(1))
@@ -96,14 +91,10 @@ class TestLyrics(unittest.TestCase):
             "\nI wonder who you’re thinking of"
         )
 
-    @test_vcr.use_cassette(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-                           serializer='yaml')
     def test_lyrics_with_url(self):
         lyrics = genius.lyrics(song_url=self.song_url)
         self.assertTrue(lyrics.endswith(self.lyrics_ending))
 
-    @test_vcr.use_cassette(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-                           serializer='yaml')
     def test_lyrics_with_id(self):
         lyrics = genius.lyrics(self.song_id)
         self.assertTrue(lyrics.endswith(self.lyrics_ending))

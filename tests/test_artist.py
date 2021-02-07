@@ -1,10 +1,7 @@
 import unittest
 import os
 
-
-import vcr
-
-from . import genius, test_vcr
+from . import genius
 from lyricsgenius.types import Artist
 from lyricsgenius.utils import sanitize_filename
 
@@ -12,8 +9,6 @@ from lyricsgenius.utils import sanitize_filename
 class TestArtist(unittest.TestCase):
 
     @classmethod
-    @test_vcr.use_cassette(path_transformer=vcr.VCR.ensure_suffix(' artist.yaml'),
-                           serializer='yaml')
     def setUpClass(cls):
         print("\n---------------------\nSetting up Artist tests...\n")
 
@@ -27,15 +22,12 @@ class TestArtist(unittest.TestCase):
         msg = "The returned object is not an instance of the Artist class."
         self.assertIsInstance(self.artist, Artist, msg)
 
-    @test_vcr.use_cassette(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-                           serializer='yaml')
     def test_correct_artist_name(self):
         msg = "Returned artist name does not match searched artist."
         name = "Queen"
         result = genius.search_artist(name, max_songs=1).name
         self.assertEqual(name, result, msg)
 
-    @test_vcr.use_cassette
     def test_zero_songs(self):
         msg = "Songs were downloaded even though 0 songs was requested."
         name = "Queen"
@@ -46,28 +38,21 @@ class TestArtist(unittest.TestCase):
         msg = "The artist object name does not match the requested artist name."
         self.assertEqual(self.artist.name, self.artist_name, msg)
 
-    @test_vcr.use_cassette(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-                           serializer='yaml')
     def test_add_song_from_same_artist(self):
         msg = "The new song was not added to the artist object."
         self.artist.add_song(genius.search_song(self.new_song, self.artist_name))
         self.assertEqual(self.artist.num_songs, self.max_songs + 1, msg)
 
-    @test_vcr.use_cassette
     def test_song(self):
         msg = "Song was not in artist's songs."
         song = self.artist.song(self.new_song)
         self.assertIsNotNone(song, msg)
 
-    @test_vcr.use_cassette(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-                           serializer='yaml')
     def test_add_song_from_different_artist(self):
         msg = "A song from a different artist was incorrectly allowed to be added."
         self.artist.add_song(genius.search_song("These Days", "Jackson Browne"))
         self.assertEqual(self.artist.num_songs, self.max_songs, msg)
 
-    @test_vcr.use_cassette(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-                           serializer='yaml')
     def test_artist_with_includes_features(self):
         # The artist did not get songs returned that they were featured in.
         name = "Swae Lee"

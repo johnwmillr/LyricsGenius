@@ -2,17 +2,13 @@ import unittest
 import os
 import warnings
 
-import vcr
-
-from . import genius, test_vcr
+from . import genius
 from lyricsgenius.types import Album
 
 
 class TestAlbum(unittest.TestCase):
 
     @classmethod
-    @test_vcr.use_cassette(path_transformer=vcr.VCR.ensure_suffix(' album.yaml'),
-                           serializer='yaml')
     def setUpClass(cls):
         print("\n---------------------\nSetting up Album tests...\n")
         warnings.simplefilter("ignore", ResourceWarning)
