@@ -2,7 +2,7 @@ import unittest
 
 from requests.exceptions import HTTPError
 
-from . import genius, test_vcr
+from . import genius
 
 
 class TestAPIBase(unittest.TestCase):
@@ -11,7 +11,6 @@ class TestAPIBase(unittest.TestCase):
     def setUpClass(cls):
         print("\n---------------------\nSetting up API base tests...\n")
 
-    @test_vcr.use_cassette
     def test_http_error_handler(self):
         status_code = None
         try:
