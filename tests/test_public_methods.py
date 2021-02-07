@@ -115,7 +115,6 @@ class TestArtistMethods(unittest.TestCase):
         r = client.artist_albums(self.artist_id)
         self.assertTrue("albums" in r)
 
-    # @test_vcr.use_cassette
     # def test_artist_contribution_opportunities(self):
     #     r = client.artist_contribution_opportunities(self.artist_id)
     #     self.assertIsNotNone(r.get('contribution_opportunities'))
@@ -381,7 +380,6 @@ class TestMiscMethods(unittest.TestCase):
         # cls.line_item_id = 146262999
         cls.annotation_id = 10225840
 
-    # @test_vcr.use_cassette
     # def test_line_item(self):
     #    r = client.line_item(self.line_item_id)
     #    self.assertTrue("line_item" in r)

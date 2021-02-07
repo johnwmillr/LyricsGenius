@@ -1,7 +1,5 @@
 import unittest
 
-import vcr
-
 from . import genius
 
 
