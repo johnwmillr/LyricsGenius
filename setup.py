@@ -35,13 +35,10 @@ extras_require = {
         'flake8',
         'flake8-bugbear',
         'pygments',
-    ],
-    'tests': [
-        'vcrpy~=4.1'
     ]
 }
 extras_require['dev'] = (
-    extras_require['docs'] + extras_require['checks'] + extras_require['tests']
+    extras_require['docs'] + extras_require['checks']
 )
 
 setup(
