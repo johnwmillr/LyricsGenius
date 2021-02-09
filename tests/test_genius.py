@@ -1,14 +1,6 @@
-import os
 import unittest
 
-from lyricsgenius import Genius
-
-
-# Import client access token from environment variable
-access_token = os.environ.get("GENIUS_ACCESS_TOKEN", None)
-assert access_token is not None, (
-    "Must declare environment variable: GENIUS_ACCESS_TOKEN")
-genius = Genius(access_token, sleep_time=1.0, timeout=15)
+from . import genius
 
 
 class TestEndpoints(unittest.TestCase):
@@ -16,6 +8,7 @@ class TestEndpoints(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up Endpoint tests...\n")
+
         cls.search_term = "Ezra Furman"
         cls.song_title_only = "99 Problems"
         cls.tag = genius.tag('pop')
@@ -86,6 +79,7 @@ class TestLyrics(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up lyrics tests...\n")
+
         cls.song_url = "https://genius.com/Andy-shauf-begin-again-lyrics"
         cls.song_id = 2885745
         cls.lyrics_ending = (
@@ -96,7 +90,7 @@ class TestLyrics(unittest.TestCase):
         )
 
     def test_lyrics_with_url(self):
-        lyrics = genius.lyrics(self.song_url)
+        lyrics = genius.lyrics(song_url=self.song_url)
         self.assertTrue(lyrics.endswith(self.lyrics_ending))
 
     def test_lyrics_with_id(self):

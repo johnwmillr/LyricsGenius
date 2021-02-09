@@ -72,7 +72,7 @@ def clean_str(s):
     """Cleans a string to help with string comparison.
 
     Removes punctuation and returns
-    a stripped, NFKD normalized string in lowercase.
+    a stripped, NFKC normalized string in lowercase.
 
     Args:
         s (:obj:`str`): A string.
@@ -81,9 +81,9 @@ def clean_str(s):
         :obj:`str`: Cleaned string.
 
     """
-    punctuation_ = punctuation + "’"
+    punctuation_ = punctuation + "’" + "\u200b"
     string = s.translate(str.maketrans('', '', punctuation_)).strip().lower()
-    return unicodedata.normalize("NFKD", string)
+    return unicodedata.normalize("NFKC", string)
 
 
 def parse_redirected_url(url, flow):

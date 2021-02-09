@@ -1,5 +1,6 @@
 import time
 import os
+from json.decoder import JSONDecodeError
 
 import requests
 from requests.exceptions import HTTPError, Timeout
@@ -18,7 +19,8 @@ class Sender(object):
         response_format='plain',
         timeout=5,
         sleep_time=0.2,
-        retries=0
+        retries=0,
+        public_api_constructor=False,
     ):
         self._session = requests.Session()
         self._session.headers = {
@@ -27,8 +29,15 @@ class Sender(object):
         }
         if access_token is None:
             access_token = os.environ.get('GENIUS_ACCESS_TOKEN')
-        self.access_token = 'Bearer ' + access_token if access_token else None
-        self.authorization_header = {'authorization': self.access_token}
+
+        if public_api_constructor:
+            self.authorization_header = {}
+        else:
+            if not access_token or not isinstance(access_token, str):
+                raise TypeError('Invalid token')
+            self.access_token = 'Bearer ' + access_token
+            self.authorization_header = {'authorization': self.access_token}
+
         self.response_format = response_format.lower()
         self.timeout = timeout
         self.sleep_time = sleep_time
@@ -95,7 +104,10 @@ class Sender(object):
 
 def get_description(e):
     error = str(e)
-    res = e.response.json()
+    try:
+        res = e.response.json()
+    except JSONDecodeError:
+        res = {}
     description = (res['meta']['message']
                    if res.get('meta')
                    else res.get('error_description'))

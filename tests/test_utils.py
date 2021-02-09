@@ -5,10 +5,8 @@ from lyricsgenius.utils import (
     sanitize_filename,
     auth_from_environment
 )
-try:
-    from .test_genius import genius
-except ModuleNotFoundError:
-    from test_genius import genius
+
+from . import genius
 
 
 class TestUtils(unittest.TestCase):

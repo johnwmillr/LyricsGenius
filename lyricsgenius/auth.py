@@ -3,6 +3,7 @@ import webbrowser
 
 from .utils import parse_redirected_url
 from .api import Sender
+from .errors import InvalidStateError
 
 
 class OAuth2(Sender):
@@ -50,6 +51,7 @@ class OAuth2(Sender):
     @property
     def url(self):
         """Returns the URL you redirect the user to.
+
         You can use this property to get a URL that when opened on the user's
         device, shows Genius's authorization page where user clicks *Agree*
         to give your app access, and then Genius redirects user back to your
@@ -67,21 +69,37 @@ class OAuth2(Sender):
             payload['state'] = self.state
         return OAuth2.auth_url + '?' + urlencode(payload)
 
-    def get_user_token(self, url, **kwargs):
-        """Gets a user token using the redirected URL.
-        This method will either get the value of the *token*
-        parameter in the redirected URL, or use the value of the
-        *code* parameter to request a token from Genius.
+    def get_user_token(self, code=None, url=None, state=None, **kwargs):
+        """Gets a user token using the url or the code parameter..
+
+        If you supply value for :obj:`code`, this method will use the value of the
+        :obj:`code` parameter to request a token from Genius.
+
+        If you use the :method`client_only_app` and supplt the redirected URL,
+        it will already have the token.
+        You could pass the URL to this method or parse it yourself.
+
+        If you provide a :obj:`state` the method will also compare
+        it to the initial state and will raise an exception if
+        they're not equal.
 
         Args:
-            url (:obj:`str`): 'code' parameter of redirected URL.
+            code (:obj:`str`): 'code' parameter of redirected URL.
+            url (:obj:`str`): Redirected URL (used in client-only apps)
+            state (:obj:`str`): state parameter of redirected URL (only
+                provide if you want to compare with initial :obj:`self.state`)
             **kwargs: keywords for the POST request.
         returns:
             :obj:`str`: User token.
 
         """
-        if self.flow == 'code':
-            payload = {'code': parse_redirected_url(url, self.flow),
+        assert any([code, url]), "You must pass either `code` or `url`."
+
+        if state is not None and self.state != state:
+            raise InvalidStateError('States do not match.')
+
+        if code:
+            payload = {'code': code,
                        'client_id': self.client_id,
                        'client_secret': self.client_secret,
                        'redirect_uri': self.redirect_uri,
@@ -89,16 +107,17 @@ class OAuth2(Sender):
                        'response_type': 'code'}
             url = OAuth2.token_url.replace('https://api.genius.com/', '')
             res = self._make_request(url, 'POST', data=payload, **kwargs)
-            return res['access_token']
-        elif self.flow == 'token':
-            return parse_redirected_url(url, self.flow)
+            token = res['access_token']
+        else:
+            token = parse_redirected_url(url, self.flow)
+        return token
 
     def prompt_user(self):
         """Prompts current user for authentication.
 
         Opens a web browser for you to log in with Genius.
         Prompts to paste the URL after logging in to parse the
-        *code* or *token* URL parameter.
+        *token* URL parameter.
 
         returns:
             :obj:`str`: User token.
@@ -110,7 +129,13 @@ class OAuth2(Sender):
         webbrowser.open(url)
         redirected = input('Please paste redirect URL: ').strip()
 
-        return self.get_user_token(redirected)
+        if self.flow == 'token':
+            token = parse_redirected_url(redirected, self.flow)
+        else:
+            code = parse_redirected_url(redirected, self.flow)
+            token = self.get_user_token(code)
+
+        return token
 
     @classmethod
     def client_only_app(cls, client_id, redirect_uri, scope=None, state=None):

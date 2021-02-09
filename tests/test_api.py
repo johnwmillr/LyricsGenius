@@ -1,9 +1,7 @@
 import unittest
 
-try:
-    from .test_genius import genius
-except ModuleNotFoundError:
-    from test_genius import genius
+
+from . import genius
 
 
 class TestAPI(unittest.TestCase):

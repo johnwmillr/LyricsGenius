@@ -5,11 +5,11 @@ Snippets
 ==================
 Here are some snippets showcasing how the library can be used.
 
-- `Authenticating using OAuth2`_
 - `All the songs of an artist`_
 - `Artist's least popular song`_
-- `Getting songs that have a tag`
+- `Authenticating using OAuth2`_
 - `Getting song lyrics by URL or ID`_
+- `Getting songs by tag (genre)`_
 - `Getting the lyrics for all songs of a search`_
 - `Searching for a song by lyrics`_
 - `YouTube URL of artist's songs`_
@@ -23,7 +23,7 @@ Getting song lyrics by URL or ID
 
     # Using Song URL
     url = "https://genius.com/Andy-shauf-begin-again-lyrics"
-    genius.lyrics(url)
+    genius.lyrics(song_url=url)
 
     # Using Song ID
     # Requires an extra request to get song URL
@@ -101,8 +101,8 @@ Using :meth:`search_all <Genius.search_all>`:
     for hit in request['sections'][2]['hits']:
         print(hit['result']['title'])
 
-Getting songs that have a tag
------------------------------
+Getting songs by tag (genre)
+----------------------------
 Genius has the following main tags:
 ``rap``, ``pop``, ``r-b``, ``rock``, ``country``, ``non-music``
 To discover more tags, visit the `Genius Tags`_ page.
@@ -121,7 +121,7 @@ Genius probably has more than 1000 songs with the pop tag.
     while page:
         res = genius.tag('pop', page=page)
         for hit in res['hits']:
-            song_lyrics = genius.lyrics(hit['url'])
+            song_lyrics = genius.lyrics(song_url=hit['url'])
             lyrics.append(song_lyrics)
         page = res['next_page']
 
@@ -135,7 +135,7 @@ Getting the lyrics for all songs of a search
     songs = genius.search_songs('Begin Again Andy Shauf')
     for song in songs['hits']:
         url = song['result']['url']
-        song_lyrics = genius.lyrics(url)
+        song_lyrics = genius.lyrics(song_url=url)
         # id = song['result']['id']
         # song_lyrics = genius.lyrics(id)
         lyrics.append(song_lyrics)
@@ -170,7 +170,6 @@ URI will work (for example ``http://example.com/callback``)
 
     from lyricsgenius import OAuth2, Genius
 
-    # you can also use OAuth2.full_code_exchange()
     auth = OAuth2.client_only_app(
         'my_client_id',
         'my_redirect_uri',
@@ -199,14 +198,18 @@ Authenticating another user
         'my_client_id',
         'my_redirect_uri',
         'my_client_secret',
-        scope='all'
+        scope='all',
+        state='some_unique_value'
     )
 
     # this part is the same
     url_for_user = auth.url
     print('Redirecting you to ' + url_for_user)
-    redirected_url = 'https://example.com/?code=some_code'
-    token = auth.get_user_token(redirected_url)
+    
+    # If we were using Flask:
+    code = request.args.get('code')
+    state = request.args.get('state')
+    token = auth.get_user_token(code, state)
 
     genius = Genius(token)
 
