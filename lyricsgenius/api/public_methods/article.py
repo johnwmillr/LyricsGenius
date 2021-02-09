@@ -40,6 +40,7 @@ class ArticleMethods(object):
 
     def latest_articles(self, per_page=None, page=None, text_format=None):
         """Gets the latest articles on the homepage.
+
         This method will return the featured articles that are placed
         on top of the Genius.com page.
 

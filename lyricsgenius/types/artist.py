@@ -9,22 +9,7 @@ from ..utils import safe_unicode
 
 
 class Artist(BaseEntity):
-    """An artist with songs from the Genius.com database.
-
-    Attributes:
-        api_path (:obj:`str`)
-        header_image_url (:obj:`str`)
-        id (:obj:`int`)
-        image_url (:obj:`str`)
-        is_meme_verified (:obj:`bool`)
-        is_verified (:obj:`bool`)
-        name (:obj:`str`)
-        songs (:obj:`list`):
-            A list of :class:`Song` objects
-            or an empty list.
-        url (:obj:`str`)
-
-    """
+    """An artist with songs from the Genius.com database."""
 
     def __init__(self, client, json_dict):
         # Artist Constructor

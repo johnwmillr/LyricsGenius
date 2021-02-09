@@ -11,7 +11,7 @@ class LeaderboardMethods(object):
         This method gets data of the community charts on the Genius.com page.
 
         Args:
-            time_period (:obj:`str`, optional): Time period of the results
+            time_period (:obj:`str`, optional): Time period of the results.
                 ('day', 'week', 'month' or 'all_time').
             per_page (:obj:`int`, optional): Number of results to
                 return per request. It can't be more than 50.
@@ -42,15 +42,19 @@ class LeaderboardMethods(object):
         This method gets data of the chart on the Genius.com page.
 
         Args:
-            time_period (:obj:`str`, optional): Time period of the results
+            time_period (:obj:`str`, optional): Time period of the results.
+                The default is `all`.
                 ('day', 'week', 'month' or 'all_time').
             chart_genre (:obj:`str`, optional): The genre of the results.
+                The default value is ``all``.
+                ('all', 'rap', 'pop', 'rb', 'rock' or 'country')
             per_page (:obj:`int`, optional): Number of results to
                 return per request. It can't be more than 50.
             page (:obj:`int`, optional): Paginated offset (number of the page).
             text_format (:obj:`str`, optional): Text format of the results
                 ('dom', 'html', 'markdown' or 'plain').
             type_ (:obj:`int`, optional): The type to get the charts for.
+                The default is ``songs``.
                 ('songs', 'albums', 'artists' or 'referents').
 
         Returns:
@@ -59,7 +63,7 @@ class LeaderboardMethods(object):
         .. Note::
             The *referents* mentioned in the description of the :obj:`type_`
             argument is shown as *Lyrics* in the drop-down menu on Genius.com
-            where you can choose the *Type*.
+            where you choose the *Type*.
 
         """
         endpoint = type_ + '/chart'

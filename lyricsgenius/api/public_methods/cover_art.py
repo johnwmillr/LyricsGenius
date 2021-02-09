@@ -3,6 +3,7 @@ class CoverArtMethods(object):
 
     def cover_arts(self, album_id=None, song_id=None, text_format=None):
         """Gets the cover arts of an album or a song.
+
         You must supply one of :obj:`album_id` or :obj:`song_id`.
 
         Args:

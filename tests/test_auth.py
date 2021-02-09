@@ -2,7 +2,9 @@ import os
 import unittest
 from unittest.mock import MagicMock, patch
 
+
 from lyricsgenius import OAuth2
+from lyricsgenius.errors import InvalidStateError
 
 client_id = os.environ["GENIUS_CLIENT_ID"]
 client_secret = os.environ["GENIUS_CLIENT_SECRET"]
@@ -59,26 +61,69 @@ class TestOAuth2(unittest.TestCase):
                       client_secret, scope='all')
         self.assertEqual(auth.scope, scope)
 
-    def test_get_user_token_client_flow(self):
-        # client-only flow
-        auth = OAuth2(client_id, redirect_uri, client_only_app=True)
-        redirected = 'https://example.com/callback#access_token=test'
-        client_flow_token = 'test'
-
-        r = auth.get_user_token(redirected)
-        self.assertEqual(r, client_flow_token)
-
     @patch('requests.Session.request',
            side_effect=mocked_requests_post)
     def test_get_user_token_code_flow(self, mock_post):
         # full code exchange flow
-        auth = OAuth2(client_id, redirect_uri,
-                      client_secret, scope='all')
-        redirected = 'https://example.com/callback?code=some_code'
+
+        state = 'some_state'
+        code = 'some_code'
         code_flow_token = 'test'
 
-        r = auth.get_user_token(redirected)
+        auth = OAuth2.full_code_exchange(
+            client_id,
+            redirect_uri,
+            client_secret,
+            scope='all',
+            state=state
+        )
+
+        r = auth.get_user_token(code=code, state=state)
         self.assertEqual(r, code_flow_token)
+
+    def test_get_user_token_token_flow(self):
+
+        state = 'some_state'
+        token_flow_token = 'test'
+        redirected_url = '{}#access_token=test'.format(redirect_uri)
+
+        auth = OAuth2.client_only_app(
+            client_id,
+            redirect_uri,
+            scope='all',
+            state=state
+        )
+
+        r = auth.get_user_token(url=redirected_url)
+        self.assertEqual(r, token_flow_token)
+
+    def test_get_user_token_invalid_state(self):
+        state = 'state_1'
+        auth = OAuth2.full_code_exchange(
+            client_id,
+            redirect_uri,
+            client_secret,
+            scope='all',
+            state=state
+        )
+
+        returned_code = 'some_code'
+        returned_state = 'state_2'
+        with self.assertRaises(InvalidStateError):
+            auth.get_user_token(code=returned_code, state=returned_state)
+
+    def test_get_user_token_no_parameter(self):
+        state = 'some_state'
+        auth = OAuth2.full_code_exchange(
+            client_id,
+            redirect_uri,
+            client_secret,
+            scope='all',
+            state=state
+        )
+
+        with self.assertRaises(AssertionError):
+            auth.get_user_token()
 
     def test_prompt_user(self):
         auth = OAuth2(client_id, redirect_uri,

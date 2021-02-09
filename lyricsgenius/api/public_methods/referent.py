@@ -3,6 +3,7 @@ class ReferentMethods(object):
 
     def referent(self, referent_ids, text_format=None):
         """Gets data of one or more referents.
+
         This method can get multiple referents in one call,
         thus increasing performance.
 

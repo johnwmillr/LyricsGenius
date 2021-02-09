@@ -26,7 +26,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 extras_require = {
     'docs': [
-        'sphinx~=3.2',
+        'sphinx~=3.3',
         'sphinx-rtd-theme',
     ],
     'checks': [

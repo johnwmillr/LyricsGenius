@@ -9,32 +9,7 @@ from .artist import Artist
 
 
 class Song(BaseEntity):
-    """A song from the Genius.com database.
-
-    Attributes:
-        annotation_count (:obj:`int`)
-        api_path (:obj:`str`)
-        artist (:obj:`str`):
-            Primary artist's name
-            (Same as ``Song.primary_artist.name``)
-        full_title (:obj:`str`)
-        header_image_thumbnail_url (:obj:`str`)
-        header_image_url (:obj:`str`)
-        id (:obj:`int`)
-        lyrics (:obj:`str`)
-        lyrics_owner_id (:obj:`int`)
-        lyrics_state (:obj:`str`)
-        path (:obj:`str`)
-        primary_artist (:class:`Artist`)
-        pyongs_count (:obj:`int`)
-        song_art_image_thumbnail_url (:obj:`str`)
-        song_art_image_url (:obj:`str`)
-        stats (:class:`Stats`)
-        title (:obj:`str`)
-        title_with_featured (:obj:`str`)
-        url (:obj:`str`)
-
-    """
+    """A song from the Genius.com database."""
 
     def __init__(self, client, json_dict, lyrics=""):
         body = json_dict

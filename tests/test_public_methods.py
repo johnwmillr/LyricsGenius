@@ -2,6 +2,9 @@ import unittest
 
 from lyricsgenius import PublicAPI
 
+from . import genius
+
+
 client = PublicAPI()
 
 
@@ -10,6 +13,7 @@ class TestAlbumMethods(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up album methods tests...\n")
+
         cls.album_id = 104614
 
     def test_album(self):
@@ -48,6 +52,7 @@ class TestAnnotationMethods(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up annotation methods tests...\n")
+
         cls.annotation_id = 10225840
 
     def test_annotation(self):
@@ -71,6 +76,7 @@ class TestArticleMethods(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up article methods tests...\n")
+
         cls.article_id = 11880
 
     def test_article(self):
@@ -94,6 +100,7 @@ class TestArtistMethods(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up artist methods tests...\n")
+
         cls.artist_id = 1665
 
     def test_artist(self):
@@ -134,6 +141,7 @@ class TestCoverArtMethods(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up cover arts methods tests...\n")
+
         cls.album_id = 104614
 
     def test_cover_arts(self):
@@ -146,6 +154,7 @@ class TestDiscussionMethods(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up discussion methods tests...\n")
+
 #        cls.discussion_id = 123
 #
 #    def test_discussion(self):
@@ -181,6 +190,7 @@ class TestQuestionMethods(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up question methods tests...\n")
+
         cls.album_id = 104614
 
     def test_questions(self):
@@ -193,6 +203,7 @@ class TestReferentMethods(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up referent methods tests...\n")
+
         cls.web_page_id = 10347
         cls.referent_ids = [20793764, 20641014]
 
@@ -211,6 +222,7 @@ class TestSearchMethods(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up search methods tests...\n")
+
         cls.search_term = 'test'
 
     def test_search(self):
@@ -255,6 +267,7 @@ class TestSongMethods(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up song methods tests...\n")
+
         cls.song_id = 378195
 
     def test_song(self):
@@ -279,6 +292,7 @@ class TestUserMethods(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up user methods tests...\n")
+
         cls.user_id = 1
 
     def test_user(self):
@@ -342,6 +356,7 @@ class TestVideoMethods(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up video methods tests...\n")
+
         cls.video_id = 18681
 
     def test_video(self):
@@ -361,12 +376,29 @@ class TestMiscMethods(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up misc methods tests...\n")
+
         # cls.line_item_id = 146262999
         cls.annotation_id = 10225840
 
     # def test_line_item(self):
     #    r = client.line_item(self.line_item_id)
     #    self.assertTrue("line_item" in r)
+
+    def test_page_data_album(self):
+        album_path = '/albums/Eminem/Music-to-be-murdered-by'
+
+        page_data = genius.page_data(album=album_path)
+        self.assertTrue('page_data' in page_data)
+
+    def test_page_data_song(self):
+        artist = client.artist(1665)
+        artist_slug = artist['artist']['slug']
+
+        song = genius.song(4558484)
+        song_path = song['song']['path']
+
+        page_data = genius.page_data(artist=artist_slug, song=song_path)
+        self.assertTrue('page_data' in page_data)
 
     def test_voters(self):
         r = client.voters(annotation_id=self.annotation_id)

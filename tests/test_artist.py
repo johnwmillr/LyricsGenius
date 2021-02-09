@@ -1,10 +1,7 @@
 import unittest
 import os
 
-try:
-    from .test_genius import genius
-except ModuleNotFoundError:
-    from test_genius import genius
+from . import genius
 from lyricsgenius.types import Artist
 from lyricsgenius.utils import sanitize_filename
 
@@ -14,6 +11,7 @@ class TestArtist(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up Artist tests...\n")
+
         cls.artist_name = "The Beatles"
         cls.new_song = "Paperback Writer"
         cls.max_songs = 2

@@ -87,7 +87,7 @@ Search for five songs by ‘The Beatles’ and save the lyrics:
    python3 -m lyricsgenius artist "The Beatles" --max-songs 5 --save
 
 
-There also examples under the docs of some methods.
+You might also like checking out the :ref:`snippets` page. 
 
 
 .. toctree::
