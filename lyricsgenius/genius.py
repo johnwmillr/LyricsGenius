@@ -322,7 +322,10 @@ class Genius(API, PublicAPI):
                 print("No results found for: '{s}'".format(s=search_term))
             return None
 
-        album_id = album_info['id']
+        if album_id is None and get_full_info is True:
+            album_id = album_info['id']
+            new_info = self.album(album_id, text_format=text_format)['album']
+            album_info.update(new_info)
 
         tracks = []
         next_page = 1
@@ -348,10 +351,6 @@ class Genius(API, PublicAPI):
                 tracks.append(track)
 
             next_page = tracks_list['next_page']
-
-        if album_id is None and get_full_info is True:
-            new_info = self.album(album_id, text_format=text_format)['album']
-            album_info.update(new_info)
 
         return Album(self, album_info, tracks)
 
@@ -423,11 +422,10 @@ class Genius(API, PublicAPI):
                 print('Specified song does not contain lyrics. Rejecting.')
             return None
 
-        song_id = result['id']
-
         # Download full song info (an API call) unless told not to by user
         song_info = result
-        if get_full_info:
+        if song_id is None and get_full_info:
+            song_id = result['id']
             new_info = self.song(song_id)['song']
             song_info.update(new_info)
 
