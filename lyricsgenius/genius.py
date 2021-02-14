@@ -325,7 +325,7 @@ class Genius(API, PublicAPI):
 
         # If the album was searched, query the API using the album id so the full info can be retrieved
         if album_id is None and get_full_info:
-            album_info.update(self.album(album_id, text_format)['album'])
+            album_info.update(self.album(album_info['id'], text_format)['album'])
 
         # Set the album id to the value retrieved from the API
         album_id = album_info['id']
@@ -428,9 +428,10 @@ class Genius(API, PublicAPI):
 
         # Download full song info (an API call) unless told not to by user
         if song_id is None and get_full_info:
-            song_id = song_info['id']
             new_info = self.song(song_id)['song']
             song_info.update(new_info)
+
+        song_id = song_info['id']
 
         if (song_info['lyrics_state'] == 'complete'
                 and not song_info.get('instrumental')):
