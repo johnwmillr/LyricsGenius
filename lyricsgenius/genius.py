@@ -428,10 +428,7 @@ class Genius(API, PublicAPI):
 
         # Download full song info (an API call) unless told not to by user
         if song_id is None and get_full_info:
-            new_info = self.song(song_id)['song']
-            song_info.update(new_info)
-
-        song_id = song_info['id']
+            song_info.update(self.song(song_info['id'])['song'])
 
         if (song_info['lyrics_state'] == 'complete'
                 and not song_info.get('instrumental')):
