@@ -397,10 +397,9 @@ class Genius(API, PublicAPI):
                 print('Searching for "{s}"...'.format(s=title))
 
         if song_id:
-            search_term = "id:{id}".format(id=song_id).strip()
             song_info = self.song(song_id)['song']
         else:
-            search_term = "'{s} {a}'".format(s=title, a=artist).strip()
+            search_term = "{s} {a}".format(s=title, a=artist).strip()
             search_response = self.search_all(search_term)
             song_info = self._get_item_from_search_response(search_response,
                                                             title,
@@ -411,7 +410,7 @@ class Genius(API, PublicAPI):
         # Otherwise, move forward with processing the search results
         if song_info is None:
             if self.verbose and title:
-                print("No results found for: {s}".format(s=search_term))
+                print("No results found for: '{s}'".format(s=search_term))
             return None
 
         # Reject non-songs (Liner notes, track lists, etc.)
