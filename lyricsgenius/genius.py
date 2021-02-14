@@ -403,9 +403,9 @@ class Genius(API, PublicAPI):
             search_term = "'{s} {a}'".format(s=title, a=artist).strip()
             search_response = self.search_all(search_term)
             song_info = self._get_item_from_search_response(search_response,
-                                                         title,
-                                                         type_="song",
-                                                         result_type="title")
+                                                            title,
+                                                            type_="song",
+                                                            result_type="title")
 
         # Exit search if there were no results returned from API
         # Otherwise, move forward with processing the search results
