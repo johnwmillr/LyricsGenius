@@ -322,10 +322,12 @@ class Genius(API, PublicAPI):
                 print("No results found for: '{s}'".format(s=search_term))
             return None
 
-        if album_id is None and get_full_info is True:
-            album_id = album_info['id']
-            new_info = self.album(album_id, text_format=text_format)['album']
-            album_info.update(new_info)
+        # If the album was searched, query the API using the album id so the full info can be retrieved
+        if album_id is None and get_full_info:
+            album_info.update(self.album(album_id, text_format)['album'])
+
+        # Set the album id to the value retrieved from the API
+        album_id = album_info['id']
 
         tracks = []
         next_page = 1
