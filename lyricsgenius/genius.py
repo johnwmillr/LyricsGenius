@@ -470,7 +470,8 @@ class Genius(API, PublicAPI):
             per_page (:obj:`int`, optional): Number of results to return
                 per search page. It can't be more than 50.
             get_full_info (:obj:`bool`, optional): Get full info for each song (slower).
-            allow_name_change (:obj:`bool`, optional): Doesn't do anything, exists to maintain backwards compatibility.
+            allow_name_change (:obj:`bool`, optional): Enables an additional print statement for backwards compatibility
+                in case the name of the searched artist doesn't match the name of the artist returned by Genius.
             artist_id (:obj:`int`, optional): Allows user to pass an artist ID.
             include_features (:obj:`bool`, optional): If True, includes tracks
                 featuring the artist.
@@ -520,6 +521,10 @@ class Genius(API, PublicAPI):
             return None
 
         artist_info = self.artist(artist_id)['artist']
+        found_name = artist_info['name']
+        if found_name != artist_name and allow_name_change:
+            if self.verbose:
+                print("Changing artist name to '{a}'".format(a=safe_unicode(found_name)))
 
         # Create the Artist object
         artist = Artist(self, artist_info)
