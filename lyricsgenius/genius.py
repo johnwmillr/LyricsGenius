@@ -310,7 +310,7 @@ class Genius(API, PublicAPI):
             search_term = "id:{id}".format(id=album_id)
             album_info = self.album(album_id, text_format).get('album')
         else:
-            search_term = "'{s} {a}'".format(s=name, a=artist).strip()
+            search_term = "{s} {a}".format(s=name, a=artist).strip()
             response = self.search_all(search_term)
             album_info = self._get_item_from_search_response(response, name,
                                                              type_="album",
@@ -320,7 +320,7 @@ class Genius(API, PublicAPI):
         # Otherwise, move forward with processing the search results
         if album_info is None:
             if self.verbose and name:
-                print("No results found for: {s}".format(s=search_term))
+                print("No results found for: '{s}'".format(s=search_term))
             return None
 
         # If the album was searched, query the API using the album id so the full info can be retrieved
