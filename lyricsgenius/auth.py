@@ -32,7 +32,7 @@ class OAuth2(Sender):
     def __init__(self, client_id, redirect_uri,
                  client_secret=None, scope=None,
                  state=None, client_only_app=False):
-        super().__init__()
+        super().__init__(public_api_constructor=True)
         msg = ("You must provide a client_secret "
                "if you intend to use the full code exchange."
                "\nIf you meant to use the client-only flow, "
