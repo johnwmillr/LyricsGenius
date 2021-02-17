@@ -11,6 +11,11 @@ class BaseEntity(ABC):
     def __init__(self, id):
         self.id = id
 
+    @property
+    @abstractmethod
+    def logger(self):
+        pass
+
     @abstractmethod
     def save_lyrics(self,
                     filename,
@@ -52,20 +57,19 @@ class BaseEntity(ABC):
                 break
         filename += "." + extension
         filename = sanitize_filename(filename) if sanitize else filename
-
+        self.logger.debug("Filename: %s", filename)
         # Check if file already exists
         write_file = False
         if overwrite or not os.path.isfile(filename):
             write_file = True
-        elif verbose:
+        else:
             msg = "{} already exists. Overwrite?\n(y/n): ".format(filename)
             if input(msg).lower() == 'y':
                 write_file = True
 
         # Exit if we won't be saving a file
         if not write_file:
-            if verbose:
-                print('Skipping file save.\n')
+            self.logger.info('Skipping file save.')
             return
 
         # Save the lyrics to a file
@@ -74,8 +78,7 @@ class BaseEntity(ABC):
         else:
             self.to_text(filename, sanitize=sanitize)
 
-        if verbose:
-            print('Wrote {}.'.format(safe_unicode(filename)))
+        self.logger.info('Saved lyrics to %s.', safe_unicode(filename))
 
         return None
 
@@ -119,7 +122,7 @@ class BaseEntity(ABC):
         filename = sanitize_filename(filename) if sanitize else filename
         with open(filename, 'w', encoding='utf-8') as ff:
             json.dump(data, ff, indent=1, ensure_ascii=ensure_ascii)
-        return None
+        self.logger.debug('Saved JSON to %s', filename)
 
     @abstractmethod
     def to_text(self,
@@ -150,6 +153,7 @@ class BaseEntity(ABC):
         filename = sanitize_filename(filename) if sanitize else filename
         with open(filename, 'w', encoding='utf-8') as ff:
             ff.write(data)
+        self.logger.debug("Saved TXT to %s", filename)
         return None
 
     def __repr__(self):
