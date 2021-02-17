@@ -38,7 +38,7 @@ class BaseEntity(ABC):
 
         Warning:
             If you set :obj:`sanitize` to `False`, the file name may contain
-            invalid characters, and thefore cause the saving to fail.
+            invalid characters, and therefore cause the saving to fail.
 
         """
         extension = extension.lstrip(".").lower()

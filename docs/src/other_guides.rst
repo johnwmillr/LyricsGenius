@@ -6,7 +6,7 @@ Other Guides
 
 Request Errors
 --------------
-The package will raise all HTTP and timeout erros using
+The package will raise all HTTP and timeout errors using
 the ``HTTPError`` and ``Timeout`` classes of the
 ``requests`` package. Whenever an HTTP error is raised,
 proper description of the error will be printed to
