@@ -5,6 +5,7 @@
 
 import os
 import argparse
+import logging
 
 from . import Genius
 from .utils import safe_unicode
@@ -34,33 +35,33 @@ def main(args=None):
     msg = "Must declare environment variable: GENIUS_ACCESS_TOKEN"
     assert access_token, msg
     api = Genius(access_token)
-    if args.quiet:
-        api.verbose = False
+
+    # Set up logging
+    log_level = logging.NOTSET if args.quiet else logging.INFO
+    logging.basicConfig(format="%(message)s")
+    logger = logging.getLogger(__package__)
+    logger.setLevel(log_level)
 
     # Handle the command-line inputs
     if args.search_type == "song":
         song = api.search_song(*args.terms)
         if not song:
-            if not args.quiet:
-                print("Could not find specified song. Check spelling?")
+            logger.info("Could not find specified song. Check spelling?")
             return
         if args.save:
-            if not args.quiet:
-                print("Saving lyrics to '{s}'...".format(s=safe_unicode(song.title)))
+            logger.info("Saving lyrics to '%s'...", safe_unicode(song.title))
             song.save_lyrics()
     elif args.search_type == "artist":
         artist = api.search_artist(args.terms[0],
                                    max_songs=args.max_songs,
                                    sort='popularity')
         if args.save:
-            if not args.quiet:
-                print("Saving '{a}'' lyrics...".format(a=safe_unicode(artist.name)))
+            logger.info("Saving '%s' lyrics...", safe_unicode(artist.name))
             api.save_artists(artist)
     elif args.search_type == "album":
         album = api.search_album(*args.terms)
         if args.save:
-            if not args.quiet:
-                print("Saving '{a}'' lyrics...".format(a=safe_unicode(album.name)))
+            logger.info("Saving '%s' lyrics...", safe_unicode(album.name))
             album.save_lyrics()
 
 
