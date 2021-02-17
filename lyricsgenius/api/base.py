@@ -1,5 +1,6 @@
 import time
 import os
+import logging
 from json.decoder import JSONDecodeError
 
 import requests
@@ -42,6 +43,7 @@ class Sender(object):
         self.timeout = timeout
         self.sleep_time = sleep_time
         self.retries = retries
+        self.logger = logging.getLogger(__name__)
 
     def _make_request(
         self,
@@ -77,6 +79,10 @@ class Sender(object):
                                                  params=params_,
                                                  headers=header,
                                                  **kwargs)
+                self.logger.debug("%d status code for %s on try %d.",
+                                  response.status_code,
+                                  uri,
+                                  tries)
                 response.raise_for_status()
             except Timeout as e:
                 error = "Request timed out:\n{e}".format(e=e)
@@ -88,6 +94,7 @@ class Sender(object):
                     raise HTTPError(response.status_code, error)
 
             # Enforce rate limiting
+            self.logger.debug("Sleeping for %2fs.", self.sleep_time)
             time.sleep(self.sleep_time)
 
         if web:
