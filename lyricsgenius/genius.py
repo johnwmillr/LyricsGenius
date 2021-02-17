@@ -307,8 +307,7 @@ class Genius(API, PublicAPI):
                 print('Searching for "{s}"...'.format(s=name))
 
         if album_id:
-            search_term = "id:{id}".format(id=album_id)
-            album_info = self.album(album_id, text_format).get('album')
+            album_info = self.album(album_id, text_format)['album']
         else:
             search_term = "{s} {a}".format(s=name, a=artist).strip()
             response = self.search_all(search_term)
