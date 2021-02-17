@@ -3,6 +3,7 @@
 # See LICENSE for details.
 
 """Artist object"""
+import logging
 
 from .base import BaseEntity
 from ..utils import safe_unicode
@@ -10,6 +11,7 @@ from ..utils import safe_unicode
 
 class Artist(BaseEntity):
     """An artist with songs from the Genius.com database."""
+    logger = logging.getLogger(__name__)
 
     def __init__(self, client, json_dict):
         # Artist Constructor
@@ -41,7 +43,8 @@ class Artist(BaseEntity):
 
         Args:
             new_song (:class:`Song <lyricsgenius.types.Song>`): Song to be added.
-            verbose (:obj:`bool`, optional): prints operation result.
+            verbose (:obj:`bool`, optional): Does nothing.
+                Kept for backward compatibility.
             include_features (:obj:`bool`, optional): If True, includes tracks
                 featuring the artist.
 
@@ -67,21 +70,18 @@ class Artist(BaseEntity):
             if new_song is None:
                 return None
         if any([song.title == new_song.title for song in self.songs]):
-            if verbose:
-                print('{s} already in {a}, not adding song.'.format(
-                    s=safe_unicode(new_song.title),
-                    a=safe_unicode(self.name))
-                )
+            self.logger.info('%s already in %s, not adding song.',
+                             safe_unicode(new_song.title),
+                             safe_unicode(self.name))
             return None
         if (new_song.artist == self.name
                 or (include_features and any(new_song._body['featured_artists']))):
             self.songs.append(new_song)
             self.num_songs += 1
             return new_song
-        if verbose:
-            print("Can't add song by {b}, artist must be {a}.".format(
-                b=safe_unicode(new_song.artist),
-                a=safe_unicode(self.name)))
+            self.logger.info("Can't add song by %s, artist must be %s.",
+                             safe_unicode(new_song.artist),
+                             safe_unicode(self.name))
         return None
 
     def song(self, song_name):
@@ -102,7 +102,7 @@ class Artist(BaseEntity):
         for song in self.songs:
             if song.title == song_name:
                 return song
-
+        self.logger.info("'%s' was not in %s's songs.", song_name, self.name)
         song = self._client.search_song(song_name, self.name)
         return song
 
@@ -144,8 +144,7 @@ class Artist(BaseEntity):
                                    extension=extension,
                                    overwrite=overwrite,
                                    ensure_ascii=ensure_ascii,
-                                   sanitize=sanitize,
-                                   verbose=verbose)
+                                   sanitize=sanitize)
 
     def __str__(self):
         """Return a string representation of the Artist object."""
