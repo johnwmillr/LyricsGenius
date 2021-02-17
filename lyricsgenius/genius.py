@@ -470,8 +470,7 @@ class Genius(API, PublicAPI):
             per_page (:obj:`int`, optional): Number of results to return
                 per search page. It can't be more than 50.
             get_full_info (:obj:`bool`, optional): Get full info for each song (slower).
-            allow_name_change (:obj:`bool`, optional): Enables an additional print statement for backwards compatibility
-                in case the name of the searched artist doesn't match the name of the artist returned by Genius.
+            allow_name_change (:obj:`bool`, optional): Doesn't do anything, exists to maintain backwards compatibility.
             artist_id (:obj:`int`, optional): Allows user to pass an artist ID.
             include_features (:obj:`bool`, optional): If True, includes tracks
                 featuring the artist.
