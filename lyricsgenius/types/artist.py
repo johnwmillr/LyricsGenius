@@ -102,7 +102,9 @@ class Artist(BaseEntity):
         for song in self.songs:
             if song.title == song_name:
                 return song
-        self.logger.info("'%s' was not in %s's songs.", song_name, self.name)
+        self.logger.info("'%s' was not in %s's songs.",
+                         safe_unicode(song_name),
+                         safe_unicode(self.name))
         song = self._client.search_song(song_name, self.name)
         return song
 

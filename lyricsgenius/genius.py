@@ -220,9 +220,10 @@ class Genius(API, PublicAPI):
         for hit in hits:
             item = hit['result']
             if clean_str(item[result_type]) == clean_str(search_term):
-                self.logger.debug("Found match: '%s'", item[result_type])
+                self.logger.debug("Found match: '%s'", safe_unicode(item[result_type]))
                 return item
-            self.logger.debug("Item did not match: '%s'", item[result_type])
+            self.logger.debug("Item did not match: '%s'",
+                              safe_unicode(item[result_type]))
         # If the desired type is song lyrics and none of the results matched,
         # return the first result that has lyrics
         if type_ == 'song' and self.skip_non_songs:
@@ -360,7 +361,9 @@ class Genius(API, PublicAPI):
 
                 track = Track(self, track, song_lyrics)
                 tracks.append(track)
-                self.logger.info("Track %d: %s", track.number, track.song.title)
+                self.logger.info("Track %d: %s",
+                                 track.number,
+                                 safe_unicode(track.song.title))
 
             next_page = tracks_list['next_page']
 
@@ -369,7 +372,7 @@ class Genius(API, PublicAPI):
             new_info = self.album(album_id, text_format=text_format)['album']
             album_info.update(new_info)
         album = Album(self, album_info, tracks)
-        self.logger.info("Done fetching '%s'", album.name)
+        self.logger.info("Done fetching '%s'", safe_unicode(album.name))
         return album
 
     def search_song(self, title=None, artist="", song_id=None,
@@ -467,7 +470,7 @@ class Genius(API, PublicAPI):
 
         # Return a Song object with lyrics if we've made it this far
         song = Song(self, song_info, lyrics)
-        self.logger.info("Done fetching '%s'", song.title)
+        self.logger.info("Done fetching '%s'", safe_unicode(song.title))
         return song
 
     def search_artist(self, artist_name, max_songs=None,
