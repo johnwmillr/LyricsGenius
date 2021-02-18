@@ -23,12 +23,14 @@ class Sender(object):
         retries=0,
         public_api_constructor=False,
     ):
+        self.logger = logging.getLogger(__name__)
         self._session = requests.Session()
         self._session.headers = {
             'application': 'LyricsGenius',
             'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'
         }
         if access_token is None:
+            self.logger.info("No token provided. Trying to get it from ENV.")
             access_token = os.environ.get('GENIUS_ACCESS_TOKEN')
 
         if public_api_constructor:
@@ -43,7 +45,6 @@ class Sender(object):
         self.timeout = timeout
         self.sleep_time = sleep_time
         self.retries = retries
-        self.logger = logging.getLogger(__name__)
 
     def _make_request(
         self,
