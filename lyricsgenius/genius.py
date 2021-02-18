@@ -396,7 +396,7 @@ class Genius(API, PublicAPI):
 
                 genius = Genius(token)
                 artist = genius.search_artist('Andy Shauf', max_songs=0)
-                song = genius.search_song('Toy You', artist.name)
+                song = genius.search_song('To You', artist.name)
                 # same as: song = genius.search_song('To You', 'Andy Shauf')
                 print(song.lyrics)
 
