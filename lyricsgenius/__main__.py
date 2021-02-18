@@ -36,8 +36,13 @@ def main(args=None):
     assert access_token, msg
     api = Genius(access_token)
 
+    if args.quiet:
+        log_level = logging.NOTSET
+        api._verbose_cli = True
+    else:
+        log_level = logging.INFO
+        api._verbose_cli = False
     # Set up logging
-    log_level = logging.NOTSET if args.quiet else logging.INFO
     logging.basicConfig(format="%(message)s")
     logger = logging.getLogger(__package__)
     logger.setLevel(log_level)

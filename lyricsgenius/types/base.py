@@ -34,7 +34,8 @@ class BaseEntity(ABC):
                 If not specified, the result is returned as a string.
             extension (:obj:`str`, optional): Format of the file (`json` or `txt`).
             overwrite (:obj:`bool`, optional): Overwrites preexisting file if `True`.
-                Otherwise prompts user for input.
+                Otherwise prompts user for input if launched from the CLI and verbose
+                output is enabled.
             ensure_ascii (:obj:`bool`, optional): If ensure_ascii is true
                 (the default), the output is guaranteed to have all incoming
                 non-ASCII characters escaped.
@@ -62,7 +63,7 @@ class BaseEntity(ABC):
         write_file = False
         if overwrite or not os.path.isfile(filename):
             write_file = True
-        else:
+        elif self._client._verbose_cli:
             msg = "{} already exists. Overwrite?\n(y/n): ".format(filename)
             if input(msg).lower() == 'y':
                 write_file = True

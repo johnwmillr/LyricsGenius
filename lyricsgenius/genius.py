@@ -91,6 +91,7 @@ class Genius(API, PublicAPI):
         else:
             self.excluded_terms = self.default_terms.copy()
             self.excluded_terms.extend(excluded_terms)
+        self._verbose_cli = False
         self.logger = logging.getLogger(__name__)
 
     def lyrics(self, song_id=None, song_url=None, remove_section_headers=False):
@@ -618,7 +619,8 @@ class Genius(API, PublicAPI):
                 objects to save lyrics from.
             filename (:obj:`str`, optional): Name of the output file.
             overwrite (:obj:`bool`, optional): Overwrites preexisting file if `True`.
-                Otherwise prompts user for input.
+                Otherwise prompts user for input if launched from the CLI and verbose
+                output is enabled.
             ensure_ascii (:obj:`bool`, optional): If ensure_ascii is true
               (the default), the output is guaranteed to have all incoming
               non-ASCII characters escaped.
@@ -648,11 +650,16 @@ class Genius(API, PublicAPI):
 
         # Check if file already exists
         if os.path.isfile(filename + ".json") and not overwrite:
-            msg = "{f} already exists. Overwrite?\n(y/n): ".format(f=filename)
-            if input(msg).lower() != "y":
-                self.logger.info("Leaving file in place. Exiting.")
-                os.rmdir(tmp_dir)
-                return
+            if self._verbose_cli:
+                msg = "{f} already exists. Overwrite?\n(y/n): ".format(f=filename)
+                if input(msg).lower() != "y":
+                    self.logger.info("Leaving file in place. Exiting.")
+                    os.rmdir(tmp_dir)
+                    return
+            else:
+                self.logger.info(
+                    "%s already exists and overwrite is not enabled. Skipping.",
+                    filename)
 
         # Extract each artist's lyrics in json format
         all_lyrics = {'artists': []}
