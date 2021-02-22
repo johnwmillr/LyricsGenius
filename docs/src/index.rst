@@ -2,7 +2,7 @@
 .. image:: header.png
 
 
-LyricsGenius: a Python client for the Genius.com API
+LyricsGenius: Python client for the Genius.com API
 ====================================================
 .. image:: https://travis-ci.org/johnwmillr/LyricsGenius.svg?branch=master
    :target: https://travis-ci.org/johnwmillr/LyricsGenius
@@ -83,6 +83,11 @@ to :ref:`setup` to get started.
    :caption: Misc
 
    contributing
+
+.. toctree::
+   :hidden:
+
+   404.rst
 
 .. _Genius.com: https://www.genius.com
 .. _“Words are flowing out like endless rain into a paper cup”:
