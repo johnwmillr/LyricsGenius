@@ -2,7 +2,7 @@
 .. image:: header.png
 
 
-LyricsGenius: Python client for the Genius.com API
+LyricsGenius: a Python client for the Genius.com API
 ====================================================
 .. image:: https://travis-ci.org/johnwmillr/LyricsGenius.svg?branch=master
    :target: https://travis-ci.org/johnwmillr/LyricsGenius
