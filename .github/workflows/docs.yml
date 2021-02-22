@@ -19,4 +19,5 @@ jobs:
         python -m pip install --upgrade pip
         pip install -e .[docs]
     - name: Build Docs
-      run: tox -e docs
+      working-directory: ./docs
+      run: sphinx-build -b html src build
