@@ -20,4 +20,4 @@ jobs:
         pip install -e .[docs]
     - name: Build Docs
       working-directory: ./docs
-      run: sphinx-build -b html src build
+      run: sphinx-build -W -b html src build
