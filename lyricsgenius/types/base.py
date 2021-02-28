@@ -63,7 +63,7 @@ class BaseEntity(ABC):
         write_file = False
         if overwrite or not os.path.isfile(filename):
             write_file = True
-        elif self._client._verbose_cli:
+        elif self._client._cli:
             msg = "{} already exists. Overwrite?\n(y/n): ".format(filename)
             if input(msg).lower() == 'y':
                 write_file = True

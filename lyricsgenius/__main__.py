@@ -35,13 +35,11 @@ def main(args=None):
     msg = "Must declare environment variable: GENIUS_ACCESS_TOKEN"
     assert access_token, msg
     api = Genius(access_token)
-
+    api._cli = True
     if args.quiet:
         log_level = logging.NOTSET
-        api._verbose_cli = True
     else:
         log_level = logging.INFO
-        api._verbose_cli = False
     # Set up logging
     logging.basicConfig(format="%(message)s")
     logger = logging.getLogger(__package__)

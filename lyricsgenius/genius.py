@@ -91,7 +91,7 @@ class Genius(API, PublicAPI):
         else:
             self.excluded_terms = self.default_terms.copy()
             self.excluded_terms.extend(excluded_terms)
-        self._verbose_cli = False
+        self._cli = False
         self.logger = logging.getLogger(__name__)
 
     def lyrics(self, song_id=None, song_url=None, remove_section_headers=False):
@@ -653,7 +653,7 @@ class Genius(API, PublicAPI):
 
         # Check if file already exists
         if os.path.isfile(filename + ".json") and not overwrite:
-            if self._verbose_cli:
+            if self._cli:
                 msg = "{f} already exists. Overwrite?\n(y/n): ".format(f=filename)
                 if input(msg).lower() != "y":
                     self.logger.info("Leaving file in place. Exiting.")
