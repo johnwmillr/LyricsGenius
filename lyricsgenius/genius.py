@@ -6,6 +6,7 @@
 
 import json
 import os
+import queue
 import re
 import shutil
 import time
@@ -15,7 +16,7 @@ from bs4 import BeautifulSoup
 
 from .api import API, PublicAPI
 from .types import Album, Artist, Song, Track
-from .utils import clean_str, safe_unicode
+from .utils import SongThread, clean_str, safe_unicode
 
 
 class Genius(API, PublicAPI):
@@ -348,10 +349,16 @@ class Genius(API, PublicAPI):
                 page=next_page,
                 text_format=text_format
             )
+            errors_queue = queue.Queue()
             thread_pool = []
             for track in tracks_list['tracks']:
                 if num_workers != 1:
-                    thread = threading.Thread(target=download_track, args=(track,))
+                    thread = SongThread(
+                        errors_queue,
+                        name="Thread-Track-{}".format(track['song']['id']),
+                        target=download_track,
+                        args=(track,)
+                    )
                     thread.start()
                     thread_pool.append(thread)
                     if len(thread_pool) == num_workers:
@@ -364,6 +371,12 @@ class Genius(API, PublicAPI):
             next_page = tracks_list['next_page']
         for thread in thread_pool:
             thread.join()
+            try:
+                error = errors_queue.get(False)
+            except queue.Empty:
+                pass
+            else:
+                raise error
 
         length = len(tracks)
         tracks.sort(key=lambda track: (track.number
@@ -599,9 +612,11 @@ class Genius(API, PublicAPI):
                                               sort=sort,
                                               )
             thread_pool = []
+            errors_queue = queue.Queue()
             for song in songs_on_page["songs"]:
                 if num_workers != 1:
-                    thread = threading.Thread(
+                    thread = SongThread(
+                        errors_queue,
                         name="Thread-Song-{}".format(song['id']),
                         target=download_song,
                         args=(song, num_songs)
@@ -613,24 +628,34 @@ class Genius(API, PublicAPI):
                             thread.join()
                         thread_pool.clear()
                 else:
-                    download_song(song)
-
+                    download_song(song, num_songs)
                 num_songs += 1
+
                 # Exit search if the max number of songs has been met
-                reached_max_songs = max_songs and num_songs >= max_songs
+                reached_max_songs = max_songs and num_songs - 1 >= max_songs
                 if reached_max_songs:
                     if self.verbose:
                         print(('\nReached user-specified song limit ({m}).'
                                .format(m=max_songs)))
                     break
+
             for thread in thread_pool:
                 thread.join()
+                try:
+                    error = errors_queue.get(False)
+                except queue.Empty:
+                    pass
+                else:
+                    raise error
+
             if reached_max_songs:
                 break
+
             # Move on to next page of search results
             page = songs_on_page['next_page']
             if page is None:
                 break  # Exit search when last page is reached
+
         artist.songs.sort(key=lambda x: x._index)
         if self.verbose:
             print('Done. Found {n} songs.'.format(n=len(artist.songs)))
