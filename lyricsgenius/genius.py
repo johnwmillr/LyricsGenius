@@ -633,9 +633,6 @@ class Genius(API, PublicAPI):
                 # Exit search if the max number of songs has been met
                 reached_max_songs = max_songs and num_songs - 1 >= max_songs
                 if reached_max_songs:
-                    if self.verbose:
-                        print(('\nReached user-specified song limit ({m}).'
-                               .format(m=max_songs)))
                     break
 
             for thread in thread_pool:
@@ -646,8 +643,12 @@ class Genius(API, PublicAPI):
                     pass
                 else:
                     raise error
+            thread_pool.clear()
 
             if reached_max_songs:
+                if self.verbose:
+                    print(('\nReached user-specified song limit ({m}).'
+                           .format(m=max_songs)))
                 break
 
             # Move on to next page of search results
