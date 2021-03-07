@@ -270,7 +270,8 @@ class Genius(API, PublicAPI):
         return all_annotations
 
     def search_album(self, name=None, artist="",
-                     album_id=None, get_full_info=True, text_format=None):
+                     album_id=None, get_full_info=True,
+                     text_format=None, num_workers=1):
         """Searches for a specific album and gets its songs.
 
         You must pass either a :obj:`name` or an :obj:`album_id`.
@@ -299,6 +300,16 @@ class Genius(API, PublicAPI):
                 print(album.name)
 
         """
+        def download_track(track):
+            song_info = track['song']
+            if (song_info['lyrics_state'] == 'complete'
+                    and not song_info.get('instrumental')):
+                song_lyrics = self.lyrics(song_url=song_info['url'])
+            else:
+                song_lyrics = ""
+
+            track = Track(self, track, song_lyrics)
+            tracks.append(track)
         msg = "You must pass either a `name` or an `album_id`."
         assert any([name, album_id]), msg
 
@@ -338,18 +349,25 @@ class Genius(API, PublicAPI):
                 page=next_page,
                 text_format=text_format
             )
+            thread_pool = []
             for track in tracks_list['tracks']:
-                song_info = track['song']
-                if (song_info['lyrics_state'] == 'complete'
-                        and not song_info.get('instrumental')):
-                    song_lyrics = self.lyrics(song_url=song_info['url'])
+                if num_workers != 1:
+                    thread = threading.Thread(target=download_track, args=(track,))
+                    thread.start()
+                    thread_pool.append(thread)
+                    if len(thread_pool) == num_workers:
+                        for thread in thread_pool:
+                            thread.join()
+                        thread_pool.clear()
                 else:
-                    song_lyrics = ""
-
-                track = Track(self, track, song_lyrics)
-                tracks.append(track)
+                    download_track(track)
 
             next_page = tracks_list['next_page']
+        for thread in thread_pool:
+            thread.join()
+        tracks.sort(key=lambda track: (track.number
+                                       if track.number is not None
+                                       else len(tracks) + 1))
 
         if album_id is None and get_full_info is True:
             new_info = self.album(album_id, text_format=text_format)['album']
