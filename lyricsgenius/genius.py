@@ -582,14 +582,16 @@ class Genius(API, PublicAPI):
                                               )
             thread_pool = []
             for song in songs_on_page["songs"]:
-                thread = threading.Thread(target=download_song, args=(song,))
-                thread.start()
-                thread_pool.append(thread)
-
-                if len(thread_pool) == num_workers:
-                    for thread in thread_pool:
-                        thread.join()
-                    thread_pool.clear()
+                if num_workers != 1:
+                    thread = threading.Thread(target=download_song, args=(song,))
+                    thread.start()
+                    thread_pool.append(thread)
+                    if len(thread_pool) == num_workers:
+                        for thread in thread_pool:
+                            thread.join()
+                        thread_pool.clear()
+                else:
+                    download_song(song)
 
                 num_songs += 1
                 # Exit search if the max number of songs has been met
