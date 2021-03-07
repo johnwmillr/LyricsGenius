@@ -339,7 +339,8 @@ class Genius(API, PublicAPI):
 
         tracks = []
         next_page = 1
-
+        errors_queue = queue.Queue()
+        thread_pool = []
         # It's unlikely for an album to have >=50 songs,
         # but it's best to check
         while next_page:
@@ -349,8 +350,6 @@ class Genius(API, PublicAPI):
                 page=next_page,
                 text_format=text_format
             )
-            errors_queue = queue.Queue()
-            thread_pool = []
             for track in tracks_list['tracks']:
                 if num_workers != 1:
                     thread = SongThread(
@@ -605,14 +604,14 @@ class Genius(API, PublicAPI):
         page = 1
         num_songs = 0
         reached_max_songs = True if max_songs == 0 else False
+        thread_pool = []
+        errors_queue = queue.Queue()
         while not reached_max_songs:
             songs_on_page = self.artist_songs(artist_id=artist_id,
                                               per_page=per_page,
                                               page=page,
                                               sort=sort,
                                               )
-            thread_pool = []
-            errors_queue = queue.Queue()
             for song in songs_on_page["songs"]:
                 if num_workers != 1:
                     thread = SongThread(
