@@ -541,9 +541,9 @@ class Genius(API, PublicAPI):
             # Assume the top search result is the intended artist
             return found_artist['id']
 
-        def download_song(song_info):
+        def download_song(song_info, index):
             # Check if song is valid (e.g. contains lyrics)
-            print('downloading {}'.format(song_info['title']))
+            print('{} - {}'.format(index, song_info['title']))
             if self.skip_non_songs and not self._result_is_lyrics(song_info):
                 valid = False
             else:
@@ -566,6 +566,7 @@ class Genius(API, PublicAPI):
                 new_info = self.song(song_info['id'])['song']
                 song_info.update(new_info)
             song = Song(self, song_info, lyrics)
+            song._index = index
 
             # Attempt to add the Song to the Artist
             result = artist.add_song(song, verbose=False,
@@ -603,7 +604,11 @@ class Genius(API, PublicAPI):
             thread_pool = []
             for song in songs_on_page["songs"]:
                 if num_workers != 1:
-                    thread = threading.Thread(target=download_song, args=(song,))
+                    thread = threading.Thread(
+                        name="Thread-Song-{}".format(song['id']),
+                        target=download_song,
+                        args=(song, num_songs)
+                    )
                     thread.start()
                     thread_pool.append(thread)
                     if len(thread_pool) == num_workers:
@@ -630,7 +635,7 @@ class Genius(API, PublicAPI):
             if page is None:
                 break  # Exit search when last page is reached
             print('getting next page')
-
+        artist.songs.sort(key=lambda x: x._index)
         if self.verbose:
             print('Done. Found {n} songs.'.format(n=len(artist.songs)))
         return artist
