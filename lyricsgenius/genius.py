@@ -358,6 +358,7 @@ class Genius(API, PublicAPI):
                         target=download_track,
                         args=(track,)
                     )
+                    thread.daemon = True
                     thread.start()
                     thread_pool.append(thread)
                     if len(thread_pool) == num_workers:
@@ -620,6 +621,7 @@ class Genius(API, PublicAPI):
                         target=download_song,
                         args=(song, num_songs)
                     )
+                    thread.daemon = True
                     thread.start()
                     thread_pool.append(thread)
                     if len(thread_pool) == num_workers:
