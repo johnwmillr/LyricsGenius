@@ -27,6 +27,8 @@ def main(args=None):
                         help="Specify number of songs when searching for artist")
     parser.add_argument("-q", "--quiet", action="store_true",
                         help="Turn off the API verbosity")
+    parser.add_argument("-n", "--num-workers", type=int, default=1,
+                        help="Number of threads used to get songs")
     args = parser.parse_args()
 
     # Create an instance of the Genius class
@@ -51,7 +53,8 @@ def main(args=None):
     elif args.search_type == "artist":
         artist = api.search_artist(args.terms[0],
                                    max_songs=args.max_songs,
-                                   sort='popularity')
+                                   sort='popularity',
+                                   num_workers=args.num_workers)
         if args.save:
             if not args.quiet:
                 print("Saving '{a}'' lyrics...".format(a=safe_unicode(artist.name)))
