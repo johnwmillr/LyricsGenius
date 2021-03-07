@@ -208,10 +208,12 @@ class Genius(API, PublicAPI):
         sections = sorted(response['sections'],
                           key=lambda sect: sect['type'] == type_)
 
-        hits = [hit for hit in top_hits if hit['type'] == type_]
+        hits = [hit
+                for hit in top_hits
+                if hit['type'] == type_ and hit['index'] == type_]
         hits.extend([hit for section in sections
                      for hit in section['hits']
-                     if hit['type'] == type_])
+                     if hit['type'] == type_ and hit['index'] == type_])
 
         for hit in hits:
             item = hit['result']
