@@ -365,9 +365,11 @@ class Genius(API, PublicAPI):
             next_page = tracks_list['next_page']
         for thread in thread_pool:
             thread.join()
+
+        length = len(tracks)
         tracks.sort(key=lambda track: (track.number
                                        if track.number is not None
-                                       else len(tracks) + 1))
+                                       else length))
 
         if album_id is None and get_full_info is True:
             new_info = self.album(album_id, text_format=text_format)['album']
