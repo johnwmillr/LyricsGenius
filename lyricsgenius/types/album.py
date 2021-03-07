@@ -126,4 +126,7 @@ class Track(BaseEntity):
 
     def __repr__(self):
         name = self.__class__.__name__
-        return "{}(number, song)".format(name)
+        return "{name}({number}, {song})".format(
+            name=name,
+            number=self.number,
+            song=repr(self.song))
