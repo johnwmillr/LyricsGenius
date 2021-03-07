@@ -4,7 +4,6 @@
 
 """API documentation: https://docs.genius.com/"""
 
-import concurrent.futures
 import json
 import os
 import re
