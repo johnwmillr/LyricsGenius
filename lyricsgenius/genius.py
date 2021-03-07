@@ -273,12 +273,16 @@ class Genius(API, PublicAPI):
                      album_id=None, get_full_info=True, text_format=None):
         """Searches for a specific album and gets its songs.
 
+        Convenience method. Searches for album finds a match, and
+        fetches info and lyrics for the tracks of the matched album.
+
         You must pass either a :obj:`name` or an :obj:`album_id`.
 
         Args:
             name (:obj:`str`, optional): Album name to search for.
             artist (:obj:`str`, optional): Name of the artist.
-            album_id (:obj:`int`, optional): Album ID.
+            album_id (:obj:`int`, optional): Album ID. If provided,
+            searching is skipped and album info and lyrics are fetched directly.
             get_full_info (:obj:`bool`, optional): Get full info
                 for the album (slower if no album_id present).
             text_format (:obj:`bool`, optional): If ``True``,
@@ -361,13 +365,17 @@ class Genius(API, PublicAPI):
                     get_full_info=True):
         """Searches for a specific song and gets its lyrics.
 
+        Convenience method. Searches for song, finds a match, and
+        fetches info and lyrics for that match.
+
         You must pass either a :obj:`title` or a :obj:`song_id`.
 
         Args:
             title (:obj:`str`): Song title to search for.
             artist (:obj:`str`, optional): Name of the artist.
             get_full_info (:obj:`bool`, optional): Get full info for each song (slower).
-            song_id (:obj:`int`, optional): Song ID.
+            song_id (:obj:`int`, optional): Song ID. If provided, searching is skipped
+            and song info and lyrics are fetched directly.
 
         Returns:
             :class:`Song <types.Song>` \\| :obj:`None`: On success,
@@ -461,7 +469,7 @@ class Genius(API, PublicAPI):
                       ):
         """Searches for a specific artist and gets their songs.
 
-        This method looks for the artist by the name or by the
+        This convenience method looks for the artist by the name or by the
         ID if it's provided in ``artist_id``. It returrns an
         :class:`Artist <types.Artist>` object if the search is successful.
         If :obj:`allow_name_change` is True, the name of the artist is changed to the
@@ -476,7 +484,8 @@ class Genius(API, PublicAPI):
             get_full_info (:obj:`bool`, optional): Get full info for each song (slower).
             allow_name_change (:obj:`bool`, optional): If True, search attempts to
                 switch to intended artist name.
-            artist_id (:obj:`int`, optional): Allows user to pass an artist ID.
+            artist_id (:obj:`int`, optional): Artist ID. If provided,
+            searching is skipped and artist info and songs are fetched directly.
             include_features (:obj:`bool`, optional): If True, includes tracks
                 featuring the artist.
 
