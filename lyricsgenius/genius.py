@@ -543,7 +543,6 @@ class Genius(API, PublicAPI):
 
         def download_song(song_info, index):
             # Check if song is valid (e.g. contains lyrics)
-            print('{} - {}'.format(index, song_info['title']))
             if self.skip_non_songs and not self._result_is_lyrics(song_info):
                 valid = False
             else:
@@ -574,7 +573,6 @@ class Genius(API, PublicAPI):
             if result is not None and self.verbose:
                 print('Song {n}: "{t}"'.format(n=len(artist.songs),
                                                t=safe_unicode(song.title)))
-            print("finished download {}".format(song.title))
 
         # Get the artist ID (or use the one supplied)
         artist_id = artist_id if artist_id else find_artist_id(artist_name)
@@ -634,7 +632,6 @@ class Genius(API, PublicAPI):
             page = songs_on_page['next_page']
             if page is None:
                 break  # Exit search when last page is reached
-            print('getting next page')
         artist.songs.sort(key=lambda x: x._index)
         if self.verbose:
             print('Done. Found {n} songs.'.format(n=len(artist.songs)))
