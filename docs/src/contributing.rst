@@ -1,30 +1,38 @@
 Contributing
 ------------
-Please contribute! Genius has a lot of undocumented API endpoints.
-You could try to look through Genius yourself to uncover new ones, and
-implement them. Or you could go through the only ones that have already
-been implemented and try to make more sense of the parameters they take.
+If you'd like to contribute to LyricsGenius by fixing a bug,
+introducing a new feature, improving the docs or whatever else,
+you can follow the steps below:
 
-If you want to fix a bug, suggest improvements, or
-add new features to the project, just `open an issue`_ on GitHub.
+- First, fork the repository.
+- Clone your fork on your local machine. Then install the package
+  in editable mode with developer dependencies. Either create a branch
+  with an appropriate name for your change (recommended) or just use
+  the ``master`` branch. This way you can easily run our tests.
 
-If you want to run the tests on your machine before opening a
-PR, do the following: 
+  .. code:: bash
 
-.. code:: bash
-
+    git clone https://github.com/my-username/LyricsGenius
     cd LyricsGenius
+    # If you want, you can check out a new branch. For example:
+    # git branch my-new-feature
+    # git checkout my-new-feature
     pip install -e .[dev]
 
-This will install the package in developer mode with all the packages
-necessary for running the tests. Now you can run three types of commands
-to test your changes:
+- Now you can make the changes you intended.
+- Before committing your changes, you can run our tests to make
+  sure everything is working okay. If you have already committed
+  the changes, no worries. Run the tests and then commit the fixes
+  needed.
+  There are three ways to run the tests:
 
-- ``tox -e test``: runs the unit tests.
-- ``tox -e lint``: runs flake8 (PEP8 for code), doc8 (PEP8 for docs)
-  and tests creating docs.
-- ``tox``: runs all tests (both of the ones above).
+  - ``tox -e test``: runs the unit tests (needs the following environment
+    variables: ``GENIUST_ACCESS_TOKEN``, ``GENIUS_CLIENT_ID``,
+    ``GENIUS_CLIENT_SECRET`` and ``GENIUS_REDIRECT_URI``). Note that you
+    can skip these tests if your changes only affect the docs or you
+    think setting up the unit tests are too much trouble.
 
-
-
-.. _open an issue: https://github.com/johnwmillr/LyricsGenius/issues
+  - ``tox -e lint``: runs linting tests for the code and the docs.
+  - ``tox``: runs all tests (both of the ones above).
+- After you're done, you can open a pull request and we'll review your changes.
+  Thanks for contributing to LyricsGenius!
