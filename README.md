@@ -124,4 +124,62 @@ python3 -m lyricsgenius artist "The Beatles" --max-songs 5 --save
   - [49 Years of Lyrics: Why So Angry?](https://towardsdatascience.com/49-years-of-lyrics-why-so-angry-1adf0a3fa2b4)
 
 ## Contributing
-If you'd like to contribute, please read our [contributing guidelines](https://lyricsgenius.readthedocs.io/en/latest/contributing.html#contributing).
+If you'd like to contribute to LyricsGenius by fixing a bug, introducing
+a new feature, improving the docs or whatever else, you can follow the
+steps below:
+
+First, clone the repository and install in editable mode with dev dependencies:
+```bash
+git clone https://github.com/johnwmillr/LyricsGenius
+cd LyricsGenius
+pip install -e .[dev]
+```
+You will need the dev dependencies to run the tests.
+
+Now you can make the changes you intended. Before or after committing your changes, you can run our tests to make sure everything is working okay. We use `tox` to manage our tests and you can use it to run all the tests at once:
+
+```bash
+tox
+```
+But depending on your changes you may not need to run all the tests and our unit tests require extra setup before working. Read the sections below to test different parts of the package.
+
+### Documentation
+We use `sphinx` to build the documentation. You can easily build the docs offline:
+```bash
+cd docs
+make html
+```
+The output will be available in the `build/html` folder and you can navigate the docs from `build/html/index.html`. You can also create the docs using the `tox -e docs` command.
+
+If you've made any changes to the docs, make sure the linting tests below.
+
+### Linting
+We use `flake8` for code quality checks, and `doc8` for style checking the docs. You can run both using `tox`:
+```bash
+tox -e lint
+```
+
+### Tests
+At the moment we're using Python's own `unittest` for the unit tests, but will probably migrate to `pytest` in the future.
+
+The unit tests require some setup before running. These tests interact with Genius and therefore require a network connection. Furthermore, some of the tests try creating, manipulating, and finally removing annotations, but in case of an unforeseen failure in those tests, you might end up with some annotations on your profile that you can delete later manually. You'll need to set the following environment variables:
+
+ - `GENIUS_CLIENT_ID`
+ - `GENIUS_CLIENT_SECRET`
+ - `GENIUS_REDIRECT_URI`
+ - `GENIUS_ACCESS_TOKEN`
+
+To get your client's credentials, visit the [API Clients](https://genius.com/api-clients) page. There you can view your client ID and client password. If haven't set a redirect URI, click on Edit and enter any valid URL (e.g. `http://example.com`). Now save these in the respective env variables mentioned above.
+
+The Genius token needed for the tests isn't the usual client access token. The tests need a _user token_, like the one the interactive console at [Genius Docs](http://docs.genius.com/) uses. `LyricsGenius` already has some utility functions to help get one of these. Just start `python` from your terminal and then type in the code below:
+```python
+import lyricsgenius as lg
+client_id, redirect_uri, _ = lg.auth_from_environment()
+auth = lg.OAuth2.client_only_app(client_id=client_id, redirect_uri=redirect_uri)
+auth.prompt_user()
+```
+This will open up your browser and you'll be asked to allow access to your client and then you'll redirected to your redirect URI. After enterint it in the console, the package will print your user token. Save that token in the env variable `GENIUS_ACCESS_TOKEN`. Now, you're ready to run the unit tests.
+```bash
+tox -e tests
+```
+
