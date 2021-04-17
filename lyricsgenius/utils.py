@@ -40,18 +40,17 @@ def convert_to_datetime(f):
         return None
 
     if isinstance(f, dict):
-        components = f
-        year = str(components['year']) if components.get('year') else None
-        month = str(components['month']).zfill(2) if components.get('month') else None
-        day = str(components['day']).zfill(2) if components.get('day') else None
+        year = f.get('year')
+        month = f.get('month')
+        day = f.get('day')
         if year and month:
-            date = '{year}-{month}'.format(year=year, month=month)
+            date = '{year}-{month:02}'.format(year=year, month=month)
             if day:
-                date += '-' + day
+                date += '-{day:02}'.format(day=day)
         elif year:
-            date = int(year)
+            date = str(year)
         else:
-            date = '0000-00-00'
+            return None
         f = date
 
     if f.count('-') == 2:
