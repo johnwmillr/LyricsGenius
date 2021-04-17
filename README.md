@@ -175,7 +175,7 @@ The Genius token needed for the tests isn't the usual client access token. The t
 ```python
 import lyricsgenius as lg
 client_id, redirect_uri, _ = lg.auth_from_environment()
-auth = lg.OAuth2.client_only_app(client_id=client_id, redirect_uri=redirect_uri)
+auth = lg.OAuth2.client_only_app(client_id=client_id, redirect_uri=redirect_uri, scope="all")
 auth.prompt_user()
 ```
 This will open up your browser and you'll be asked to allow access to your client and then you'll be redirected to your redirect URI. After entering it into the console, the package will print your user token. Save that token in the env variable `GENIUS_ACCESS_TOKEN`. Now, you're ready to run the unit tests.
