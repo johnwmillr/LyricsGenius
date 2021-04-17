@@ -124,8 +124,8 @@ python3 -m lyricsgenius artist "The Beatles" --max-songs 5 --save
   - [49 Years of Lyrics: Why So Angry?](https://towardsdatascience.com/49-years-of-lyrics-why-so-angry-1adf0a3fa2b4)
 
 ## Contributing
-If you'd like to contribute to LyricsGenius by fixing a bug, introducing
-a new feature, improving the docs or whatever else, you can follow the
+If you'd like to contribute to `LyricsGenius` by fixing a bug, introducing
+a new feature, improving the docs or anything else, you can follow the
 steps below:
 
 First, clone the repository and install in editable mode with dev dependencies:
