@@ -160,7 +160,7 @@ tox -e lint
 ```
 
 ### Tests
-At the moment we're using Python's own `unittest` for the unit tests, but will probably migrate to `pytest` in the future.
+At the moment we're using Python's own `unittest` for the unit tests but will probably migrate to `pytest` in the future.
 
 The unit tests require some setup before running. These tests interact with Genius and therefore require a network connection. Furthermore, some of the tests try creating, manipulating, and finally removing annotations, but in case of an unforeseen failure in those tests, you might end up with some annotations on your profile that you can delete later manually. You'll need to set the following environment variables:
 
@@ -169,7 +169,7 @@ The unit tests require some setup before running. These tests interact with Geni
  - `GENIUS_REDIRECT_URI`
  - `GENIUS_ACCESS_TOKEN`
 
-To get your client's credentials, visit the [API Clients](https://genius.com/api-clients) page. There you can view your client ID and client password. If haven't set a redirect URI, click on Edit and enter any valid URL (e.g. `http://example.com`). Now save these in the respective env variables mentioned above.
+To get your client's credentials, visit the [API Clients](https://genius.com/api-clients) page. There you can view your client ID and client password. If you haven't set a redirect URI, click on Edit and enter any valid URL (e.g. `http://example.com`). Now save these in the respective env variables mentioned above.
 
 The Genius token needed for the tests isn't the usual client access token. The tests need a _user token_, like the one the interactive console at [Genius Docs](http://docs.genius.com/) uses. `LyricsGenius` already has some utility functions to help get one of these. Just start `python` from your terminal and then type in the code below:
 ```python
@@ -178,8 +178,7 @@ client_id, redirect_uri, _ = lg.auth_from_environment()
 auth = lg.OAuth2.client_only_app(client_id=client_id, redirect_uri=redirect_uri)
 auth.prompt_user()
 ```
-This will open up your browser and you'll be asked to allow access to your client and then you'll redirected to your redirect URI. After enterint it in the console, the package will print your user token. Save that token in the env variable `GENIUS_ACCESS_TOKEN`. Now, you're ready to run the unit tests.
+This will open up your browser and you'll be asked to allow access to your client and then you'll be redirected to your redirect URI. After entering it into the console, the package will print your user token. Save that token in the env variable `GENIUS_ACCESS_TOKEN`. Now, you're ready to run the unit tests.
 ```bash
 tox -e tests
 ```
-
