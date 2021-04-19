@@ -77,13 +77,6 @@ to :ref:`setup` to get started.
    text_formatting
    other_guides
 
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Misc
-
-   contributing
-
 .. _Genius.com: https://www.genius.com
 .. _“Words are flowing out like endless rain into a paper cup”:
    https://genius.com/3287551
