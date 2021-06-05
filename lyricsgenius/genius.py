@@ -104,6 +104,8 @@ class Genius(API, PublicAPI):
 
         You must supply either `song_id` or song_url`.
 
+        Uses :class:`PublicAPI` methods.
+
         Args:
             song_id (:obj:`int`, optional): Song ID.
             song_url (:obj:`str`, optional): Song URL.
@@ -281,6 +283,8 @@ class Genius(API, PublicAPI):
 
         You must pass either a :obj:`name` or an :obj:`album_id`.
 
+        Uses :class:`PublicAPI` methods.
+
         Args:
             name (:obj:`str`, optional): Album name to search for.
             artist (:obj:`str`, optional): Name of the artist.
@@ -369,6 +373,8 @@ class Genius(API, PublicAPI):
         """Searches for a specific song and gets its lyrics.
 
         You must pass either a :obj:`title` or a :obj:`song_id`.
+
+        Uses :class:`PublicAPI` methods.
 
         Args:
             title (:obj:`str`): Song title to search for.
@@ -474,6 +480,8 @@ class Genius(API, PublicAPI):
         :class:`Artist <types.Artist>` object if the search is successful.
         If :obj:`allow_name_change` is True, the name of the artist is changed to the
         artist name on Genius.
+
+        Uses :class:`PublicAPI` methods.
 
         Args:
             artist_name (:obj:`str`): Name of the artist to search for.
