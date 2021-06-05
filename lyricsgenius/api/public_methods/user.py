@@ -1,6 +1,10 @@
+from ...utils import uses_public_api
+
+
 class UserMethods(object):
     """User methods of the public API."""
 
+    @uses_public_api
     def user(self, user_id, text_format=None):
         """Gets data for a specific user.
 
@@ -17,6 +21,7 @@ class UserMethods(object):
         params = {'text_format': text_format or self.response_format}
         return self._make_request(path, params_=params, public_api=True)
 
+    @uses_public_api
     def user_accomplishments(self,
                              user_id,
                              per_page=None,
@@ -42,6 +47,7 @@ class UserMethods(object):
                   'per_page': per_page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def user_following(self,
                        user_id,
                        per_page=None,
@@ -63,6 +69,7 @@ class UserMethods(object):
                   'per_page': per_page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def user_followers(self,
                        user_id,
                        per_page=None,
@@ -84,6 +91,7 @@ class UserMethods(object):
                   'per_page': per_page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def user_contributions(self,
                            user_id,
                            per_page=None,
@@ -133,6 +141,7 @@ class UserMethods(object):
                   'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def user_annotations(self,
                          user_id,
                          per_page=None,
@@ -168,6 +177,7 @@ class UserMethods(object):
             type_='annotations'
         )
 
+    @uses_public_api
     def user_articles(self,
                       user_id,
                       per_page=None,
@@ -203,6 +213,7 @@ class UserMethods(object):
             type_='articles'
         )
 
+    @uses_public_api
     def user_pyongs(self,
                     user_id,
                     per_page=None,
@@ -233,6 +244,7 @@ class UserMethods(object):
             type_='pyongs'
         )
 
+    @uses_public_api
     def user_questions_and_answers(self,
                                    user_id,
                                    per_page=None,
@@ -263,6 +275,7 @@ class UserMethods(object):
             type_='questions_and_answers'
         )
 
+    @uses_public_api
     def user_suggestions(self,
                          user_id,
                          per_page=None,
@@ -293,6 +306,7 @@ class UserMethods(object):
             type_='comments'
         )
 
+    @uses_public_api
     def user_transcriptions(self,
                             user_id,
                             per_page=None,
@@ -327,6 +341,7 @@ class UserMethods(object):
             type_='transcriptions'
         )
 
+    @uses_public_api
     def user_unreviewed(self,
                         user_id,
                         per_page=None,

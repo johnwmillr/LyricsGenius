@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 
 from .api import API, PublicAPI
 from .types import Album, Artist, Song, Track
-from .utils import clean_str, safe_unicode
+from .utils import clean_str, safe_unicode, uses_public_api
 
 
 class Genius(API, PublicAPI):
@@ -98,6 +98,7 @@ class Genius(API, PublicAPI):
             self.excluded_terms = self.default_terms.copy()
             self.excluded_terms.extend(excluded_terms)
 
+    @uses_public_api
     def lyrics(self, song_id=None, song_url=None, remove_section_headers=False):
         """Uses BeautifulSoup to scrape song info off of a Genius song URL
 
@@ -273,6 +274,7 @@ class Genius(API, PublicAPI):
             all_annotations.append((fragment, annotations))
         return all_annotations
 
+    @uses_public_api
     def search_album(self, name=None, artist="",
                      album_id=None, get_full_info=True, text_format=None):
         """Searches for a specific album and gets its songs.
@@ -361,6 +363,7 @@ class Genius(API, PublicAPI):
 
         return Album(self, album_info, tracks)
 
+    @uses_public_api
     def search_song(self, title=None, artist="", song_id=None,
                     get_full_info=True):
         """Searches for a specific song and gets its lyrics.
@@ -456,6 +459,7 @@ class Genius(API, PublicAPI):
             print('Done.')
         return song
 
+    @uses_public_api
     def search_artist(self, artist_name, max_songs=None,
                       sort='popularity', per_page=20,
                       get_full_info=True,

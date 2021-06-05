@@ -1,6 +1,10 @@
+from ...utils import uses_public_api
+
+
 class QuestionMethods(object):
     """Question methods of the public API."""
 
+    @uses_public_api
     def questions(self,
                   album_id=None,
                   song_id=None,

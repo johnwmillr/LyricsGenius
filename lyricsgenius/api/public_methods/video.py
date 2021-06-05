@@ -1,6 +1,10 @@
+from ...utils import uses_public_api
+
+
 class VideoMethods(object):
     """Video methods of the public API."""
 
+    @uses_public_api
     def video(self, video_id, text_format=None):
         """Gets data for a specific video.
 
@@ -18,6 +22,7 @@ class VideoMethods(object):
 
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def videos(self,
                album_id=None,
                article_id=None,
