@@ -55,6 +55,7 @@ class API(Sender):
                  timeout=5,
                  sleep_time=0.2,
                  retries=0,
+                 **kwargs,
                  ):
         super().__init__(
             access_token=access_token,
@@ -62,6 +63,7 @@ class API(Sender):
             timeout=timeout,
             sleep_time=sleep_time,
             retries=retries,
+            **kwargs,
         )
 
     def account(self, text_format=None):
@@ -530,6 +532,10 @@ class PublicAPI(
         # If PublicAPI was instantiated directly
         # there is no need for a token anymore
         public_api_constructor = False if self.__class__.__name__ == 'Genius' else True
+
+        # If allow_public_api was not supplied, it means that
+        # the user instantiated PublicAPI and therefore want to use the PublicAPI.
+        self.allow_public_api = kwargs.pop("allow_public_api", True)
 
         # Genius PublicAPI Constructor
         super().__init__(

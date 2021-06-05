@@ -36,6 +36,9 @@ class Genius(API, PublicAPI):
             excluded terms with user's. Default excluded terms are listed below.
         retries (:obj:`int`, optional): Number of retries in case of timeouts and
             errors with a >= 500 response code. By default, requests are only made once.
+        allow_public_api (:obj:`bool`, optional): If True, the instance is allowed to
+            make calls to the Public API. Methods such as :meth:`Genius.search_song`
+            need to make calls to the Public API. Defaults to False.
 
     Attributes:
         verbose (:obj:`bool`, optional): Turn printed messages on or off.
@@ -71,6 +74,7 @@ class Genius(API, PublicAPI):
                  skip_non_songs=True, excluded_terms=None,
                  replace_default_terms=False,
                  retries=0,
+                 allow_public_api=False,
                  ):
         # Genius Client Constructor
         super().__init__(
@@ -78,9 +82,11 @@ class Genius(API, PublicAPI):
             response_format=response_format,
             timeout=timeout,
             sleep_time=sleep_time,
-            retries=retries
+            retries=retries,
+            allow_public_api=allow_public_api,
         )
 
+        self.allow_public_api = allow_public_api
         self.verbose = verbose
         self.remove_section_headers = remove_section_headers
         self.skip_non_songs = skip_non_songs
