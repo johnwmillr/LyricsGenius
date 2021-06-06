@@ -1,0 +1,22 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+-   repo: https://github.com/pycqa/flake8
+    rev: 3.8.4
+    hooks:
+    -   id: flake8
+        additional_dependencies: [flake8-bugbear==21.4.3]
+        args:
+        - --ignore=B305,B950,E402,E501,E722,F401,W503
+        - --select=C,E,F,W,B,B9
+        - --max-line-length=88
+-   repo: https://github.com/pycqa/doc8
+    rev: 0.8.1
+    hooks:
+    -   id: doc8
+        args:
+        - docs/src
