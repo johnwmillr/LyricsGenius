@@ -31,9 +31,9 @@ extras_require = {
     ],
     'checks': [
         'tox~=3.2',
-        'doc8',
-        'flake8',
-        'flake8-bugbear',
+        'doc8==0.8.1',
+        'flake8==3.8.4',
+        'flake8-bugbear==21.4.3',
         'pygments',
     ]
 }
