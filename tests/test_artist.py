@@ -43,6 +43,13 @@ class TestArtist(unittest.TestCase):
         self.artist.add_song(genius.search_song(self.new_song, self.artist_name))
         self.assertEqual(self.artist.num_songs, self.max_songs + 1, msg)
 
+    def test_remove_song(self):
+        msg = "The song was removed from artist object."
+        prev = self.artist.num_songs
+        self.artist.add_song(genius.search_song(self.new_song, self.artist_name))
+        self.artist.remove_song(genius.search_song(self.new_song, self.artist_name))
+        self.assertEqual(self.artist.num_songs, prev, msg)
+
     def test_song(self):
         msg = "Song was not in artist's songs."
         song = self.artist.song(self.new_song)
