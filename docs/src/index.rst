@@ -53,7 +53,7 @@ file:
    from lyricsgenius import Genius
 
    genius = Genius(token)
-   genius.search_artist('Andy Shauf')
+   artist = genius.search_artist('Andy Shauf')
    artist.save_lyrics()
 
 But before using the library you will need to get an access token. Head over
