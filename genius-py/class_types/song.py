@@ -1,8 +1,8 @@
 import json
 from filecmp import cmp
 
-from class_types.base import BaseEntity
-from class_types.artist import Artist
+from .base import BaseEntity
+from .artist import Artist
 
 
 class Song(BaseEntity):
@@ -42,5 +42,5 @@ class Song(BaseEntity):
 
     def __cmp__(self, other):
         return (cmp(self.title, other.title)
-            and cmp(self.artist, other.artist)
-            and cmp(self.lyrics, other.lyrics))
+                and cmp(self.artist, other.artist)
+                and cmp(self.lyrics, other.lyrics))

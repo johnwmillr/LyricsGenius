@@ -1,5 +1,4 @@
-from api_calls.base import Sender
-import asyncio
+from .base import Sender
 
 
 class API(Sender):

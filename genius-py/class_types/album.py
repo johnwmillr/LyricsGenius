@@ -1,6 +1,6 @@
-from class_types.base import BaseEntity
-from class_types.artist import Artist
-from class_types.song import Song
+from .base import BaseEntity
+from .artist import Artist
+from .song import Song
 
 
 class Album(BaseEntity):

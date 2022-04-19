@@ -4,12 +4,12 @@ import unicodedata
 from bs4 import BeautifulSoup
 
 from api_calls import API
-from class_types import Album, Artist, Song, Track
+from class_types import Song
 
 
 class Genius(API):
     default_ex_terms = [r"track\s?list", "album art(work)?", "liner notes", "booklet", "credits", "interview", "skit",
-                     "instrumental", "setlist"]
+                        "instrumental", "setlist"]
 
     def __init__(self, access_token, verbose=True, retries=0):
         """

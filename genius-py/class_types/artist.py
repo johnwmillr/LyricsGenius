@@ -1,6 +1,6 @@
 """Artist object"""
 
-from class_types.base import BaseEntity
+from .base import BaseEntity
 
 
 class Artist(BaseEntity):

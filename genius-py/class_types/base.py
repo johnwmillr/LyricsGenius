@@ -1,11 +1,11 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 
 
 class BaseEntity(ABC):
     """Base class for types."""
 
-    def __init__(self, id):
-        self.id = id
+    def __init__(self, _id):
+        self.id = _id
 
     def __repr__(self):
         name = self.__class__.__name__

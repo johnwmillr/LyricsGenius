@@ -1,2 +1,2 @@
-from api_calls.api import API
-from api_calls.base import Sender
+from .api import API
+from .base import Sender
