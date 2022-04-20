@@ -1,4 +1,7 @@
-# AGenius.py
+<div align="center">
+    <h1>AGenius.py</h1>
+</div>
+
 `AGenius.py` is a [LyricsGenius](https://github.com/johnwmillr/LyricsGenius) fork, making it easy to use, and async ready.
 
 ## Key Features
