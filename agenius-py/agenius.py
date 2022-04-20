@@ -1,3 +1,23 @@
+"""
+Copyright (c) 2018, 2020, 2021 John W. Miller
+Originally part of LyricsGenius, licensed under the MIT License.
+
+
+Copyright (C) 2022 dopebnan
+This file is part of AGenius.py.
+
+AGenius.py is free software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software Foundation,
+either version 3 of the License, or any later version.
+
+AGenius.py is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with AGenius.py.
+If not, see <https://www.gnu.org/licenses/>.
+"""
+
 import re
 import unicodedata
 

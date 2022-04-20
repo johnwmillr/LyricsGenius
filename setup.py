@@ -4,8 +4,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="agenius-dopebnan",
-    version="0.9",
+    name="agenius",
+    version="1.0",
     description="A LyricsGenius fork with async ready features.",
     long_description=long_description,
     long_description_content_type="text/markdown",

@@ -1,4 +1,12 @@
-"""Artist object"""
+"""
+Copyright (c) 2018, 2020, 2021 John W. Miller
+Originally part of LyricsGenius, licensed under the MIT License.
+
+Copyright (C) 2022 dopebnan
+This file is part of AGenius.py.
+You should have received a copy of the GNU Lesser General Public License along with AGenius.py.
+If not, see <https://www.gnu.org/licenses/>.
+"""
 
 from .base import BaseEntity
 
