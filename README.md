@@ -1,6 +1,5 @@
 <div align="center">
     <h1>AGenius.py</h1>
-![Release version](https://img.shields.io/github/v/release/dopebnan/AGenius.py?display_name=release&include_prereleases&sort=date)
 </div>
 
 `AGenius.py` is a [LyricsGenius](https://github.com/johnwmillr/LyricsGenius) fork, making it easy to use, and async ready.
