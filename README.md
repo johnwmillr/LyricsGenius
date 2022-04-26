@@ -58,7 +58,7 @@ genius.verbose = False  # Turns status messages off
 genius.excluded_terms = ["(Remix)", "(Live)"]  # Exclude songs with these words in their title
 ```
 
-## Big Examples
+## More Examples
 ### Get a song's lyrics
 
 ```python
