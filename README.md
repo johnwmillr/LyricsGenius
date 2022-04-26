@@ -1,5 +1,8 @@
 <div align="center">
     <h1>AGenius.py</h1>
+    <img alt="Latest Release" src="https://img.shields.io/pypi/v/agenius?color=brightgreen">
+    <img alt="Python Version" src="https://img.shields.io/pypi/pyversions/agenius">
+    <img alt="License: LGPLv3" src="https://img.shields.io/pypi/l/agenius">
 </div>
 
 `AGenius.py` is a [LyricsGenius](https://github.com/johnwmillr/LyricsGenius) fork, making it easy to use, and async ready.

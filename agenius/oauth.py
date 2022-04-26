@@ -7,7 +7,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 from urllib.parse import urlencode
 
-from api_calls import Sender
+from .api_calls import Sender
 
 
 class OAuth2(Sender):

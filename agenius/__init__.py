@@ -5,5 +5,8 @@ You should have received a copy of the GNU Lesser General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 """
 
-__version__ = "1.0"
+__version__ = "4.0.1"
 __author__ = "dopebnan"
+
+from .main import Genius
+from .oauth import OAuth2

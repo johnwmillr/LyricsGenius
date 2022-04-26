@@ -23,8 +23,8 @@ import unicodedata
 
 from bs4 import BeautifulSoup
 
-from api_calls import API
-from class_types import Song
+from .api_calls import API
+from .class_types import Song
 
 
 class Genius(API):
