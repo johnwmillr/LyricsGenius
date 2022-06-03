@@ -5,11 +5,11 @@ You should have received a copy of the GNU Lesser General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 """
 
-import aiohttp
 import asyncio
+import aiohttp
 
 
-class Sender(object):
+class Sender:
     """Sends requests to Genius."""
     API_ROOT = "https://api.genius.com/"
 
@@ -26,11 +26,8 @@ class Sender(object):
     async def _make_request(self, path, params_=None, **kwargs):
         """Makes a request to Genius."""
         async with aiohttp.ClientSession(headers=self.headers) as _session:
-
             uri = self.API_ROOT
-
             uri += path
-
             params_ = {} if not params_ else params_
 
             # Making the request
@@ -45,10 +42,9 @@ class Sender(object):
             if response.status == 200:
                 res = await response.json()
                 return res["response"]
-            elif response.status == 204:
+            if response.status == 204:
                 return 204
-            else:
-                raise AssertionError(f"Response code is {response.status}")
+            raise AssertionError(f"Response code is {response.status}")
 
     async def _make_request_web(self, path):
         headers = {
@@ -67,7 +63,6 @@ class Sender(object):
             if response.status == 200:
                 res = await response.text()
                 return res
-            elif response.status == 204:
+            if response.status == 204:
                 return 204
-            else:
-                raise AssertionError(f"Response code is {response.status}")
+            raise AssertionError(f"Response code is {response.status}")

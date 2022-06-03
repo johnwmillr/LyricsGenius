@@ -27,7 +27,25 @@ from .api_calls import API
 from .class_types import Song
 
 
+def is_match(result, title, artist=None):
+    """
+    :param result: dict, result that needs to be checked
+    :param title: str, title
+    :param artist: str, artist
+        default: None
+    :return: bool, True if is a match
+    """
+
+    result_title = unicodedata.normalize("NFKD", result["title"])
+    title_is_match = result_title == unicodedata.normalize("NFKD", title)
+    if not artist:
+        return title_is_match
+    result_artist = unicodedata.normalize("NFKD", result["primary_artist"]["name"])
+    return title_is_match and result_artist == unicodedata.normalize("NFKD", artist)
+
+
 class Genius(API):
+    """Main class that makes the requests. Inherits from the API class."""
     default_ex_terms = [r"track\s?list", "album art(work)?", "liner notes", "booklet", "credits", "interview", "skit",
                         "instrumental", "setlist"]
 
@@ -100,22 +118,6 @@ class Genius(API):
 
         return hits[0]["result"] if hits else None
 
-    def is_match(self, result, title, artist=None):
-        """
-        :param result: dict, result that needs to be checked
-        :param title: str, title
-        :param artist: str, artist
-            default: None
-        :return: bool, True if is a match
-        """
-
-        result_title = unicodedata.normalize("NFKD", result["title"])
-        title_is_match = result_title == unicodedata.normalize("NFKD", title)
-        if not artist:
-            return title_is_match
-        result_artist = unicodedata.normalize("NFKD", result["primary_artist"]["name"])
-        return title_is_match and result_artist == unicodedata.normalize("NFKD", artist)
-
     async def lyrics(self, song_url):
         """
         Uses BeautifulSoup to scrape song info off of a Genius song URL
@@ -164,10 +166,7 @@ class Genius(API):
             assert any([title, song_id]), "You must pass either `title` or `song_id`"
 
         if self.verbose and title:
-            if artist:
-                print(f"Searching for '{title}' by '{artist}'..")
-            else:
-                print(f"Searching for '{title}'..")
+            print(f"Searching for '{title}'..")
 
         if song_id:
             result = await self.song(song_id)
@@ -178,28 +177,14 @@ class Genius(API):
             result = self.item_from_search(search_response, title, type_="song", result_type="title")
 
         # Exit search if no results
-        if result is None:
-            if self.verbose and title:
-                print("No results found.")
-            return False
-
-        if not self.is_lyrics(result):
+        if result is None or not self.is_lyrics(result):
             if self.verbose:
-                print("Song doesn't have lyrics.")
+                print("No results found with lyrics.")
             return None
-
-        song_id = result["id"]
 
         # Get info
         song_info = result
         lyrics = await self.lyrics(song_url=song_info["url"])
 
-        if not lyrics:
-            if self.verbose:
-                print("No lyrics found")
-            return None
-
         song = Song(self, song_info, lyrics)
-        if self.verbose:
-            print("Done.")
         return song

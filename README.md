@@ -1,8 +1,12 @@
 <div align="center">
-    <h1>AGenius.py</h1>
-    <img alt="Latest Release" src="https://img.shields.io/pypi/v/agenius?color=brightgreen">
-    <img alt="Python Version" src="https://img.shields.io/pypi/pyversions/agenius">
-    <img alt="License: LGPLv3" src="https://img.shields.io/pypi/l/agenius">
+
+# AGenius.py
+
+[![Latest Release](https://img.shields.io/pypi/v/agenius?color=brightgreen&label=%20)](https://github.com/dopebnan/AGenius.py/releases "Releases")
+![Python Version](https://img.shields.io/pypi/pyversions/agenius)
+[![License: LGPLv3](https://img.shields.io/pypi/l/agenius)](LICENSE.md "License")
+[![PyPI](https://img.shields.io/badge/-PyPI-blue)](https://pypi.org/project/agenius/ "PyPI")
+[![Last Commit](https://img.shields.io/github/last-commit/dopebnan/AGenius.py)](https://github.com/dopebnan/AGenius.py/commits/master "Commits")
 </div>
 
 `AGenius.py` is a [LyricsGenius](https://github.com/johnwmillr/LyricsGenius) fork, making it easy to use, and async ready.
