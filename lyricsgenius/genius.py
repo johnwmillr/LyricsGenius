@@ -491,7 +491,7 @@ class Genius(API, PublicAPI):
                 for song in artist.songs:
                     print(song.lyrics)
 
-            Visit :class:`Aritst <types.Artist>` for more examples.
+            Visit :class:`Artist <types.Artist>` for more examples.
         """
         def find_artist_id(search_term):
             """Finds the ID of the artist, returns the first
