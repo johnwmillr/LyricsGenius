@@ -84,6 +84,11 @@ to :ref:`setup` to get started.
 
    contributing
 
+.. toctree::
+   :hidden:
+
+   404.rst
+
 .. _Genius.com: https://www.genius.com
 .. _“Words are flowing out like endless rain into a paper cup”:
    https://genius.com/3287551
