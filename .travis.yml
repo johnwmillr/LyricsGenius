@@ -1,5 +1,0 @@
-language: python
-
-install: pip install .[dev]
-
-script: tox
