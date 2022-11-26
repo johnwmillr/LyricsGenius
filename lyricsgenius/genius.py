@@ -141,7 +141,11 @@ class Genius(API, PublicAPI):
                       "Please report this if the song has lyrics.\n"
                       "Song URL: https://genius.com/{}".format(path))
             return None
-
+        else:
+            rem = div.find("div", class_=re.compile("Lyrics__Footer"))
+            if rem:
+                rem.replace_with("")
+                
         lyrics = div.get_text()
 
         # Remove [Verse], [Bridge], etc.
