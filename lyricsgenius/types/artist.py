@@ -18,7 +18,6 @@ class Artist(BaseEntity):
         self._body = body
         self._client = client
         self.songs = []
-        self.num_songs = len(self.songs)
 
         self.api_path = body['api_path']
         self.header_image_url = body['header_image_url']
@@ -76,7 +75,6 @@ class Artist(BaseEntity):
         if (new_song.artist == self.name
                 or (include_features and any(new_song._body['featured_artists']))):
             self.songs.append(new_song)
-            self.num_songs += 1
             return new_song
         if verbose:
             print("Can't add song by {b}, artist must be {a}.".format(
@@ -149,6 +147,7 @@ class Artist(BaseEntity):
 
     def __str__(self):
         """Return a string representation of the Artist object."""
-        msg = "{name}, {num} songs".format(name=self.name, num=self.num_songs)
-        msg = msg[:-1] if self.num_songs == 1 else msg
+        num_songs = len(self.songs)
+        msg = "{name}, {num} songs".format(name=self.name, num=num_songs)
+        msg = msg[:-1] if num_songs == 1 else msg
         return msg
