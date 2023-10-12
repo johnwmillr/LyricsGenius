@@ -1,6 +1,10 @@
+from ...utils import uses_public_api
+
+
 class ReferentMethods(object):
     """Referent methods of the public API."""
 
+    @uses_public_api
     def referent(self, referent_ids, text_format=None):
         """Gets data of one or more referents.
 
@@ -32,6 +36,7 @@ class ReferentMethods(object):
 
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def referents(self, song_id=None, web_page_id=None,
                   created_by_id=None, per_page=None, page=None, text_format=None):
         """Gets item's referents
@@ -65,6 +70,7 @@ class ReferentMethods(object):
                   'text_format': text_format or self.response_format}
         return self._make_request(endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def referents_charts(self,
                          time_period='day',
                          chart_genre='all',

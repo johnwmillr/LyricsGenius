@@ -1,6 +1,10 @@
+from ...utils import uses_public_api
+
+
 class LeaderboardMethods(object):
     """Leaderboard methods of the public API."""
 
+    @uses_public_api
     def leaderboard(self,
                     time_period='day',
                     per_page=None,
@@ -30,6 +34,7 @@ class LeaderboardMethods(object):
                   'text_format': text_format or self.response_format}
         return self._make_request(path=path, params_=params, public_api=True)
 
+    @uses_public_api
     def charts(self,
                time_period='day',
                chart_genre='all',
