@@ -23,12 +23,8 @@ class MiscMethods(object):
         params = {'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def page_data(self, album=None, song=None, artist=None):
+    def page_data(self, album=None, song_id=None):
         """Gets page data of an item.
-
-        If you want the page data of a song, you must supply
-        song and artist. But if you want the page data of an album,
-        you only have to supply the album.
 
         Page data will return all possible values for the album/song and
         the lyrics in HTML format if the item is a song!
@@ -37,40 +33,23 @@ class MiscMethods(object):
         Args:
             album (:obj:`str`, optional): Album path
                 (e.g. '/albums/Eminem/Music-to-be-murdered-by')
-            song (:obj:`str`, optional): Song path
+            song_id (:obj:`int`, optional): Song ID.
                 (e.g. '/Sia-chandelier-lyrics')
-            artist (:obj:`str`, optional): Artist slug. (e.g. 'Andy-shauf')
 
         Returns:
             :obj:`dict`
-
-        Warning:
-            Some albums/songs either don't have page data or
-            their page data path can't be infered easily from
-            the artist slug and their API path. So make sure to
-            use this method with a try/except clause that catches
-            404 errors. Check out the example below.
-
 
         Examples:
             Getting the lyrics of a song from its page data
 
             .. code:: python
 
-                from lyricsgenius import Genius, PublicAPI
+                from lyricsgenius import Genius
                 from bs4 import BeautifulSoup
                 from requests import HTTPError
 
                 genius = Genius(token)
-                public = PublicAPI()
-
-                # We need the PublicAPI to get artist's slug
-                artist = public.artist(1665)
-                artist_slug = artist['artist']['slug']
-
-                # The rest can be done using Genius
-                song = genius.song(4558484)
-                song_path = song['song']['path']
+                song_id = 4558484
 
                 try:
                     page_data = genius.page_data(artist=artist_slug, song=song_path)
@@ -83,9 +62,7 @@ class MiscMethods(object):
                     lyrics_text = BeautifulSoup(lyrics_html, 'html.parser').get_text()
 
         """
-        assert any([album, song]), "You must pass either song or album."
-        if song:
-            assert all([song, artist]), "You must pass artist."
+        assert any([album, song_id]), "You must pass either `song_id` or `album`."
 
         if album:
             endpoint = 'page_data/album'
@@ -94,10 +71,7 @@ class MiscMethods(object):
         else:
             endpoint = 'page_data/song'
             page_type = 'songs'
-
-            # item path becomes something like: Artist/Song
-            item_path = song[1:].replace(artist + '-', artist + '/').replace('-lyrics', '')
-
+            item_path = str(song_id)
         page_path = '/{page_type}/{item_path}'.format(page_type=page_type,
                                                       item_path=item_path)
         params = {'page_path': page_path}
