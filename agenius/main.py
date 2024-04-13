@@ -1,9 +1,9 @@
 """
-Copyright (c) 2018, 2020, 2021 John W. Miller
+Copyright (c) 2023 John W. Miller
 Originally part of LyricsGenius, licensed under the MIT License.
 
 
-Copyright (C) 2022 dopebnan
+Copyright (C) 2024 dopebnan
 This file is part of AGenius.py.
 
 AGenius.py is free software: you can redistribute it and/or modify it under the terms of
@@ -136,15 +136,15 @@ class Genius(API):
         )
 
         # Determine the class of the div
-        div = html.find("div", class_=re.compile("^lyrics$|Lyrics__Root"))
-        if div is None:
+        divs = html.find_all("div", class_=re.compile("^lyrics$|Lyrics__Container"))
+        if divs is None or len(divs) <= 0:
             if self.verbose:
                 print("Couldn't find the lyrics section. "
                       "Please report this if the song has lyrics.\n"
                       f"Song URL: {song_url}")
             return None
 
-        lyrics = div.get_text()
+        lyrics = "\n".join([div.get_text() for div in divs])
         return lyrics.strip("\n")
 
     async def search_song(self, title=None, artist="", song_id=None):
