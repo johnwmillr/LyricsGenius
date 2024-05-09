@@ -1,5 +1,5 @@
 # LyricsGenius
-# Copyright 2023 John W. Miller
+# copyright 2024 john w. miller
 # See LICENSE for details.
 
 from filecmp import cmp
