@@ -3,6 +3,7 @@
 [![Documentation Status](https://readthedocs.org/projects/lyricsgenius/badge/?version=master)](https://lyricsgenius.readthedocs.io/en/latest/?badge=master)
 [![PyPI version](https://badge.fury.io/py/lyricsgenius.svg)](https://pypi.org/project/lyricsgenius/)
 [![Python version](https://img.shields.io/badge/python-3.x-brightgreen.svg)](https://pypi.org/project/lyricsgenius/)
+[![Donate](https://img.shields.io/badge/Support%20this%20project-grey.svg?logo=github%20sponsors)](https://github.com/sponsors/johnwmillr)
 
 `lyricsgenius` provides a simple interface to the song, artist, and lyrics data stored on [Genius.com](https://www.genius.com).
 
