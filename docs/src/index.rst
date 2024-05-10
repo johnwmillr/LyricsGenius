@@ -10,6 +10,9 @@ LyricsGenius: a Python client for the Genius.com API
    :target: https://pypi.org/project/lyricsgenius/
 .. image:: https://img.shields.io/badge/python-3.x-brightgreen.svg
    :target: https://pypi.org/project/lyricsgenius/
+.. image:: https://img.shields.io/badge/Support%20this%20project-grey.svg?logo=github%20sponsors
+   :target: https://github.com/sponsors/johnwmillr
+
 
 `Genius.com`_ is a fun website. If you aren’t familiar with it, Genius hosts a
 bunch of song lyrics and lets users highlight and annotate passages with
