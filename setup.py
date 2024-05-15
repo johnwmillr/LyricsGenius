@@ -26,11 +26,11 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 extras_require = {
     'docs': [
-        'sphinx~=3.3',
+        'sphinx',
         'sphinx-rtd-theme',
     ],
     'checks': [
-        'tox~=3.2',
+        'tox',
         'doc8',
         'flake8',
         'flake8-bugbear',
