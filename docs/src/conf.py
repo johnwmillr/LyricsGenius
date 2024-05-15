@@ -30,6 +30,6 @@ html_theme = 'sphinx_rtd_theme'
 # -- Other -------------------------------------------------------------------
 
 extlinks = {
-    'issue': ('https://github.com/johnwmillr/LyricsGenius/issues/%s', '#'),
-    'commit': ('https://github.com/johnwmillr/LyricsGenius/commit/%s', '')
+    'issue': ('https://github.com/johnwmillr/LyricsGenius/issues/%s', '%s'),
+    'commit': ('https://github.com/johnwmillr/LyricsGenius/commit/%s', '%s')
 }
