@@ -142,6 +142,16 @@ class Genius(API, PublicAPI):
                       "Song URL: https://genius.com/{}".format(path))
             return None
 
+        # remove ads from div
+        ads = html.find("div",{'class':re.compile("RightSidebar__Container")})
+        ads.decompose()
+        # remove header
+        header = html.find("div",{'class':re.compile("LyricsHeader__Container")})
+        header.decompose()
+        # remove embed note / footer
+        footer = html.find("div",{'class':re.compile("LyricsFooter__Container")})
+        footer.decompose()
+
         lyrics = "\n".join([div.get_text() for div in divs])
 
         # Remove [Verse], [Bridge], etc.
