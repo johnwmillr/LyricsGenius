@@ -1,6 +1,9 @@
+from ...utils import uses_public_api
+
+
 class ArtistMethods(object):
     """Artist methods of the public API."""
-
+    @uses_public_api
     def artist(self, artist_id, text_format=None):
         """Gets data for a specific artist.
 
@@ -18,6 +21,7 @@ class ArtistMethods(object):
 
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def artist_activity(self, artist_id, per_page=None, page=None, text_format=None):
         """Gets activities on artist's songs.
 
@@ -39,6 +43,7 @@ class ArtistMethods(object):
                   'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def artist_albums(self, artist_id, per_page=None, page=None):
         """Gets artist's albums.
 
@@ -57,6 +62,7 @@ class ArtistMethods(object):
                   'page': page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def artist_contribution_opportunities(self,
                                           artist_id,
                                           per_page=None,
@@ -88,6 +94,7 @@ class ArtistMethods(object):
                   'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def artist_followers(self, artist_id, per_page=None, page=None):
         """Gets artist's followers.
 
@@ -106,6 +113,7 @@ class ArtistMethods(object):
                   'page': page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def artist_leaderboard(self, artist_id, per_page=None, page=None):
         """Gets artist's top scholars.
 
@@ -124,6 +132,7 @@ class ArtistMethods(object):
                   'page': page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def artist_songs(self, artist_id, per_page=None, page=None, sort='popularity'):
         """Gets artist's songs.
 
@@ -145,6 +154,7 @@ class ArtistMethods(object):
                   'sort': sort}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def search_artist_songs(self,
                             artist_id,
                             search_term,

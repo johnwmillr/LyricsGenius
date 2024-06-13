@@ -1,6 +1,10 @@
+from ...utils import uses_public_api
+
+
 class SearchMethods(object):
     """Search methods of the public API."""
 
+    @uses_public_api
     def search(self, search_term, per_page=None, page=None, type_=''):
         """Searches Genius.
 
@@ -44,6 +48,7 @@ class SearchMethods(object):
                   'page': page}
         return self._make_request(path, params_=params, public_api=True)
 
+    @uses_public_api
     def search_albums(self, search_term, per_page=None, page=None):
         """Searches the albums on Genius.
 
@@ -64,6 +69,7 @@ class SearchMethods(object):
         endpoint = 'album'
         return self.search(search_term, per_page, page, endpoint)
 
+    @uses_public_api
     def search_articles(self, search_term, per_page=None, page=None):
         """Searches the articles on Genius.
 
@@ -84,6 +90,7 @@ class SearchMethods(object):
         endpoint = 'article'
         return self.search(search_term, per_page, page, endpoint)
 
+    @uses_public_api
     def search_artists(self, search_term, per_page=None, page=None):
         """Searches the artists on Genius.
 
@@ -104,6 +111,7 @@ class SearchMethods(object):
         endpoint = 'artist'
         return self.search(search_term, per_page, page, endpoint)
 
+    @uses_public_api
     def search_lyrics(self, search_term, per_page=None, page=None):
         """Searches the lyrics on Genius.
 
@@ -124,6 +132,7 @@ class SearchMethods(object):
         endpoint = 'lyric'
         return self.search(search_term, per_page, page, endpoint)
 
+    @uses_public_api
     def search_songs(self, search_term, per_page=None, page=None):
         """Searches the songs on Genius.
 
@@ -144,6 +153,7 @@ class SearchMethods(object):
         endpoint = 'song'
         return self.search(search_term, per_page, page, endpoint)
 
+    @uses_public_api
     def search_users(self, search_term, per_page=None, page=None):
         """Searches the users on Genius.
 
@@ -164,6 +174,7 @@ class SearchMethods(object):
         endpoint = 'user'
         return self.search(search_term, per_page, page, endpoint)
 
+    @uses_public_api
     def search_videos(self, search_term, per_page=None, page=None):
         """Searches the videos on Genius.
 
@@ -184,6 +195,7 @@ class SearchMethods(object):
         endpoint = 'video'
         return self.search(search_term, per_page, page, endpoint)
 
+    @uses_public_api
     def search_all(self, search_term, per_page=None, page=None):
         """Searches all types.
 

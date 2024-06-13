@@ -76,7 +76,7 @@ to :ref:`setup` to get started.
 
    setup
    usage
-   how_it_works
+   developers_vs_public_api
    text_formatting
    other_guides
 
