@@ -41,7 +41,7 @@ class TestEndpoints(unittest.TestCase):
 
         # No title match because of artist
         response = genius.search_song(self.song_title_only, artist="Drake")
-        self.assertFalse(response.title.lower() == self.song_title_only.lower())
+        self.assertIsNone(response)
 
     def test_song_annotations(self):
         msg = "Incorrect song annotation response."
