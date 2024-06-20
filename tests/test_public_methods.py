@@ -391,13 +391,9 @@ class TestMiscMethods(unittest.TestCase):
         self.assertTrue('page_data' in page_data)
 
     def test_page_data_song(self):
-        artist = client.artist(1665)
-        artist_slug = artist['artist']['slug']
+        song_id = 4558484
 
-        song = genius.song(4558484)
-        song_path = song['song']['path']
-
-        page_data = genius.page_data(artist=artist_slug, song=song_path)
+        page_data = genius.page_data(song_id=song_id)
         self.assertTrue('page_data' in page_data)
 
     def test_voters(self):
