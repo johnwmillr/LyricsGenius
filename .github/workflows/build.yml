@@ -1,0 +1,37 @@
+name: build
+
+on:
+  push:
+    branches:
+      - master
+    tags-ignore:
+      - '*'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        python-version: [3.7, 3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{matrix.python-version}}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{matrix.python-version}}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .[dev]
+    - name: Run tox
+      env:
+        GENIUS_ACCESS_TOKEN: ${{ secrets.GENIUS_ACCESS_TOKEN }}
+        GENIUS_CLIENT_ID: ${{ secrets.GENIUS_CLIENT_ID }}
+        GENIUS_CLIENT_SECRET: ${{ secrets.GENIUS_CLIENT_SECRET }}
+        GENIUS_REDIRECT_URI: ${{ secrets.GENIUS_REDIRECT_URI }}
+      run: tox

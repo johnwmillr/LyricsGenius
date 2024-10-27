@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = 'lyricsgenius'
-copyright = '2020, John W. Miller, Allerter'
+copyright = '2024, John W. Miller, Allerter'
 author = 'John W. Miller, Allerter'
 
 # -- General configuration ---------------------------------------------------
@@ -30,6 +30,6 @@ html_theme = 'sphinx_rtd_theme'
 # -- Other -------------------------------------------------------------------
 
 extlinks = {
-    'issue': ('https://github.com/johnwmillr/LyricsGenius/issues/%s', '#'),
-    'commit': ('https://github.com/johnwmillr/LyricsGenius/commit/%s', '')
+    'issue': ('https://github.com/johnwmillr/LyricsGenius/issues/%s', '%s'),
+    'commit': ('https://github.com/johnwmillr/LyricsGenius/commit/%s', '%s')
 }
