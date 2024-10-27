@@ -1,6 +1,10 @@
+from ...utils import uses_public_api
+
+
 class ArticleMethods(object):
     """Article methods of the public API."""
 
+    @uses_public_api
     def article(self, article_id, text_format=None):
         """Gets data for a specific article.
 
@@ -17,6 +21,7 @@ class ArticleMethods(object):
         params = {'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def article_comments(self, article_id, per_page=None, page=None, text_format=None):
         """Gets the comments on an article.
 
@@ -38,6 +43,7 @@ class ArticleMethods(object):
                   'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def latest_articles(self, per_page=None, page=None, text_format=None):
         """Gets the latest articles on the homepage.
 

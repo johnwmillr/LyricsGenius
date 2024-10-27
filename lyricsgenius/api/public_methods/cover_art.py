@@ -1,6 +1,10 @@
+from ...utils import uses_public_api
+
+
 class CoverArtMethods(object):
     """Cover art methods of the public API."""
 
+    @uses_public_api
     def cover_arts(self, album_id=None, song_id=None, text_format=None):
         """Gets the cover arts of an album or a song.
 

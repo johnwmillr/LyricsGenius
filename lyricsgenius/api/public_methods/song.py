@@ -1,6 +1,10 @@
+from ...utils import uses_public_api
+
+
 class SongMethods(object):
     """Song methods of the public API."""
 
+    @uses_public_api
     def song(self, song_id, text_format=None):
         """Gets data for a specific song.
 
@@ -17,6 +21,7 @@ class SongMethods(object):
         params = {'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def song_activity(self, song_id, per_page=None, page=None, text_format=None):
         """Gets activities on a song.
 
@@ -38,6 +43,7 @@ class SongMethods(object):
                   'page': page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def song_comments(self, song_id, per_page=None, page=None, text_format=None):
         """Gets the comments on a song.
 
@@ -59,6 +65,7 @@ class SongMethods(object):
                   'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def song_contributors(self, song_id):
         """Gets the contributors of a song.
 
