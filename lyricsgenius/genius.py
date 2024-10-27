@@ -136,14 +136,14 @@ class Genius(API, PublicAPI):
         )
 
         # Determine the class of the div
-        div = html.find("div", class_=re.compile("^lyrics$|Lyrics__Root"))
-        if div is None:
+        divs = html.find_all("div", class_=re.compile("^lyrics$|Lyrics__Container"))
+        if divs is None or len(divs) <= 0:
             self.logger.warning(("Couldn't find the lyrics section. "
                                  "Please report this if the song has lyrics."
                                  "Song URL: https://genius.com/{}").format(path))
             return None
 
-        lyrics = div.get_text()
+        lyrics = "\n".join([div.get_text() for div in divs])
 
         # Remove [Verse], [Bridge], etc.
         if self.remove_section_headers or remove_section_headers:
@@ -317,8 +317,12 @@ class Genius(API, PublicAPI):
                              name if name else album_id)
 
         if album_id:
+<<<<<<<
             album_info = self.album(album_id, text_format).get('album')
             search_term = None
+=======
+            album_info = self.album(album_id, text_format)['album']
+>>>>>>>
         else:
             search_term = "{s} {a}".format(s=name, a=artist).strip()
             response = self.search_all(search_term)
@@ -333,6 +337,11 @@ class Genius(API, PublicAPI):
                              search_term if search_term else None)
             return None
 
+        # If the album was searched, query the API using the album id so the full info can be retrieved
+        if album_id is None and get_full_info:
+            album_info.update(self.album(album_info['id'], text_format)['album'])
+
+        # Set the album id to the value retrieved from the API
         album_id = album_info['id']
 
         tracks = []
@@ -374,7 +383,6 @@ class Genius(API, PublicAPI):
         album = Album(self, album_info, tracks)
         self.logger.info("Done fetching '%s'", safe_unicode(album.name))
         return album
-
     def search_song(self, title=None, artist="", song_id=None,
                     get_full_info=True):
         """Searches for a specific song and gets its lyrics.
@@ -416,15 +424,15 @@ class Genius(API, PublicAPI):
             self.logger.info("Searching for '%s'...", title if title else song_id)
 
         if song_id:
-            result = self.song(song_id)['song']
             search_term = None
+            result = self.song(song_id)['song']
         else:
             search_term = "{s} {a}".format(s=title, a=artist).strip()
             search_response = self.search_all(search_term)
-            result = self._get_item_from_search_response(search_response,
-                                                         title,
-                                                         type_="song",
-                                                         result_type="title")
+            song_info = self._get_item_from_search_response(search_response,
+                                                            title,
+                                                            type_="song",
+                                                            result_type="title")
 
         # Exit search if there were no results returned from API
         # Otherwise, move forward with processing the search results
@@ -434,8 +442,8 @@ class Genius(API, PublicAPI):
             return None
 
         # Reject non-songs (Liner notes, track lists, etc.)
-        # or songs with incomplete lyrics (e.g. unreleased songs, instrumentals)
         if self.skip_non_songs and not self._result_is_lyrics(result):
+        # or songs with incomplete lyrics (e.g. unreleased songs, instrumentals)
             valid = False
         else:
             valid = True
