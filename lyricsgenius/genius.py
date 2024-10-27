@@ -307,7 +307,7 @@ class Genius(API, PublicAPI):
                 print('Searching for "{s}"...'.format(s=name))
 
         if album_id:
-            album_info = self.album(album_id, text_format).get('album')
+            album_info = self.album(album_id, text_format)['album']
         else:
             search_term = "{s} {a}".format(s=name, a=artist).strip()
             response = self.search_all(search_term)
@@ -322,6 +322,11 @@ class Genius(API, PublicAPI):
                 print("No results found for: '{s}'".format(s=search_term))
             return None
 
+        # If the album was searched, query the API using the album id so the full info can be retrieved
+        if album_id is None and get_full_info:
+            album_info.update(self.album(album_info['id'], text_format)['album'])
+
+        # Set the album id to the value retrieved from the API
         album_id = album_info['id']
 
         tracks = []
@@ -348,10 +353,6 @@ class Genius(API, PublicAPI):
                 tracks.append(track)
 
             next_page = tracks_list['next_page']
-
-        if album_id is None and get_full_info is True:
-            new_info = self.album(album_id, text_format=text_format)['album']
-            album_info.update(new_info)
 
         return Album(self, album_info, tracks)
 
@@ -395,25 +396,25 @@ class Genius(API, PublicAPI):
                 print('Searching for "{s}"...'.format(s=title))
 
         if song_id:
-            result = self.song(song_id)['song']
+            song_info = self.song(song_id)['song']
         else:
             search_term = "{s} {a}".format(s=title, a=artist).strip()
             search_response = self.search_all(search_term)
-            result = self._get_item_from_search_response(search_response,
-                                                         title,
-                                                         type_="song",
-                                                         result_type="title")
+            song_info = self._get_item_from_search_response(search_response,
+                                                            title,
+                                                            type_="song",
+                                                            result_type="title")
 
         # Exit search if there were no results returned from API
         # Otherwise, move forward with processing the search results
-        if result is None:
+        if song_info is None:
             if self.verbose and title:
                 print("No results found for: '{s}'".format(s=search_term))
             return None
 
         # Reject non-songs (Liner notes, track lists, etc.)
         # or songs with uncomplete lyrics (e.g. unreleased songs, instrumentals)
-        if self.skip_non_songs and not self._result_is_lyrics(result):
+        if self.skip_non_songs and not self._result_is_lyrics(song_info):
             valid = False
         else:
             valid = True
@@ -423,13 +424,9 @@ class Genius(API, PublicAPI):
                 print('Specified song does not contain lyrics. Rejecting.')
             return None
 
-        song_id = result['id']
-
         # Download full song info (an API call) unless told not to by user
-        song_info = result
-        if song_id is None and get_full_info is True:
-            new_info = self.song(song_id)['song']
-            song_info.update(new_info)
+        if song_id is None and get_full_info:
+            song_info.update(self.song(song_info['id'])['song'])
 
         if (song_info['lyrics_state'] == 'complete'
                 and not song_info.get('instrumental')):
