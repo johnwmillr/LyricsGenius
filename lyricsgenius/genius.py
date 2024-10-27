@@ -379,6 +379,7 @@ class Genius(API, PublicAPI):
         album = Album(self, album_info, tracks)
         self.logger.info("Done fetching '%s'", safe_unicode(album.name))
         return album
+
     def search_song(self, title=None, artist="", song_id=None,
                     get_full_info=True):
         """Searches for a specific song and gets its lyrics.
@@ -439,7 +440,7 @@ class Genius(API, PublicAPI):
 
         # Reject non-songs (Liner notes, track lists, etc.)
         if self.skip_non_songs and not self._result_is_lyrics(result):
-        # or songs with incomplete lyrics (e.g. unreleased songs, instrumentals)
+            # or songs with incomplete lyrics (e.g. unreleased songs, instrumentals)
             valid = False
         else:
             valid = True
