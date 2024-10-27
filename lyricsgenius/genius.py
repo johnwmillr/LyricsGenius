@@ -317,12 +317,8 @@ class Genius(API, PublicAPI):
                              name if name else album_id)
 
         if album_id:
-<<<<<<<
             album_info = self.album(album_id, text_format).get('album')
             search_term = None
-=======
-            album_info = self.album(album_id, text_format)['album']
->>>>>>>
         else:
             search_term = "{s} {a}".format(s=name, a=artist).strip()
             response = self.search_all(search_term)
