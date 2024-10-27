@@ -426,7 +426,7 @@ class Genius(API, PublicAPI):
         else:
             search_term = "{s} {a}".format(s=title, a=artist).strip()
             search_response = self.search_all(search_term)
-            song_info = self._get_item_from_search_response(search_response,
+            result = self._get_item_from_search_response(search_response,
                                                             title,
                                                             type_="song",
                                                             result_type="title")
