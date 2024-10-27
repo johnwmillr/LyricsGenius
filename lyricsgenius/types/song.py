@@ -7,7 +7,6 @@ from filecmp import cmp
 from .base import BaseEntity, Stats
 from .artist import Artist
 
-
 class Song(BaseEntity):
     """A song from the Genius.com database."""
 
@@ -20,6 +19,8 @@ class Song(BaseEntity):
         self.lyrics = lyrics if lyrics else ""
         self.primary_artist = Artist(client, body['primary_artist'])
         self.stats = Stats(body['stats'])
+        from .album import Album
+        self.album = Album(client, body['album'], []) if body.get('album') else None
 
         self.annotation_count = body['annotation_count']
         self.api_path = body['api_path']

@@ -16,16 +16,15 @@ class Album(BaseEntity):
         self.tracks = tracks
         self.release_date_components = convert_to_datetime(
             body['release_date_components']
-        )
+        ) if body.get('release_date_components') else None
 
-        self._type = body['_type']
         self.api_path = body['api_path']
-        self.cover_art_thumbnail_url = body['cover_art_thumbnail_url']
+        self.cover_art_thumbnail_url = body['cover_art_thumbnail_url'] if body.get('cover_art_thumbnail_url') else None
         self.cover_art_url = body['cover_art_url']
         self.full_title = body['full_title']
         self.name = body['name']
-        self.name_with_artist = body['name_with_artist']
-        self.url = body['url']
+        self.name_with_artist = body['name_with_artist'] if body.get('name_with_artist') else None
+        self.url = body['url'] if body.get('url') else None
 
     def to_dict(self):
         body = super().to_dict()
