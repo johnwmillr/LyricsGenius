@@ -1,5 +1,6 @@
 from urllib.parse import urlencode
 import webbrowser
+import logging
 
 from .utils import parse_redirected_url
 from .api import Sender
@@ -47,6 +48,7 @@ class OAuth2(Sender):
         self.state = state
         self.flow = 'token' if client_only_app else 'code'
         self.client_only_app = client_only_app
+        self.logger = logging.getLogger(__name__)
 
     @property
     def url(self):
@@ -99,6 +101,7 @@ class OAuth2(Sender):
             raise InvalidStateError('States do not match.')
 
         if code:
+            logging.info('Requesting token from Genius using code.')
             payload = {'code': code,
                        'client_id': self.client_id,
                        'client_secret': self.client_secret,
@@ -109,6 +112,7 @@ class OAuth2(Sender):
             res = self._make_request(url, 'POST', data=payload, **kwargs)
             token = res['access_token']
         else:
+            logging.info('Getting token from url query parameters.')
             token = parse_redirected_url(url, self.flow)
         return token
 
