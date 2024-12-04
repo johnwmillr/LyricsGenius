@@ -100,6 +100,7 @@ class Genius(API, PublicAPI):
         retries: int = 0,
         user_agent: str = "",
         proxy: dict[str, str] | None = None,
+        per_page: int = 5,
     ) -> None:
         # Genius Client Constructor
         super().__init__(
@@ -115,6 +116,7 @@ class Genius(API, PublicAPI):
         self.verbose = verbose
         self.remove_section_headers = remove_section_headers
         self.skip_non_songs = skip_non_songs
+        self.per_page = per_page
 
         excluded_terms = excluded_terms if excluded_terms is not None else []
         if replace_default_terms:
@@ -621,10 +623,23 @@ class Genius(API, PublicAPI):
 
             # Perform a Genius API search for the artist
             found_artist = None
-            response = self.search_all(search_term)
-            found_artist = self._get_item_from_search_response(
-                response, search_term, type_="artist", result_type="name"
-            )
+            page = 0
+            while not found_artist:
+                response = self.search_all(
+                    search_term, per_page=self.per_page, page=page
+                )
+                result_count_on_page = max(
+                    map(lambda section: len(section["hits"]), response["sections"])
+                )
+                if result_count_on_page == 0:
+                    break
+                has_more_pages = result_count_on_page == self.per_page
+                found_artist = self._get_item_from_search_response(
+                    response, search_term, type_="artist", result_type="name"
+                )
+                page += 1
+                if not has_more_pages:
+                    break
 
             # Exit the search if we couldn't find an artist by the given name
             if not found_artist:
