@@ -34,6 +34,12 @@ class TestArtist(unittest.TestCase):
         result = genius.search_artist(name, max_songs=0).songs
         self.assertEqual(0, len(result), msg)
 
+    def test_search_artist_not_on_the_first_results_page(self):
+        msg = "Different artist was returned."
+        name = "Norther"
+        result = genius.search_artist(name, max_songs=self.max_songs)
+        self.assertEqual(name, result.name, msg)
+
     def test_name(self):
         msg = "The artist object name does not match the requested artist name."
         self.assertEqual(self.artist.name, self.artist_name, msg)
