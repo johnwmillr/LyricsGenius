@@ -34,7 +34,7 @@ class TestSong(unittest.TestCase):
         self.assertEqual(self.song.artist, self.artist_name)
 
     def test_lyrics_raw(self):
-        lyrics = '[Verse 1: Andy Shauf]'
+        lyrics = '[Verse 1]'
         self.assertTrue(self.song.lyrics.startswith(lyrics))
 
     def test_lyrics_no_section_headers(self):

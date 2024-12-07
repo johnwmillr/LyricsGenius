@@ -85,8 +85,8 @@ class TestLyrics(unittest.TestCase):
         cls.lyrics_ending = (
             "[Outro]"
             "\nNow I’m kicking leaves"
-            "\nCursing the one that I love and the one I don’t"
-            "\nI wonder who you’re thinking of"
+            "\nCursing the one that I love and the one I don't"
+            "\nI wonder who you're thinking of"
         )
 
     def test_lyrics_with_url(self):

@@ -81,11 +81,11 @@ class Sender(object):
             except Timeout as e:
                 error = "Request timed out:\n{e}".format(e=e)
                 if tries > self.retries:
-                    raise Timeout(error)
+                    raise Timeout(error) from e
             except HTTPError as e:
                 error = get_description(e)
                 if response.status_code < 500 or tries > self.retries:
-                    raise HTTPError(response.status_code, error)
+                    raise HTTPError(response.status_code, error) from e
 
             # Enforce rate limiting
             time.sleep(self.sleep_time)
