@@ -14,17 +14,15 @@ class Album(BaseEntity):
         self._client = client
         self.artist = Artist(client, body['artist'])
         self.tracks = tracks
-        self.release_date_components = convert_to_datetime(
-            body['release_date_components']
-        ) if body.get('release_date_components') else None
+        self.release_date_components = convert_to_datetime(body.get('release_date_components'))
 
-        self.api_path = body['api_path']
-        self.cover_art_thumbnail_url = body['cover_art_thumbnail_url'] if body.get('cover_art_thumbnail_url') else None
-        self.cover_art_url = body['cover_art_url']
-        self.full_title = body['full_title']
-        self.name = body['name']
-        self.name_with_artist = body['name_with_artist'] if body.get('name_with_artist') else None
-        self.url = body['url'] if body.get('url') else None
+        self.api_path = body.get('api_path')
+        self.cover_art_thumbnail_url = body.get('cover_art_thumbnail_url')
+        self.cover_art_url = body.get('cover_art_url')
+        self.full_title = body.get('full_title')
+        self.name = body.get('name')
+        self.name_with_artist = body.get('name_with_artist')
+        self.url = body.get('url')
 
     def to_dict(self):
         body = super().to_dict()
