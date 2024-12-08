@@ -1,6 +1,10 @@
+from ...utils import uses_public_api
+
+
 class AlbumMethods(object):
     """Album methods of the public API."""
 
+    @uses_public_api
     def album(self, album_id, text_format=None):
         """Gets data for a specific album.
 
@@ -26,6 +30,7 @@ class AlbumMethods(object):
         params = {'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def albums_charts(self,
                       time_period='day',
                       chart_genre='all',
@@ -59,6 +64,7 @@ class AlbumMethods(object):
             type_='albums'
         )
 
+    @uses_public_api
     def album_comments(self, album_id, per_page=None, page=None, text_format=None):
         """Gets the comments on an album page.
 
@@ -80,6 +86,7 @@ class AlbumMethods(object):
                   'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def album_cover_arts(self, album_id, text_format=None):
         """Gets cover arts of a specific album.
 
@@ -109,6 +116,7 @@ class AlbumMethods(object):
         """
         return self.cover_arts(album_id=album_id, text_format=text_format)
 
+    @uses_public_api
     def album_leaderboard(self, album_id, per_page=None, page=None):
         """Gets the leaderboard of an album.
 
@@ -129,6 +137,7 @@ class AlbumMethods(object):
                   'page': page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def album_tracks(self, album_id, per_page=None, page=None, text_format=None):
         """Gets the tracks of a specific album.
 

@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 
 from .api import API, PublicAPI
 from .types import Album, Artist, Song, Track
-from .utils import clean_str, safe_unicode
+from .utils import clean_str, safe_unicode, uses_public_api
 
 
 class Genius(API, PublicAPI):
@@ -36,6 +36,9 @@ class Genius(API, PublicAPI):
             excluded terms with user's. Default excluded terms are listed below.
         retries (:obj:`int`, optional): Number of retries in case of timeouts and
             errors with a >= 500 response code. By default, requests are only made once.
+        allow_public_api (:obj:`bool`, optional): If True, the instance is allowed to
+            make calls to the Public API. Methods such as :meth:`Genius.search_song`
+            need to make calls to the Public API. Defaults to False.
 
     Attributes:
         verbose (:obj:`bool`, optional): Turn printed messages on or off.
@@ -71,6 +74,7 @@ class Genius(API, PublicAPI):
                  skip_non_songs=True, excluded_terms=None,
                  replace_default_terms=False,
                  retries=0,
+                 allow_public_api=False,
                  ):
         # Genius Client Constructor
         super().__init__(
@@ -78,9 +82,11 @@ class Genius(API, PublicAPI):
             response_format=response_format,
             timeout=timeout,
             sleep_time=sleep_time,
-            retries=retries
+            retries=retries,
+            allow_public_api=allow_public_api,
         )
 
+        self.allow_public_api = allow_public_api
         self.verbose = verbose
         self.remove_section_headers = remove_section_headers
         self.skip_non_songs = skip_non_songs
@@ -92,10 +98,13 @@ class Genius(API, PublicAPI):
             self.excluded_terms = self.default_terms.copy()
             self.excluded_terms.extend(excluded_terms)
 
+    @uses_public_api
     def lyrics(self, song_id=None, song_url=None, remove_section_headers=False):
         """Uses BeautifulSoup to scrape song info off of a Genius song URL
 
         You must supply either `song_id` or song_url`.
+
+        Uses :class:`PublicAPI` methods.
 
         Args:
             song_id (:obj:`int`, optional): Song ID.
@@ -267,11 +276,14 @@ class Genius(API, PublicAPI):
             all_annotations.append((fragment, annotations))
         return all_annotations
 
+    @uses_public_api
     def search_album(self, name=None, artist="",
                      album_id=None, get_full_info=True, text_format=None):
         """Searches for a specific album and gets its songs.
 
         You must pass either a :obj:`name` or an :obj:`album_id`.
+
+        Uses :class:`PublicAPI` methods.
 
         Args:
             name (:obj:`str`, optional): Album name to search for.
@@ -356,11 +368,14 @@ class Genius(API, PublicAPI):
 
         return Album(self, album_info, tracks)
 
+    @uses_public_api
     def search_song(self, title=None, artist="", song_id=None,
                     get_full_info=True):
         """Searches for a specific song and gets its lyrics.
 
         You must pass either a :obj:`title` or a :obj:`song_id`.
+
+        Uses :class:`PublicAPI` methods.
 
         Args:
             title (:obj:`str`): Song title to search for.
@@ -447,6 +462,7 @@ class Genius(API, PublicAPI):
             print('Done.')
         return song
 
+    @uses_public_api
     def search_artist(self, artist_name, max_songs=None,
                       sort='popularity', per_page=20,
                       get_full_info=True,
@@ -461,6 +477,8 @@ class Genius(API, PublicAPI):
         :class:`Artist <types.Artist>` object if the search is successful.
         If :obj:`allow_name_change` is True, the name of the artist is changed to the
         artist name on Genius.
+
+        Uses :class:`PublicAPI` methods.
 
         Args:
             artist_name (:obj:`str`): Name of the artist to search for.
