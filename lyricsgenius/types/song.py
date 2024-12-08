@@ -1,7 +1,7 @@
 # LyricsGenius
 # copyright 2024 john w. miller
 # See LICENSE for details.
-
+import logging
 from filecmp import cmp
 
 from .base import BaseEntity, Stats
@@ -11,6 +11,7 @@ from .artist import Artist
 
 class Song(BaseEntity):
     """A song from the Genius.com database."""
+    logger = logging.getLogger(__name__)
 
     def __init__(self, client, json_dict, lyrics=""):
         body = json_dict
@@ -80,8 +81,7 @@ class Song(BaseEntity):
                                    extension=extension,
                                    overwrite=overwrite,
                                    ensure_ascii=ensure_ascii,
-                                   sanitize=sanitize,
-                                   verbose=verbose)
+                                   sanitize=sanitize)
 
     def __str__(self):
         """Return a string representation of the Song object."""
