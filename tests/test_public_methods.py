@@ -2,7 +2,7 @@ import unittest
 
 from lyricsgenius import PublicAPI
 
-from . import genius
+from tests import genius
 
 
 client = PublicAPI()
@@ -19,7 +19,7 @@ class TestAlbumMethods(unittest.TestCase):
     def test_album(self):
         msg = "Album ID did not match."
         r = client.album(self.album_id)
-        self.assertEqual(r['album']['id'], self.album_id, msg)
+        self.assertEqual(r["album"]["id"], self.album_id, msg)
 
     def test_albums_charts(self):
         msg = "Album charts were empty."
@@ -58,7 +58,7 @@ class TestAnnotationMethods(unittest.TestCase):
     def test_annotation(self):
         msg = "annotation ID did not match."
         r = client.annotation(self.annotation_id)
-        self.assertEqual(r['annotation']['id'], self.annotation_id, msg)
+        self.assertEqual(r["annotation"]["id"], self.annotation_id, msg)
 
     def test_annotation_edits(self):
         msg = "annotation edits were empty."
@@ -82,7 +82,7 @@ class TestArticleMethods(unittest.TestCase):
     def test_article(self):
         msg = "article ID did not match."
         r = client.article(self.article_id)
-        self.assertEqual(r['article']['id'], self.article_id, msg)
+        self.assertEqual(r["article"]["id"], self.article_id, msg)
 
     def test_article_comments(self):
         msg = "article comments were empty."
@@ -105,7 +105,7 @@ class TestArtistMethods(unittest.TestCase):
 
     def test_artist(self):
         r = client.artist(self.artist_id)
-        self.assertEqual(r['artist']['id'], self.artist_id)
+        self.assertEqual(r["artist"]["id"], self.artist_id)
 
     def test_artist_activity(self):
         r = client.artist_activity(self.artist_id)
@@ -132,7 +132,7 @@ class TestArtistMethods(unittest.TestCase):
         self.assertTrue("songs" in r)
 
     def test_search_artist_songs(self):
-        r = client.search_artist_songs(self.artist_id, 'test')
+        r = client.search_artist_songs(self.artist_id, "test")
         self.assertTrue("songs" in r)
 
 
@@ -155,15 +155,15 @@ class TestDiscussionMethods(unittest.TestCase):
     def setUpClass(cls):
         print("\n---------------------\nSetting up discussion methods tests...\n")
 
-#        cls.discussion_id = 123
-#
-#    def test_discussion(self):
-#        r = client.discussion(self.discussion_id)
-#        self.assertEqual(r['discussion']['id'], self.discussion_id)
-#
-#    def test_discussion_replies(self):
-#        r = client.discussion_replies(self.discussion_id)
-#        self.assertTrue("forum_posts" in r)
+    #        cls.discussion_id = 123
+    #
+    #    def test_discussion(self):
+    #        r = client.discussion(self.discussion_id)
+    #        self.assertEqual(r['discussion']['id'], self.discussion_id)
+    #
+    #    def test_discussion_replies(self):
+    #        r = client.discussion_replies(self.discussion_id)
+    #        self.assertTrue("forum_posts" in r)
 
     def test_discussions(self):
         r = client.discussions()
@@ -195,7 +195,7 @@ class TestQuestionMethods(unittest.TestCase):
 
     def test_questions(self):
         r = client.questions(self.album_id)
-        self.assertIsNotNone(r.get('questions'))
+        self.assertIsNotNone(r.get("questions"))
 
 
 class TestReferentMethods(unittest.TestCase):
@@ -209,12 +209,12 @@ class TestReferentMethods(unittest.TestCase):
 
     def test_referent(self):
         r = client.referent(self.referent_ids)
-        self.assertTrue(str(self.referent_ids[0]) in r['referents'])
-        self.assertTrue(str(self.referent_ids[1]) in r['referents'])
+        self.assertTrue(str(self.referent_ids[0]) in r["referents"])
+        self.assertTrue(str(self.referent_ids[1]) in r["referents"])
 
     def test_referents(self):
         r = client.referents(web_page_id=self.web_page_id)
-        self.assertIsNotNone(r.get('referents'))
+        self.assertIsNotNone(r.get("referents"))
 
 
 class TestSearchMethods(unittest.TestCase):
@@ -223,43 +223,43 @@ class TestSearchMethods(unittest.TestCase):
     def setUpClass(cls):
         print("\n---------------------\nSetting up search methods tests...\n")
 
-        cls.search_term = 'test'
+        cls.search_term = "test"
 
     def test_search(self):
         r = client.search(self.search_term)
-        self.assertIsNotNone(r['hits'])
+        self.assertIsNotNone(r["hits"])
 
     def test_search_albums(self):
         r = client.search_albums(self.search_term)
-        self.assertEqual(r['sections'][0]['type'], 'album')
+        self.assertEqual(r["sections"][0]["type"], "album")
 
     def test_search_articles(self):
         r = client.search_articles(self.search_term)
-        self.assertEqual(r['sections'][0]['type'], 'article')
+        self.assertEqual(r["sections"][0]["type"], "article")
 
     def test_search_artists(self):
         r = client.search_artists(self.search_term)
-        self.assertEqual(r['sections'][0]['type'], 'artist')
+        self.assertEqual(r["sections"][0]["type"], "artist")
 
     def test_search_lyrics(self):
         r = client.search_lyrics(self.search_term)
-        self.assertEqual(r['sections'][0]['type'], 'lyric')
+        self.assertEqual(r["sections"][0]["type"], "lyric")
 
     def test_search_songs(self):
         r = client.search_songs(self.search_term)
-        self.assertEqual(r['sections'][0]['type'], 'song')
+        self.assertEqual(r["sections"][0]["type"], "song")
 
     def test_search_users(self):
         r = client.search_users(self.search_term)
-        self.assertEqual(r['sections'][0]['type'], 'user')
+        self.assertEqual(r["sections"][0]["type"], "user")
 
     def test_search_videos(self):
         r = client.search_videos(self.search_term)
-        self.assertEqual(r['sections'][0]['type'], 'video')
+        self.assertEqual(r["sections"][0]["type"], "video")
 
     def test_search_all(self):
         r = client.search_all(self.search_term)
-        self.assertEqual(r['sections'][0]['type'], 'top_hit')
+        self.assertEqual(r["sections"][0]["type"], "top_hit")
 
 
 class TestSongMethods(unittest.TestCase):
@@ -272,7 +272,7 @@ class TestSongMethods(unittest.TestCase):
 
     def test_song(self):
         r = client.song(self.song_id)
-        self.assertEqual(r['song']['id'], self.song_id)
+        self.assertEqual(r["song"]["id"], self.song_id)
 
     def test_song_activity(self):
         r = client.song_activity(self.song_id)
@@ -297,7 +297,7 @@ class TestUserMethods(unittest.TestCase):
 
     def test_user(self):
         r = client.user(self.user_id)
-        self.assertEqual(r['user']['id'], self.user_id)
+        self.assertEqual(r["user"]["id"], self.user_id)
 
     def test_user_accomplishments(self):
         r = client.user_accomplishments(self.user_id)
@@ -317,38 +317,38 @@ class TestUserMethods(unittest.TestCase):
 
     def test_user_annotations(self):
         r = client.user_annotations(self.user_id)
-        type = r['contribution_groups'][0]['contribution_type']
-        self.assertEqual(type, 'annotation')
+        type = r["contribution_groups"][0]["contribution_type"]
+        self.assertEqual(type, "annotation")
 
     def test_user_articles(self):
         r = client.user_articles(self.user_id)
-        type = r['contribution_groups'][0]['contribution_type']
-        self.assertEqual(type, 'article')
+        type = r["contribution_groups"][0]["contribution_type"]
+        self.assertEqual(type, "article")
 
     def test_user_pyongs(self):
         r = client.user_pyongs(self.user_id)
-        type = r['contribution_groups'][0]['contribution_type']
-        self.assertEqual(type, 'pyong')
+        type = r["contribution_groups"][0]["contribution_type"]
+        self.assertEqual(type, "pyong")
 
     def test_user_questions_and_answers(self):
         r = client.user_questions_and_answers(self.user_id)
-        type = r['contribution_groups'][0]['contribution_type']
-        self.assertEqual(type, 'answer')
+        type = r["contribution_groups"][0]["contribution_type"]
+        self.assertEqual(type, "answer")
 
     def test_user_suggestions(self):
         r = client.user_suggestions(self.user_id)
-        type = r['contribution_groups'][0]['contribution_type']
-        self.assertEqual(type, 'comment')
+        type = r["contribution_groups"][0]["contribution_type"]
+        self.assertEqual(type, "comment")
 
     def test_user_transcriptions(self):
         r = client.user_transcriptions(self.user_id)
-        type = r['contribution_groups'][0]['contribution_type']
-        self.assertEqual(type, 'song')
+        type = r["contribution_groups"][0]["contribution_type"]
+        self.assertEqual(type, "song")
 
     def test_user_unreviewed(self):
         r = client.user_unreviewed(self.user_id)
-        type = r['contribution_groups'][0]['contribution_type']
-        self.assertEqual(type, 'annotation')
+        type = r["contribution_groups"][0]["contribution_type"]
+        self.assertEqual(type, "annotation")
 
 
 class TestVideoMethods(unittest.TestCase):
@@ -361,7 +361,7 @@ class TestVideoMethods(unittest.TestCase):
 
     def test_video(self):
         r = client.video(self.video_id)
-        self.assertEqual(r['video']['id'], self.video_id)
+        self.assertEqual(r["video"]["id"], self.video_id)
 
     def test_videos(self):
         r = client.videos(video_id=self.video_id, series=True)
@@ -385,20 +385,20 @@ class TestMiscMethods(unittest.TestCase):
     #    self.assertTrue("line_item" in r)
 
     def test_page_data_album(self):
-        album_path = '/albums/Eminem/Music-to-be-murdered-by'
+        album_path = "/albums/Eminem/Music-to-be-murdered-by"
 
         page_data = genius.page_data(album=album_path)
-        self.assertTrue('page_data' in page_data)
+        self.assertTrue("page_data" in page_data)
 
     def test_page_data_song(self):
         artist = client.artist(1665)
-        artist_slug = artist['artist']['slug']
+        artist_slug = artist["artist"]["slug"]
 
         song = genius.song(4558484)
-        song_path = song['song']['path']
+        song_path = song["song"]["path"]
 
         page_data = genius.page_data(artist=artist_slug, song=song_path)
-        self.assertTrue('page_data' in page_data)
+        self.assertTrue("page_data" in page_data)
 
     def test_voters(self):
         r = client.voters(annotation_id=self.annotation_id)
