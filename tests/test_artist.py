@@ -40,7 +40,7 @@ class TestArtist(unittest.TestCase):
     def test_add_song_from_same_artist(self):
         msg = "The new song was not added to the artist object."
         self.artist.add_song(genius.search_song(self.new_song, self.artist_name))
-        self.assertEqual(self.artist.num_songs, self.max_songs + 1, msg)
+        self.assertEqual(len(self.artist.songs), self.max_songs + 1, msg)
 
     def test_song(self):
         msg = "Song was not in artist's songs."
@@ -50,7 +50,7 @@ class TestArtist(unittest.TestCase):
     def test_add_song_from_different_artist(self):
         msg = "A song from a different artist was incorrectly allowed to be added."
         self.artist.add_song(genius.search_song("These Days", "Jackson Browne"))
-        self.assertEqual(self.artist.num_songs, self.max_songs, msg)
+        self.assertEqual(len(self.artist.songs), self.max_songs, msg)
 
     def test_artist_with_includes_features(self):
         # The artist did not get songs returned that they were featured in.
