@@ -1,6 +1,6 @@
 import unittest
 
-from . import genius
+from tests import genius
 
 
 class TestEndpoints(unittest.TestCase):
@@ -11,12 +11,12 @@ class TestEndpoints(unittest.TestCase):
 
         cls.search_term = "Ezra Furman"
         cls.song_title_only = "99 Problems"
-        cls.tag = genius.tag('pop')
+        cls.tag = genius.tag("pop")
 
     def test_search_song(self):
         artist = "Jay-Z"
         # Empty response
-        response = genius.search_song('')
+        response = genius.search_song("")
         self.assertIsNone(response)
 
         # Pass no title and ID
@@ -53,25 +53,25 @@ class TestEndpoints(unittest.TestCase):
     def test_tag_results(self):
         r = self.tag
 
-        self.assertEqual(r['next_page'], 2)
-        self.assertEqual(len(r['hits']), 20)
+        self.assertEqual(r["next_page"], 2)
+        self.assertEqual(len(r["hits"]), 20)
 
     def test_tag_first_result(self):
-        artists = ['Luis Fonsi', 'Daddy Yankee']
-        featured_artists = ['Justin Bieber']
+        artists = ["Luis Fonsi", "Daddy Yankee"]
+        featured_artists = ["Justin Bieber"]
         song_title = "Despacito (Remix)"
         title_with_artists = (
             "Despacito (Remix) by Luis Fonsi & Daddy Yankee (Ft. Justin Bieber)"
         )
         url = "https://genius.com/Luis-fonsi-and-daddy-yankee-despacito-remix-lyrics"
 
-        first_song = self.tag['hits'][0]
+        first_song = self.tag["hits"][0]
 
-        self.assertEqual(artists, first_song['artists'])
-        self.assertEqual(featured_artists, first_song['featured_artists'])
-        self.assertEqual(song_title, first_song['title'])
-        self.assertEqual(title_with_artists, first_song['title_with_artists'])
-        self.assertEqual(url, first_song['url'])
+        self.assertEqual(artists, first_song["artists"])
+        self.assertEqual(featured_artists, first_song["featured_artists"])
+        self.assertEqual(song_title, first_song["title"])
+        self.assertEqual(title_with_artists, first_song["title_with_artists"])
+        self.assertEqual(url, first_song["url"])
 
 
 class TestLyrics(unittest.TestCase):

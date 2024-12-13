@@ -1,7 +1,7 @@
 import unittest
 import os
 
-from . import genius
+from tests import genius
 from lyricsgenius.types import Artist
 from lyricsgenius.utils import sanitize_filename
 
@@ -15,8 +15,7 @@ class TestArtist(unittest.TestCase):
         cls.artist_name = "The Beatles"
         cls.new_song = "Paperback Writer"
         cls.max_songs = 2
-        cls.artist = genius.search_artist(
-            cls.artist_name, max_songs=cls.max_songs)
+        cls.artist = genius.search_artist(cls.artist_name, max_songs=cls.max_songs)
 
     def test_artist(self):
         msg = "The returned object is not an instance of the Artist class."
@@ -56,31 +55,27 @@ class TestArtist(unittest.TestCase):
     def test_artist_with_includes_features(self):
         # The artist did not get songs returned that they were featured in.
         name = "Swae Lee"
-        result = genius.search_artist(
-            name,
-            max_songs=1,
-            include_features=True)
+        result = genius.search_artist(name, max_songs=1, include_features=True)
         result = result.songs[0].artist
         self.assertNotEqual(result, name)
 
     def determine_filenames(self, extension):
         expected_filenames = []
         for song in self.artist.songs:
-            fn = "lyrics_{name}_{song}.{ext}".format(name=self.artist.name,
-                                                     song=song.title,
-                                                     ext=extension)
+            fn = "lyrics_{name}_{song}.{ext}".format(
+                name=self.artist.name, song=song.title, ext=extension
+            )
             fn = sanitize_filename(fn.lower().replace(" ", ""))
             expected_filenames.append(fn)
         return expected_filenames
 
     def test_saving_json_file(self):
-        print('\n')
-        extension = 'json'
+        print("\n")
+        extension = "json"
         msg = "Could not save {} file.".format(extension)
-        expected_filename = ('Lyrics_'
-                             + self.artist.name.replace(' ', '')
-                             + '.'
-                             + extension)
+        expected_filename = (
+            "Lyrics_" + self.artist.name.replace(" ", "") + "." + extension
+        )
 
         # Remove the test file if it already exists
         if os.path.isfile(expected_filename):
@@ -98,13 +93,12 @@ class TestArtist(unittest.TestCase):
         os.remove(expected_filename)
 
     def test_saving_txt_file(self):
-        print('\n')
-        extension = 'txt'
+        print("\n")
+        extension = "txt"
         msg = "Could not save {} file.".format(extension)
-        expected_filename = ('Lyrics_'
-                             + self.artist.name.replace(' ', '')
-                             + '.'
-                             + extension)
+        expected_filename = (
+            "Lyrics_" + self.artist.name.replace(" ", "") + "." + extension
+        )
 
         # Remove the test file if it already exists
         if os.path.isfile(expected_filename):
@@ -116,8 +110,7 @@ class TestArtist(unittest.TestCase):
 
         # Test overwriting txt file (now that file is written)
         try:
-            self.artist.save_lyrics(
-                extension=extension, overwrite=True)
+            self.artist.save_lyrics(extension=extension, overwrite=True)
         except Exception:
             self.fail("Failed {} overwrite test".format(extension))
         os.remove(expected_filename)

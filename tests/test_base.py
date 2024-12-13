@@ -2,7 +2,7 @@ import unittest
 
 from requests.exceptions import HTTPError
 
-from . import genius
+from tests import genius
 
 
 class TestAPIBase(unittest.TestCase):
