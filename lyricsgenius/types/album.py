@@ -1,7 +1,6 @@
 from ..utils import convert_to_datetime
 from .base import BaseEntity
 from .artist import Artist
-from .song import Song
 
 
 class Album(BaseEntity):
@@ -71,6 +70,7 @@ class Track(BaseEntity):
     """docstring for Track"""
 
     def __init__(self, client, json_dict, lyrics):
+        from .song import Song
         body = json_dict
         super().__init__(body['song']['id'])
         self._body = body
