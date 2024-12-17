@@ -1,6 +1,10 @@
+from ...utils import uses_public_api
+
+
 class DiscussionMethods(object):
     """Discussion methods of the public API."""
 
+    @uses_public_api
     def discussion(self, discussion_id, text_format=None):
         """Gets data for a specific discussion.
 
@@ -22,6 +26,7 @@ class DiscussionMethods(object):
         params = {'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def discussions(self, page=None):
         """Gets discussions.
 
@@ -37,6 +42,7 @@ class DiscussionMethods(object):
         params = {'page': page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def discussion_replies(self,
                            discussion_id,
                            per_page=None,

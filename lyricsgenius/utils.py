@@ -1,5 +1,5 @@
 """utility functions"""
-
+import functools
 import re
 import os
 import sys
@@ -7,6 +7,8 @@ import unicodedata
 from datetime import datetime
 from string import punctuation
 from urllib.parse import parse_qs, urlparse
+
+from .errors import PublicAPIForbiddenError
 
 
 def auth_from_environment():
@@ -24,6 +26,26 @@ def auth_from_environment():
     redirect_uri = os.environ.get('GENIUS_REDIRECT_URI')
     client_secret = os.environ.get('GENIUS_CLIENT_SECRET')
     return client_id, redirect_uri, client_secret
+
+
+def uses_public_api(func):
+    """Allows execution of func only if allow_public_api=True
+
+    Raises:
+        PublicAPIForbiddenError: If allow_public_api=False
+
+    """
+    @functools.wraps(func)
+    def wrapper(self, *args, **kwargs):
+        if not self.allow_public_api:
+            raise PublicAPIForbiddenError(
+                ("{} uses Public API methods, but genius.allow_public_api=False."
+                 "\nFor more info visit "
+                 "https://lyricsgenius.rtfd.io/en/stable/how_it_works.html"
+                 ).format(type(self).__name__ + "." + func.__name__)
+            )
+        return func(self, *args, **kwargs)
+    return wrapper
 
 
 def convert_to_datetime(f):

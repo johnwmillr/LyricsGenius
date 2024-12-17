@@ -1,6 +1,10 @@
+from ...utils import uses_public_api
+
+
 class MiscMethods(object):
     """Miscellaneous Methods"""
 
+    @uses_public_api
     def line_item(self, line_item_id, text_format=None):
         """Gets data for a specific line item.
 
@@ -23,6 +27,7 @@ class MiscMethods(object):
         params = {'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def page_data(self, album=None, song=None, artist=None):
         """Gets page data of an item.
 
@@ -104,6 +109,7 @@ class MiscMethods(object):
 
         return self._make_request(endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def voters(self,
                annotation_id=None,
                answer_id=None,

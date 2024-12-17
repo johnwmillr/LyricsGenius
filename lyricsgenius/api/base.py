@@ -21,6 +21,7 @@ class Sender(object):
         sleep_time=0.2,
         retries=0,
         public_api_constructor=False,
+        **kwargs,
     ):
         self._session = requests.Session()
         self._session.headers = {

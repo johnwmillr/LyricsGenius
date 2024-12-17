@@ -1,6 +1,10 @@
+from ...utils import uses_public_api
+
+
 class AnnotationMethods(object):
     """Annotation methods of the public API."""
 
+    @uses_public_api
     def annotation(self, annotation_id, text_format=None):
         """Gets data for a specific annotation.
 
@@ -17,6 +21,7 @@ class AnnotationMethods(object):
         params = {'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def annotation_edits(self, annotation_id, text_format=None):
         """Gets the edits on annotation (its versions).
 
@@ -33,6 +38,7 @@ class AnnotationMethods(object):
         params = {'text_format': text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
+    @uses_public_api
     def annotation_comments(self,
                             annotation_id,
                             per_page=None,
