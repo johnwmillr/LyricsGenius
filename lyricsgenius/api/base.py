@@ -1,5 +1,6 @@
 import time
 import os
+import logging
 from json.decoder import JSONDecodeError
 
 import requests
@@ -22,12 +23,14 @@ class Sender(object):
         retries=0,
         public_api_constructor=False,
     ):
+        self.logger = logging.getLogger(__name__)
         self._session = requests.Session()
         self._session.headers = {
             'application': 'LyricsGenius',
             'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'
         }
         if access_token is None:
+            self.logger.info("No token provided. Trying to get it from ENV.")
             access_token = os.environ.get('GENIUS_ACCESS_TOKEN')
 
         if public_api_constructor:
@@ -77,6 +80,10 @@ class Sender(object):
                                                  params=params_,
                                                  headers=header,
                                                  **kwargs)
+                self.logger.debug("%d status code for %s on try %d.",
+                                  response.status_code,
+                                  uri,
+                                  tries)
                 response.raise_for_status()
             except Timeout as e:
                 error = "Request timed out:\n{e}".format(e=e)
@@ -88,6 +95,7 @@ class Sender(object):
                     raise HTTPError(response.status_code, error) from e
 
             # Enforce rate limiting
+            self.logger.debug("Sleeping for %2fs.", self.sleep_time)
             time.sleep(self.sleep_time)
 
         if web:

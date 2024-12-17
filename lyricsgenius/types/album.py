@@ -1,9 +1,12 @@
+import logging
+
 from ..utils import convert_to_datetime
 from .base import BaseEntity
 from .artist import Artist
 
 
 class Album(BaseEntity):
+    logger = logging.getLogger(__name__)
     """An album from the Genius.com database."""
 
     def __init__(self, client, json_dict, tracks):
@@ -62,11 +65,11 @@ class Album(BaseEntity):
                                    extension=extension,
                                    overwrite=overwrite,
                                    ensure_ascii=ensure_ascii,
-                                   sanitize=sanitize,
-                                   verbose=verbose)
+                                   sanitize=sanitize)
 
 
 class Track(BaseEntity):
+    logger = logging.getLogger(__name__ + '.track')
     """docstring for Track"""
 
     def __init__(self, client, json_dict, lyrics):
@@ -118,8 +121,7 @@ class Track(BaseEntity):
                                    extension=extension,
                                    overwrite=overwrite,
                                    ensure_ascii=ensure_ascii,
-                                   sanitize=sanitize,
-                                   verbose=verbose)
+                                   sanitize=sanitize)
 
     def __repr__(self):
         name = self.__class__.__name__
