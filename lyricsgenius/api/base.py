@@ -16,7 +16,7 @@ class Sender(object):
     def __init__(
         self,
         access_token=None,
-        proxy=None
+        proxy=None,
         response_format='plain',
         timeout=5,
         sleep_time=0.2,
