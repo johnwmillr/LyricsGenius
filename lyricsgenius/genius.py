@@ -67,6 +67,7 @@ class Genius(API, PublicAPI):
                      'instrumental', 'setlist']
 
     def __init__(self, access_token=None,
+                 proxy=None,
                  response_format='plain', timeout=5, sleep_time=0.2,
                  verbose=True, remove_section_headers=False,
                  skip_non_songs=True, excluded_terms=None,
@@ -77,6 +78,7 @@ class Genius(API, PublicAPI):
         # Genius Client Constructor
         super().__init__(
             access_token=access_token,
+            proxy=proxy,
             response_format=response_format,
             timeout=timeout,
             sleep_time=sleep_time,
