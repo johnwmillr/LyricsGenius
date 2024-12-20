@@ -16,6 +16,7 @@ class Sender(object):
     def __init__(
         self,
         access_token=None,
+        proxy=None
         response_format='plain',
         timeout=5,
         sleep_time=0.2,
@@ -23,10 +24,11 @@ class Sender(object):
         public_api_constructor=False,
     ):
         self._session = requests.Session()
-        self._session.headers = {
-            'application': 'LyricsGenius',
-            'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'
-        }
+        self._session.proxies = proxy
+        # self._session.headers = {
+        #     'application': 'LyricsGenius',
+        #     'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'
+        # }
         if access_token is None:
             access_token = os.environ.get('GENIUS_ACCESS_TOKEN')
 
