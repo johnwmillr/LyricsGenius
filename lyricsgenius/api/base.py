@@ -17,6 +17,7 @@ class Sender(object):
     def __init__(
         self,
         access_token=None,
+        proxy=None,
         response_format='plain',
         timeout=5,
         sleep_time=0.2,
@@ -30,6 +31,8 @@ class Sender(object):
             'application': 'LyricsGenius',
             'User-Agent': f'({user_agent}) ({user_agent_root})' if user_agent else user_agent_root,
         }
+        if proxy:
+            self._session.proxies = proxy
         if access_token is None:
             access_token = os.environ.get('GENIUS_ACCESS_TOKEN')
 
