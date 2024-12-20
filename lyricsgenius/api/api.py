@@ -51,6 +51,7 @@ class API(Sender):
 
     def __init__(self,
                  access_token,
+                 proxy=None,
                  response_format='plain',
                  timeout=5,
                  sleep_time=0.2,
@@ -58,6 +59,7 @@ class API(Sender):
                  ):
         super().__init__(
             access_token=access_token,
+            proxy=proxy,
             response_format=response_format,
             timeout=timeout,
             sleep_time=sleep_time,
