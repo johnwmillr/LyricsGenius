@@ -1,5 +1,6 @@
 import time
 import os
+import platform
 from json.decoder import JSONDecodeError
 
 import requests
@@ -21,12 +22,17 @@ class Sender(object):
         sleep_time=0.2,
         retries=0,
         public_api_constructor=False,
+        user_agent='',
+        proxy=None,
     ):
         self._session = requests.Session()
+        user_agent_root = f'{platform.system()} {platform.release()}; Python {platform.python_version()}'
         self._session.headers = {
             'application': 'LyricsGenius',
-            'User-Agent': 'https://github.com/johnwmillr/LyricsGenius'
+            'User-Agent': f'({user_agent}) ({user_agent_root})' if user_agent else user_agent_root,
         }
+        if proxy:
+            self._session.proxies = proxy
         if access_token is None:
             access_token = os.environ.get('GENIUS_ACCESS_TOKEN')
 
