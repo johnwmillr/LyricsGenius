@@ -17,13 +17,13 @@ class Sender(object):
     def __init__(
         self,
         access_token=None,
-        proxy=None,
         response_format='plain',
         timeout=5,
         sleep_time=0.2,
         retries=0,
         public_api_constructor=False,
         user_agent='',
+        proxy=None,
     ):
         self._session = requests.Session()
         user_agent_root = f'{platform.system()} {platform.release()}; Python {platform.python_version()}'

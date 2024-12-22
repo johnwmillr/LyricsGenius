@@ -37,6 +37,7 @@ class Genius(API, PublicAPI):
         retries (:obj:`int`, optional): Number of retries in case of timeouts and
             errors with a >= 500 response code. By default, requests are only made once.
         user_agent (:obj:`str`, optional): User agent for the request header.
+        proxy (:obj:`dict[str, str]`, optional): Proxy settings.
 
     Attributes:
         verbose (:obj:`bool`, optional): Turn printed messages on or off.
@@ -67,23 +68,23 @@ class Genius(API, PublicAPI):
                      'instrumental', 'setlist']
 
     def __init__(self, access_token=None,
-                 proxy=None,
                  response_format='plain', timeout=5, sleep_time=0.2,
                  verbose=True, remove_section_headers=False,
                  skip_non_songs=True, excluded_terms=None,
                  replace_default_terms=False,
                  retries=0,
                  user_agent='',
+                 proxy=None,
                  ):
         # Genius Client Constructor
         super().__init__(
             access_token=access_token,
-            proxy=proxy,
             response_format=response_format,
             timeout=timeout,
             sleep_time=sleep_time,
             retries=retries,
             user_agent=user_agent,
+            proxy=proxy,
         )
 
         self.verbose = verbose
