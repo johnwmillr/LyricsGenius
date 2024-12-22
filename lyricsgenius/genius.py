@@ -36,6 +36,7 @@ class Genius(API, PublicAPI):
             excluded terms with user's. Default excluded terms are listed below.
         retries (:obj:`int`, optional): Number of retries in case of timeouts and
             errors with a >= 500 response code. By default, requests are only made once.
+        user_agent (:obj:`str`, optional): User agent for the request header.
 
     Attributes:
         verbose (:obj:`bool`, optional): Turn printed messages on or off.
@@ -71,6 +72,7 @@ class Genius(API, PublicAPI):
                  skip_non_songs=True, excluded_terms=None,
                  replace_default_terms=False,
                  retries=0,
+                 user_agent='',
                  ):
         # Genius Client Constructor
         super().__init__(
@@ -78,7 +80,8 @@ class Genius(API, PublicAPI):
             response_format=response_format,
             timeout=timeout,
             sleep_time=sleep_time,
-            retries=retries
+            retries=retries,
+            user_agent=user_agent,
         )
 
         self.verbose = verbose

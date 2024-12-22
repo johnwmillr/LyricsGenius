@@ -36,6 +36,7 @@ class API(Sender):
         sleep_time (:obj:`str`, optional): time to wait between requests.
         retries (:obj:`int`, optional): Number of retries in case of timeouts and
             errors with a >= 500 response code. By default, requests are only made once.
+        user_agent (:obj:`str`, optional): User agent for the request header.
 
     Attributes:
         response_format (:obj:`str`, optional): API response format (dom, plain, html).
@@ -55,6 +56,7 @@ class API(Sender):
                  timeout=5,
                  sleep_time=0.2,
                  retries=0,
+                 user_agent='',
                  ):
         super().__init__(
             access_token=access_token,
@@ -62,6 +64,7 @@ class API(Sender):
             timeout=timeout,
             sleep_time=sleep_time,
             retries=retries,
+            user_agent=user_agent,
         )
 
     def account(self, text_format=None):
@@ -524,6 +527,7 @@ class PublicAPI(
         timeout=5,
         sleep_time=0.2,
         retries=0,
+        user_agent='',
         **kwargs
     ):
 
@@ -538,5 +542,6 @@ class PublicAPI(
             sleep_time=sleep_time,
             retries=retries,
             public_api_constructor=public_api_constructor,
+            user_agent=user_agent,
             **kwargs
         )

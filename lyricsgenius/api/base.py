@@ -22,11 +22,13 @@ class Sender(object):
         sleep_time=0.2,
         retries=0,
         public_api_constructor=False,
+        user_agent='',
     ):
         self._session = requests.Session()
+        user_agent_root = f'{platform.system()} {platform.release()}; Python {platform.python_version()}'
         self._session.headers = {
             'application': 'LyricsGenius',
-            'User-Agent': f'{platform.uname().node}'
+            'User-Agent': f'({user_agent}) ({user_agent_root})' if user_agent else user_agent_root,
         }
         if access_token is None:
             access_token = os.environ.get('GENIUS_ACCESS_TOKEN')
