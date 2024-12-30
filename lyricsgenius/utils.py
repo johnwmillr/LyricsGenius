@@ -2,11 +2,27 @@
 
 import re
 import os
+import threading
 import sys
 import unicodedata
 from datetime import datetime
 from string import punctuation
 from urllib.parse import parse_qs, urlparse
+
+
+class SongThread(threading.Thread):
+    def __init__(self, errors_queue, **kwargs):
+        super().__init__(**kwargs)
+        self.errors_queue = errors_queue
+
+    def run(self):
+        try:
+            if self._target:
+                self._target(*self._args, **self._kwargs)
+        except Exception as e:
+            self.errors_queue.put(e)
+        finally:
+            del self._target, self._args, self._kwargs
 
 
 def auth_from_environment():

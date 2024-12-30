@@ -6,15 +6,17 @@
 
 import json
 import os
+import queue
 import re
 import shutil
 import time
+import threading
 
 from bs4 import BeautifulSoup
 
 from .api import API, PublicAPI
 from .types import Album, Artist, Song, Track
-from .utils import clean_str, safe_unicode
+from .utils import SongThread, clean_str, safe_unicode
 
 
 class Genius(API, PublicAPI):
@@ -274,7 +276,8 @@ class Genius(API, PublicAPI):
         return all_annotations
 
     def search_album(self, name=None, artist="",
-                     album_id=None, get_full_info=True, text_format=None):
+                     album_id=None, get_full_info=True,
+                     text_format=None, num_workers=1):
         """Searches for a specific album and gets its songs.
 
         You must pass either a :obj:`name` or an :obj:`album_id`.
@@ -303,6 +306,16 @@ class Genius(API, PublicAPI):
                 print(album.name)
 
         """
+        def download_track(track):
+            song_info = track['song']
+            if (song_info['lyrics_state'] == 'complete'
+                    and not song_info.get('instrumental')):
+                song_lyrics = self.lyrics(song_url=song_info['url'])
+            else:
+                song_lyrics = ""
+
+            track = Track(self, track, song_lyrics)
+            tracks.append(track)
         msg = "You must pass either a `name` or an `album_id`."
         assert any([name, album_id]), msg
 
@@ -337,7 +350,8 @@ class Genius(API, PublicAPI):
 
         tracks = []
         next_page = 1
-
+        errors_queue = queue.Queue()
+        thread_pool = []
         # It's unlikely for an album to have >=50 songs,
         # but it's best to check
         while next_page:
@@ -348,17 +362,37 @@ class Genius(API, PublicAPI):
                 text_format=text_format
             )
             for track in tracks_list['tracks']:
-                song_info = track['song']
-                if (song_info['lyrics_state'] == 'complete'
-                        and not song_info.get('instrumental')):
-                    song_lyrics = self.lyrics(song_url=song_info['url'])
+                if num_workers != 1:
+                    thread = SongThread(
+                        errors_queue,
+                        name="Thread-Track-{}".format(track['song']['id']),
+                        target=download_track,
+                        args=(track,)
+                    )
+                    thread.daemon = True
+                    thread.start()
+                    thread_pool.append(thread)
+                    if len(thread_pool) == num_workers:
+                        for thread in thread_pool:
+                            thread.join()
+                        thread_pool.clear()
                 else:
-                    song_lyrics = ""
-
-                track = Track(self, track, song_lyrics)
-                tracks.append(track)
+                    download_track(track)
 
             next_page = tracks_list['next_page']
+        for thread in thread_pool:
+            thread.join()
+            try:
+                error = errors_queue.get(False)
+            except queue.Empty:
+                pass
+            else:
+                raise error
+
+        length = len(tracks)
+        tracks.sort(key=lambda track: (track.number
+                                       if track.number is not None
+                                       else length))
 
         return Album(self, album_info, tracks)
 
@@ -459,6 +493,7 @@ class Genius(API, PublicAPI):
                       allow_name_change=True,
                       artist_id=None,
                       include_features=False,
+                      num_workers=1,
                       ):
         """Searches for a specific artist and gets their songs.
 
@@ -521,6 +556,39 @@ class Genius(API, PublicAPI):
             # Assume the top search result is the intended artist
             return found_artist['id']
 
+        def download_song(song_info, index):
+            # Check if song is valid (e.g. contains lyrics)
+            if self.skip_non_songs and not self._result_is_lyrics(song_info):
+                valid = False
+            else:
+                valid = True
+
+            # Reject non-song results (e.g. Linear Notes, Tracklists, etc.)
+            if not valid:
+                if self.verbose:
+                    s = song_info['title']
+                    print('"{s}" is not valid. Skipping.'.format(
+                        s=safe_unicode(s)))
+                return
+
+            # Create the Song object from lyrics and metadata
+            if song_info['lyrics_state'] == 'complete':
+                lyrics = self.lyrics(song_url=song_info['url'])
+            else:
+                lyrics = ""
+            if get_full_info:
+                new_info = self.song(song_info['id'])['song']
+                song_info.update(new_info)
+            song = Song(self, song_info, lyrics)
+            song._index = index
+
+            # Attempt to add the Song to the Artist
+            result = artist.add_song(song, verbose=False,
+                                     include_features=include_features)
+            if result is not None and self.verbose:
+                print('Song {n}: "{t}"'.format(n=len(artist.songs),
+                                               t=safe_unicode(song.title)))
+
         # Get the artist ID (or use the one supplied)
         artist_id = artist_id if artist_id else find_artist_id(artist_name)
         if not artist_id:
@@ -538,62 +606,64 @@ class Genius(API, PublicAPI):
         artist = Artist(self, artist_info)
         # Download each song by artist, stored as Song objects in Artist object
         page = 1
+        num_songs = 0
         reached_max_songs = True if max_songs == 0 else False
+        thread_pool = []
+        errors_queue = queue.Queue()
         while not reached_max_songs:
             songs_on_page = self.artist_songs(artist_id=artist_id,
                                               per_page=per_page,
                                               page=page,
                                               sort=sort,
                                               )
-
-            # Loop through each song on page of search results
-            for song_info in songs_on_page['songs']:
-                # Check if song is valid (e.g. contains lyrics)
-                if self.skip_non_songs and not self._result_is_lyrics(song_info):
-                    valid = False
+            for song in songs_on_page["songs"]:
+                if num_workers != 1:
+                    thread = SongThread(
+                        errors_queue,
+                        name="Thread-Song-{}".format(song['id']),
+                        target=download_song,
+                        args=(song, num_songs)
+                    )
+                    thread.daemon = True
+                    thread.start()
+                    thread_pool.append(thread)
+                    if len(thread_pool) == num_workers:
+                        for thread in thread_pool:
+                            thread.join()
+                        thread_pool.clear()
                 else:
-                    valid = True
-
-                # Reject non-song results (e.g. Linear Notes, Tracklists, etc.)
-                if not valid:
-                    if self.verbose:
-                        s = song_info['title']
-                        print('"{s}" is not valid. Skipping.'.format(
-                            s=safe_unicode(s)))
-                    continue
-
-                # Create the Song object from lyrics and metadata
-                if song_info['lyrics_state'] == 'complete':
-                    lyrics = self.lyrics(song_url=song_info['url'])
-                else:
-                    lyrics = ""
-                if get_full_info:
-                    new_info = self.song(song_info['id'])['song']
-                    song_info.update(new_info)
-                song = Song(self, song_info, lyrics)
-
-                # Attempt to add the Song to the Artist
-                result = artist.add_song(song, verbose=False,
-                                         include_features=include_features)
-                if result is not None and self.verbose:
-                    print('Song {n}: "{t}"'.format(n=artist.num_songs,
-                                                   t=safe_unicode(song.title)))
+                    download_song(song, num_songs)
+                num_songs += 1
 
                 # Exit search if the max number of songs has been met
-                reached_max_songs = max_songs and artist.num_songs >= max_songs
+                reached_max_songs = max_songs and num_songs - 1 >= max_songs
                 if reached_max_songs:
-                    if self.verbose:
-                        print(('\nReached user-specified song limit ({m}).'
-                               .format(m=max_songs)))
                     break
+
+            for thread in thread_pool:
+                thread.join()
+                try:
+                    error = errors_queue.get(False)
+                except queue.Empty:
+                    pass
+                else:
+                    raise error
+            thread_pool.clear()
+
+            if reached_max_songs:
+                if self.verbose:
+                    print(('\nReached user-specified song limit ({m}).'
+                           .format(m=max_songs)))
+                break
 
             # Move on to next page of search results
             page = songs_on_page['next_page']
             if page is None:
                 break  # Exit search when last page is reached
 
+        artist.songs.sort(key=lambda x: x._index)
         if self.verbose:
-            print('Done. Found {n} songs.'.format(n=artist.num_songs))
+            print('Done. Found {n} songs.'.format(n=len(artist.songs)))
         return artist
 
     def save_artists(self, artists, filename="artist_lyrics", overwrite=False,
