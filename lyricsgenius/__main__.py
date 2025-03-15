@@ -23,6 +23,8 @@ def main(args=None):
                         help="Provide terms for search")
     parser.add_argument("--save", type=str, nargs='?', const="json", choices=["json", "txt"],
                         help="Specify the format to save output: 'json' (default) or 'txt'")
+    parser.add_argument("--stdout", type=str, nargs='?', const="json", choices=["json", "txt"],
+                        help="Print output to stdout in 'json' or 'txt' format")
     parser.add_argument("--max-songs", type=int,
                         help="Specify number of songs when searching for artist")
     parser.add_argument("-q", "--quiet", action="store_true",
@@ -44,7 +46,9 @@ def main(args=None):
             if not args.quiet:
                 print("Could not find specified song. Check spelling?")
             return
-        if args.save:
+        if args.stdout:
+            print(song.to_text() if args.stdout == "txt" else song.to_json())
+        elif args.save:
             if not args.quiet:
                 print(f"Saving lyrics to '{safe_unicode(song.title)}' in {args.save.upper()} format...")
             song.save_lyrics(extension=args.save)
@@ -56,7 +60,9 @@ def main(args=None):
             if not args.quiet:
                 print("Could not find specified artist. Check spelling?")
             return
-        if args.save:
+        if args.stdout:
+            print(artist.to_json() if args.stdout == "json" else artist.to_text())
+        elif args.save:
             if not args.quiet:
                 print(f"Saving '{safe_unicode(artist.name)}' lyrics in {args.save.upper()} format...")
             artist.save_lyrics(extension=args.save)
@@ -66,8 +72,9 @@ def main(args=None):
             if not args.quiet:
                 print("Could not find specified album. Check spelling?")
             return
-
-        if args.save:
+        if args.stdout:
+            print(album.to_json() if args.stdout == "json" else album.to_text())
+        elif args.save:
             if not args.quiet:
                 print(f"Saving '{safe_unicode(album.name)}' lyrics in {args.save.upper()} format...")
             album.save_lyrics(extension=args.save)
