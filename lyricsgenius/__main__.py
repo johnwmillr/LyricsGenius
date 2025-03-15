@@ -21,8 +21,8 @@ def main(args=None):
     )
     parser.add_argument("terms", type=str, nargs="+",
                         help="Provide terms for search")
-    parser.add_argument("--save", action="store_true",
-                        help="If specified, saves songs to JSON file")
+    parser.add_argument("--save", type=str, nargs='?', const="json", choices=["json", "txt"],
+                        help="Specify the format to save output: 'json' (default) or 'txt'")
     parser.add_argument("--max-songs", type=int,
                         help="Specify number of songs when searching for artist")
     parser.add_argument("-q", "--quiet", action="store_true",
@@ -46,22 +46,28 @@ def main(args=None):
             return
         if args.save:
             if not args.quiet:
-                print("Saving lyrics to '{s}'...".format(s=safe_unicode(song.title)))
-            song.save_lyrics()
+                print(f"Saving lyrics to '{safe_unicode(song.title)}' in {args.save.upper()} format...")
+            song.save_lyrics(extension=args.save)
     elif args.search_type == "artist":
         artist = api.search_artist(args.terms[0],
                                    max_songs=args.max_songs,
                                    sort='popularity')
         if args.save:
             if not args.quiet:
-                print("Saving '{a}'' lyrics...".format(a=safe_unicode(artist.name)))
-            api.save_artists(artist)
+                print(f"Saving '{safe_unicode(artist.name)}' lyrics in {args.save.upper()} format...")
+            if args.save == "json":
+                api.save_artists(artist, extension="json")
+            elif args.save == "txt":
+                api.save_artists(artist, extension="txt")
     elif args.search_type == "album":
         album = api.search_album(*args.terms)
         if args.save:
             if not args.quiet:
-                print("Saving '{a}'' lyrics...".format(a=safe_unicode(album.name)))
-            album.save_lyrics()
+                print(f"Saving '{safe_unicode(album.name)}' lyrics in {args.save.upper()} format...")
+            if args.save == "json":
+                album.save_lyrics(extension="json")
+            elif args.save == "txt":
+                album.save_lyrics(extension="txt")
 
 
 if __name__ == "__main__":
