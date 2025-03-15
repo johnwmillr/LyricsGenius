@@ -33,7 +33,7 @@ def main(args=None):
     access_token = os.environ.get("GENIUS_ACCESS_TOKEN", None)
     msg = "Must declare environment variable: GENIUS_ACCESS_TOKEN"
     assert access_token, msg
-    api = Genius(access_token)
+    api = Genius(access_token, timeout=10)
     if args.quiet:
         api.verbose = False
 
@@ -52,22 +52,25 @@ def main(args=None):
         artist = api.search_artist(args.terms[0],
                                    max_songs=args.max_songs,
                                    sort='popularity')
+        if not artist:
+            if not args.quiet:
+                print("Could not find specified artist. Check spelling?")
+            return
         if args.save:
             if not args.quiet:
                 print(f"Saving '{safe_unicode(artist.name)}' lyrics in {args.save.upper()} format...")
-            if args.save == "json":
-                api.save_artists(artist, extension="json")
-            elif args.save == "txt":
-                api.save_artists(artist, extension="txt")
+            artist.save_lyrics(extension=args.save)
     elif args.search_type == "album":
         album = api.search_album(*args.terms)
+        if not album:
+            if not args.quiet:
+                print("Could not find specified album. Check spelling?")
+            return
+
         if args.save:
             if not args.quiet:
                 print(f"Saving '{safe_unicode(album.name)}' lyrics in {args.save.upper()} format...")
-            if args.save == "json":
-                album.save_lyrics(extension="json")
-            elif args.save == "txt":
-                album.save_lyrics(extension="txt")
+            album.save_lyrics(extension=args.save)
 
 
 if __name__ == "__main__":

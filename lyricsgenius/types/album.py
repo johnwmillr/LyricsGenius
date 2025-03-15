@@ -42,7 +42,10 @@ class Album(BaseEntity):
     def to_text(self,
                 filename=None,
                 sanitize=True):
-        data = ' '.join(track.song.lyrics for track in self.tracks)
+        data = '\n\n'.join(
+            f"[Song {n}: {track.song.title}]\n{track.song.lyrics}"
+            for n, track in enumerate(self.tracks, start=1)
+        ).strip()
 
         return super().to_text(data=data,
                                filename=filename,
