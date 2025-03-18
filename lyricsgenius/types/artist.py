@@ -124,7 +124,10 @@ class Artist(BaseEntity):
     def to_text(self,
                 filename=None,
                 sanitize=True):
-        data = ' '.join(song.lyrics for song in self.songs)
+        data = '\n\n'.join(
+            f"[Song {n}: {song.title}]\n{song.lyrics}" 
+            for n, song in enumerate(self.songs, start=1)
+        ).strip()
         return super().to_text(data=data,
                                filename=filename,
                                sanitize=sanitize)

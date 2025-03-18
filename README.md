@@ -100,19 +100,15 @@ You can also call the package from the command line:
 ```bash
 export GENIUS_ACCESS_TOKEN="my_access_token_here"
 python3 -m lyricsgenius --help
-```
 
-Search for and save lyrics to a given song and album:
+# Save a song in JSON format
+python -m lyricsgenius song "Begin Again" "Andy Shauf" --save json
 
-```bash
-python3 -m lyricsgenius song "Begin Again" "Andy Shauf" --save
-python3 -m lyricsgenius album "The Party" "Andy Shauf" --save
-```
+# Save an artist's lyrics to a text file
+python -m lyricsgenius artist "The Beatles" --max-songs 2 --save txt
 
-Search for five songs by 'The Beatles' and save the lyrics:
-
-```bash
-python3 -m lyricsgenius artist "The Beatles" --max-songs 5 --save
+# Print a song's lyrics to stdout in text format
+python3 -m lyricsgenius song "Check the Rhyme" "A Tribe Called Quest" --stdout txt
 ```
 
 ## Example projects
