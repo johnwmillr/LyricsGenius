@@ -118,7 +118,7 @@ class BaseEntity(ABC):
         # Save Song object to a json file
         filename = sanitize_filename(filename) if sanitize else filename
         with open(filename, 'w', encoding='utf-8') as ff:
-            json.dump(data, ff, indent=1, ensure_ascii=ensure_ascii)
+            json.dump(data, ff, indent=4, ensure_ascii=ensure_ascii)
         return None
 
     @abstractmethod
