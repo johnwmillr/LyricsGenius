@@ -1,5 +1,5 @@
 # GeniusAPI
-# John W. Miller
+# John W. R. Miller
 # See LICENSE for details
 """A library that provides a Python interface to the Genius API"""
 
