@@ -1,5 +1,5 @@
 # LyricsGenius
-# copyright 2024 john w. miller
+# copyright 2025 John W. R. Miller
 # See LICENSE for details.
 
 """Artist object"""

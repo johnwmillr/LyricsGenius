@@ -1,5 +1,5 @@
 # GeniusAPI
-# John W. Miller
+# John W. R. Miller
 # See LICENSE for details
 
 """API documentation: https://docs.genius.com/"""
