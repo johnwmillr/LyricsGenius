@@ -3,7 +3,7 @@ name: Publish to TestPyPI
 on:
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:
 
 jobs:
@@ -41,10 +41,10 @@ jobs:
   publish-to-testpypi:
     name: Upload release to TestPyPI
     needs: build
-    runs-on: ubuntu-latest
     environment:
       name: testpypi
-      url: https://test.pypi.org/p/lyricsgenius/
+      url: https://test.pypi.org/p/lyricsgenius
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
     steps:
@@ -57,3 +57,4 @@ jobs:
         uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc  # v1.12.4
         with:
           repository-url: https://test.pypi.org/legacy/
+
