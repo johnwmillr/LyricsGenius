@@ -1,20 +1,50 @@
 name: Publish to PyPI
 
 on:
-  # workflow_run:
-  #   workflows: ["Build the package"]
-  #   types:
-  #     - "completed"
+  push:
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
-  publish-to-pypi:
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    name: Upload release to PyPI
+  build:
+    name: build
     runs-on: ubuntu-latest
-    environment:
-      name: pypi
-      url: https://pypi.org/p/lyricsgenius
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Install uv and set the Python version
+        uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182  # v5.4.1
+        with:
+          version: "0.6.11"
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: "Set up Python"
+        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55
+        with:
+          python-version-file: ".python-version"
+
+      - name: "Build the package"
+        run: uv build
+
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: built-package
+          path: dist/
+
+  publish-to-pypi:
+    name: Upload release to PyPI
+    needs: build
+    # environment:
+    #   name: pypi
+    #   url: https://pypi.org/p/lyricsgenius
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
     steps:
@@ -26,4 +56,6 @@ jobs:
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc  # v1.12.4
         with:
-          repository-url: https://test.pypi.org/legacy/
+          repository-url: https://upload.pypi.org/legacy/
+          verbose: true
+          skip-existing: false
