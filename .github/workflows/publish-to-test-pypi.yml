@@ -24,17 +24,18 @@ jobs:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
 
-      - name: "Set up Python"
+      - name: Set up Python
         uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55
         with:
           python-version-file: ".python-version"
 
-      - name: "Build the package"
+      - name: Build the package
         run: uv build
 
-      - name: "Upload artifacts"
+      - name: Upload artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
+          name: built-package
           path: dist/
 
   publish-to-testpypi:
@@ -50,6 +51,7 @@ jobs:
       - name: Download all the dists
         uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v.4.2.1
         with:
+          name: built-package
           path: dist/
 
       - name: Publish package distributions to TestPyPI
