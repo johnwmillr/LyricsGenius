@@ -41,9 +41,9 @@ jobs:
   publish-to-testpypi:
     name: Upload release to TestPyPI
     needs: build
-    environment:
-      name: testpypi
-      url: https://test.pypi.org/p/lyricsgenius
+    # environment:
+    #   name: testpypi
+    #   url: https://test.pypi.org/p/lyricsgenius
     runs-on: ubuntu-latest
     permissions:
       id-token: write
