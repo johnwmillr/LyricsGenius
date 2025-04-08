@@ -14,7 +14,7 @@ class BaseEntity(ABC):
     @abstractmethod
     def save_lyrics(self,
                     filename,
-                    extension='json',
+                    extension="json",
                     overwrite=False,
                     ensure_ascii=True,
                     sanitize=True,
@@ -43,7 +43,7 @@ class BaseEntity(ABC):
         """
         extension = extension.lstrip(".").lower()
         msg = "extension must be JSON or TXT"
-        assert (extension == 'json') or (extension == 'txt'), msg
+        assert (extension == "json") or (extension == "txt"), msg
 
         # Determine the filename
         for ext in [".txt", ".TXT", ".json", ".JSON"]:
@@ -59,23 +59,23 @@ class BaseEntity(ABC):
             write_file = True
         elif verbose:
             msg = "{} already exists. Overwrite?\n(y/n): ".format(filename)
-            if input(msg).lower() == 'y':
+            if input(msg).lower() == "y":
                 write_file = True
 
         # Exit if we won't be saving a file
         if not write_file:
             if verbose:
-                print('Skipping file save.\n')
+                print("Skipping file save.\n")
             return
 
         # Save the lyrics to a file
-        if extension == 'json':
+        if extension == "json":
             self.to_json(filename, ensure_ascii=ensure_ascii, sanitize=sanitize)
         else:
             self.to_text(filename, sanitize=sanitize)
 
         if verbose:
-            print('Wrote {}.'.format(safe_unicode(filename)))
+            print("Wrote {}.".format(safe_unicode(filename)))
 
         return None
 
@@ -117,7 +117,7 @@ class BaseEntity(ABC):
 
         # Save Song object to a json file
         filename = sanitize_filename(filename) if sanitize else filename
-        with open(filename, 'w', encoding='utf-8') as ff:
+        with open(filename, "w", encoding="utf-8") as ff:
             json.dump(data, ff, indent=4, ensure_ascii=ensure_ascii)
         return None
 
@@ -148,7 +148,7 @@ class BaseEntity(ABC):
 
         # Save song lyrics to a text file
         filename = sanitize_filename(filename) if sanitize else filename
-        with open(filename, 'w', encoding='utf-8') as ff:
+        with open(filename, "w", encoding="utf-8") as ff:
             ff.write(data)
         return None
 
@@ -156,8 +156,8 @@ class BaseEntity(ABC):
         name = self.__class__.__name__
         attrs = [x
                  for x in list(self.__dict__.keys())
-                 if not x.startswith('_')]
-        attrs = ', '.join(attrs[:2])
+                 if not x.startswith("_")]
+        attrs = ", ".join(attrs[:2])
         return "{}({}, ...)".format(name, attrs)
 
 
@@ -186,7 +186,7 @@ class Stats(object):
 
     def __repr__(self):
         name = self.__class__.__name__
-        attrs = ', '.join(list(self.__dict__.keys()))
+        attrs = ", ".join(list(self.__dict__.keys()))
         return "{}({!r})".format(name, attrs)
 
 # class EntityWithLyrics(ABC, BaseEntity):

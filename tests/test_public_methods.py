@@ -1,9 +1,7 @@
 import unittest
 
 from lyricsgenius import PublicAPI
-
 from tests import genius
-
 
 client = PublicAPI()
 

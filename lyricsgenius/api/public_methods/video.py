@@ -13,8 +13,8 @@ class VideoMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'videos/{}'.format(video_id)
-        params = {'text_format': text_format or self.response_format}
+        endpoint = "videos/{}".format(video_id)
+        params = {"text_format": text_format or self.response_format}
 
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
@@ -59,20 +59,20 @@ class VideoMethods(object):
         assert condition, msg
 
         if series:
-            endpoint = 'video_lists'
+            endpoint = "video_lists"
         else:
-            endpoint = 'videos'
+            endpoint = "videos"
 
-        params = {'per_page': per_page,
-                  'page': page}
+        params = {"per_page": per_page,
+                  "page": page}
 
         if album_id:
-            params['album_id'] = album_id
+            params["album_id"] = album_id
         elif article_id:
-            params['article_id'] = article_id
+            params["article_id"] = article_id
         elif song_id:
-            params['song_id'] = song_id
+            params["song_id"] = song_id
         elif video_id:
-            params['video_id'] = video_id
+            params["video_id"] = video_id
 
         return self._make_request(path=endpoint, params_=params, public_api=True)

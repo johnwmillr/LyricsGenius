@@ -2,7 +2,6 @@ import os
 
 from lyricsgenius import Genius
 
-
 # Import client access token from environment variable
 access_token = os.environ.get("GENIUS_ACCESS_TOKEN", None)
 assert access_token is not None, (

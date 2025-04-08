@@ -13,8 +13,8 @@ class ArtistMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'artists/{}'.format(artist_id)
-        params = {'text_format': text_format or self.response_format}
+        endpoint = "artists/{}".format(artist_id)
+        params = {"text_format": text_format or self.response_format}
 
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
@@ -33,10 +33,10 @@ class ArtistMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'artists/{}/activity_stream/line_items'.format(artist_id)
-        params = {'per_page': per_page,
-                  'page': page,
-                  'text_format': text_format or self.response_format}
+        endpoint = "artists/{}/activity_stream/line_items".format(artist_id)
+        params = {"per_page": per_page,
+                  "page": page,
+                  "text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def artist_albums(self, artist_id, per_page=None, page=None):
@@ -52,9 +52,9 @@ class ArtistMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'artists/{}/albums'.format(artist_id)
-        params = {'per_page': per_page,
-                  'page': page}
+        endpoint = "artists/{}/albums".format(artist_id)
+        params = {"per_page": per_page,
+                  "page": page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def artist_contribution_opportunities(self,
@@ -81,11 +81,11 @@ class ArtistMethods(object):
             ``NotImplementedError``.
 
         """
-        raise NotImplementedError('This action requires a logged in user.')
-        endpoint = 'artists/{}/contribution_opportunities'.format(artist_id)
-        params = {'per_page': per_page,
-                  'next_curosr': next_curosr,
-                  'text_format': text_format or self.response_format}
+        raise NotImplementedError("This action requires a logged in user.")
+        endpoint = "artists/{}/contribution_opportunities".format(artist_id)
+        params = {"per_page": per_page,
+                  "next_curosr": next_curosr,
+                  "text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def artist_followers(self, artist_id, per_page=None, page=None):
@@ -101,9 +101,9 @@ class ArtistMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'artists/{}/followers'.format(artist_id)
-        params = {'per_page': per_page,
-                  'page': page}
+        endpoint = "artists/{}/followers".format(artist_id)
+        params = {"per_page": per_page,
+                  "page": page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def artist_leaderboard(self, artist_id, per_page=None, page=None):
@@ -119,12 +119,12 @@ class ArtistMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'artists/{}/leaderboard'.format(artist_id)
-        params = {'per_page': per_page,
-                  'page': page}
+        endpoint = "artists/{}/leaderboard".format(artist_id)
+        params = {"per_page": per_page,
+                  "page": page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def artist_songs(self, artist_id, per_page=None, page=None, sort='popularity'):
+    def artist_songs(self, artist_id, per_page=None, page=None, sort="popularity"):
         """Gets artist's songs.
 
         Args:
@@ -139,10 +139,10 @@ class ArtistMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'artists/{}/songs'.format(artist_id)
-        params = {'per_page': per_page,
-                  'page': page,
-                  'sort': sort}
+        endpoint = "artists/{}/songs".format(artist_id)
+        params = {"per_page": per_page,
+                  "page": page,
+                  "sort": sort}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def search_artist_songs(self,
@@ -150,7 +150,7 @@ class ArtistMethods(object):
                             search_term,
                             per_page=None,
                             page=None,
-                            sort='popularity'):
+                            sort="popularity"):
         """Searches artist's songs.
 
         Args:
@@ -166,9 +166,9 @@ class ArtistMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'artists/{}/songs/search'.format(artist_id)
-        params = {'q': search_term,
-                  'per_page': per_page,
-                  'page': page,
-                  'sort': sort}
+        endpoint = "artists/{}/songs/search".format(artist_id)
+        params = {"q": search_term,
+                  "per_page": per_page,
+                  "page": page,
+                  "sort": sort}
         return self._make_request(path=endpoint, params_=params, public_api=True)

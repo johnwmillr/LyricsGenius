@@ -18,8 +18,8 @@ class DiscussionMethods(object):
         """
         raise NotImplementedError("This request returns a 403 error.")
 
-        endpoint = 'discussions/{}'.format(discussion_id)
-        params = {'text_format': text_format or self.response_format}
+        endpoint = "discussions/{}".format(discussion_id)
+        params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def discussions(self, page=None):
@@ -33,8 +33,8 @@ class DiscussionMethods(object):
 
         """
 
-        endpoint = 'discussions'
-        params = {'page': page}
+        endpoint = "discussions"
+        params = {"page": page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def discussion_replies(self,
@@ -61,8 +61,8 @@ class DiscussionMethods(object):
         """
         raise NotImplementedError("This request returns a 403 error.")
 
-        endpoint = 'discussions/{}/forum_posts'.format(discussion_id)
-        params = {'per_page': per_page,
-                  'page': page,
-                  'text_format': text_format or self.response_format}
+        endpoint = "discussions/{}/forum_posts".format(discussion_id)
+        params = {"per_page": per_page,
+                  "page": page,
+                  "text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)

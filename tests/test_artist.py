@@ -1,9 +1,9 @@
-import unittest
 import os
+import unittest
 
-from tests import genius
 from lyricsgenius.types import Artist
 from lyricsgenius.utils import sanitize_filename
+from tests import genius
 
 
 class TestArtist(unittest.TestCase):

@@ -1,9 +1,9 @@
-import unittest
 import os
+import unittest
 import warnings
 
-from tests import genius
 from lyricsgenius.types import Album
+from tests import genius
 
 
 class TestAlbum(unittest.TestCase):

@@ -35,13 +35,13 @@ class QuestionMethods(object):
             == 1
         )
         assert condition, msg
-        endpoint = 'questions'
-        params = {'per_page': per_page,
-                  'page': page,
-                  'state': state,
-                  'text_format': text_format or self.response_format}
+        endpoint = "questions"
+        params = {"per_page": per_page,
+                  "page": page,
+                  "state": state,
+                  "text_format": text_format or self.response_format}
         if album_id:
-            params['album_id'] = album_id
+            params["album_id"] = album_id
         elif song_id:
-            params['song_id'] = song_id
+            params["song_id"] = song_id
         return self._make_request(path=endpoint, params_=params, public_api=True)

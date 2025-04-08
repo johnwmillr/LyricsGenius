@@ -21,14 +21,14 @@ class ReferentMethods(object):
             :meth:`referents() <PublicAPI.referents>` gets.
 
         """
-        params = {'text_format': text_format or self.response_format}
+        params = {"text_format": text_format or self.response_format}
         if len(referent_ids) == 1:
-            endpoint = 'referents/{}'.format(referent_ids[0])
+            endpoint = "referents/{}".format(referent_ids[0])
         else:
-            endpoint = 'referents/multi'
-            params = [('text_format', params['text_format'])]
+            endpoint = "referents/multi"
+            params = [("text_format", params["text_format"])]
             for id in referent_ids:
-                params.append(('ids[]', id))
+                params.append(("ids[]", id))
 
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
@@ -58,16 +58,16 @@ class ReferentMethods(object):
         assert bool(song_id) ^ bool(web_page_id), msg
 
         endpoint = "referents"
-        params = {'song_id': song_id,
-                  'web_page_id': web_page_id,
-                  'created_by_id': created_by_id,
-                  'per_page': per_page, 'page': page,
-                  'text_format': text_format or self.response_format}
+        params = {"song_id": song_id,
+                  "web_page_id": web_page_id,
+                  "created_by_id": created_by_id,
+                  "per_page": per_page, "page": page,
+                  "text_format": text_format or self.response_format}
         return self._make_request(endpoint, params_=params, public_api=True)
 
     def referents_charts(self,
-                         time_period='day',
-                         chart_genre='all',
+                         time_period="day",
+                         chart_genre="all",
                          per_page=None,
                          page=None,
                          text_format=None):
@@ -95,5 +95,5 @@ class ReferentMethods(object):
             per_page=per_page,
             page=page,
             text_format=text_format,
-            type_='referents'
+            type_="referents"
         )

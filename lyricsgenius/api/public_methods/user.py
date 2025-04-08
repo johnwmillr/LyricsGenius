@@ -13,8 +13,8 @@ class UserMethods(object):
             :obj:`dict`
 
         """
-        path = 'users/{}'.format(user_id)
-        params = {'text_format': text_format or self.response_format}
+        path = "users/{}".format(user_id)
+        params = {"text_format": text_format or self.response_format}
         return self._make_request(path, params_=params, public_api=True)
 
     def user_accomplishments(self,
@@ -37,9 +37,9 @@ class UserMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'users/{}/accomplishments'.format(user_id)
-        params = {'next_cursor': next_cursor,
-                  'per_page': per_page}
+        endpoint = "users/{}/accomplishments".format(user_id)
+        params = {"next_cursor": next_cursor,
+                  "per_page": per_page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def user_following(self,
@@ -58,9 +58,9 @@ class UserMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'users/{}/followed_users'.format(user_id)
-        params = {'page': page,
-                  'per_page': per_page}
+        endpoint = "users/{}/followed_users".format(user_id)
+        params = {"page": page,
+                  "per_page": per_page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def user_followers(self,
@@ -79,9 +79,9 @@ class UserMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'users/{}/followers'.format(user_id)
-        params = {'page': page,
-                  'per_page': per_page}
+        endpoint = "users/{}/followers".format(user_id)
+        params = {"page": page,
+                  "per_page": per_page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def user_contributions(self,
@@ -124,20 +124,20 @@ class UserMethods(object):
             time.
 
         """
-        endpoint = 'users/{}/contributions'.format(user_id)
+        endpoint = "users/{}/contributions".format(user_id)
         if type_ is not None:
-            endpoint += '/{}'.format(type_)
-        params = {'next_cursor': next_cursor,
-                  'per_page': per_page,
-                  'sort': sort,
-                  'text_format': text_format or self.response_format}
+            endpoint += "/{}".format(type_)
+        params = {"next_cursor": next_cursor,
+                  "per_page": per_page,
+                  "sort": sort,
+                  "text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def user_annotations(self,
                          user_id,
                          per_page=None,
                          next_cursor=None,
-                         sort='popularity',
+                         sort="popularity",
                          text_format=None
                          ):
         """Gets user's annotations.
@@ -165,14 +165,14 @@ class UserMethods(object):
             per_page=per_page,
             sort=sort,
             text_format=text_format,
-            type_='annotations'
+            type_="annotations"
         )
 
     def user_articles(self,
                       user_id,
                       per_page=None,
                       next_cursor=None,
-                      sort='popularity',
+                      sort="popularity",
                       text_format=None
                       ):
         """Gets user's articles.
@@ -200,7 +200,7 @@ class UserMethods(object):
             per_page=per_page,
             sort=sort,
             text_format=text_format,
-            type_='articles'
+            type_="articles"
         )
 
     def user_pyongs(self,
@@ -230,7 +230,7 @@ class UserMethods(object):
             next_cursor=next_cursor,
             per_page=per_page,
             text_format=text_format,
-            type_='pyongs'
+            type_="pyongs"
         )
 
     def user_questions_and_answers(self,
@@ -260,7 +260,7 @@ class UserMethods(object):
             next_cursor=next_cursor,
             per_page=per_page,
             text_format=text_format,
-            type_='questions_and_answers'
+            type_="questions_and_answers"
         )
 
     def user_suggestions(self,
@@ -290,14 +290,14 @@ class UserMethods(object):
             next_cursor=next_cursor,
             per_page=per_page,
             text_format=text_format,
-            type_='comments'
+            type_="comments"
         )
 
     def user_transcriptions(self,
                             user_id,
                             per_page=None,
                             next_cursor=None,
-                            sort='popularity',
+                            sort="popularity",
                             text_format=None):
         """Gets user's transcriptions.
 
@@ -324,14 +324,14 @@ class UserMethods(object):
             per_page=per_page,
             sort=sort,
             text_format=text_format,
-            type_='transcriptions'
+            type_="transcriptions"
         )
 
     def user_unreviewed(self,
                         user_id,
                         per_page=None,
                         next_cursor=None,
-                        sort='popularity',
+                        sort="popularity",
                         text_format=None):
         """Gets user's unreviewed annotations.
 
@@ -361,5 +361,5 @@ class UserMethods(object):
             per_page=per_page,
             sort=sort,
             text_format=text_format,
-            type_='unreviewed_annotations'
+            type_="unreviewed_annotations"
         )

@@ -5,10 +5,10 @@ from .artist import ArtistMethods
 from .cover_art import CoverArtMethods
 from .discussion import DiscussionMethods
 from .leaderboard import LeaderboardMethods
+from .misc import MiscMethods
 from .question import QuestionMethods
 from .referent import ReferentMethods
 from .search import SearchMethods
 from .song import SongMethods
 from .user import UserMethods
 from .video import VideoMethods
-from .misc import MiscMethods

@@ -1,6 +1,5 @@
 import unittest
 
-
 from tests import genius
 
 

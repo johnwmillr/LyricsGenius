@@ -4,9 +4,9 @@
 
 from filecmp import cmp
 
-from .base import BaseEntity, Stats
 from .album import Album
 from .artist import Artist
+from .base import BaseEntity, Stats
 
 
 class Song(BaseEntity):
@@ -14,34 +14,34 @@ class Song(BaseEntity):
 
     def __init__(self, client, json_dict, lyrics=""):
         body = json_dict
-        super().__init__(body['id'])
+        super().__init__(body["id"])
         self._body = body
         self._client = client
-        self.artist = body['primary_artist']['name']
+        self.artist = body["primary_artist"]["name"]
         self.lyrics = lyrics if lyrics else ""
-        self.primary_artist = Artist(client, body['primary_artist'])
-        self.stats = Stats(body['stats'])
-        self.album = Album(client, body['album'], []) if body.get('album') else None
+        self.primary_artist = Artist(client, body["primary_artist"])
+        self.stats = Stats(body["stats"])
+        self.album = Album(client, body["album"], []) if body.get("album") else None
 
-        self.annotation_count = body['annotation_count']
-        self.api_path = body['api_path']
-        self.full_title = body['full_title']
-        self.header_image_thumbnail_url = body['header_image_thumbnail_url']
-        self.header_image_url = body['header_image_url']
-        self.lyrics_owner_id = body['lyrics_owner_id']
-        self.lyrics_state = body['lyrics_state']
-        self.path = body['path']
-        self.pyongs_count = body['pyongs_count']
-        self.song_art_image_thumbnail_url = body['song_art_image_thumbnail_url']
-        self.song_art_image_url = body['song_art_image_url']
-        self.title = body['title']
-        self.title_with_featured = body['title_with_featured']
-        self.url = body['url']
+        self.annotation_count = body["annotation_count"]
+        self.api_path = body["api_path"]
+        self.full_title = body["full_title"]
+        self.header_image_thumbnail_url = body["header_image_thumbnail_url"]
+        self.header_image_url = body["header_image_url"]
+        self.lyrics_owner_id = body["lyrics_owner_id"]
+        self.lyrics_state = body["lyrics_state"]
+        self.path = body["path"]
+        self.pyongs_count = body["pyongs_count"]
+        self.song_art_image_thumbnail_url = body["song_art_image_thumbnail_url"]
+        self.song_art_image_url = body["song_art_image_url"]
+        self.title = body["title"]
+        self.title_with_featured = body["title_with_featured"]
+        self.url = body["url"]
 
     def to_dict(self):
         body = super().to_dict()
-        body['artist'] = self.artist
-        body['lyrics'] = self.lyrics
+        body["artist"] = self.artist
+        body["lyrics"] = self.lyrics
         return body
 
     def to_json(self,
@@ -65,7 +65,7 @@ class Song(BaseEntity):
 
     def save_lyrics(self,
                     filename=None,
-                    extension='json',
+                    extension="json",
                     overwrite=False,
                     ensure_ascii=True,
                     sanitize=True,
@@ -90,7 +90,7 @@ class Song(BaseEntity):
         else:
             lyr = self.lyrics[:100]
         return '"{title}" by {artist}:\n    {lyrics}'.format(
-            title=self.title, artist=self.artist, lyrics=lyr.replace('\n', '\n    '))
+            title=self.title, artist=self.artist, lyrics=lyr.replace("\n", "\n    "))
 
     def __cmp__(self, other):
         return (cmp(self.title, other.title)

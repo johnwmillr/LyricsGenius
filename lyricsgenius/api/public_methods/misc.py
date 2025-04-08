@@ -17,10 +17,10 @@ class MiscMethods(object):
             ``NotImplementedError``.
 
         """
-        raise NotImplementedError('This action requires a logged in user.')
+        raise NotImplementedError("This action requires a logged in user.")
 
-        endpoint = 'line_items/{}'.format(line_item_id)
-        params = {'text_format': text_format or self.response_format}
+        endpoint = "line_items/{}".format(line_item_id)
+        params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def page_data(self, album=None, song=None, artist=None):
@@ -88,19 +88,19 @@ class MiscMethods(object):
             assert all([song, artist]), "You must pass artist."
 
         if album:
-            endpoint = 'page_data/album'
-            page_type = 'albums'
-            item_path = album.replace('/albums/', '')
+            endpoint = "page_data/album"
+            page_type = "albums"
+            item_path = album.replace("/albums/", "")
         else:
-            endpoint = 'page_data/song'
-            page_type = 'songs'
+            endpoint = "page_data/song"
+            page_type = "songs"
 
             # item path becomes something like: Artist/Song
-            item_path = song[1:].replace(artist + '-', artist + '/').replace('-lyrics', '')
+            item_path = song[1:].replace(artist + "-", artist + "/").replace("-lyrics", "")
 
-        page_path = '/{page_type}/{item_path}'.format(page_type=page_type,
+        page_path = "/{page_type}/{item_path}".format(page_type=page_type,
                                                       item_path=item_path)
-        params = {'page_path': page_path}
+        params = {"page_path": page_path}
 
         return self._make_request(endpoint, params_=params, public_api=True)
 
@@ -138,15 +138,15 @@ class MiscMethods(object):
         )
         assert condition, msg
 
-        endpoint = 'voters'
+        endpoint = "voters"
 
         params = {}
         if annotation_id:
-            params['annotation_id'] = annotation_id
+            params["annotation_id"] = annotation_id
         elif answer_id:
-            params['answer_id'] = answer_id
+            params["answer_id"] = answer_id
         elif article_id:
-            params['article_id'] = article_id
+            params["article_id"] = article_id
         elif comment_id:
-            params['comment_id'] = comment_id
+            params["comment_id"] = comment_id
         return self._make_request(path=endpoint, params_=params, public_api=True)

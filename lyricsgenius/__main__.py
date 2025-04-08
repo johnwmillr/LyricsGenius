@@ -3,8 +3,8 @@
 #    python3 -m lyricsgenius song "Begin Again" "Andy Shauf" --save
 #    python3 -m lyricsgenius artist "The Beatles" --max-songs 5 --save
 
-import os
 import argparse
+import os
 
 from . import Genius
 from .utils import safe_unicode
@@ -21,9 +21,9 @@ def main(args=None):
     )
     parser.add_argument("terms", type=str, nargs="+",
                         help="Provide terms for search")
-    parser.add_argument("--save", type=str, nargs='*', default="json", const=None, choices=["json", "txt"],
+    parser.add_argument("--save", type=str, nargs="*", default="json", const=None, choices=["json", "txt"],
                         help="Specify one or more formats to save output: 'json' (default) or 'txt'")
-    parser.add_argument("--stdout", type=str, nargs='?', const="json", choices=["json", "txt"],
+    parser.add_argument("--stdout", type=str, nargs="?", const="json", choices=["json", "txt"],
                         help="Print output to stdout in 'json' or 'txt' format")
     parser.add_argument("--max-songs", type=int,
                         help="Specify number of songs when searching for artist")
@@ -56,7 +56,7 @@ def main(args=None):
     elif args.search_type == "artist":
         artist = api.search_artist(args.terms[0],
                                    max_songs=args.max_songs,
-                                   sort='popularity')
+                                   sort="popularity")
         if not artist:
             if not args.quiet:
                 print("Could not find specified artist. Check spelling?")

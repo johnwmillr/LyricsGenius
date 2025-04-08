@@ -13,8 +13,8 @@ class AnnotationMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'annotations/{}'.format(annotation_id)
-        params = {'text_format': text_format or self.response_format}
+        endpoint = "annotations/{}".format(annotation_id)
+        params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def annotation_edits(self, annotation_id, text_format=None):
@@ -29,8 +29,8 @@ class AnnotationMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'annotations/{}/versions'.format(annotation_id)
-        params = {'text_format': text_format or self.response_format}
+        endpoint = "annotations/{}/versions".format(annotation_id)
+        params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def annotation_comments(self,
@@ -52,8 +52,8 @@ class AnnotationMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'annotations/{}/comments'.format(annotation_id)
-        params = {'per_page': per_page,
-                  'page': page,
-                  'text_format': text_format or self.response_format}
+        endpoint = "annotations/{}/comments".format(annotation_id)
+        params = {"per_page": per_page,
+                  "page": page,
+                  "text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)

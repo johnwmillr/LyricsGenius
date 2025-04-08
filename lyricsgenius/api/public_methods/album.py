@@ -22,13 +22,13 @@ class AlbumMethods(object):
                 print(album['name'])
 
         """
-        endpoint = 'albums/{}'.format(album_id)
-        params = {'text_format': text_format or self.response_format}
+        endpoint = "albums/{}".format(album_id)
+        params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def albums_charts(self,
-                      time_period='day',
-                      chart_genre='all',
+                      time_period="day",
+                      chart_genre="all",
                       per_page=None,
                       page=None,
                       text_format=None):
@@ -56,7 +56,7 @@ class AlbumMethods(object):
             per_page=per_page,
             page=page,
             text_format=text_format,
-            type_='albums'
+            type_="albums"
         )
 
     def album_comments(self, album_id, per_page=None, page=None, text_format=None):
@@ -74,10 +74,10 @@ class AlbumMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'albums/{}/comments'.format(album_id)
-        params = {'per_page': per_page,
-                  'page': page,
-                  'text_format': text_format or self.response_format}
+        endpoint = "albums/{}/comments".format(album_id)
+        params = {"per_page": per_page,
+                  "page": page,
+                  "text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def album_cover_arts(self, album_id, text_format=None):
@@ -124,9 +124,9 @@ class AlbumMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'albums/{}/leaderboard'.format(album_id)
-        params = {'per_page': per_page,
-                  'page': page}
+        endpoint = "albums/{}/leaderboard".format(album_id)
+        params = {"per_page": per_page,
+                  "page": page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def album_tracks(self, album_id, per_page=None, page=None, text_format=None):
@@ -144,8 +144,8 @@ class AlbumMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'albums/{}/tracks'.format(album_id)
-        params = {'per_page': per_page,
-                  'page': page,
-                  'text_format': text_format or self.response_format}
+        endpoint = "albums/{}/tracks".format(album_id)
+        params = {"per_page": per_page,
+                  "page": page,
+                  "text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)

@@ -1,11 +1,10 @@
 import unittest
 
 from lyricsgenius.utils import (
+    auth_from_environment,
     parse_redirected_url,
     sanitize_filename,
-    auth_from_environment,
 )
-
 from tests import genius
 
 

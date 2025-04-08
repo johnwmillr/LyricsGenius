@@ -1,9 +1,9 @@
-from urllib.parse import urlencode
 import webbrowser
+from urllib.parse import urlencode
 
-from .utils import parse_redirected_url
 from .api import Sender
 from .errors import InvalidStateError
+from .utils import parse_redirected_url
 
 
 class OAuth2(Sender):
@@ -26,8 +26,8 @@ class OAuth2(Sender):
             :obj:`client_only_app` is supplied.
 
     """
-    auth_url = 'https://api.genius.com/oauth/authorize'
-    token_url = 'https://api.genius.com/oauth/token'
+    auth_url = "https://api.genius.com/oauth/authorize"
+    token_url = "https://api.genius.com/oauth/token"
 
     def __init__(self, client_id, redirect_uri,
                  client_secret=None, scope=None,
@@ -41,11 +41,11 @@ class OAuth2(Sender):
         self.client_id = client_id
         self.client_secret = client_secret
         self.redirect_uri = redirect_uri
-        if scope == 'all':
-            scope = ('me', 'create_annotation', 'manage_annotation', 'vote')
+        if scope == "all":
+            scope = ("me", "create_annotation", "manage_annotation", "vote")
         self.scope = scope if scope else ()
         self.state = state
-        self.flow = 'token' if client_only_app else 'code'
+        self.flow = "token" if client_only_app else "code"
         self.client_only_app = client_only_app
 
     @property
@@ -59,15 +59,15 @@ class OAuth2(Sender):
 
         """
         payload = {
-            'client_id': self.client_id,
-            'redirect_uri': self.redirect_uri,
-            'response_type': self.flow
+            "client_id": self.client_id,
+            "redirect_uri": self.redirect_uri,
+            "response_type": self.flow
         }
         if self.scope:
-            payload['scope'] = ' '.join(self.scope)
+            payload["scope"] = " ".join(self.scope)
         if self.state:
-            payload['state'] = self.state
-        return OAuth2.auth_url + '?' + urlencode(payload)
+            payload["state"] = self.state
+        return OAuth2.auth_url + "?" + urlencode(payload)
 
     def get_user_token(self, code=None, url=None, state=None, **kwargs):
         """Gets a user token using the url or the code parameter..
@@ -96,18 +96,18 @@ class OAuth2(Sender):
         assert any([code, url]), "You must pass either `code` or `url`."
 
         if state is not None and self.state != state:
-            raise InvalidStateError('States do not match.')
+            raise InvalidStateError("States do not match.")
 
         if code:
-            payload = {'code': code,
-                       'client_id': self.client_id,
-                       'client_secret': self.client_secret,
-                       'redirect_uri': self.redirect_uri,
-                       'grant_type': 'authorization_code',
-                       'response_type': 'code'}
-            url = OAuth2.token_url.replace('https://api.genius.com/', '')
-            res = self._make_request(url, 'POST', data=payload, **kwargs)
-            token = res['access_token']
+            payload = {"code": code,
+                       "client_id": self.client_id,
+                       "client_secret": self.client_secret,
+                       "redirect_uri": self.redirect_uri,
+                       "grant_type": "authorization_code",
+                       "response_type": "code"}
+            url = OAuth2.token_url.replace("https://api.genius.com/", "")
+            res = self._make_request(url, "POST", data=payload, **kwargs)
+            token = res["access_token"]
         else:
             token = parse_redirected_url(url, self.flow)
         return token
@@ -125,11 +125,11 @@ class OAuth2(Sender):
         """
 
         url = self.url
-        print('Opening browser for Genius login...')
+        print("Opening browser for Genius login...")
         webbrowser.open(url)
-        redirected = input('Please paste redirect URL: ').strip()
+        redirected = input("Please paste redirect URL: ").strip()
 
-        if self.flow == 'token':
+        if self.flow == "token":
             token = parse_redirected_url(redirected, self.flow)
         else:
             code = parse_redirected_url(redirected, self.flow)
