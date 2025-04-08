@@ -33,11 +33,9 @@ class AnnotationMethods(object):
         params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def annotation_comments(self,
-                            annotation_id,
-                            per_page=None,
-                            page=None,
-                            text_format=None):
+    def annotation_comments(
+        self, annotation_id, per_page=None, page=None, text_format=None
+    ):
         """Gets the comments on an annotation.
 
         Args:
@@ -53,7 +51,9 @@ class AnnotationMethods(object):
 
         """
         endpoint = "annotations/{}/comments".format(annotation_id)
-        params = {"per_page": per_page,
-                  "page": page,
-                  "text_format": text_format or self.response_format}
+        params = {
+            "per_page": per_page,
+            "page": page,
+            "text_format": text_format or self.response_format,
+        }
         return self._make_request(path=endpoint, params_=params, public_api=True)

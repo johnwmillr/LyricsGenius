@@ -9,7 +9,6 @@ from tests import genius
 
 
 class TestUtils(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up utils tests...\n")

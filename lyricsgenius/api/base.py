@@ -9,6 +9,7 @@ from requests.exceptions import HTTPError, Timeout
 
 class Sender(object):
     """Sends requests to Genius."""
+
     # Create a persistent requests connection
     API_ROOT = "https://api.genius.com/"
     PUBLIC_API_ROOT = "https://genius.com/api/"
@@ -29,7 +30,9 @@ class Sender(object):
         user_agent_root = f"{platform.system()} {platform.release()}; Python {platform.python_version()}"
         self._session.headers = {
             "application": "LyricsGenius",
-            "User-Agent": f"({user_agent}) ({user_agent_root})" if user_agent else user_agent_root,
+            "User-Agent": f"({user_agent}) ({user_agent_root})"
+            if user_agent
+            else user_agent_root,
         }
         if proxy:
             self._session.proxies = proxy
@@ -50,13 +53,7 @@ class Sender(object):
         self.retries = retries
 
     def _make_request(
-        self,
-        path,
-        method="GET",
-        params_=None,
-        public_api=False,
-        web=False,
-        **kwargs
+        self, path, method="GET", params_=None, public_api=False, web=False, **kwargs
     ):
         """Makes a request to Genius."""
         if public_api:
@@ -78,11 +75,14 @@ class Sender(object):
         while response is None and tries <= self.retries:
             tries += 1
             try:
-                response = self._session.request(method, uri,
-                                                 timeout=self.timeout,
-                                                 params=params_,
-                                                 headers=header,
-                                                 **kwargs)
+                response = self._session.request(
+                    method,
+                    uri,
+                    timeout=self.timeout,
+                    params=params_,
+                    headers=header,
+                    **kwargs,
+                )
                 response.raise_for_status()
             except Timeout as e:
                 error = "Request timed out:\n{e}".format(e=e)
@@ -104,8 +104,11 @@ class Sender(object):
         elif response.status_code == 204:
             return 204
         else:
-            raise AssertionError("Response status code was neither 200, nor 204! "
-                                 "It was {}".format(response.status_code))
+            raise AssertionError(
+                "Response status code was neither 200, nor 204! It was {}".format(
+                    response.status_code
+                )
+            )
 
 
 def get_description(e):
@@ -114,8 +117,8 @@ def get_description(e):
         res = e.response.json()
     except JSONDecodeError:
         res = {}
-    description = (res["meta"]["message"]
-                   if res.get("meta")
-                   else res.get("error_description"))
+    description = (
+        res["meta"]["message"] if res.get("meta") else res.get("error_description")
+    )
     error += "\n{}".format(description) if description else ""
     return error

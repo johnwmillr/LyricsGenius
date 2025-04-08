@@ -68,20 +68,24 @@ class Artist(BaseEntity):
                 return None
         if any([song.title == new_song.title for song in self.songs]):
             if verbose:
-                print("{s} already in {a}, not adding song.".format(
-                    s=safe_unicode(new_song.title),
-                    a=safe_unicode(self.name))
+                print(
+                    "{s} already in {a}, not adding song.".format(
+                        s=safe_unicode(new_song.title), a=safe_unicode(self.name)
+                    )
                 )
             return None
-        if (new_song.artist == self.name
-                or (include_features and any(new_song._body["featured_artists"]))):
+        if new_song.artist == self.name or (
+            include_features and any(new_song._body["featured_artists"])
+        ):
             self.songs.append(new_song)
             self.num_songs += 1
             return new_song
         if verbose:
-            print("Can't add song by {b}, artist must be {a}.".format(
-                b=safe_unicode(new_song.artist),
-                a=safe_unicode(self.name)))
+            print(
+                "Can't add song by {b}, artist must be {a}.".format(
+                    b=safe_unicode(new_song.artist), a=safe_unicode(self.name)
+                )
+            )
         return None
 
     def song(self, song_name):
@@ -111,44 +115,40 @@ class Artist(BaseEntity):
         body["songs"] = [song.to_dict() for song in self.songs]
         return body
 
-    def to_json(self,
-                filename=None,
-                sanitize=True,
-                ensure_ascii=True):
+    def to_json(self, filename=None, sanitize=True, ensure_ascii=True):
         data = self.to_dict()
-        return super().to_json(data=data,
-                               filename=filename,
-                               sanitize=sanitize,
-                               ensure_ascii=ensure_ascii)
+        return super().to_json(
+            data=data, filename=filename, sanitize=sanitize, ensure_ascii=ensure_ascii
+        )
 
-    def to_text(self,
-                filename=None,
-                sanitize=True):
+    def to_text(self, filename=None, sanitize=True):
         data = "\n\n".join(
-            f"[Song {n}: {song.title}]\n{song.lyrics}" 
+            f"[Song {n}: {song.title}]\n{song.lyrics}"
             for n, song in enumerate(self.songs, start=1)
         ).strip()
-        return super().to_text(data=data,
-                               filename=filename,
-                               sanitize=sanitize)
+        return super().to_text(data=data, filename=filename, sanitize=sanitize)
 
-    def save_lyrics(self,
-                    filename=None,
-                    extension="json",
-                    overwrite=False,
-                    ensure_ascii=True,
-                    sanitize=True,
-                    verbose=True):
+    def save_lyrics(
+        self,
+        filename=None,
+        extension="json",
+        overwrite=False,
+        ensure_ascii=True,
+        sanitize=True,
+        verbose=True,
+    ):
         # Determine the filename
         if filename is None:
             filename = "Lyrics_" + self.name.replace(" ", "")
 
-        return super().save_lyrics(filename=filename,
-                                   extension=extension,
-                                   overwrite=overwrite,
-                                   ensure_ascii=ensure_ascii,
-                                   sanitize=sanitize,
-                                   verbose=verbose)
+        return super().save_lyrics(
+            filename=filename,
+            extension=extension,
+            overwrite=overwrite,
+            ensure_ascii=ensure_ascii,
+            sanitize=sanitize,
+            verbose=verbose,
+        )
 
     def __str__(self):
         """Return a string representation of the Artist object."""

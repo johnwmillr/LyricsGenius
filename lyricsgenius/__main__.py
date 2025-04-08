@@ -17,18 +17,34 @@ def main(args=None):
         "search_type",
         type=str.lower,
         choices=["song", "artist", "album"],
-        help="Specify whether search is for 'song', 'artist' or 'album'."
+        help="Specify whether search is for 'song', 'artist' or 'album'.",
     )
-    parser.add_argument("terms", type=str, nargs="+",
-                        help="Provide terms for search")
-    parser.add_argument("--save", type=str, nargs="*", default="json", const=None, choices=["json", "txt"],
-                        help="Specify one or more formats to save output: 'json' (default) or 'txt'")
-    parser.add_argument("--stdout", type=str, nargs="?", const="json", choices=["json", "txt"],
-                        help="Print output to stdout in 'json' or 'txt' format")
-    parser.add_argument("--max-songs", type=int,
-                        help="Specify number of songs when searching for artist")
-    parser.add_argument("-q", "--quiet", action="store_true",
-                        help="Turn off the API verbosity")
+    parser.add_argument("terms", type=str, nargs="+", help="Provide terms for search")
+    parser.add_argument(
+        "--save",
+        type=str,
+        nargs="*",
+        default="json",
+        const=None,
+        choices=["json", "txt"],
+        help="Specify one or more formats to save output: 'json' (default) or 'txt'",
+    )
+    parser.add_argument(
+        "--stdout",
+        type=str,
+        nargs="?",
+        const="json",
+        choices=["json", "txt"],
+        help="Print output to stdout in 'json' or 'txt' format",
+    )
+    parser.add_argument(
+        "--max-songs",
+        type=int,
+        help="Specify number of songs when searching for artist",
+    )
+    parser.add_argument(
+        "-q", "--quiet", action="store_true", help="Turn off the API verbosity"
+    )
     args = parser.parse_args()
 
     # Create an instance of the Genius class
@@ -51,12 +67,14 @@ def main(args=None):
         if args.save:
             for format in args.save:
                 if not args.quiet:
-                    print(f"Saving lyrics to '{safe_unicode(song.title)}' in {format.upper()} format...")
+                    print(
+                        f"Saving lyrics to '{safe_unicode(song.title)}' in {format.upper()} format..."
+                    )
                 song.save_lyrics(extension=format)
     elif args.search_type == "artist":
-        artist = api.search_artist(args.terms[0],
-                                   max_songs=args.max_songs,
-                                   sort="popularity")
+        artist = api.search_artist(
+            args.terms[0], max_songs=args.max_songs, sort="popularity"
+        )
         if not artist:
             if not args.quiet:
                 print("Could not find specified artist. Check spelling?")
@@ -66,7 +84,9 @@ def main(args=None):
         if args.save:
             for format in args.save:
                 if not args.quiet:
-                    print(f"Saving '{safe_unicode(artist.name)}' lyrics in {format.upper()} format...")
+                    print(
+                        f"Saving '{safe_unicode(artist.name)}' lyrics in {format.upper()} format..."
+                    )
                 artist.save_lyrics(extension=format)
     elif args.search_type == "album":
         album = api.search_album(*args.terms)
@@ -79,7 +99,9 @@ def main(args=None):
         if args.save:
             for format in args.save:
                 if not args.quiet:
-                    print(f"Saving '{safe_unicode(album.name)}' lyrics in {format.upper()} format...")
+                    print(
+                        f"Saving '{safe_unicode(album.name)}' lyrics in {format.upper()} format..."
+                    )
                 album.save_lyrics(extension=format)
 
 

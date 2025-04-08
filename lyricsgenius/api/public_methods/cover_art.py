@@ -20,12 +20,8 @@ class CoverArtMethods(object):
         """
         msg = "Must supply `album_id` or `song_id`."
         assert any([album_id, song_id]), msg
-        msg = ("Pass only one of `album_id` or `song_id`"
-               ", not both.")
-        condition = (
-            sum([bool(album_id), bool(song_id)])
-            == 1
-        )
+        msg = "Pass only one of `album_id` or `song_id`, not both."
+        condition = sum([bool(album_id), bool(song_id)]) == 1
         assert condition, msg
         endpoint = "cover_arts"
         params = {"text_format": text_format or self.response_format}

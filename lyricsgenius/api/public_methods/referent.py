@@ -32,8 +32,15 @@ class ReferentMethods(object):
 
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def referents(self, song_id=None, web_page_id=None,
-                  created_by_id=None, per_page=None, page=None, text_format=None):
+    def referents(
+        self,
+        song_id=None,
+        web_page_id=None,
+        created_by_id=None,
+        per_page=None,
+        page=None,
+        text_format=None,
+    ):
         """Gets item's referents
 
         You must supply :obj:`song_id`, :obj:`web_page_id`, or :obj:`created_by_id`.
@@ -58,19 +65,24 @@ class ReferentMethods(object):
         assert bool(song_id) ^ bool(web_page_id), msg
 
         endpoint = "referents"
-        params = {"song_id": song_id,
-                  "web_page_id": web_page_id,
-                  "created_by_id": created_by_id,
-                  "per_page": per_page, "page": page,
-                  "text_format": text_format or self.response_format}
+        params = {
+            "song_id": song_id,
+            "web_page_id": web_page_id,
+            "created_by_id": created_by_id,
+            "per_page": per_page,
+            "page": page,
+            "text_format": text_format or self.response_format,
+        }
         return self._make_request(endpoint, params_=params, public_api=True)
 
-    def referents_charts(self,
-                         time_period="day",
-                         chart_genre="all",
-                         per_page=None,
-                         page=None,
-                         text_format=None):
+    def referents_charts(
+        self,
+        time_period="day",
+        chart_genre="all",
+        per_page=None,
+        page=None,
+        text_format=None,
+    ):
         """Gets the referents (lyrics) charts.
 
         Alias for :meth:`charts() <PublicAPI.charts>`.
@@ -95,5 +107,5 @@ class ReferentMethods(object):
             per_page=per_page,
             page=page,
             text_format=text_format,
-            type_="referents"
+            type_="referents",
         )

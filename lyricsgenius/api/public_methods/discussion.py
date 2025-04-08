@@ -37,11 +37,9 @@ class DiscussionMethods(object):
         params = {"page": page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def discussion_replies(self,
-                           discussion_id,
-                           per_page=None,
-                           page=None,
-                           text_format=None):
+    def discussion_replies(
+        self, discussion_id, per_page=None, page=None, text_format=None
+    ):
         """Gets the replies on a discussion.
 
         Args:
@@ -62,7 +60,9 @@ class DiscussionMethods(object):
         raise NotImplementedError("This request returns a 403 error.")
 
         endpoint = "discussions/{}/forum_posts".format(discussion_id)
-        params = {"per_page": per_page,
-                  "page": page,
-                  "text_format": text_format or self.response_format}
+        params = {
+            "per_page": per_page,
+            "page": page,
+            "text_format": text_format or self.response_format,
+        }
         return self._make_request(path=endpoint, params_=params, public_api=True)

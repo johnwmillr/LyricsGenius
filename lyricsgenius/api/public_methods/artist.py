@@ -34,9 +34,11 @@ class ArtistMethods(object):
 
         """
         endpoint = "artists/{}/activity_stream/line_items".format(artist_id)
-        params = {"per_page": per_page,
-                  "page": page,
-                  "text_format": text_format or self.response_format}
+        params = {
+            "per_page": per_page,
+            "page": page,
+            "text_format": text_format or self.response_format,
+        }
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def artist_albums(self, artist_id, per_page=None, page=None):
@@ -53,15 +55,12 @@ class ArtistMethods(object):
 
         """
         endpoint = "artists/{}/albums".format(artist_id)
-        params = {"per_page": per_page,
-                  "page": page}
+        params = {"per_page": per_page, "page": page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def artist_contribution_opportunities(self,
-                                          artist_id,
-                                          per_page=None,
-                                          next_curosr=None,
-                                          text_format=None):
+    def artist_contribution_opportunities(
+        self, artist_id, per_page=None, next_curosr=None, text_format=None
+    ):
         """Gets contribution opportunities related to the artist.
 
         Args:
@@ -83,9 +82,11 @@ class ArtistMethods(object):
         """
         raise NotImplementedError("This action requires a logged in user.")
         endpoint = "artists/{}/contribution_opportunities".format(artist_id)
-        params = {"per_page": per_page,
-                  "next_curosr": next_curosr,
-                  "text_format": text_format or self.response_format}
+        params = {
+            "per_page": per_page,
+            "next_curosr": next_curosr,
+            "text_format": text_format or self.response_format,
+        }
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def artist_followers(self, artist_id, per_page=None, page=None):
@@ -102,8 +103,7 @@ class ArtistMethods(object):
 
         """
         endpoint = "artists/{}/followers".format(artist_id)
-        params = {"per_page": per_page,
-                  "page": page}
+        params = {"per_page": per_page, "page": page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def artist_leaderboard(self, artist_id, per_page=None, page=None):
@@ -120,8 +120,7 @@ class ArtistMethods(object):
 
         """
         endpoint = "artists/{}/leaderboard".format(artist_id)
-        params = {"per_page": per_page,
-                  "page": page}
+        params = {"per_page": per_page, "page": page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def artist_songs(self, artist_id, per_page=None, page=None, sort="popularity"):
@@ -140,17 +139,12 @@ class ArtistMethods(object):
 
         """
         endpoint = "artists/{}/songs".format(artist_id)
-        params = {"per_page": per_page,
-                  "page": page,
-                  "sort": sort}
+        params = {"per_page": per_page, "page": page, "sort": sort}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def search_artist_songs(self,
-                            artist_id,
-                            search_term,
-                            per_page=None,
-                            page=None,
-                            sort="popularity"):
+    def search_artist_songs(
+        self, artist_id, search_term, per_page=None, page=None, sort="popularity"
+    ):
         """Searches artist's songs.
 
         Args:
@@ -167,8 +161,5 @@ class ArtistMethods(object):
 
         """
         endpoint = "artists/{}/songs/search".format(artist_id)
-        params = {"q": search_term,
-                  "per_page": per_page,
-                  "page": page,
-                  "sort": sort}
+        params = {"q": search_term, "per_page": per_page, "page": page, "sort": sort}
         return self._make_request(path=endpoint, params_=params, public_api=True)

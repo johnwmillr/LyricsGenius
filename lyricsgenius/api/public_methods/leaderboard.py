@@ -1,11 +1,9 @@
 class LeaderboardMethods(object):
     """Leaderboard methods of the public API."""
 
-    def leaderboard(self,
-                    time_period="day",
-                    per_page=None,
-                    page=None,
-                    text_format=None):
+    def leaderboard(
+        self, time_period="day", per_page=None, page=None, text_format=None
+    ):
         """Gets the Genius community leaderboard.
 
         This method gets data of the community charts on the Genius.com page.
@@ -24,19 +22,23 @@ class LeaderboardMethods(object):
 
         """
         path = "leaderboard"
-        params = {"time_period": time_period,
-                  "per_page": per_page,
-                  "page": page,
-                  "text_format": text_format or self.response_format}
+        params = {
+            "time_period": time_period,
+            "per_page": per_page,
+            "page": page,
+            "text_format": text_format or self.response_format,
+        }
         return self._make_request(path=path, params_=params, public_api=True)
 
-    def charts(self,
-               time_period="day",
-               chart_genre="all",
-               per_page=None,
-               page=None,
-               text_format=None,
-               type_="songs"):
+    def charts(
+        self,
+        time_period="day",
+        chart_genre="all",
+        per_page=None,
+        page=None,
+        text_format=None,
+        type_="songs",
+    ):
         """Gets the Genius charts.
 
         This method gets data of the chart on the Genius.com page.
@@ -67,9 +69,11 @@ class LeaderboardMethods(object):
 
         """
         endpoint = type_ + "/chart"
-        params = {"time_period": time_period,
-                  "chart_genre": chart_genre,
-                  "per_page": per_page,
-                  "page": page,
-                  "text_format": text_format or self.response_format}
+        params = {
+            "time_period": time_period,
+            "chart_genre": chart_genre,
+            "per_page": per_page,
+            "page": page,
+            "text_format": text_format or self.response_format,
+        }
         return self._make_request(path=endpoint, params_=params, public_api=True)

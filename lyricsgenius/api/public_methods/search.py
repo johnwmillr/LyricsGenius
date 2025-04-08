@@ -39,9 +39,7 @@ class SearchMethods(object):
             path = "search"
         else:
             path = "search/" + type_
-        params = {"q": search_term,
-                  "per_page": per_page,
-                  "page": page}
+        params = {"q": search_term, "per_page": per_page, "page": page}
         return self._make_request(path, params_=params, public_api=True)
 
     def search_albums(self, search_term, per_page=None, page=None):

@@ -7,7 +7,6 @@ from tests import genius
 
 
 class TestSong(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up Song tests...\n")

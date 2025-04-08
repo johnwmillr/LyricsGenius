@@ -44,44 +44,39 @@ class Song(BaseEntity):
         body["lyrics"] = self.lyrics
         return body
 
-    def to_json(self,
-                filename=None,
-                sanitize=True,
-                ensure_ascii=True):
+    def to_json(self, filename=None, sanitize=True, ensure_ascii=True):
         data = self.to_dict()
-        return super().to_json(data=data,
-                               filename=filename,
-                               sanitize=sanitize,
-                               ensure_ascii=ensure_ascii)
+        return super().to_json(
+            data=data, filename=filename, sanitize=sanitize, ensure_ascii=ensure_ascii
+        )
 
-    def to_text(self,
-                filename=None,
-                sanitize=True):
+    def to_text(self, filename=None, sanitize=True):
         data = self.lyrics
 
-        return super().to_text(data=data,
-                               filename=filename,
-                               sanitize=sanitize)
+        return super().to_text(data=data, filename=filename, sanitize=sanitize)
 
-    def save_lyrics(self,
-                    filename=None,
-                    extension="json",
-                    overwrite=False,
-                    ensure_ascii=True,
-                    sanitize=True,
-                    verbose=True):
-
+    def save_lyrics(
+        self,
+        filename=None,
+        extension="json",
+        overwrite=False,
+        ensure_ascii=True,
+        sanitize=True,
+        verbose=True,
+    ):
         if filename is None:
-            filename = "Lyrics_{}_{}".format(self.artist.replace(" ", ""),
-                                             self.title.replace(" ", "")
-                                             ).lower()
+            filename = "Lyrics_{}_{}".format(
+                self.artist.replace(" ", ""), self.title.replace(" ", "")
+            ).lower()
 
-        return super().save_lyrics(filename=filename,
-                                   extension=extension,
-                                   overwrite=overwrite,
-                                   ensure_ascii=ensure_ascii,
-                                   sanitize=sanitize,
-                                   verbose=verbose)
+        return super().save_lyrics(
+            filename=filename,
+            extension=extension,
+            overwrite=overwrite,
+            ensure_ascii=ensure_ascii,
+            sanitize=sanitize,
+            verbose=verbose,
+        )
 
     def __str__(self):
         """Return a string representation of the Song object."""
@@ -90,9 +85,12 @@ class Song(BaseEntity):
         else:
             lyr = self.lyrics[:100]
         return '"{title}" by {artist}:\n    {lyrics}'.format(
-            title=self.title, artist=self.artist, lyrics=lyr.replace("\n", "\n    "))
+            title=self.title, artist=self.artist, lyrics=lyr.replace("\n", "\n    ")
+        )
 
     def __cmp__(self, other):
-        return (cmp(self.title, other.title)
-                and cmp(self.artist, other.artist)
-                and cmp(self.lyrics, other.lyrics))
+        return (
+            cmp(self.title, other.title)
+            and cmp(self.artist, other.artist)
+            and cmp(self.lyrics, other.lyrics)
+        )

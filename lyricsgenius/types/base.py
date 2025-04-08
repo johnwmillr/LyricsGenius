@@ -12,13 +12,15 @@ class BaseEntity(ABC):
         self.id = id
 
     @abstractmethod
-    def save_lyrics(self,
-                    filename,
-                    extension="json",
-                    overwrite=False,
-                    ensure_ascii=True,
-                    sanitize=True,
-                    verbose=True):
+    def save_lyrics(
+        self,
+        filename,
+        extension="json",
+        overwrite=False,
+        ensure_ascii=True,
+        sanitize=True,
+        verbose=True,
+    ):
         """Save Song(s) lyrics and metadata to a JSON or TXT file.
 
         If the extension is 'json' (the default), the lyrics will be saved
@@ -85,11 +87,7 @@ class BaseEntity(ABC):
         return self._body.copy()
 
     @abstractmethod
-    def to_json(self,
-                data,
-                filename=None,
-                sanitize=True,
-                ensure_ascii=True):
+    def to_json(self, data, filename=None, sanitize=True, ensure_ascii=True):
         """Converts the object to a json string.
 
         Args:
@@ -122,10 +120,7 @@ class BaseEntity(ABC):
         return None
 
     @abstractmethod
-    def to_text(self,
-                data,
-                filename=None,
-                sanitize=True):
+    def to_text(self, data, filename=None, sanitize=True):
         """Converts song(s) lyrics to a single string.
 
         Args:
@@ -154,9 +149,7 @@ class BaseEntity(ABC):
 
     def __repr__(self):
         name = self.__class__.__name__
-        attrs = [x
-                 for x in list(self.__dict__.keys())
-                 if not x.startswith("_")]
+        attrs = [x for x in list(self.__dict__.keys()) if not x.startswith("_")]
         attrs = ", ".join(attrs[:2])
         return "{}({}, ...)".format(name, attrs)
 
@@ -180,7 +173,6 @@ class Stats(object):
     """
 
     def __init__(self, json_dict):
-
         for key, value in json_dict.items():
             setattr(self, key, value)
 
@@ -188,6 +180,7 @@ class Stats(object):
         name = self.__class__.__name__
         attrs = ", ".join(list(self.__dict__.keys()))
         return "{}({!r})".format(name, attrs)
+
 
 # class EntityWithLyrics(ABC, BaseEntity):
 #    """Entity that has lyrics."""

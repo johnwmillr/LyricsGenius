@@ -33,9 +33,11 @@ class ArticleMethods(object):
 
         """
         endpoint = "articles/{}/comments".format(article_id)
-        params = {"per_page": per_page,
-                  "page": page,
-                  "text_format": text_format or self.response_format}
+        params = {
+            "per_page": per_page,
+            "page": page,
+            "text_format": text_format or self.response_format,
+        }
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def latest_articles(self, per_page=None, page=None, text_format=None):
@@ -57,7 +59,9 @@ class ArticleMethods(object):
 
         """
         endpoint = "editorial_placements/latest"
-        params = {"per_page": per_page,
-                  "page": page,
-                  "text_format": text_format or self.response_format}
+        params = {
+            "per_page": per_page,
+            "page": page,
+            "text_format": text_format or self.response_format,
+        }
         return self._make_request(path=endpoint, params_=params, public_api=True)

@@ -26,17 +26,26 @@ class OAuth2(Sender):
             :obj:`client_only_app` is supplied.
 
     """
+
     auth_url = "https://api.genius.com/oauth/authorize"
     token_url = "https://api.genius.com/oauth/token"
 
-    def __init__(self, client_id, redirect_uri,
-                 client_secret=None, scope=None,
-                 state=None, client_only_app=False):
+    def __init__(
+        self,
+        client_id,
+        redirect_uri,
+        client_secret=None,
+        scope=None,
+        state=None,
+        client_only_app=False,
+    ):
         super().__init__()
-        msg = ("You must provide a client_secret "
-               "if you intend to use the full code exchange."
-               "\nIf you meant to use the client-only flow, "
-               "set the client_only_app parameter to True.")
+        msg = (
+            "You must provide a client_secret "
+            "if you intend to use the full code exchange."
+            "\nIf you meant to use the client-only flow, "
+            "set the client_only_app parameter to True."
+        )
         assert any([client_secret, client_only_app]), msg
         self.client_id = client_id
         self.client_secret = client_secret
@@ -61,7 +70,7 @@ class OAuth2(Sender):
         payload = {
             "client_id": self.client_id,
             "redirect_uri": self.redirect_uri,
-            "response_type": self.flow
+            "response_type": self.flow,
         }
         if self.scope:
             payload["scope"] = " ".join(self.scope)
@@ -99,12 +108,14 @@ class OAuth2(Sender):
             raise InvalidStateError("States do not match.")
 
         if code:
-            payload = {"code": code,
-                       "client_id": self.client_id,
-                       "client_secret": self.client_secret,
-                       "redirect_uri": self.redirect_uri,
-                       "grant_type": "authorization_code",
-                       "response_type": "code"}
+            payload = {
+                "code": code,
+                "client_id": self.client_id,
+                "client_secret": self.client_secret,
+                "redirect_uri": self.redirect_uri,
+                "grant_type": "authorization_code",
+                "response_type": "code",
+            }
             url = OAuth2.token_url.replace("https://api.genius.com/", "")
             res = self._make_request(url, "POST", data=payload, **kwargs)
             token = res["access_token"]
@@ -151,15 +162,18 @@ class OAuth2(Sender):
             :class:`OAuth2`
 
         """
-        return cls(client_id=client_id,
-                   redirect_uri=redirect_uri,
-                   scope=scope,
-                   state=state,
-                   client_only_app=True)
+        return cls(
+            client_id=client_id,
+            redirect_uri=redirect_uri,
+            scope=scope,
+            state=state,
+            client_only_app=True,
+        )
 
     @classmethod
-    def full_code_exchange(cls, client_id, redirect_uri,
-                           client_secret, scope=None, state=None):
+    def full_code_exchange(
+        cls, client_id, redirect_uri, client_secret, scope=None, state=None
+    ):
         """Returns an OAuth2 instance for a full-code exchange app.
 
         Args:
@@ -173,22 +187,25 @@ class OAuth2(Sender):
             :class:`OAuth2`
 
         """
-        return cls(client_id=client_id,
-                   client_secret=client_secret,
-                   redirect_uri=redirect_uri,
-                   scope=scope,
-                   state=state)
+        return cls(
+            client_id=client_id,
+            client_secret=client_secret,
+            redirect_uri=redirect_uri,
+            scope=scope,
+            state=state,
+        )
 
     def __repr__(self):
-        return ("{name}("
-                "flow={flow!r}, "
-                "scope={scope!r}, "
-                "state={state!r}, "
-                "client_only_app={client_only_app!r})"
-                ).format(
+        return (
+            "{name}("
+            "flow={flow!r}, "
+            "scope={scope!r}, "
+            "state={state!r}, "
+            "client_only_app={client_only_app!r})"
+        ).format(
             name=self.__class__.__name__,
             flow=self.flow,
             scope=self.scope,
             state=self.state,
-            client_only_app=self.client_only_app
+            client_only_app=self.client_only_app,
         )
