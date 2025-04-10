@@ -8,8 +8,10 @@ repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.11.4 # Ruff version.
     hooks:
-      - id: ruff # Run the linter.
+      - id: ruff
+        name: Lint with ruff
         types_or: [python, pyi]
-        # args: [--fix]
-      - id: ruff-format # Run the formatter.
+        args: [--fix]
+      - id: ruff-format
+        name: Format with ruff
         types_or: [python, pyi]
