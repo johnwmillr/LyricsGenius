@@ -75,7 +75,7 @@ class Artist(BaseEntity):
                 )
             return None
         if new_song.artist == self.name or (
-            include_features and any(new_song._body["featured_artists"])
+            include_features and any(new_song._body.get("featured_artists", []))
         ):
             self.songs.append(new_song)
             self.num_songs += 1
