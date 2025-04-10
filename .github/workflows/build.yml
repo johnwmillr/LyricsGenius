@@ -1,4 +1,4 @@
-name: Build the package
+name: build
 
 on:
   push:
@@ -30,11 +30,5 @@ jobs:
         with:
           python-version-file: .python-version
 
-      - name: Build
+      - name: Build the package
         run: uv build
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
-        with:
-          name: built-package
-          path: dist/
