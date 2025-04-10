@@ -21,19 +21,19 @@ jobs:
       - name: Install uv and set the Python version
         uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182  # v5.4.1
         with:
-          version: "0.6.11"
+          version: 0.6.11
           enable-cache: true
-          cache-dependency-glob: "uv.lock"
+          cache-dependency-glob: uv.lock
 
-      - name: "Set up Python"
+      - name: Set up Python
         uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55
         with:
-          python-version-file: ".python-version"
+          python-version-file: .python-version
 
-      - name: "Build the package"
+      - name: Build
         run: uv build
 
-      - name: "Upload artifacts"
+      - name: Upload artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
         with:
           name: built-package
