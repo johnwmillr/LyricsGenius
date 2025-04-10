@@ -1,15 +1,12 @@
 import unittest
 
 from lyricsgenius import PublicAPI
-
 from tests import genius
-
 
 client = PublicAPI()
 
 
 class TestAlbumMethods(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up album methods tests...\n")
@@ -48,7 +45,6 @@ class TestAlbumMethods(unittest.TestCase):
 
 
 class TestAnnotationMethods(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up annotation methods tests...\n")
@@ -72,7 +68,6 @@ class TestAnnotationMethods(unittest.TestCase):
 
 
 class TestArticleMethods(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up article methods tests...\n")
@@ -96,7 +91,6 @@ class TestArticleMethods(unittest.TestCase):
 
 
 class TestArtistMethods(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up artist methods tests...\n")
@@ -137,7 +131,6 @@ class TestArtistMethods(unittest.TestCase):
 
 
 class TestCoverArtMethods(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up cover arts methods tests...\n")
@@ -150,7 +143,6 @@ class TestCoverArtMethods(unittest.TestCase):
 
 
 class TestDiscussionMethods(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up discussion methods tests...\n")
@@ -171,7 +163,6 @@ class TestDiscussionMethods(unittest.TestCase):
 
 
 class TestLeaderboardMethods(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up leaerboard methods tests...\n")
@@ -186,7 +177,6 @@ class TestLeaderboardMethods(unittest.TestCase):
 
 
 class TestQuestionMethods(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up question methods tests...\n")
@@ -199,7 +189,6 @@ class TestQuestionMethods(unittest.TestCase):
 
 
 class TestReferentMethods(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up referent methods tests...\n")
@@ -218,7 +207,6 @@ class TestReferentMethods(unittest.TestCase):
 
 
 class TestSearchMethods(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up search methods tests...\n")
@@ -263,7 +251,6 @@ class TestSearchMethods(unittest.TestCase):
 
 
 class TestSongMethods(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up song methods tests...\n")
@@ -288,7 +275,6 @@ class TestSongMethods(unittest.TestCase):
 
 
 class TestUserMethods(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up user methods tests...\n")
@@ -352,7 +338,6 @@ class TestUserMethods(unittest.TestCase):
 
 
 class TestVideoMethods(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up video methods tests...\n")
@@ -372,7 +357,6 @@ class TestVideoMethods(unittest.TestCase):
 
 
 class TestMiscMethods(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up misc methods tests...\n")

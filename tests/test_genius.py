@@ -4,7 +4,6 @@ from tests import genius
 
 
 class TestEndpoints(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up Endpoint tests...\n")
@@ -75,7 +74,6 @@ class TestEndpoints(unittest.TestCase):
 
 
 class TestLyrics(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up lyrics tests...\n")

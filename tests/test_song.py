@@ -1,13 +1,12 @@
 import os
 import unittest
 
-from tests import genius
 from lyricsgenius.types import Song
 from lyricsgenius.utils import clean_str
+from tests import genius
 
 
 class TestSong(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up Song tests...\n")

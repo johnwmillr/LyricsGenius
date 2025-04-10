@@ -1,7 +1,7 @@
 class SearchMethods(object):
     """Search methods of the public API."""
 
-    def search(self, search_term, per_page=None, page=None, type_=''):
+    def search(self, search_term, per_page=None, page=None, type_=""):
         """Searches Genius.
 
         Args:
@@ -35,13 +35,11 @@ class SearchMethods(object):
             can use the alias methods.
 
         """
-        if type_ == '':
-            path = 'search'
+        if type_ == "":
+            path = "search"
         else:
-            path = 'search/' + type_
-        params = {'q': search_term,
-                  'per_page': per_page,
-                  'page': page}
+            path = "search/" + type_
+        params = {"q": search_term, "per_page": per_page, "page": page}
         return self._make_request(path, params_=params, public_api=True)
 
     def search_albums(self, search_term, per_page=None, page=None):
@@ -61,7 +59,7 @@ class SearchMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'album'
+        endpoint = "album"
         return self.search(search_term, per_page, page, endpoint)
 
     def search_articles(self, search_term, per_page=None, page=None):
@@ -81,7 +79,7 @@ class SearchMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'article'
+        endpoint = "article"
         return self.search(search_term, per_page, page, endpoint)
 
     def search_artists(self, search_term, per_page=None, page=None):
@@ -101,7 +99,7 @@ class SearchMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'artist'
+        endpoint = "artist"
         return self.search(search_term, per_page, page, endpoint)
 
     def search_lyrics(self, search_term, per_page=None, page=None):
@@ -121,7 +119,7 @@ class SearchMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'lyric'
+        endpoint = "lyric"
         return self.search(search_term, per_page, page, endpoint)
 
     def search_songs(self, search_term, per_page=None, page=None):
@@ -141,7 +139,7 @@ class SearchMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'song'
+        endpoint = "song"
         return self.search(search_term, per_page, page, endpoint)
 
     def search_users(self, search_term, per_page=None, page=None):
@@ -161,7 +159,7 @@ class SearchMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'user'
+        endpoint = "user"
         return self.search(search_term, per_page, page, endpoint)
 
     def search_videos(self, search_term, per_page=None, page=None):
@@ -181,7 +179,7 @@ class SearchMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'video'
+        endpoint = "video"
         return self.search(search_term, per_page, page, endpoint)
 
     def search_all(self, search_term, per_page=None, page=None):
@@ -206,5 +204,5 @@ class SearchMethods(object):
             alongside other types.
 
         """
-        endpoint = 'multi'
+        endpoint = "multi"
         return self.search(search_term, per_page, page, endpoint)
