@@ -4,8 +4,8 @@
 
 """Artist object"""
 
-from .base import BaseEntity
 from ..utils import safe_unicode
+from .base import BaseEntity
 
 
 class Artist(BaseEntity):
@@ -14,20 +14,20 @@ class Artist(BaseEntity):
     def __init__(self, client, json_dict):
         # Artist Constructor
         body = json_dict
-        super().__init__(body['id'])
+        super().__init__(body["id"])
         self._body = body
         self._client = client
         self.songs = []
         self.num_songs = len(self.songs)
 
-        self.api_path = body['api_path']
-        self.header_image_url = body['header_image_url']
-        self.image_url = body['image_url']
+        self.api_path = body["api_path"]
+        self.header_image_url = body["header_image_url"]
+        self.image_url = body["image_url"]
         # self.iq = body['iq']
-        self.is_meme_verified = body['is_meme_verified']
-        self.is_verified = body['is_verified']
-        self.name = body['name']
-        self.url = body['url']
+        self.is_meme_verified = body["is_meme_verified"]
+        self.is_verified = body["is_verified"]
+        self.name = body["name"]
+        self.url = body["url"]
 
     def __len__(self):
         return len(self.songs)
@@ -68,20 +68,24 @@ class Artist(BaseEntity):
                 return None
         if any([song.title == new_song.title for song in self.songs]):
             if verbose:
-                print('{s} already in {a}, not adding song.'.format(
-                    s=safe_unicode(new_song.title),
-                    a=safe_unicode(self.name))
+                print(
+                    "{s} already in {a}, not adding song.".format(
+                        s=safe_unicode(new_song.title), a=safe_unicode(self.name)
+                    )
                 )
             return None
-        if (new_song.artist == self.name
-                or (include_features and any(new_song._body['featured_artists']))):
+        if new_song.artist == self.name or (
+            include_features and any(new_song._body["featured_artists"])
+        ):
             self.songs.append(new_song)
             self.num_songs += 1
             return new_song
         if verbose:
-            print("Can't add song by {b}, artist must be {a}.".format(
-                b=safe_unicode(new_song.artist),
-                a=safe_unicode(self.name)))
+            print(
+                "Can't add song by {b}, artist must be {a}.".format(
+                    b=safe_unicode(new_song.artist), a=safe_unicode(self.name)
+                )
+            )
         return None
 
     def song(self, song_name):
@@ -108,47 +112,43 @@ class Artist(BaseEntity):
 
     def to_dict(self):
         body = super().to_dict()
-        body['songs'] = [song.to_dict() for song in self.songs]
+        body["songs"] = [song.to_dict() for song in self.songs]
         return body
 
-    def to_json(self,
-                filename=None,
-                sanitize=True,
-                ensure_ascii=True):
+    def to_json(self, filename=None, sanitize=True, ensure_ascii=True):
         data = self.to_dict()
-        return super().to_json(data=data,
-                               filename=filename,
-                               sanitize=sanitize,
-                               ensure_ascii=ensure_ascii)
+        return super().to_json(
+            data=data, filename=filename, sanitize=sanitize, ensure_ascii=ensure_ascii
+        )
 
-    def to_text(self,
-                filename=None,
-                sanitize=True):
-        data = '\n\n'.join(
-            f"[Song {n}: {song.title}]\n{song.lyrics}" 
+    def to_text(self, filename=None, sanitize=True):
+        data = "\n\n".join(
+            f"[Song {n}: {song.title}]\n{song.lyrics}"
             for n, song in enumerate(self.songs, start=1)
         ).strip()
-        return super().to_text(data=data,
-                               filename=filename,
-                               sanitize=sanitize)
+        return super().to_text(data=data, filename=filename, sanitize=sanitize)
 
-    def save_lyrics(self,
-                    filename=None,
-                    extension='json',
-                    overwrite=False,
-                    ensure_ascii=True,
-                    sanitize=True,
-                    verbose=True):
+    def save_lyrics(
+        self,
+        filename=None,
+        extension="json",
+        overwrite=False,
+        ensure_ascii=True,
+        sanitize=True,
+        verbose=True,
+    ):
         # Determine the filename
         if filename is None:
-            filename = 'Lyrics_' + self.name.replace(' ', '')
+            filename = "Lyrics_" + self.name.replace(" ", "")
 
-        return super().save_lyrics(filename=filename,
-                                   extension=extension,
-                                   overwrite=overwrite,
-                                   ensure_ascii=ensure_ascii,
-                                   sanitize=sanitize,
-                                   verbose=verbose)
+        return super().save_lyrics(
+            filename=filename,
+            extension=extension,
+            overwrite=overwrite,
+            ensure_ascii=ensure_ascii,
+            sanitize=sanitize,
+            verbose=verbose,
+        )
 
     def __str__(self):
         """Return a string representation of the Artist object."""

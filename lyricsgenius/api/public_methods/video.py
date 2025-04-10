@@ -13,19 +13,21 @@ class VideoMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'videos/{}'.format(video_id)
-        params = {'text_format': text_format or self.response_format}
+        endpoint = "videos/{}".format(video_id)
+        params = {"text_format": text_format or self.response_format}
 
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def videos(self,
-               album_id=None,
-               article_id=None,
-               song_id=None,
-               video_id=None,
-               per_page=None,
-               page=None,
-               series=False):
+    def videos(
+        self,
+        album_id=None,
+        article_id=None,
+        song_id=None,
+        video_id=None,
+        per_page=None,
+        page=None,
+        series=False,
+    ):
         """Gets the videos of an album, article or song or the featured videos.
 
         Args:
@@ -50,29 +52,29 @@ class VideoMethods(object):
             we are not sure what they are at the moment.
 
         """
-        msg = ("Pass only one of `album_id`, `article_id`, `song_id` and `video_id`."
-               ", not more than one.")
+        msg = (
+            "Pass only one of `album_id`, `article_id`, `song_id` and `video_id`."
+            ", not more than one."
+        )
         condition = (
-            sum([bool(album_id), bool(article_id), bool(song_id), bool(video_id)])
-            == 1
+            sum([bool(album_id), bool(article_id), bool(song_id), bool(video_id)]) == 1
         )
         assert condition, msg
 
         if series:
-            endpoint = 'video_lists'
+            endpoint = "video_lists"
         else:
-            endpoint = 'videos'
+            endpoint = "videos"
 
-        params = {'per_page': per_page,
-                  'page': page}
+        params = {"per_page": per_page, "page": page}
 
         if album_id:
-            params['album_id'] = album_id
+            params["album_id"] = album_id
         elif article_id:
-            params['article_id'] = article_id
+            params["article_id"] = article_id
         elif song_id:
-            params['song_id'] = song_id
+            params["song_id"] = song_id
         elif video_id:
-            params['video_id'] = video_id
+            params["video_id"] = video_id
 
         return self._make_request(path=endpoint, params_=params, public_api=True)

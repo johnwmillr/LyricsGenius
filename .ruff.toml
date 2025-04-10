@@ -1,0 +1,20 @@
+[lint]
+# Enable flake8-bugbear (`B`) rules, in addition to the defaults.
+select = ["E4", "E7", "E9", "F", "B", "Q", "I"]
+
+# Avoid enforcing line-length violations (`E501`)
+ignore = ["E501"]
+
+# Avoid trying to fix flake8-bugbear (`B`) violations.
+unfixable = ["B"]
+
+# Ignore `E402` (import violations) in all `__init__.py` files, and in selected subdirectories.
+[lint.per-file-ignores]
+"__init__.py" = ["E402", "F401"]
+"**/{tests,docs,tools}/*" = ["E402", "F401"]
+
+[lint.pydocstyle]
+convention = "google"
+
+[format]
+quote-style = "double"

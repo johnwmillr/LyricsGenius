@@ -1,11 +1,9 @@
 import unittest
 
-
 from tests import genius
 
 
 class TestAPI(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up API tests...\n")

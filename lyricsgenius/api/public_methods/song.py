@@ -13,8 +13,8 @@ class SongMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'songs/{}'.format(song_id)
-        params = {'text_format': text_format or self.response_format}
+        endpoint = "songs/{}".format(song_id)
+        params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def song_activity(self, song_id, per_page=None, page=None, text_format=None):
@@ -32,10 +32,12 @@ class SongMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'songs/{}/activity_stream/line_items'.format(song_id)
-        params = {'text_format': text_format or self.response_format,
-                  'per_page': per_page,
-                  'page': page}
+        endpoint = "songs/{}/activity_stream/line_items".format(song_id)
+        params = {
+            "text_format": text_format or self.response_format,
+            "per_page": per_page,
+            "page": page,
+        }
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def song_comments(self, song_id, per_page=None, page=None, text_format=None):
@@ -53,10 +55,12 @@ class SongMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'songs/{}/comments'.format(song_id)
-        params = {'per_page': per_page,
-                  'page': page,
-                  'text_format': text_format or self.response_format}
+        endpoint = "songs/{}/comments".format(song_id)
+        params = {
+            "per_page": per_page,
+            "page": page,
+            "text_format": text_format or self.response_format,
+        }
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def song_contributors(self, song_id):
@@ -72,5 +76,5 @@ class SongMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'songs/{}/contributors'.format(song_id)
+        endpoint = "songs/{}/contributors".format(song_id)
         return self._make_request(path=endpoint, public_api=True)
