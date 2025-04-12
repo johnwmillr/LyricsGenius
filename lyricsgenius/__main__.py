@@ -10,6 +10,38 @@ from . import Genius
 from .utils import safe_unicode
 
 
+class Searcher:
+    """Executes the search specified by the CLI args"""
+
+    def __init__(self, api, search_type):
+        self.api = api
+        self.search_type = search_type
+        if search_type == "song":
+            self.search_func = api.search_song
+        elif search_type == "artist":
+            self.search_func = api.search_artist
+        elif search_type == "album":
+            self.search_func = api.search_album
+        else:
+            raise ValueError(f"Unknown search type: {search_type}")
+
+    def __call__(self, args):
+        result = self.search_func(*args.terms)
+        if not result:
+            return
+        for format in args.format:
+            if not args.save:
+                print(result.to_text() if format == "txt" else result.to_json())
+            else:
+                if args.verbose:
+                    print(
+                        f"Saving lyrics to '{safe_unicode(result.title)}' in {format.upper()} format..."
+                    )
+                result.save_lyrics(
+                    extension=format, overwrite=True if args.overwrite else False
+                )
+
+
 def main(args=None):
     msg = "Download song lyrics from Genius.com"
     parser = argparse.ArgumentParser(prog="lyricsgenius", description=msg)
@@ -77,59 +109,7 @@ def main(args=None):
     api = Genius(token, verbose=args.verbose, timeout=10)
 
     # Handle the command-line inputs
-    if args.search_type == "song":
-        song = api.search_song(*args.terms)
-        if not song:
-            if not args.quiet:
-                print("Could not find specified song. Check spelling?")
-            return
-        for format in args.format:
-            if not args.save:
-                print(song.to_text() if format == "txt" else song.to_json())
-            else:
-                if not args.quiet:
-                    print(
-                        f"Saving lyrics to '{safe_unicode(song.title)}' in {format.upper()} format..."
-                    )
-                song.save_lyrics(
-                    extension=format, overwrite=True if args.overwrite else False
-                )
-    elif args.search_type == "artist":
-        artist = api.search_artist(
-            args.terms[0], max_songs=args.max_songs, sort="popularity"
-        )
-        if not artist:
-            if not args.quiet:
-                print("Could not find specified artist. Check spelling?")
-            return
-        for format in args.format:
-            if not args.save:
-                print(artist.to_json() if format == "json" else artist.to_text())
-            else:
-                if not args.quiet:
-                    print(
-                        f"Saving '{safe_unicode(artist.name)}' lyrics in {format.upper()} format..."
-                    )
-                artist.save_lyrics(
-                    extension=format, overwrite=True if args.overwrite else False
-                )
-    elif args.search_type == "album":
-        album = api.search_album(*args.terms)
-        if not album:
-            if not args.quiet:
-                print("Could not find specified album. Check spelling?")
-            return
-        if args.stdout:
-            print(album.to_json() if args.stdout == "json" else album.to_text())
-        if args.save:
-            for format in args.save:
-                if not args.quiet:
-                    print(
-                        f"Saving '{safe_unicode(album.name)}' lyrics in {format.upper()} format..."
-                    )
-                album.save_lyrics(
-                    extension=format, overwrite=True if args.overwrite else False
-                )
+    Searcher(api, args.search_type)(args)
 
 
 if __name__ == "__main__":
