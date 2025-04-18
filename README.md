@@ -98,19 +98,19 @@ You can also call the package from the command line:
 
 ```bash
 export GENIUS_ACCESS_TOKEN="my_access_token_here"
-python3 -m lyricsgenius --help
-
-# Save a song in JSON format
-python -m lyricsgenius song "Begin Again" "Andy Shauf" --save json
-
-# Save both a JSON and text file
-python -m lyricsgenius song "Begin Again" "Andy Shauf" --save json txt
-
-# Save an artist's lyrics to a text file
-python -m lyricsgenius artist "The Beatles" --max-songs 2 --save txt
+python -m lyricsgenius --help
 
 # Print a song's lyrics to stdout in text format
-python3 -m lyricsgenius song "Check the Rhyme" "A Tribe Called Quest" --stdout txt
+python -m lyricsgenius song "Check the Rhyme" "A Tribe Called Quest" --format txt
+
+# Save a song's lyrics in JSON format
+python -m lyricsgenius song "Begin Again" "Andy Shauf" --format json --save
+
+# Save a song's lyrics in both JSON and text formats
+python -m lyricsgenius song "Begin Again" "Andy Shauf" --format json txt --save
+
+# Save an artist's lyrics to text files (stopping after 2 songs)
+python -m lyricsgenius artist "The Beatles" --max-songs 2 --format txt --save
 ```
 
 ## Example projects
