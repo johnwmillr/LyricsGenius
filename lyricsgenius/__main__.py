@@ -1,13 +1,7 @@
-#  Command line usage:
-#    python3 -m lyricsgenius --help
-#    python3 -m lyricsgenius song "Begin Again" "Andy Shauf" --save
-#    python3 -m lyricsgenius artist "The Beatles" --max-songs 5 --save
-
 import argparse
 import os
 
 from . import Genius
-from .utils import safe_unicode
 
 
 class Searcher:
@@ -26,7 +20,7 @@ class Searcher:
             raise ValueError(f"Unknown search type: {search_type}")
 
     def __call__(self, args):
-        result = self.search_func(*args.terms)
+        result = self.search_func(*args.terms, max_songs=args.max_songs)
         if not result:
             return
         for format in args.format:
@@ -34,12 +28,8 @@ class Searcher:
                 print(result.to_text() if format == "txt" else result.to_json())
             else:
                 if args.verbose:
-                    print(
-                        f"Saving lyrics to '{safe_unicode(result.title)}' in {format.upper()} format..."
-                    )
-                result.save_lyrics(
-                    extension=format, overwrite=True if args.overwrite else False
-                )
+                    print(f"Saving lyrics in {format.upper()} format.")
+                result.save_lyrics(extension=format, overwrite=args.overwrite)
 
 
 def main(args=None):
@@ -79,6 +69,7 @@ def main(args=None):
         "-o",
         "--overwrite",
         action="store_true",
+        default=False,
         help="Overwrite the file if it already exists",
     )
     optional.add_argument(

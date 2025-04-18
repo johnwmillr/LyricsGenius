@@ -1,9 +1,6 @@
 name: publish-to-testpypi
 
 on:
-  push:
-    branches:
-      - master
   workflow_dispatch:
 
 jobs:
