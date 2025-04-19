@@ -20,7 +20,10 @@ class Searcher:
             raise ValueError(f"Unknown search type: {search_type}")
 
     def __call__(self, args):
-        result = self.search_func(*args.terms, max_songs=args.max_songs)
+        if self.search_type == "artist":
+            result = self.search_func(*args.terms, max_songs=args.max_songs)
+        else:
+            result = self.search_func(*args.terms)
         if not result:
             return
         for format in args.format:
