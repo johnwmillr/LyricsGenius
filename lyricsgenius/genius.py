@@ -9,12 +9,15 @@ import os
 import re
 import shutil
 import time
+from typing import Any, Literal
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 
 from .api import API, PublicAPI
 from .types import Album, Artist, Song, Track
 from .utils import clean_str, safe_unicode
+
+TextFormatT = Literal["dom", "html", "markdown", "plain"]
 
 
 class Genius(API, PublicAPI):
@@ -77,19 +80,19 @@ class Genius(API, PublicAPI):
 
     def __init__(
         self,
-        access_token=None,
-        response_format="plain",
-        timeout=5,
-        sleep_time=0.2,
-        verbose=True,
-        remove_section_headers=False,
-        skip_non_songs=True,
-        excluded_terms=None,
-        replace_default_terms=False,
-        retries=0,
-        user_agent="",
-        proxy=None,
-    ):
+        access_token: str | None = None,
+        response_format: str = "plain",
+        timeout: int = 5,
+        sleep_time: float = 0.2,
+        verbose: bool = True,
+        remove_section_headers: bool = False,
+        skip_non_songs: bool = True,
+        excluded_terms: list[str] | None = None,
+        replace_default_terms: bool = False,
+        retries: int = 0,
+        user_agent: str = "",
+        proxy: dict[str, str] | None = None,
+    ) -> None:
         # Genius Client Constructor
         super().__init__(
             access_token=access_token,
@@ -112,7 +115,12 @@ class Genius(API, PublicAPI):
             self.excluded_terms = self.default_terms.copy()
             self.excluded_terms.extend(excluded_terms)
 
-    def lyrics(self, song_id=None, song_url=None, remove_section_headers=False):
+    def lyrics(
+        self,
+        song_id: int | None = None,
+        song_url: str | None = None,
+        remove_section_headers: bool = False,
+    ) -> str | None:
         """Uses BeautifulSoup to scrape song info off of a Genius song URL
 
         You must supply either `song_id` or song_url`.
@@ -173,7 +181,7 @@ class Genius(API, PublicAPI):
             lyrics = re.sub("\n{2}", "\n", lyrics)  # Gaps between verses
         return lyrics.strip("\n")
 
-    def _result_is_lyrics(self, song):
+    def _result_is_lyrics(self, song: dict[str, Any]) -> bool:
         """Returns False if result from Genius is not actually song lyrics.
 
         Sets the :attr:`lyricsgenius.Genius.excluded_terms` and
@@ -200,7 +208,9 @@ class Genius(API, PublicAPI):
         regex = re.compile(expression, re.IGNORECASE)
         return not regex.search(clean_str(song["title"]))
 
-    def _get_item_from_search_response(self, response, search_term, type_, result_type):
+    def _get_item_from_search_response(
+        self, response: dict[str, Any], search_term: str, type_: str, result_type: str
+    ) -> dict[str, Any] | None:
         """Gets the desired item from the search results.
 
         This method tries to match the `hits` of the :obj:`response` to
@@ -254,7 +264,9 @@ class Genius(API, PublicAPI):
 
         return hits[0]["result"] if hits else None
 
-    def _result_is_match(self, result, title, artist=None):
+    def _result_is_match(
+        self, result: dict[str, Any], title: str, artist: str | None = None
+    ) -> bool:
         """Returns `True` if search result matches searched song."""
         result_title = clean_str(result["title"])
         title_is_match = result_title == clean_str(title)
@@ -263,7 +275,11 @@ class Genius(API, PublicAPI):
         result_artist = clean_str(result["primary_artist"]["name"])
         return title_is_match and result_artist == clean_str(artist)
 
-    def song_annotations(self, song_id, text_format=None):
+    def song_annotations(
+        self,
+        song_id: int,
+        text_format: TextFormatT | None = None,
+    ) -> list[tuple[str, list[list[str]]]]:
         """Return song's annotations with associated fragment in list of tuple.
 
         Args:
@@ -283,7 +299,7 @@ class Genius(API, PublicAPI):
         """
         referents = self.referents(song_id=song_id, text_format=text_format)
 
-        all_annotations = []  # list of tuples(fragment, annotations[])
+        all_annotations: list[tuple[str, list[list[str]]]] = []
         for r in referents["referents"]:
             fragment = r["fragment"]
             annotations = []
@@ -293,8 +309,13 @@ class Genius(API, PublicAPI):
         return all_annotations
 
     def search_album(
-        self, name=None, artist="", album_id=None, get_full_info=True, text_format=None
-    ):
+        self,
+        name: str | None = None,
+        artist: str = "",
+        album_id: int | None = None,
+        get_full_info: bool = True,
+        text_format: TextFormatT | None = None,
+    ) -> Album | None:
         """Searches for a specific album and gets its songs.
 
         You must pass either a :obj:`name` or an :obj:`album_id`.
@@ -305,8 +326,8 @@ class Genius(API, PublicAPI):
             album_id (:obj:`int`, optional): Album ID.
             get_full_info (:obj:`bool`, optional): Get full info
                 for the album (slower if no album_id present).
-            text_format (:obj:`bool`, optional): If ``True``,
-                gets each song's lyrics.
+            text_format (:obj:`str`, optional): Text format of the results
+                ('dom', 'html', 'markdown' or 'plain').
 
         Returns:
             :class:`Album <types.Album>` \\| :obj:`None`: On success,
@@ -334,12 +355,17 @@ class Genius(API, PublicAPI):
 
         if album_id:
             album_info = self.album(album_id, text_format)["album"]
-        else:
-            search_term = "{s} {a}".format(s=name, a=artist).strip()
+        elif name:
+            if artist:
+                search_term = "{s} {a}".format(s=name, a=artist).strip()
+            else:
+                search_term = "{s}".format(s=name).strip()
             response = self.search_all(search_term)
             album_info = self._get_item_from_search_response(
                 response, name, type_="album", result_type="name"
             )
+        else:
+            album_info = None
 
         # Exit search if there were no results returned from API
         # Otherwise, move forward with processing the search results
@@ -355,8 +381,8 @@ class Genius(API, PublicAPI):
         # Set the album id to the value retrieved from the API
         album_id = album_info["id"]
 
-        tracks = []
-        next_page = 1
+        tracks: list[Track] = []
+        next_page: int | None = 1
 
         # It's unlikely for an album to have >=50 songs,
         # but it's best to check
@@ -373,14 +399,20 @@ class Genius(API, PublicAPI):
                 else:
                     song_lyrics = ""
 
-                track = Track(self, track, song_lyrics)
-                tracks.append(track)
+                track_obj = Track(self, track, song_lyrics)
+                tracks.append(track_obj)
 
             next_page = tracks_list["next_page"]
 
         return Album(self, album_info, tracks)
 
-    def search_song(self, title=None, artist="", song_id=None, get_full_info=True):
+    def search_song(
+        self,
+        title: str | None = None,
+        artist: str = "",
+        song_id: int | None = None,
+        get_full_info: bool = True,
+    ) -> Song | None:
         """Searches for a specific song and gets its lyrics.
 
         You must pass either a :obj:`title` or a :obj:`song_id`.
@@ -420,8 +452,11 @@ class Genius(API, PublicAPI):
 
         if song_id:
             song_info = self.song(song_id)["song"]
-        else:
-            search_term = "{s} {a}".format(s=title, a=artist).strip()
+        elif title:
+            if artist:
+                search_term = "{s} {a}".format(s=title, a=artist).strip()
+            else:
+                search_term = "{s}".format(s=title).strip()
             search_response = self.search_all(search_term)
             song_info = self._get_item_from_search_response(
                 search_response, title, type_="song", result_type="title"
@@ -435,7 +470,7 @@ class Genius(API, PublicAPI):
             return None
 
         # Reject non-songs (Liner notes, track lists, etc.)
-        # or songs with uncomplete lyrics (e.g. unreleased songs, instrumentals)
+        # or songs with missing lyrics (e.g. unreleased songs, instrumentals)
         if self.skip_non_songs and not self._result_is_lyrics(song_info):
             valid = False
         else:
@@ -471,15 +506,15 @@ class Genius(API, PublicAPI):
 
     def search_artist(
         self,
-        artist_name,
-        max_songs=None,
-        sort="popularity",
-        per_page=20,
-        get_full_info=True,
-        allow_name_change=True,
-        artist_id=None,
-        include_features=False,
-    ):
+        artist_name: str,
+        max_songs: int | None = None,
+        sort: str = "popularity",
+        per_page: int = 20,
+        get_full_info: bool = True,
+        allow_name_change: bool = True,
+        artist_id: int | None = None,
+        include_features: bool = False,
+    ) -> Artist | None:
         """Searches for a specific artist and gets their songs.
 
         This method looks for the artist by the name or by the
@@ -514,10 +549,10 @@ class Genius(API, PublicAPI):
                 for song in artist.songs:
                     print(song.lyrics)
 
-            Visit :class:`Aritst <types.Artist>` for more examples.
+            Visit :class:`Artist <types.Artist>` for more examples.
         """
 
-        def find_artist_id(search_term):
+        def find_artist_id(search_term: str) -> int | None:
             """Finds the ID of the artist, returns the first
             result if none match the search term or returns
             ‍None‍‍ if there were not results
@@ -605,7 +640,9 @@ class Genius(API, PublicAPI):
                     )
 
                 # Exit search if the max number of songs has been met
-                reached_max_songs = max_songs and artist.num_songs >= max_songs
+                reached_max_songs = (
+                    max_songs is not None and artist.num_songs >= max_songs
+                )
                 if reached_max_songs:
                     if self.verbose:
                         print(
@@ -627,8 +664,12 @@ class Genius(API, PublicAPI):
         return artist
 
     def save_artists(
-        self, artists, filename="artist_lyrics", overwrite=False, ensure_ascii=True
-    ):
+        self,
+        artists: list[Artist],
+        filename: str = "artist_lyrics",
+        overwrite: bool = False,
+        ensure_ascii: bool = True,
+    ) -> None:
         """Saves lyrics from multiple Artist objects as JSON object.
 
         Args:
@@ -673,7 +714,8 @@ class Genius(API, PublicAPI):
                 return
 
         # Extract each artist's lyrics in json format
-        all_lyrics = {"artists": []}
+        # TODO: Fix this code. `all_lyrics` isn't updated properly.
+        all_lyrics: dict[str, Any] = {"artists": []}
         for n, artist in enumerate(artists):
             if isinstance(artist, Artist):
                 all_lyrics["artists"].append({})
@@ -692,14 +734,16 @@ class Genius(API, PublicAPI):
         elapsed = (time.time() - start) / 60 / 60
         print("Time elapsed: {t} hours".format(t=elapsed))
 
-    def tag(self, name, page=None):
+    def tag(
+        self, name: str, page: int | None = None
+    ) -> dict[str, list[dict[str, Any]] | int | None]:
         """Gets a tag's songs.
 
         This method parses HTML to extract the hits on the page, so it's
         slower than a normal API call which returns the results as JSON.
 
         Args:
-            name (:obj:`int`): Name of the tag e.g. ``pop`` or ``r-b``.
+            name (:obj:`str`): Name of the tag e.g. ``pop`` or ``r-b``.
                 The name should be as it appears in the URL. For example,
                 the name supplied for R&B is ``r-b`` as its URL is
                 https://genius.com/tags/r-b.
@@ -733,19 +777,26 @@ class Genius(API, PublicAPI):
         hits = []
 
         ul = soup.find("ul", class_="song_list")
+        if ul is None:
+            if self.verbose:
+                print(f"Couldn't find the song list for tag '{name}'. ")
+            return {"hits": [], "next_page": None}
+        assert isinstance(ul, Tag)
         for li in ul.find_all("li"):
-            url = li.a.attrs["href"]
+            assert isinstance(li, Tag)
+            a = li.a
+            assert isinstance(a, Tag)
+            url = a.attrs["href"]
             # Genius uses \xa0 in the HTML to add spaces
-            song = [x.replace("\xa0", " ") for x in li.a.span.stripped_strings]
+            span = a.span
+            assert isinstance(span, Tag)
+            song = [x.replace("\xa0", " ") for x in span.stripped_strings]
             title = song[0]
             artists = song[2].split(" & ")
             featured_artists = [name for name in song[4:-1] if len(name) > 1]
-            title_with_artists = (
-                li.a.find("span", class_="title_with_artists")
-                .get_text()
-                .strip()
-                .replace("\xa0", " ")
-            )
+            element = a.find("span", class_="title_with_artists")
+            assert isinstance(element, Tag)
+            title_with_artists = element.get_text().strip().replace("\xa0", " ")
 
             hit = {
                 "url": url,
@@ -756,9 +807,9 @@ class Genius(API, PublicAPI):
             }
             hits.append(hit)
 
-        res = {"hits": hits}
+        res: dict[str, list[dict[str, Any]] | int | None] = {"hits": hits}
         page = page if page is not None else 1
+
         # Full pages contain 20 items
         res["next_page"] = page + 1 if len(hits) == 20 else None
-
         return res
