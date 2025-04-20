@@ -9,7 +9,7 @@ from string import punctuation
 from urllib.parse import parse_qs, urlparse
 
 
-def auth_from_environment():
+def auth_from_environment() -> tuple[str | None, str | None, str | None]:
     """Gets credentials from environment variables.
 
     Uses the following env vars: ``GENIUS_CLIENT_ID``,
@@ -26,7 +26,7 @@ def auth_from_environment():
     return client_id, redirect_uri, client_secret
 
 
-def convert_to_datetime(f):
+def convert_to_datetime(f: str | dict[str, int] | None) -> datetime | None:
     """Converts argument to a datetime object.
 
     Args:
@@ -67,7 +67,7 @@ def convert_to_datetime(f):
     return datetime.strptime(f, date_format)
 
 
-def clean_str(s):
+def clean_str(s: str) -> str:
     """Cleans a string to help with string comparison.
 
     Removes punctuation and returns
@@ -85,7 +85,7 @@ def clean_str(s):
     return unicodedata.normalize("NFKC", string)
 
 
-def parse_redirected_url(url, flow):
+def parse_redirected_url(url: str, flow: str) -> str:
     """Parse a URL for parameter 'code'/'token'.
 
     Args:
@@ -114,7 +114,7 @@ def parse_redirected_url(url, flow):
     return code[0]
 
 
-def safe_unicode(s):
+def safe_unicode(s: str) -> str:
     """Encodes and decodes string based on user's STDOUT.
 
     Encodes string to ``utf-8`` and then decodes it based
@@ -130,7 +130,7 @@ def safe_unicode(s):
     return s.encode("utf-8").decode(sys.stdout.encoding, errors="replace")
 
 
-def sanitize_filename(f):
+def sanitize_filename(f: str) -> str:
     """Removes invalid characters from file name.
 
     Args:
