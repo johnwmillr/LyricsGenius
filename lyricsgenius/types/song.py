@@ -38,6 +38,11 @@ class Song(BaseEntity):
         self.title_with_featured = body["title_with_featured"]
         self.url = body["url"]
 
+    @property
+    def _text_data(self) -> str:
+        """Returns the text data for the song."""
+        return self.lyrics
+
     def to_dict(self):
         body = super().to_dict()
         body["artist"] = self.artist
@@ -45,15 +50,12 @@ class Song(BaseEntity):
         return body
 
     def to_json(self, filename=None, sanitize=True, ensure_ascii=True):
-        data = self.to_dict()
         return super().to_json(
-            data=data, filename=filename, sanitize=sanitize, ensure_ascii=ensure_ascii
+            filename=filename, sanitize=sanitize, ensure_ascii=ensure_ascii
         )
 
     def to_text(self, filename=None, sanitize=True):
-        data = self.lyrics
-
-        return super().to_text(data=data, filename=filename, sanitize=sanitize)
+        return super().to_text(filename=filename, sanitize=sanitize)
 
     def save_lyrics(
         self,

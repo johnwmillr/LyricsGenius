@@ -1,6 +1,7 @@
 import json
 import os
 from abc import ABC, abstractmethod
+from typing import Any
 
 from ..utils import safe_unicode, sanitize_filename
 
@@ -14,13 +15,13 @@ class BaseEntity(ABC):
     @abstractmethod
     def save_lyrics(
         self,
-        filename,
-        extension="json",
-        overwrite=False,
-        ensure_ascii=True,
-        sanitize=True,
-        verbose=True,
-    ):
+        filename: str,
+        extension: str = "json",
+        overwrite: bool = False,
+        ensure_ascii: bool = True,
+        sanitize: bool = True,
+        verbose: bool = True,
+    ) -> None:
         """Save Song(s) lyrics and metadata to a JSON or TXT file.
 
         If the extension is 'json' (the default), the lyrics will be saved
@@ -40,7 +41,7 @@ class BaseEntity(ABC):
 
         Warning:
             If you set :obj:`sanitize` to `False`, the file name may contain
-            invalid characters, and thefore cause the saving to fail.
+            invalid characters, and therefore cause the saving to fail.
 
         """
         extension = extension.lstrip(".").lower()
@@ -82,12 +83,19 @@ class BaseEntity(ABC):
         return None
 
     @abstractmethod
-    def to_dict(self):
+    def to_dict(self) -> dict[Any, Any]:
         """Converts the object to a dictionary."""
-        return self._body.copy()
+        if hasattr(self, "_body"):
+            return self._body.copy()
+        return {}
 
     @abstractmethod
-    def to_json(self, data, filename=None, sanitize=True, ensure_ascii=True):
+    def to_json(
+        self,
+        filename: str | None = None,
+        sanitize: bool = True,
+        ensure_ascii: bool = True,
+    ) -> str | None:
         """Converts the object to a json string.
 
         Args:
@@ -119,8 +127,13 @@ class BaseEntity(ABC):
             json.dump(data, ff, indent=4, ensure_ascii=ensure_ascii)
         return None
 
+    @property
+    def _text_data(self) -> str:
+        """Returns the text data for the artist."""
+        raise NotImplementedError()
+
     @abstractmethod
-    def to_text(self, data, filename=None, sanitize=True):
+    def to_text(self, filename: str | None = None, sanitize: bool = True) -> str | None:
         """Converts song(s) lyrics to a single string.
 
         Args:
@@ -139,18 +152,19 @@ class BaseEntity(ABC):
         """
         # Return the lyrics as a string if no `filename` was specified
         if not filename:
-            return data
+            return self._text_data
 
         # Save song lyrics to a text file
         filename = sanitize_filename(filename) if sanitize else filename
         with open(filename, "w", encoding="utf-8") as ff:
-            ff.write(data)
+            ff.write(self._text_data)
         return None
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         name = self.__class__.__name__
-        attrs = [x for x in list(self.__dict__.keys()) if not x.startswith("_")]
-        attrs = ", ".join(attrs[:2])
+        attrs = ", ".join(
+            [x for x in list(self.__dict__.keys()) if not x.startswith("_")][:2]
+        )
         return "{}({}, ...)".format(name, attrs)
 
 
@@ -172,22 +186,11 @@ class Stats(object):
 
     """
 
-    def __init__(self, json_dict):
+    def __init__(self, json_dict: dict[str, Any]) -> None:
         for key, value in json_dict.items():
             setattr(self, key, value)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         name = self.__class__.__name__
         attrs = ", ".join(list(self.__dict__.keys()))
         return "{}({!r})".format(name, attrs)
-
-
-# class EntityWithLyrics(ABC, BaseEntity):
-#    """Entity that has lyrics."""
-#
-#    def __init__(self, **kwargs):
-#        super().__init__(**kwargs)
-#
-#    @abstractmethod
-#    def save_lyrics(self):
-#        pass

@@ -110,23 +110,26 @@ class Artist(BaseEntity):
         song = self._client.search_song(song_name, self.name)
         return song
 
+    @property
+    def _text_data(self) -> str:
+        """Returns the text data for the artist."""
+        return "\n\n".join(
+            f"[Song {n}: {song.title}]\n{song.lyrics}"
+            for n, song in enumerate(self.songs, start=1)
+        ).strip()
+
     def to_dict(self):
         body = super().to_dict()
         body["songs"] = [song.to_dict() for song in self.songs]
         return body
 
     def to_json(self, filename=None, sanitize=True, ensure_ascii=True):
-        data = self.to_dict()
         return super().to_json(
-            data=data, filename=filename, sanitize=sanitize, ensure_ascii=ensure_ascii
+            filename=filename, sanitize=sanitize, ensure_ascii=ensure_ascii
         )
 
     def to_text(self, filename=None, sanitize=True):
-        data = "\n\n".join(
-            f"[Song {n}: {song.title}]\n{song.lyrics}"
-            for n, song in enumerate(self.songs, start=1)
-        ).strip()
-        return super().to_text(data=data, filename=filename, sanitize=sanitize)
+        return super().to_text(filename=filename, sanitize=sanitize)
 
     def save_lyrics(
         self,
