@@ -9,15 +9,14 @@ import os
 import re
 import shutil
 import time
-from typing import Any, Literal
+from typing import Any
 
 from bs4 import BeautifulSoup, Tag
 
 from .api import API, PublicAPI
 from .types import Album, Artist, Song, Track
+from .types.types import ResponseFormatT, TextFormatT
 from .utils import clean_str, safe_unicode
-
-TextFormatT = Literal["dom", "html", "markdown", "plain"]
 
 
 class Genius(API, PublicAPI):
@@ -81,7 +80,7 @@ class Genius(API, PublicAPI):
     def __init__(
         self,
         access_token: str | None = None,
-        response_format: str = "plain",
+        response_format: ResponseFormatT = "plain",
         timeout: int = 5,
         sleep_time: float = 0.2,
         verbose: bool = True,
@@ -148,20 +147,28 @@ class Genius(API, PublicAPI):
             :attr:`Genius.remove_section_headers` attribute.
 
         """
-        msg = "You must supply either `song_id` or `song_url`."
-        assert any([song_id, song_url]), msg
+
         if song_url:
             path = song_url.replace("https://genius.com/", "")
-        else:
+        elif song_id:
             path = self.song(song_id)["song"]["path"][1:]
+        else:
+            raise ValueError("You must supply either `song_id` or `song_url`.")
 
         # Scrape the song lyrics from the HTML
-        html = BeautifulSoup(
-            self._make_request(path, web=True).replace("<br/>", "\n"), "html.parser"
-        )
+        response: dict[str, str] | None = self._make_request(path, web=True)
+        if response is None or (html := response.get("text")) is None:
+            if self.verbose:
+                print(
+                    "Couldn't find the lyrics section. "
+                    "Please report this if the song has lyrics.\n"
+                    f"Song URL: https://genius.com/{path}"
+                )
+            return None
+        soup = BeautifulSoup(html.replace("<br/>", "\n"), "html.parser")
 
         # Determine the class of the div
-        divs = html.find_all(
+        divs = soup.find_all(
             "div", class_=re.compile(r"^Lyrics-\w{2}.\w+.[1]|Lyrics__Container")
         )
         if divs is None or len(divs) <= 0:
@@ -736,7 +743,7 @@ class Genius(API, PublicAPI):
 
     def tag(
         self, name: str, page: int | None = None
-    ) -> dict[str, list[dict[str, Any]] | int | None]:
+    ) -> dict[str, list[dict[str, Any]] | int | None] | None:
         """Gets a tag's songs.
 
         This method parses HTML to extract the hits on the page, so it's
@@ -769,11 +776,21 @@ class Genius(API, PublicAPI):
                     page = res['next_page']
 
         """
-        path = "tags/{}/all".format(name)
+        path = f"tags/{name}/all"
         params = {"page": page}
-        soup = BeautifulSoup(
-            self._make_request(path, params_=params, web=True), "html.parser"
+        response: dict[str, str] | None = self._make_request(
+            path, params_=params, web=True
         )
+        if response is None or (html := response.get("text")) is None:
+            if self.verbose:
+                print(
+                    "Couldn't find the lyrics section. "
+                    "Please report this if the song has lyrics.\n"
+                    f"Song URL: https://genius.com/{path}"
+                )
+            return None
+
+        soup = BeautifulSoup(html, "html.parser")
         hits = []
 
         ul = soup.find("ul", class_="song_list")

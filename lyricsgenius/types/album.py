@@ -6,8 +6,7 @@ from .base import BaseEntity
 class Album(BaseEntity):
     """An album from the Genius.com database."""
 
-    def __init__(self, client, json_dict, tracks):
-        body = json_dict
+    def __init__(self, client, body, tracks):
         super().__init__(body["id"])
         self._body = body
         self._client = client
@@ -70,10 +69,9 @@ class Album(BaseEntity):
 class Track(BaseEntity):
     """docstring for Track"""
 
-    def __init__(self, client, json_dict, lyrics):
+    def __init__(self, client, body, lyrics):
         from .song import Song
 
-        body = json_dict
         super().__init__(body["song"]["id"])
         self._body = body
         self.song = Song(client, body["song"], lyrics)

@@ -11,9 +11,8 @@ from .base import BaseEntity
 class Artist(BaseEntity):
     """An artist with songs from the Genius.com database."""
 
-    def __init__(self, client, json_dict):
+    def __init__(self, client, body):
         # Artist Constructor
-        body = json_dict
         super().__init__(body["id"])
         self._body = body
         self._client = client

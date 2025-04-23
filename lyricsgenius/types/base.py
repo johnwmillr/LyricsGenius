@@ -186,8 +186,8 @@ class Stats(object):
 
     """
 
-    def __init__(self, json_dict: dict[str, Any]) -> None:
-        for key, value in json_dict.items():
+    def __init__(self, body: dict[str, Any]) -> None:
+        for key, value in body.items():
             setattr(self, key, value)
 
     def __repr__(self) -> str:

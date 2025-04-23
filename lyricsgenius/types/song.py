@@ -12,8 +12,7 @@ from .base import BaseEntity, Stats
 class Song(BaseEntity):
     """A song from the Genius.com database."""
 
-    def __init__(self, client, json_dict, lyrics=""):
-        body = json_dict
+    def __init__(self, client, body, lyrics=""):
         super().__init__(body["id"])
         self._body = body
         self._client = client
