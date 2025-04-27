@@ -1,4 +1,4 @@
-class CoverArtMethods(object):
+class CoverArtMethods:
     """Cover art methods of the public API."""
 
     def cover_arts(self, album_id=None, song_id=None, text_format=None):

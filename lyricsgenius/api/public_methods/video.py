@@ -1,4 +1,4 @@
-class VideoMethods(object):
+class VideoMethods:
     """Video methods of the public API."""
 
     def video(self, video_id, text_format=None):

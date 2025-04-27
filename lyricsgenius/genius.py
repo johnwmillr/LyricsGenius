@@ -399,13 +399,13 @@ class Genius(API, PublicAPI):
             )
             for track in tracks_list["tracks"]:
                 song_info = track["song"]
+                song_lyrics = None
                 if song_info["lyrics_state"] == "complete" and not song_info.get(
                     "instrumental"
                 ):
                     song_lyrics = self.lyrics(song_url=song_info["url"])
-                else:
-                    song_lyrics = ""
 
+                assert song_lyrics is not None
                 track_obj = Track(self, track, song_lyrics)
                 tracks.append(track_obj)
 
@@ -600,7 +600,7 @@ class Genius(API, PublicAPI):
         # Create the Artist object
         artist = Artist(self, artist_info)
         # Download each song by artist, stored as Song objects in Artist object
-        page = 1
+        page: int | None = 1
         reached_max_songs = True if max_songs == 0 else False
         while not reached_max_songs:
             songs_on_page = self.artist_songs(
@@ -662,7 +662,7 @@ class Genius(API, PublicAPI):
                     break
 
             # Move on to next page of search results
-            page = songs_on_page["next_page"]
+            page = songs_on_page.get("next_page")
             if page is None:
                 break  # Exit search when last page is reached
 

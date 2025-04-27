@@ -9,7 +9,7 @@ from ..utils import safe_unicode, sanitize_filename
 class BaseEntity(ABC):
     """Base class for types."""
 
-    def __init__(self, id):
+    def __init__(self, id: int) -> None:
         self.id = id
 
     @abstractmethod
@@ -168,7 +168,7 @@ class BaseEntity(ABC):
         return "{}({}, ...)".format(name, attrs)
 
 
-class Stats(object):
+class Stats:
     """Stats of an item.
 
     Note:

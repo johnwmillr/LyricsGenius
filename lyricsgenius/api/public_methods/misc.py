@@ -1,4 +1,4 @@
-class MiscMethods(object):
+class MiscMethods:
     """Miscellaneous Methods"""
 
     def line_item(self, line_item_id, text_format=None):

@@ -1,4 +1,4 @@
-class SongMethods(object):
+class SongMethods:
     """Song methods of the public API."""
 
     def song(self, song_id, text_format=None):

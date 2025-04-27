@@ -1,4 +1,4 @@
-class UserMethods(object):
+class UserMethods:
     """User methods of the public API."""
 
     def user(self, user_id, text_format=None):

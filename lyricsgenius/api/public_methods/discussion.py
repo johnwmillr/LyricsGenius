@@ -1,4 +1,4 @@
-class DiscussionMethods(object):
+class DiscussionMethods:
     """Discussion methods of the public API."""
 
     def discussion(self, discussion_id, text_format=None):

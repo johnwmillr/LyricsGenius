@@ -1,4 +1,4 @@
-class ReferentMethods(object):
+class ReferentMethods:
     """Referent methods of the public API."""
 
     def referent(self, referent_ids, text_format=None):

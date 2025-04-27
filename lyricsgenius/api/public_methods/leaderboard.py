@@ -1,4 +1,4 @@
-class LeaderboardMethods(object):
+class LeaderboardMethods:
     """Leaderboard methods of the public API."""
 
     def leaderboard(
