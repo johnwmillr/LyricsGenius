@@ -3,6 +3,7 @@
 # See LICENSE for details.
 
 from filecmp import cmp
+from typing import Any
 
 from .album import Album
 from .artist import Artist
@@ -12,7 +13,9 @@ from .base import BaseEntity, Stats
 class Song(BaseEntity):
     """A song from the Genius.com database."""
 
-    def __init__(self, client, body, lyrics=""):
+    from ..genius import Genius
+
+    def __init__(self, client: Genius, body: dict[str, Any], lyrics: str = "") -> None:
         super().__init__(body["id"])
         self._body = body
         self._client = client
@@ -42,35 +45,39 @@ class Song(BaseEntity):
         """Returns the text data for the song."""
         return self.lyrics
 
-    def to_dict(self):
+    def to_dict(self) -> dict[str, Any]:
+        """Converts the Song object to a dictionary."""
         body = super().to_dict()
         body["artist"] = self.artist
         body["lyrics"] = self.lyrics
         return body
 
-    def to_json(self, filename=None, sanitize=True, ensure_ascii=True):
+    def to_json(
+        self,
+        filename: str | None = None,
+        sanitize: bool = True,
+        ensure_ascii: bool = True,
+    ) -> str | None:
         return super().to_json(
             filename=filename, sanitize=sanitize, ensure_ascii=ensure_ascii
         )
 
-    def to_text(self, filename=None, sanitize=True):
+    def to_text(self, filename: str | None = None, sanitize: bool = True) -> str | None:
         return super().to_text(filename=filename, sanitize=sanitize)
 
     def save_lyrics(
         self,
-        filename=None,
-        extension="json",
-        overwrite=False,
-        ensure_ascii=True,
-        sanitize=True,
-        verbose=True,
-    ):
+        filename: str | None = None,
+        extension: str = "json",
+        overwrite: bool = False,
+        ensure_ascii: bool = True,
+        sanitize: bool = True,
+        verbose: bool = True,
+    ) -> None:
         if filename is None:
-            filename = "Lyrics_{}_{}".format(
-                self.artist.replace(" ", ""), self.title.replace(" ", "")
-            ).lower()
+            filename = f"Lyrics_{self.artist.replace(' ', '')}_{self.title.replace(' ', '')}".lower()
 
-        return super().save_lyrics(
+        super().save_lyrics(
             filename=filename,
             extension=extension,
             overwrite=overwrite,
@@ -85,9 +92,7 @@ class Song(BaseEntity):
             lyr = self.lyrics[:100] + "..."
         else:
             lyr = self.lyrics[:100]
-        return '"{title}" by {artist}:\n    {lyrics}'.format(
-            title=self.title, artist=self.artist, lyrics=lyr.replace("\n", "\n    ")
-        )
+        return f'"{self.title}" by {self.artist}:\n    {lyr.replace("\n", "\n    ")}'
 
     def __cmp__(self, other):
         return (

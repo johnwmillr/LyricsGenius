@@ -2,8 +2,10 @@
 # copyright 2025 John W. R. Miller
 # See LICENSE for details.
 
-"""Artist object"""
 
+from typing import Any
+
+from ..types.song import Song
 from ..utils import safe_unicode
 from .base import BaseEntity
 
@@ -11,27 +13,32 @@ from .base import BaseEntity
 class Artist(BaseEntity):
     """An artist with songs from the Genius.com database."""
 
-    def __init__(self, client, body):
-        # Artist Constructor
+    from ..genius import Genius
+
+    def __init__(self, client: Genius, body: dict[str, Any]) -> None:
         super().__init__(body["id"])
         self._body = body
         self._client = client
-        self.songs = []
+        self.songs: list[Song] = []
         self.num_songs = len(self.songs)
 
-        self.api_path = body["api_path"]
-        self.header_image_url = body["header_image_url"]
-        self.image_url = body["image_url"]
-        # self.iq = body['iq']
-        self.is_meme_verified = body["is_meme_verified"]
-        self.is_verified = body["is_verified"]
-        self.name = body["name"]
-        self.url = body["url"]
+        self.api_path: str = body["api_path"]
+        self.header_image_url: str = body["header_image_url"]
+        self.image_url: str = body["image_url"]
+        self.is_meme_verified: bool = body["is_meme_verified"]
+        self.is_verified: bool = body["is_verified"]
+        self.name: str = body["name"]
+        self.url: str = body["url"]
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.songs)
 
-    def add_song(self, new_song, verbose=True, include_features=False):
+    def add_song(
+        self,
+        new_song: Song | str | None,
+        verbose: bool = True,
+        include_features: bool = False,
+    ) -> Song | None:
         """Adds a song to the Artist.
 
         This method adds a new song to the artist object. It checks
@@ -45,7 +52,7 @@ class Artist(BaseEntity):
                 featuring the artist.
 
         Returns:
-            :obj:`int`: 0 for success and 1 for failure.
+            :obj:`Song`: Returns None on failure.
 
         Examples:
             .. code:: python
@@ -65,6 +72,10 @@ class Artist(BaseEntity):
             new_song = self._client.search_song(new_song)
             if new_song is None:
                 return None
+        if not isinstance(new_song, Song):
+            raise TypeError(
+                f"new_song must be a Song object or a string, not {type(new_song)}"
+            )
         if any([song.title == new_song.title for song in self.songs]):
             if verbose:
                 print(
@@ -87,7 +98,7 @@ class Artist(BaseEntity):
             )
         return None
 
-    def song(self, song_name):
+    def song(self, song_name: str) -> Song | None:
         """Gets the artist's song.
 
         If the song is in the artist's songs, returns the song. Otherwise searches
@@ -106,8 +117,7 @@ class Artist(BaseEntity):
             if song.title == song_name:
                 return song
 
-        song = self._client.search_song(song_name, self.name)
-        return song
+        return self._client.search_song(song_name, self.name)
 
     @property
     def _text_data(self) -> str:
@@ -117,29 +127,33 @@ class Artist(BaseEntity):
             for n, song in enumerate(self.songs, start=1)
         ).strip()
 
-    def to_dict(self):
+    def to_dict(self) -> dict[str, Any]:
         body = super().to_dict()
         body["songs"] = [song.to_dict() for song in self.songs]
         return body
 
-    def to_json(self, filename=None, sanitize=True, ensure_ascii=True):
+    def to_json(
+        self,
+        filename: str | None = None,
+        sanitize: bool = True,
+        ensure_ascii: bool = True,
+    ) -> str | None:
         return super().to_json(
             filename=filename, sanitize=sanitize, ensure_ascii=ensure_ascii
         )
 
-    def to_text(self, filename=None, sanitize=True):
+    def to_text(self, filename: str | None = None, sanitize: bool = True) -> str | None:
         return super().to_text(filename=filename, sanitize=sanitize)
 
     def save_lyrics(
         self,
-        filename=None,
-        extension="json",
-        overwrite=False,
-        ensure_ascii=True,
-        sanitize=True,
-        verbose=True,
-    ):
-        # Determine the filename
+        filename: str | None = None,
+        extension: str = "json",
+        overwrite: bool = False,
+        ensure_ascii: bool = True,
+        sanitize: bool = True,
+        verbose: bool = True,
+    ) -> None:
         if filename is None:
             filename = "Lyrics_" + self.name.replace(" ", "")
 
@@ -152,7 +166,7 @@ class Artist(BaseEntity):
             verbose=verbose,
         )
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return a string representation of the Artist object."""
         msg = "{name}, {num} songs".format(name=self.name, num=self.num_songs)
         msg = msg[:-1] if self.num_songs == 1 else msg
