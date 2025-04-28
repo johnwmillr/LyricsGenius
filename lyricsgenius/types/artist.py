@@ -3,23 +3,26 @@
 # See LICENSE for details.
 
 
-from typing import Any
+from typing import TYPE_CHECKING, Any, Union  # Import Union
 
-from ..types.song import Song
 from ..utils import safe_unicode
 from .base import BaseEntity
+
+if TYPE_CHECKING:
+    from ..genius import Genius  # Add Genius to TYPE_CHECKING
+    from ..types.song import Song
 
 
 class Artist(BaseEntity):
     """An artist with songs from the Genius.com database."""
 
-    from ..genius import Genius
-
-    def __init__(self, client: Genius, body: dict[str, Any]) -> None:
+    def __init__(self, client: "Genius", body: dict[str, Any]) -> None:
         super().__init__(body["id"])
+        # Import Genius locally
+
         self._body = body
         self._client = client
-        self.songs: list[Song] = []
+        self.songs: list[Union["Song"]] = []  # Use Union for list type hint
         self.num_songs = len(self.songs)
 
         self.api_path: str = body["api_path"]
@@ -35,10 +38,10 @@ class Artist(BaseEntity):
 
     def add_song(
         self,
-        new_song: Song | str | None,
+        new_song: Union["Song", str, None],  # Use Union for parameter type hint
         verbose: bool = True,
         include_features: bool = False,
-    ) -> Song | None:
+    ) -> Union["Song", None]:  # Use Union for return type hint
         """Adds a song to the Artist.
 
         This method adds a new song to the artist object. It checks
@@ -68,6 +71,8 @@ class Artist(BaseEntity):
                 artist.add_song('To You')
 
         """
+        from ..types.song import Song
+
         if isinstance(new_song, str):
             new_song = self._client.search_song(new_song)
             if new_song is None:
@@ -98,7 +103,9 @@ class Artist(BaseEntity):
             )
         return None
 
-    def song(self, song_name: str) -> Song | None:
+    def song(
+        self, song_name: str
+    ) -> Union["Song", None]:  # Use Union for return type hint
         """Gets the artist's song.
 
         If the song is in the artist's songs, returns the song. Otherwise searches
@@ -113,11 +120,16 @@ class Artist(BaseEntity):
             returns *None*.
 
         """
+        from ..types.song import Song
+
         for song in self.songs:
             if song.title == song_name:
                 return song
 
-        return self._client.search_song(song_name, self.name)
+        result = self._client.search_song(song_name, self.name)
+        if isinstance(result, Song):
+            return result
+        return None
 
     @property
     def _text_data(self) -> str:

@@ -1,21 +1,24 @@
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from ..utils import convert_to_datetime
-from .artist import Artist
 from .base import BaseEntity
+
+if TYPE_CHECKING:
+    from ..genius import Genius  # Add Genius to TYPE_CHECKING
+    from .artist import Artist
+    from .song import Song
 
 
 class Track(BaseEntity):
     """docstring for Track"""
 
-    from ..genius import Genius
-
-    def __init__(self, client: Genius, body: dict[str, Any], lyrics: str) -> None:
+    def __init__(self, client: "Genius", body: dict[str, Any], lyrics: str) -> None:
         from .song import Song
 
         super().__init__(body["song"]["id"])
         self._body = body
-        self.song = Song(client, body["song"], lyrics)
+        self._client = client
+        self.song: "Song" = Song(client, body["song"], lyrics)
         self.number: int = body["number"]
 
     @property
@@ -70,15 +73,15 @@ class Track(BaseEntity):
 class Album(BaseEntity):
     """An album from the Genius.com database."""
 
-    from ..genius import Genius
-
     def __init__(
-        self, client: Genius, body: dict[str, Any], tracks: list[Track]
+        self, client: "Genius", body: dict[str, Any], tracks: list[Track]
     ) -> None:
+        from .artist import Artist
+
         super().__init__(body["id"])
         self._body = body
         self._client = client
-        self.artist = Artist(client, body["artist"])
+        self.artist: "Artist" = Artist(client, body["artist"])
         self.tracks = tracks
         self.release_date_components = convert_to_datetime(
             body.get("release_date_components")

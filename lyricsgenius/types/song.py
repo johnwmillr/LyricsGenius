@@ -3,27 +3,34 @@
 # See LICENSE for details.
 
 from filecmp import cmp
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from .album import Album
 from .artist import Artist
 from .base import BaseEntity, Stats
+
+if TYPE_CHECKING:
+    from ..genius import Genius
+    from .album import Album
 
 
 class Song(BaseEntity):
     """A song from the Genius.com database."""
 
-    from ..genius import Genius
-
-    def __init__(self, client: Genius, body: dict[str, Any], lyrics: str = "") -> None:
+    def __init__(
+        self, client: "Genius", body: dict[str, Any], lyrics: str = ""
+    ) -> None:
         super().__init__(body["id"])
+        from .album import Album
+
         self._body = body
         self._client = client
         self.artist = body["primary_artist"]["name"]
         self.lyrics = lyrics if lyrics else ""
         self.primary_artist = Artist(client, body["primary_artist"])
         self.stats = Stats(body["stats"])
-        self.album = Album(client, body["album"], []) if body.get("album") else None
+        self.album: "Album" | None = (
+            Album(client, body["album"], []) if body.get("album") else None
+        )
 
         self.annotation_count = body["annotation_count"]
         self.api_path = body["api_path"]
