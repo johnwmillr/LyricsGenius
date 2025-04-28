@@ -1,7 +1,15 @@
-class VideoMethods:
+from typing import Any
+
+from ...api.base import Requester
+from ...types.types import TextFormatT
+
+
+class VideoMethods(Requester):
     """Video methods of the public API."""
 
-    def video(self, video_id, text_format=None):
+    def video(
+        self, video_id: int, text_format: TextFormatT | None = None
+    ) -> dict[str, Any]:
         """Gets data for a specific video.
 
         Args:
@@ -15,19 +23,18 @@ class VideoMethods:
         """
         endpoint = "videos/{}".format(video_id)
         params = {"text_format": text_format or self.response_format}
-
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def videos(
         self,
-        album_id=None,
-        article_id=None,
-        song_id=None,
-        video_id=None,
-        per_page=None,
-        page=None,
-        series=False,
-    ):
+        album_id: int | None = None,
+        article_id: int | None = None,
+        song_id: int | None = None,
+        video_id: int | None = None,
+        per_page: int | None = None,
+        page: int | None = None,
+        series: bool = False,
+    ) -> dict[str, Any]:
         """Gets the videos of an album, article or song or the featured videos.
 
         Args:

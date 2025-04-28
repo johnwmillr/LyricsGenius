@@ -2,7 +2,7 @@ import os
 import platform
 import time
 from json.decoder import JSONDecodeError
-from typing import Any
+from typing import Any, Protocol
 
 import requests
 from requests.exceptions import HTTPError, RequestException, Timeout
@@ -10,7 +10,23 @@ from requests.exceptions import HTTPError, RequestException, Timeout
 from ..types.types import ResponseFormatT
 
 
-class Sender:
+class Requester(Protocol):
+    response_format: ResponseFormatT
+
+    def _make_request(
+        self,
+        path: str,
+        method: str = "GET",
+        params_: dict[str, Any] | None = None,
+        public_api: bool = False,
+        web: bool = False,
+        **kwargs: Any,
+    ) -> dict[str, Any]:
+        """Makes a request to Genius."""
+        pass
+
+
+class Sender(Requester):
     """Sends requests to Genius."""
 
     # Create a persistent requests connection

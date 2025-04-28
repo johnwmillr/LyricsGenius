@@ -1,7 +1,15 @@
-class MiscMethods:
+from typing import Any
+
+from ...api.base import Requester
+from ...types.types import TextFormatT
+
+
+class MiscMethods(Requester):
     """Miscellaneous Methods"""
 
-    def line_item(self, line_item_id, text_format=None):
+    def line_item(
+        self, line_item_id: int, text_format: TextFormatT | None = None
+    ) -> dict[str, Any]:
         """Gets data for a specific line item.
 
         Args:
@@ -23,7 +31,12 @@ class MiscMethods:
         params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def page_data(self, album=None, song=None, artist=None):
+    def page_data(
+        self,
+        album: str | None = None,
+        song: str | None = None,
+        artist: str | None = None,
+    ) -> dict[str, Any]:
         """Gets page data of an item.
 
         If you want the page data of a song, you must supply
@@ -32,7 +45,7 @@ class MiscMethods:
 
         Page data will return all possible values for the album/song and
         the lyrics in HTML format if the item is a song!
-        Album page data will contian album info and tracks info as well.
+        Album page data will contain album info and tracks info as well.
 
         Args:
             album (:obj:`str`, optional): Album path
@@ -85,21 +98,20 @@ class MiscMethods:
         """
         assert any([album, song]), "You must pass either song or album."
         if song:
-            assert all([song, artist]), "You must pass artist."
-
-        if album:
-            endpoint = "page_data/album"
-            page_type = "albums"
-            item_path = album.replace("/albums/", "")
-        else:
-            endpoint = "page_data/song"
+            assert artist, "If you pass song, you must also pass artist."
             page_type = "songs"
-
-            # item path becomes something like: Artist/Song
+            # Ensure song and artist are not None before using them
             item_path = (
                 song[1:].replace(artist + "-", artist + "/").replace("-lyrics", "")
             )
+        elif album:
+            page_type = "albums"
+            item_path = album[1:]  # Ensure album is not None
+        else:
+            # This case should not be reachable due to the initial assert
+            raise ValueError("Invalid state: Neither song nor album provided.")
 
+        endpoint = "page_data"
         page_path = "/{page_type}/{item_path}".format(
             page_type=page_type, item_path=item_path
         )
@@ -108,8 +120,12 @@ class MiscMethods:
         return self._make_request(endpoint, params_=params, public_api=True)
 
     def voters(
-        self, annotation_id=None, answer_id=None, article_id=None, comment_id=None
-    ):
+        self,
+        annotation_id: int | None = None,
+        answer_id: int | None = None,
+        article_id: int | None = None,
+        comment_id: int | None = None,
+    ) -> dict[str, Any]:
         """Gets the voters of an item.
 
         You must supply one of :obj:`annotation_id`, :obj:`answer_id`, :obj:`article_id`
@@ -156,4 +172,33 @@ class MiscMethods:
             params["article_id"] = article_id
         elif comment_id:
             params["comment_id"] = comment_id
+        return self._make_request(path=endpoint, params_=params, public_api=True)
+
+    def charts(
+        self,
+        time_period: str = "day",
+        chart_genre: str = "all",
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+        type_: str = "songs",
+    ) -> dict[str, Any]:
+        raise NotImplementedError()
+
+    def verified_artists(
+        self, per_page: int | None = None, page: int | None = None
+    ) -> dict[str, Any]:
+        """Gets verified artists.
+
+        Args:
+            per_page (:obj:`int`, optional): Number of results to
+                return per request. It can't be more than 50.
+            page (:obj:`int`, optional): Paginated offset (number of the page).
+
+        Returns:
+            :obj:`dict`
+
+        """
+        endpoint = "verified_artists"
+        params = {"per_page": per_page, "page": page}
         return self._make_request(path=endpoint, params_=params, public_api=True)

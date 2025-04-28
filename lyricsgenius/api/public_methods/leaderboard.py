@@ -1,9 +1,18 @@
-class LeaderboardMethods:
+from typing import Any
+
+from ...api.base import Requester
+
+
+class LeaderboardMethods(Requester):
     """Leaderboard methods of the public API."""
 
     def leaderboard(
-        self, time_period="day", per_page=None, page=None, text_format=None
-    ):
+        self,
+        time_period: str = "day",
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: str | None = None,
+    ) -> dict[str, Any]:
         """Gets the Genius community leaderboard.
 
         This method gets data of the community charts on the Genius.com page.
@@ -32,13 +41,13 @@ class LeaderboardMethods:
 
     def charts(
         self,
-        time_period="day",
-        chart_genre="all",
-        per_page=None,
-        page=None,
-        text_format=None,
-        type_="songs",
-    ):
+        time_period: str = "day",
+        chart_genre: str = "all",
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: str | None = None,
+        type_: str = "songs",
+    ) -> dict[str, Any]:
         """Gets the Genius charts.
 
         This method gets data of the chart on the Genius.com page.

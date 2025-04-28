@@ -1,7 +1,15 @@
-class ArtistMethods(object):
+from typing import Any
+
+from ...api.base import Requester
+from ...types.types import TextFormatT
+
+
+class ArtistMethods(Requester):
     """Artist methods of the public API."""
 
-    def artist(self, artist_id, text_format=None):
+    def artist(
+        self, artist_id: int, text_format: TextFormatT | None = None
+    ) -> dict[str, Any]:
         """Gets data for a specific artist.
 
         Args:
@@ -18,7 +26,13 @@ class ArtistMethods(object):
 
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def artist_activity(self, artist_id, per_page=None, page=None, text_format=None):
+    def artist_activity(
+        self,
+        artist_id: int,
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets activities on artist's songs.
 
         Args:
@@ -41,7 +55,12 @@ class ArtistMethods(object):
         }
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def artist_albums(self, artist_id, per_page=None, page=None):
+    def artist_albums(
+        self,
+        artist_id: int,
+        per_page: int | None = None,
+        page: int | None = None,
+    ) -> dict[str, Any]:
         """Gets artist's albums.
 
         Args:
@@ -59,8 +78,12 @@ class ArtistMethods(object):
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def artist_contribution_opportunities(
-        self, artist_id, per_page=None, next_curosr=None, text_format=None
-    ):
+        self,
+        artist_id: int,
+        per_page: int | None = None,
+        next_curosr: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets contribution opportunities related to the artist.
 
         Args:
@@ -89,7 +112,9 @@ class ArtistMethods(object):
         }
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def artist_followers(self, artist_id, per_page=None, page=None):
+    def artist_followers(
+        self, artist_id: int, per_page: int | None = None, page: int | None = None
+    ) -> dict[str, Any]:
         """Gets artist's followers.
 
         Args:
@@ -106,7 +131,9 @@ class ArtistMethods(object):
         params = {"per_page": per_page, "page": page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def artist_leaderboard(self, artist_id, per_page=None, page=None):
+    def artist_leaderboard(
+        self, artist_id: int, per_page: int | None = None, page: int | None = None
+    ) -> dict[str, Any]:
         """Gets artist's top scholars.
 
         Args:
@@ -123,7 +150,13 @@ class ArtistMethods(object):
         params = {"per_page": per_page, "page": page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def artist_songs(self, artist_id, per_page=None, page=None, sort="popularity"):
+    def artist_songs(
+        self,
+        artist_id: int,
+        per_page: int | None = None,
+        page: int | None = None,
+        sort: str = "popularity",
+    ) -> dict[str, Any]:
         """Gets artist's songs.
 
         Args:
@@ -143,8 +176,13 @@ class ArtistMethods(object):
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def search_artist_songs(
-        self, artist_id, search_term, per_page=None, page=None, sort="popularity"
-    ):
+        self,
+        artist_id: int,
+        search_term: str,
+        per_page: int | None = None,
+        page: int | None = None,
+        sort: str = "popularity",
+    ) -> dict[str, Any]:
         """Searches artist's songs.
 
         Args:

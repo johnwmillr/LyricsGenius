@@ -1,7 +1,15 @@
-class ReferentMethods:
+from typing import Any
+
+from ...api.base import Requester
+from ...types.types import TextFormatT
+
+
+class ReferentMethods(Requester):
     """Referent methods of the public API."""
 
-    def referent(self, referent_ids, text_format=None):
+    def referent(
+        self, referent_ids: list[int], text_format: TextFormatT | None = None
+    ) -> dict[str, Any]:
         """Gets data of one or more referents.
 
         This method can get multiple referents in one call,
@@ -23,7 +31,7 @@ class ReferentMethods:
         """
         params = {"text_format": text_format or self.response_format}
         if len(referent_ids) == 1:
-            endpoint = "referents/{}".format(referent_ids[0])
+            endpoint = f"referents/{referent_ids[0]}"
         else:
             endpoint = "referents/multi"
             params = [("text_format", params["text_format"])]
@@ -34,13 +42,13 @@ class ReferentMethods:
 
     def referents(
         self,
-        song_id=None,
-        web_page_id=None,
-        created_by_id=None,
-        per_page=None,
-        page=None,
-        text_format=None,
-    ):
+        song_id: int | None = None,
+        web_page_id: int | None = None,
+        created_by_id: int | None = None,
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets item's referents
 
         You must supply :obj:`song_id`, :obj:`web_page_id`, or :obj:`created_by_id`.
@@ -77,12 +85,12 @@ class ReferentMethods:
 
     def referents_charts(
         self,
-        time_period="day",
-        chart_genre="all",
-        per_page=None,
-        page=None,
-        text_format=None,
-    ):
+        time_period: str = "day",
+        chart_genre: str = "all",
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets the referents (lyrics) charts.
 
         Alias for :meth:`charts() <PublicAPI.charts>`.

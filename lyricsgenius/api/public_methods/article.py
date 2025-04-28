@@ -1,7 +1,15 @@
-class ArticleMethods(object):
+from typing import Any
+
+from ...api.base import Requester
+from ...types.types import TextFormatT
+
+
+class ArticleMethods(Requester):
     """Article methods of the public API."""
 
-    def article(self, article_id, text_format=None):
+    def article(
+        self, article_id: int, text_format: TextFormatT | None = None
+    ) -> dict[str, Any]:
         """Gets data for a specific article.
 
         Args:
@@ -17,7 +25,13 @@ class ArticleMethods(object):
         params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def article_comments(self, article_id, per_page=None, page=None, text_format=None):
+    def article_comments(
+        self,
+        article_id: int,
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets the comments on an article.
 
         Args:
@@ -40,7 +54,12 @@ class ArticleMethods(object):
         }
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def latest_articles(self, per_page=None, page=None, text_format=None):
+    def latest_articles(
+        self,
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets the latest articles on the homepage.
 
         This method will return the featured articles that are placed
