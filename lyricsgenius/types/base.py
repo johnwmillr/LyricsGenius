@@ -48,11 +48,8 @@ class BaseEntity(ABC):
         msg = "extension must be JSON or TXT"
         assert (extension == "json") or (extension == "txt"), msg
 
-        # Determine the filename
-        for ext in [".txt", ".TXT", ".json", ".JSON"]:
-            if ext in filename:
-                filename = filename.replace(ext, "")
-                break
+        # Standardize the extension
+        filename, _ = os.path.splitext(filename)
         filename += "." + extension
         filename = sanitize_filename(filename) if sanitize else filename
 
