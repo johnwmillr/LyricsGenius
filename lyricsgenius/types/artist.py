@@ -3,27 +3,21 @@
 # See LICENSE for details.
 
 
-from typing import TYPE_CHECKING, Any, Union  # Import Union
+from typing import TYPE_CHECKING, Any
 
 from ..utils import safe_unicode
 from .base import BaseEntity
 
 if TYPE_CHECKING:
-    from ..genius import Genius  # Add Genius to TYPE_CHECKING
     from ..types.song import Song
 
 
 class Artist(BaseEntity):
-    """An artist with songs from the Genius.com database."""
+    """An artist with songs from Genius."""
 
-    def __init__(self, client: "Genius", body: dict[str, Any]) -> None:
-        super().__init__(body["id"])
-        # Import Genius locally
-
+    def __init__(self, body: dict[str, Any]) -> None:
         self._body = body
-        self._client = client
-        self.songs: list[Union["Song"]] = []  # Use Union for list type hint
-        self.num_songs = len(self.songs)
+        self.songs: list[Song] = []
 
         self.api_path: str = body["api_path"]
         self.header_image_url: str = body["header_image_url"]
@@ -36,12 +30,16 @@ class Artist(BaseEntity):
     def __len__(self) -> int:
         return len(self.songs)
 
+    @property
+    def num_songs(self) -> int:
+        return len(self)
+
     def add_song(
         self,
-        new_song: Union["Song", str, None],  # Use Union for parameter type hint
+        new_song: Song,
         verbose: bool = True,
         include_features: bool = False,
-    ) -> Union["Song", None]:  # Use Union for return type hint
+    ) -> Song | None:
         """Adds a song to the Artist.
 
         This method adds a new song to the artist object. It checks
@@ -66,69 +64,22 @@ class Artist(BaseEntity):
                 # Way 1
                 song = genius.search_song('To You', artist.name)
                 artist.add_song(song)
-
-                # Way 2
-                artist.add_song('To You')
-
         """
-        from ..types.song import Song
-
-        if isinstance(new_song, str):
-            new_song = self._client.search_song(new_song)
-            if new_song is None:
-                return None
-        if not isinstance(new_song, Song):
-            raise TypeError(
-                f"new_song must be a Song object or a string, not {type(new_song)}"
-            )
-        if any([song.title == new_song.title for song in self.songs]):
+        if new_song in self.songs:
             if verbose:
                 print(
-                    "{s} already in {a}, not adding song.".format(
-                        s=safe_unicode(new_song.title), a=safe_unicode(self.name)
-                    )
+                    f"{safe_unicode(new_song.title)} already in {safe_unicode(self.name)}, not adding song."
                 )
             return None
         if new_song.artist == self.name or (
-            include_features and any(new_song._body.get("featured_artists", []))
+            include_features and new_song.artist in new_song.featured_artists
         ):
             self.songs.append(new_song)
-            self.num_songs += 1
             return new_song
         if verbose:
             print(
-                "Can't add song by {b}, artist must be {a}.".format(
-                    b=safe_unicode(new_song.artist), a=safe_unicode(self.name)
-                )
+                f"Can't add song by {safe_unicode(new_song.artist)}, artist must be {safe_unicode(self.name)}."
             )
-        return None
-
-    def song(
-        self, song_name: str
-    ) -> Union["Song", None]:  # Use Union for return type hint
-        """Gets the artist's song.
-
-        If the song is in the artist's songs, returns the song. Otherwise searches
-        Genius for the song and then returns the song.
-
-        Args:
-            song_name (:obj:`str`): name of the song.
-                the result is returned as a string.
-
-        Returns:
-            :obj:`Song <types.Song>` \\|‌ :obj:`None`: If it can't find the song,
-            returns *None*.
-
-        """
-        from ..types.song import Song
-
-        for song in self.songs:
-            if song.title == song_name:
-                return song
-
-        result = self._client.search_song(song_name, self.name)
-        if isinstance(result, Song):
-            return result
         return None
 
     @property
@@ -180,6 +131,22 @@ class Artist(BaseEntity):
 
     def __str__(self) -> str:
         """Return a string representation of the Artist object."""
-        msg = "{name}, {num} songs".format(name=self.name, num=self.num_songs)
+        msg = f"{self.name}, {self.num_songs} songs"
         msg = msg[:-1] if self.num_songs == 1 else msg
         return msg
+
+    def __repr__(self) -> str:
+        """Return a string representation of the Artist object."""
+        return f"Artist(name={self.name}, num_songs={self.num_songs})"
+
+    def __eq__(self, other: object) -> bool:
+        """Check if two Artist objects are equal."""
+        if not isinstance(other, Artist):
+            return False
+        if self._body.get("id", 1) == other._body.get("id", -1):
+            return True
+        if self.name != other.name or len(self.songs) != len(other.songs):
+            return False
+        return sorted(self.songs, key=lambda s: s.title) == sorted(
+            other.songs, key=lambda s: s.title
+        )

@@ -7,10 +7,7 @@ from ..utils import safe_unicode, sanitize_filename
 
 
 class BaseEntity(ABC):
-    """Base class for types."""
-
-    def __init__(self, id: int) -> None:
-        self.id = id
+    """Base class for Genius data types (e.g. Song, Artist, album)."""
 
     @abstractmethod
     def save_lyrics(
@@ -80,7 +77,7 @@ class BaseEntity(ABC):
         return None
 
     @abstractmethod
-    def to_dict(self) -> dict[Any, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Converts the object to a dictionary."""
         if hasattr(self, "_body"):
             return self._body.copy()
@@ -126,7 +123,14 @@ class BaseEntity(ABC):
 
     @property
     def _text_data(self) -> str:
-        """Returns the text data for the artist."""
+        """
+        Returns the text data for the entity.
+
+        Different subclasses will implement this method differently.
+        For example, the Song class will return lyrics for just one
+        song, while the Album class will return the lyrics for all songs
+        in the album concatenated together.
+        """
         raise NotImplementedError()
 
     @abstractmethod

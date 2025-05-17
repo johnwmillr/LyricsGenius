@@ -14,7 +14,7 @@ from typing import Any
 from bs4 import BeautifulSoup, Tag
 
 from .api import API, PublicAPI
-from .types import Album, Artist, Song, Track
+from .types import Album, Artist, Song
 from .types.types import ResponseFormatT, TextFormatT
 from .utils import clean_str, safe_unicode
 
@@ -246,7 +246,7 @@ class Genius(API, PublicAPI):
         # Check rest of results if top hit wasn't the search type
         sections = sorted(response["sections"], key=lambda sect: sect["type"] == type_)
 
-        hits = [hit for hit in top_hits if hit["index"] == type_]
+        hits: list[dict[str, Any]] = [hit for hit in top_hits if hit["index"] == type_]
         hits.extend(
             [
                 hit
@@ -265,7 +265,7 @@ class Genius(API, PublicAPI):
         # return the first result that has lyrics
         if type_ == "song" and self.skip_non_songs:
             for hit in hits:
-                song = hit["result"]
+                song: dict[str, Any] = hit["result"]
                 if self._result_is_lyrics(song):
                     return song
 
@@ -387,31 +387,34 @@ class Genius(API, PublicAPI):
 
         # Set the album id to the value retrieved from the API
         album_id = album_info["id"]
+        assert album_id is not None
 
-        tracks: list[Track] = []
+        album_songs: list[Song] = []
         next_page: int | None = 1
 
         # It's unlikely for an album to have >=50 songs,
         # but it's best to check
         while next_page:
-            tracks_list = self.album_tracks(
+            tracks_list_response = self.album_tracks(
                 album_id=album_id, per_page=50, page=next_page, text_format=text_format
             )
-            for track in tracks_list["tracks"]:
-                song_info = track["song"]
+            for track_data in tracks_list_response["tracks"]:
+                song_info = track_data["song"]
                 song_lyrics = None
                 if song_info["lyrics_state"] == "complete" and not song_info.get(
                     "instrumental"
                 ):
                     song_lyrics = self.lyrics(song_url=song_info["url"])
 
-                assert song_lyrics is not None
-                track_obj = Track(self, track, song_lyrics)
-                tracks.append(track_obj)
+                if song_lyrics is None:
+                    song_lyrics = ""
 
-            next_page = tracks_list["next_page"]
+                song_obj = Song(lyrics=song_lyrics, body=song_info)
+                album_songs.append(song_obj)
 
-        return Album(self, album_info, tracks)
+            next_page = tracks_list_response["next_page"]
+
+        return Album(body=album_info, songs=album_songs)
 
     def search_song(
         self,
@@ -495,18 +498,18 @@ class Genius(API, PublicAPI):
         if song_info["lyrics_state"] == "complete" and not song_info.get(
             "instrumental"
         ):
-            lyrics = self.lyrics(song_url=song_info["url"])
+            lyrics_val = self.lyrics(song_url=song_info["url"])
         else:
-            lyrics = ""
+            lyrics_val = ""
 
         # Skip results when URL is a 404 or lyrics are missing
-        if self.skip_non_songs and not lyrics:
+        if self.skip_non_songs and not lyrics_val:
             if self.verbose:
                 print("Specified song does not have a valid lyrics. Rejecting.")
             return None
 
         # Return a Song object with lyrics if we've made it this far
-        song = Song(self, song_info, lyrics)
+        song = Song(lyrics=lyrics_val if lyrics_val is not None else "", body=song_info)
         if self.verbose:
             print("Done.")
         return song
@@ -598,7 +601,7 @@ class Genius(API, PublicAPI):
             artist_name = found_name
 
         # Create the Artist object
-        artist = Artist(self, artist_info)
+        artist_obj = Artist(body=artist_info)
         # Download each song by artist, stored as Song objects in Artist object
         page: int | None = 1
         reached_max_songs = True if max_songs == 0 else False
@@ -627,28 +630,30 @@ class Genius(API, PublicAPI):
 
                 # Create the Song object from lyrics and metadata
                 if song_info["lyrics_state"] == "complete":
-                    lyrics = self.lyrics(song_url=song_info["url"])
+                    lyrics_val = self.lyrics(song_url=song_info["url"])
                 else:
-                    lyrics = ""
+                    lyrics_val = ""
                 if get_full_info:
                     new_info = self.song(song_info["id"])["song"]
                     song_info.update(new_info)
-                song = Song(self, song_info, lyrics)
+                song = Song(
+                    lyrics=lyrics_val if lyrics_val is not None else "", body=song_info
+                )
 
                 # Attempt to add the Song to the Artist
-                result = artist.add_song(
+                result = artist_obj.add_song(
                     song, verbose=False, include_features=include_features
                 )
                 if result is not None and self.verbose:
                     print(
                         'Song {n}: "{t}"'.format(
-                            n=artist.num_songs, t=safe_unicode(song.title)
+                            n=artist_obj.num_songs, t=safe_unicode(song.title)
                         )
                     )
 
                 # Exit search if the max number of songs has been met
                 reached_max_songs = (
-                    max_songs is not None and artist.num_songs >= max_songs
+                    max_songs is not None and artist_obj.num_songs >= max_songs
                 )
                 if reached_max_songs:
                     if self.verbose:
@@ -663,12 +668,12 @@ class Genius(API, PublicAPI):
 
             # Move on to next page of search results
             page = songs_on_page.get("next_page")
-            if page is None:
-                break  # Exit search when last page is reached
+            if page is None or reached_max_songs:
+                break
 
         if self.verbose:
-            print("Done. Found {n} songs.".format(n=artist.num_songs))
-        return artist
+            print(f"Done. Found {artist_obj.num_songs} songs.")
+        return artist_obj
 
     def save_artists(
         self,

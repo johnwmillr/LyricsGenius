@@ -2,50 +2,47 @@
 # copyright 2025 John W. R. Miller
 # See LICENSE for details.
 
-from filecmp import cmp
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
-from .artist import Artist
-from .base import BaseEntity, Stats
-
-if TYPE_CHECKING:
-    from ..genius import Genius
-    from .album import Album
+from .base import BaseEntity
 
 
 class Song(BaseEntity):
-    """A song from the Genius.com database."""
+    """Lyrics and metadata for a song from Genius."""
 
-    def __init__(
-        self, client: "Genius", body: dict[str, Any], lyrics: str = ""
-    ) -> None:
-        super().__init__(body["id"])
-        from .album import Album
+    def __init__(self, lyrics: str, body: dict[str, Any]) -> None:
+        """
+        Initialize a Song object with lyrics and song metadata.
 
+        Args:
+            lyrics (str): The lyrics of the song.
+            body (dict[str, Any]): A dictionary containing song metadata.
+        """
+        self.lyrics = lyrics
         self._body = body
-        self._client = client
-        self.artist = body["primary_artist"]["name"]
-        self.lyrics = lyrics if lyrics else ""
-        self.primary_artist = Artist(client, body["primary_artist"])
-        self.stats = Stats(body["stats"])
-        self.album: "Album" | None = (
-            Album(client, body["album"], []) if body.get("album") else None
-        )
 
-        self.annotation_count = body["annotation_count"]
-        self.api_path = body["api_path"]
-        self.full_title = body["full_title"]
-        self.header_image_thumbnail_url = body["header_image_thumbnail_url"]
-        self.header_image_url = body["header_image_url"]
-        self.lyrics_owner_id = body["lyrics_owner_id"]
-        self.lyrics_state = body["lyrics_state"]
-        self.path = body["path"]
-        self.pyongs_count = body["pyongs_count"]
-        self.song_art_image_thumbnail_url = body["song_art_image_thumbnail_url"]
-        self.song_art_image_url = body["song_art_image_url"]
-        self.title = body["title"]
-        self.title_with_featured = body["title_with_featured"]
-        self.url = body["url"]
+        self.artist: str = body["primary_artist"]["name"]
+        self.primary_artist: dict[str, Any] = body["primary_artist"]
+        self.album: dict[str, Any] | None = body.get("album")
+        self.annotation_count: int | None = body.get("annotation_count")
+        self.api_path: str | None = body.get("api_path")
+        self.full_title: str | None = body.get("full_title")
+        self.header_image_thumbnail_url: str | None = body.get(
+            "header_image_thumbnail_url"
+        )
+        self.header_image_url: str | None = body.get("header_image_url")
+        self.lyrics_owner_id: int | None = body.get("lyrics_owner_id")
+        self.lyrics_state: str | None = body.get("lyrics_state")
+        self.path: str | None = body.get("path")
+        self.pyongs_count: int | None = body.get("pyongs_count")
+        self.song_art_image_thumbnail_url: str | None = body.get(
+            "song_art_image_thumbnail_url"
+        )
+        self.song_art_image_url: str | None = body.get("song_art_image_url")
+        self.title: str = body["title"]
+        self.title_with_featured: str | None = body.get("title_with_featured")
+        self.url: str | None = body.get("url")
+        self.featured_artists: list[dict[str, Any]] = body.get("featured_artists", [])
 
     @property
     def _text_data(self) -> str:
@@ -93,7 +90,7 @@ class Song(BaseEntity):
             verbose=verbose,
         )
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return a string representation of the Song object."""
         if len(self.lyrics) > 100:
             lyr = self.lyrics[:100] + "..."
@@ -101,9 +98,20 @@ class Song(BaseEntity):
             lyr = self.lyrics[:100]
         return f'"{self.title}" by {self.artist}:\n    {lyr.replace("\n", "\n    ")}'
 
-    def __cmp__(self, other):
+    def __repr__(self) -> str:
+        """Return a string representation of the Song object."""
+        return f"Song(title={self.title}, artist={self.artist})"
+
+    def __eq__(self, other: object) -> bool:
+        """Check if two Song objects are equal."""
+        if not isinstance(other, Song):
+            return False
+        if self._body.get("id", 1) == other._body.get("id", -1):
+            return True
+
+        # Fallback to attribute comparison if IDs are not definitive
         return (
-            cmp(self.title, other.title)
-            and cmp(self.artist, other.artist)
-            and cmp(self.lyrics, other.lyrics)
+            self.title == other.title
+            and self.artist == other.artist
+            and self.lyrics == other.lyrics
         )
