@@ -167,31 +167,3 @@ class BaseEntity(ABC):
             [x for x in list(self.__dict__.keys()) if not x.startswith("_")][:2]
         )
         return "{}({}, ...)".format(name, attrs)
-
-
-class Stats:
-    """Stats of an item.
-
-    Note:
-        The values passed to this class are inconsistent,
-        and therefore need to be set dynamically.
-        Use the built-in ``dir()`` function to
-        see the available attributes.
-        You could also access the stats by the dictionary
-        annotation. For example:
-
-        .. code:: python
-
-            values = song.to_dict()
-            print(values['stats'])
-
-    """
-
-    def __init__(self, body: dict[str, Any]) -> None:
-        for key, value in body.items():
-            setattr(self, key, value)
-
-    def __repr__(self) -> str:
-        name = self.__class__.__name__
-        attrs = ", ".join(list(self.__dict__.keys()))
-        return "{}({!r})".format(name, attrs)
