@@ -1,17 +1,17 @@
+import json
 import os
 from pathlib import Path  # For tmp_path
-from unittest import mock  # Keep mock for patching if needed
+from typing import Any
+from unittest import mock
 
 import pytest
 
 from lyricsgenius.types import Artist, Song
 from lyricsgenius.utils import sanitize_filename
 
-# --- Mock Data Definitions (Testing Themed) ---
-
 
 @pytest.fixture
-def mock_genius_client():
+def mock_genius_client() -> mock.MagicMock:
     """Provides a mock Genius client instance."""
     client = mock.MagicMock()
     client.verbose = False
@@ -23,7 +23,14 @@ def mock_genius_client():
 
 
 @pytest.fixture
-def mock_primary_artist_data():
+def mock_artist_data() -> dict[str, Any]:
+    """Return the contents of artist_info_mocked.json as a dict."""
+    with open("tests/fixtures/artist_info_mocked.json", "r") as f:
+        return json.load(f)
+
+
+@pytest.fixture
+def mock_primary_artist_data() -> dict[str, Any]:
     """Mock data for the primary test artist."""
     return {
         "id": 1001,
@@ -38,7 +45,9 @@ def mock_primary_artist_data():
 
 
 @pytest.fixture
-def mock_primary_songs_data(mock_primary_artist_data):
+def mock_primary_songs_data(
+    mock_primary_artist_data: dict[str, Any],
+) -> list[dict[str, Any]]:
     """Mock data for the primary artist's songs, matching test_song.py structure."""
     song1 = {
         "id": 10101,
@@ -86,7 +95,7 @@ def mock_primary_songs_data(mock_primary_artist_data):
 
 
 @pytest.fixture
-def mock_primary_songs_lyrics():
+def mock_primary_songs_lyrics() -> list[str]:
     """Mock lyrics for the primary artist's songs."""
     return [
         "[Verse 1]\nCheck the value, is it true?\nAssert equals, me and you.\n[Chorus]\nOh, the assert equals blues!",
@@ -95,7 +104,7 @@ def mock_primary_songs_lyrics():
 
 
 @pytest.fixture
-def mock_another_artist_data():
+def mock_another_artist_data() -> dict[str, Any]:
     """Mock data for a different artist."""
     return {
         "id": 1002,
@@ -110,7 +119,7 @@ def mock_another_artist_data():
 
 
 @pytest.fixture
-def mock_another_song_data(mock_another_artist_data):
+def mock_another_song_data(mock_another_artist_data: dict[str, Any]) -> dict[str, Any]:
     """Mock data for the different artist's song, matching test_song.py structure."""
     return {
         "id": 10201,
@@ -136,13 +145,13 @@ def mock_another_song_data(mock_another_artist_data):
 
 
 @pytest.fixture
-def mock_another_song_lyrics():
+def mock_another_song_lyrics() -> str:
     """Mock lyrics for the different artist's song."""
     return "[Verse 1]\nDon't change the state, keep it clean,\nSide effects are rarely seen...\n[Outro]\nPure functions win."
 
 
 @pytest.fixture
-def mock_featured_artist_data():
+def mock_featured_artist_data() -> dict[str, Any]:
     """Mock data for a featured artist."""
     return {
         "id": 1003,
@@ -157,7 +166,9 @@ def mock_featured_artist_data():
 
 
 @pytest.fixture
-def mock_song_with_feature_data(mock_primary_artist_data, mock_featured_artist_data):
+def mock_song_with_feature_data(
+    mock_primary_artist_data: dict[str, Any], mock_featured_artist_data: dict[str, Any]
+) -> dict[str, Any]:
     """Mock data for a song with a feature, matching test_song.py structure."""
     featured_artists_list = [mock_featured_artist_data]
     return {
@@ -184,13 +195,13 @@ def mock_song_with_feature_data(mock_primary_artist_data, mock_featured_artist_d
 
 
 @pytest.fixture
-def mock_song_with_feature_lyrics():
+def mock_song_with_feature_lyrics() -> str:
     """Mock lyrics for the song with a feature."""
     return "[Pytest Fixture - Verse 1]\nTesting units one by one...\n[Coverage Reporter - Verse 2]\nDid we hit that line? Check the run!"
 
 
 @pytest.fixture
-def song_to_add_data(mock_primary_artist_data):
+def song_to_add_data(mock_primary_artist_data: dict[str, Any]) -> dict[str, Any]:
     """Data for a new song to add, matching test_song.py structure."""
     return {
         "id": 10103,
@@ -216,15 +227,17 @@ def song_to_add_data(mock_primary_artist_data):
 
 
 @pytest.fixture
-def song_to_add_lyrics():
+def song_to_add_lyrics() -> str:
     """Lyrics for the new song to add."""
     return "[Verse 1]\nCode was messy, hard to read,\nTime to refactor, plant the seed."
 
 
 @pytest.fixture
-def song_to_add_object(mock_genius_client, song_to_add_data, song_to_add_lyrics):
+def song_to_add_object(
+    song_to_add_lyrics: str, song_to_add_data: dict[str, Any]
+) -> Song:
     """Creates the new Song object to add."""
-    return Song(mock_genius_client, song_to_add_data, song_to_add_lyrics)
+    return Song(song_to_add_lyrics, song_to_add_data)
 
 
 # --- Fixtures for Artist and Song Objects ---
@@ -232,73 +245,71 @@ def song_to_add_object(mock_genius_client, song_to_add_data, song_to_add_lyrics)
 
 @pytest.fixture
 def primary_artist_songs(
-    mock_genius_client, mock_primary_songs_data, mock_primary_songs_lyrics
-):
+    mock_primary_songs_lyrics: list[str], mock_primary_songs_data: list[dict[str, Any]]
+) -> list[Song]:
     """Creates a list of mock Song objects for the primary artist."""
     songs = []
-    for data, lyrics in zip(
-        mock_primary_songs_data, mock_primary_songs_lyrics, strict=True
+    for lyrics, data in zip(
+        mock_primary_songs_lyrics, mock_primary_songs_data, strict=True
     ):
-        songs.append(Song(mock_genius_client, data, lyrics))
+        songs.append(Song(lyrics, data))
     return songs
 
 
 @pytest.fixture
-def artist_object(mock_genius_client, mock_primary_artist_data, primary_artist_songs):
+def artist_object(
+    mock_primary_artist_data: dict[str, Any], primary_artist_songs: list[Song]
+) -> Artist:
     """Creates the primary Artist object populated with mock songs."""
-    artist = Artist(mock_genius_client, mock_primary_artist_data)
+    artist = Artist(mock_primary_artist_data)
     artist.songs = primary_artist_songs[:]
-    artist.num_songs = len(artist.songs)
     return artist
 
 
 @pytest.fixture
-def another_artist_object(mock_genius_client, mock_another_artist_data):
+def another_artist_object(mock_another_artist_data: dict[str, Any]) -> Artist:
     """Creates the 'other' Artist object."""
-    return Artist(mock_genius_client, mock_another_artist_data)
+    return Artist(mock_another_artist_data)
 
 
 @pytest.fixture
 def another_song_object(
-    mock_genius_client, mock_another_song_data, mock_another_song_lyrics
-):
+    mock_another_song_lyrics: str, mock_another_song_data: dict[str, Any]
+) -> Song:
     """Creates the 'other' Song object."""
-    return Song(mock_genius_client, mock_another_song_data, mock_another_song_lyrics)
+    return Song(mock_another_song_lyrics, mock_another_song_data)
 
 
 @pytest.fixture
-def featured_artist_object(mock_genius_client, mock_featured_artist_data):
+def featured_artist_object(mock_featured_artist_data: dict[str, Any]) -> Artist:
     """Creates the featured Artist object."""
-    artist = Artist(mock_genius_client, mock_featured_artist_data)
-    artist.songs = []
-    artist.num_songs = 0
-    return artist
+    return Artist(mock_featured_artist_data)
 
 
 @pytest.fixture
 def song_with_feature_object(
-    mock_genius_client, mock_song_with_feature_data, mock_song_with_feature_lyrics
-):
+    mock_song_with_feature_lyrics: str, mock_song_with_feature_data: dict[str, Any]
+) -> Song:
     """Creates the Song object that has a feature."""
-    return Song(
-        mock_genius_client, mock_song_with_feature_data, mock_song_with_feature_lyrics
-    )
+    return Song(mock_song_with_feature_lyrics, mock_song_with_feature_data)
 
 
 # --- Test Functions ---
 
 
-def test_artist_instance(artist_object):
+def test_artist_instance(artist_object: Artist) -> None:
     """Test if the created object is an Artist instance."""
     assert isinstance(artist_object, Artist)
 
 
-def test_name(artist_object, mock_primary_artist_data):
+def test_name(artist_object: Artist, mock_primary_artist_data: dict[str, Any]) -> None:
     """Test if the artist object name matches the mock data."""
     assert artist_object.name == mock_primary_artist_data["name"]
 
 
-def test_add_song_from_same_artist(artist_object, song_to_add_object):
+def test_add_song_from_same_artist(
+    artist_object: Artist, song_to_add_object: Song
+) -> None:
     """Test adding a song by the same artist."""
     initial_song_count = artist_object.num_songs
     artist_object.add_song(song_to_add_object, verbose=False)
@@ -307,29 +318,37 @@ def test_add_song_from_same_artist(artist_object, song_to_add_object):
     # No need to manually clean up state, fixtures handle isolation
 
 
-def test_song_retrieval(artist_object, primary_artist_songs):
+def test_song_retrieval(
+    artist_object: Artist,
+    primary_artist_songs: list[Song],
+    mock_primary_songs_data: list[dict[str, Any]],
+) -> None:
     """Test retrieving songs by title from the artist's list."""
     # Test finding the first song
-    song_to_find = primary_artist_songs[0].title
-    found_song = artist_object.song(song_to_find)
+    song_to_find_id = mock_primary_songs_data[0]["id"]
+    song_to_find_title = primary_artist_songs[0].title
+    found_song = artist_object.get_song(song_to_find_id)
     assert found_song is not None
-    assert found_song.title == song_to_find
+    assert found_song.title == song_to_find_title
     assert found_song == primary_artist_songs[0]
 
     # Test finding the second song
-    song_to_find_2 = primary_artist_songs[1].title
-    found_song_2 = artist_object.song(song_to_find_2)
+    song_to_find_id_2 = mock_primary_songs_data[1]["id"]
+    song_to_find_title_2 = primary_artist_songs[1].title
+    found_song_2 = artist_object.get_song(song_to_find_id_2)
     assert found_song_2 is not None
-    assert found_song_2.title == song_to_find_2
+    assert found_song_2.title == song_to_find_title_2
     assert found_song_2 == primary_artist_songs[1]
 
     # Test finding a non-existent song
-    non_existent_song = "Imaginary Method Call"
-    found_song_none = artist_object.song(non_existent_song)
+    non_existent_song_id = 99999  # Use an unlikely integer ID
+    found_song_none = artist_object.get_song(non_existent_song_id)
     assert found_song_none is None
 
 
-def test_add_song_from_different_artist(artist_object, another_song_object):
+def test_add_song_from_different_artist(
+    artist_object: Artist, another_song_object: Song
+) -> None:
     """Test attempting to add a song by a different artist."""
     initial_song_count = artist_object.num_songs
     artist_object.add_song(another_song_object, verbose=False)
@@ -339,8 +358,10 @@ def test_add_song_from_different_artist(artist_object, another_song_object):
 
 
 def test_add_song_with_includes_features(
-    artist_object, featured_artist_object, song_with_feature_object
-):
+    artist_object: Artist,
+    featured_artist_object: Artist,
+    song_with_feature_object: Song,
+) -> None:
     """Test the include_features logic within add_song."""
     # song_with_feature_object has "Pytest Fixture" as primary, "Coverage Reporter" featured
 
@@ -351,14 +372,12 @@ def test_add_song_with_includes_features(
     )
     assert artist_object.num_songs == initial_count_primary + 1
     artist_object.songs.pop()  # Reset for next check
-    artist_object.num_songs -= 1
 
     artist_object.add_song(
         song_with_feature_object, verbose=False, include_features=True
     )
     assert artist_object.num_songs == initial_count_primary + 1
     artist_object.songs.pop()  # Clean up
-    artist_object.num_songs -= 1
 
     # 2. Add to featured artist (Coverage Reporter)
     initial_count_featured = featured_artist_object.num_songs
@@ -371,7 +390,6 @@ def test_add_song_with_includes_features(
     assert featured_artist_object.num_songs == initial_count_featured + 1
     assert song_with_feature_object in featured_artist_object.songs
     featured_artist_object.songs.pop()  # Reset
-    featured_artist_object.num_songs -= 1
 
     # Should fail if include_features=False
     featured_artist_object.add_song(
@@ -381,7 +399,7 @@ def test_add_song_with_includes_features(
     assert song_with_feature_object not in featured_artist_object.songs
 
 
-def test_saving_json_file(artist_object, tmp_path):
+def test_saving_json_file(artist_object: Artist, tmp_path: Path) -> None:
     """Test saving the artist's data (mocked) to a JSON file using tmp_path."""
     extension = "json"
     # Use tmp_path fixture for temporary file
@@ -422,7 +440,7 @@ def test_saving_json_file(artist_object, tmp_path):
     artist_object.songs[0].lyrics = original_lyrics
 
 
-def test_saving_txt_file(artist_object, tmp_path):
+def test_saving_txt_file(artist_object: Artist, tmp_path: Path) -> None:
     """Test saving the artist's data (mocked) to a TXT file using tmp_path."""
     extension = "txt"
     # Use tmp_path fixture for temporary file

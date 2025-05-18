@@ -3,13 +3,11 @@
 # See LICENSE for details.
 
 
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
+from ..types.song import Song
 from ..utils import safe_unicode
 from .base import BaseEntity
-
-if TYPE_CHECKING:
-    from ..types.song import Song
 
 
 class Artist(BaseEntity):
@@ -72,7 +70,8 @@ class Artist(BaseEntity):
                 )
             return None
         if new_song.artist == self.name or (
-            include_features and new_song.artist in new_song.featured_artists
+            include_features
+            and self.name in [artist["name"] for artist in new_song.featured_artists]
         ):
             self.songs.append(new_song)
             return new_song
@@ -80,6 +79,25 @@ class Artist(BaseEntity):
             print(
                 f"Can't add song by {safe_unicode(new_song.artist)}, artist must be {safe_unicode(self.name)}."
             )
+        return None
+
+    def get_song(self, song_id: int | None = None) -> Song | None:
+        title: str | None = None
+        """Returns a song by title or ID.
+        Args:
+            song_id (:obj:`int`, optional): ID of the song.
+            title (:obj:`str`, optional): Title of the song.
+        Returns:
+            :obj:`Song`: Returns the song object if found, otherwise None.
+        """
+        if song_id is not None:
+            for song in self.songs:
+                if song._body["id"] == song_id:
+                    return song
+        elif title is not None:
+            for song in self.songs:
+                if song.title == title:
+                    return song
         return None
 
     @property

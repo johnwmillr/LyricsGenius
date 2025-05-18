@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 from typing import Any
@@ -11,57 +12,9 @@ from lyricsgenius.utils import clean_str
 
 @pytest.fixture
 def mock_song_data() -> dict[str, Any]:
-    """Create mock song data that mimics what would be returned from the API."""
-    return {
-        "id": 99999,
-        "title": "Test the Mock",
-        "full_title": "Test the Mock by Pytest Fixture",
-        "path": "/Pytest-fixture-test-the-mock-lyrics",
-        "primary_artist": {
-            "id": 11111,
-            "name": "Pytest Fixture",
-            "header_image_url": "https://example.com/pytest-header.jpg",
-            "image_url": "https://example.com/pytest-thumb.jpg",
-            "is_meme_verified": False,
-            "is_verified": True,
-            "url": "https://genius.com/artists/Pytest-fixture",
-            "api_path": "/artists/11111",
-        },
-        "album": {
-            "id": 22222,
-            "name": "Coverage Suite",
-            "cover_art_url": "https://example.com/coverage-cover.jpg",
-            "cover_art_thumbnail_url": "https://example.com/coverage-thumb.jpg",
-            "full_title": "Coverage Suite by Pytest Fixture",
-            "name_with_artist": "Coverage Suite by Pytest Fixture",
-            "url": "https://genius.com/albums/Pytest-fixture/Coverage-suite",
-            "api_path": "/albums/22222",
-            "artist": {
-                "id": 11111,
-                "name": "Pytest Fixture",
-                "header_image_url": "https://example.com/pytest-header.jpg",
-                "image_url": "https://example.com/pytest-thumb.jpg",
-                "is_meme_verified": False,
-                "is_verified": True,
-                "url": "https://genius.com/artists/Pytest-fixture",
-                "api_path": "/artists/11111",
-            },
-            "release_date_components": {"year": 2024, "month": 1, "day": 1},
-        },
-        "api_path": "/songs/99999",
-        "annotation_count": 5,
-        "header_image_thumbnail_url": "https://example.com/mock-thumb.jpg",
-        "header_image_url": "https://example.com/mock-image.jpg",
-        "lyrics_owner_id": 33333,
-        "lyrics_state": "complete",
-        "pyongs_count": 10,
-        "song_art_image_thumbnail_url": "https://example.com/song-art-thumb.jpg",
-        "song_art_image_url": "https://example.com/song-art.jpg",
-        "title_with_featured": "Test the Mock",
-        "url": "https://genius.com/Pytest-fixture-test-the-mock-lyrics",
-        "stats": {"pageviews": 54321, "unreviewed_annotations": 1, "hot": False},
-        "featured_artists": [],
-    }
+    """Return the first song from song_info_mocked.json as a dict."""
+    with open("tests/fixtures/song_info_mocked.json", "r") as f:
+        return json.load(f)[2]  # Use the third song (original test song)
 
 
 @pytest.fixture
@@ -104,29 +57,18 @@ def mock_lyrics_no_headers() -> str:
 
 
 @pytest.fixture
-def mock_genius() -> mock.MagicMock:
-    """Mock genius client."""
-    genius = mock.MagicMock()
-    genius._result_is_lyrics.return_value = True
-    return genius
-
-
-@pytest.fixture
-def song_object(
-    mock_genius: mock.MagicMock, mock_song_data: dict[str, Any], mock_lyrics: str
-) -> Song:
+def song_object(mock_song_data: dict[str, Any], mock_lyrics: str) -> Song:
     """Create a Song object with mock data."""
-    return Song(mock_genius, mock_song_data, mock_lyrics)
+    return Song(mock_lyrics, mock_song_data)
 
 
 @pytest.fixture
 def song_object_no_headers(
-    mock_genius: mock.MagicMock,
     mock_song_data: dict[str, Any],
     mock_lyrics_no_headers: str,
 ) -> Song:
     """Create a Song object with mock data and no section headers."""
-    return Song(mock_genius, mock_song_data, mock_lyrics_no_headers)
+    return Song(mock_lyrics_no_headers, mock_song_data)
 
 
 def test_song_title(song_object: Song, mock_song_data: dict[str, Any]) -> None:
@@ -211,9 +153,6 @@ def test_to_text(song_object: Song, mock_lyrics: str) -> None:
 def test_to_json(song_object: Song) -> None:
     """Test if to_json method returns a JSON string."""
     json_str = song_object.to_json()
-    assert isinstance(
-        json_str, str | None
-    )  # to_json can return None if filename is provided
-    if json_str:
-        assert '"title": "Test the Mock"' in json_str
-        assert '"artist": "Pytest Fixture"' in json_str
+    assert isinstance(json_str, str), json_str
+    assert '"title": "Mocking the Tests"' in json_str
+    assert '"artist": "Py Testerson"' in json_str

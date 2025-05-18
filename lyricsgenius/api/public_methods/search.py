@@ -53,10 +53,6 @@ class SearchMethods(Requester):
         else:
             path = "search/" + type_
         params = {"q": search_term, "per_page": per_page, "page": page}
-
-        # XXX: Where is this method meant to be defined?
-        # I guess you aren't meant to call `SearchMethods` directly?
-        # The `PublicAPI` class inherits from `Sender` as well as `SearchMethods`.
         return self._make_request(path, params_=params, public_api=True)
 
     def search_albums(
