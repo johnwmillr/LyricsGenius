@@ -1,13 +1,13 @@
 from typing import Any, Literal
 
-from ...api.base import Requester
+from ..protocols import RequestCapable
 
 SearchItemTypeT = Literal[
     "song", "lyric", "artist", "album", "video", "article", "user", "multi"
 ]
 
 
-class SearchMethods(Requester):
+class SearchMethods(RequestCapable):
     """Search methods of the public API."""
 
     def search(

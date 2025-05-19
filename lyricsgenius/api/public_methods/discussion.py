@@ -1,10 +1,10 @@
 from typing import Any
 
-from ...api.base import Requester
 from ...types.types import TextFormatT
+from ..protocols import RequestCapable
 
 
-class DiscussionMethods(Requester):
+class DiscussionMethods(RequestCapable):
     """Discussion methods of the public API."""
 
     def discussion(
@@ -26,7 +26,7 @@ class DiscussionMethods(Requester):
         """
         raise NotImplementedError("This request returns a 403 error.")
 
-        endpoint = "discussions/{}".format(discussion_id)
+        endpoint = "discussions/{}".format(discussion_id)  # type: ignore
         params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
@@ -71,7 +71,7 @@ class DiscussionMethods(Requester):
         """
         raise NotImplementedError("This request returns a 403 error.")
 
-        endpoint = "discussions/{}/forum_posts".format(discussion_id)
+        endpoint = "discussions/{}/forum_posts".format(discussion_id)  # type: ignore
         params = {
             "per_page": per_page,
             "page": page,

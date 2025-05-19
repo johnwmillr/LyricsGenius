@@ -1,10 +1,10 @@
 from typing import Any
 
-from ...api.base import Requester
 from ...types.types import TextFormatT
+from ..protocols import ChartsCapable, RequestCapable
 
 
-class ReferentMethods(Requester):
+class ReferentMethods(RequestCapable, ChartsCapable):
     """Referent methods of the public API."""
 
     def referent(
@@ -29,6 +29,7 @@ class ReferentMethods(Requester):
             :meth:`referents() <PublicAPI.referents>` gets.
 
         """
+        params: dict[str, Any] | list[tuple[str, Any]] = {}
         params = {"text_format": text_format or self.response_format}
         if len(referent_ids) == 1:
             endpoint = f"referents/{referent_ids[0]}"
@@ -56,7 +57,7 @@ class ReferentMethods(Requester):
         Args:
             song_id (:obj:`int`, optional): song ID
             web_page_id (:obj:`int`, optional): web page ID
-            created_by_id (:obj:`int`, optional): User ID of the contributer
+            created_by_id (:obj:`int`, optional): User ID of the contributor
                 who created the annotation(s).
             per_page (:obj:`int`, optional): Number of results to
                 return per page. It can't be more than 50.

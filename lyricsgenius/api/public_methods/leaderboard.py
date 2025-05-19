@@ -1,9 +1,10 @@
 from typing import Any
 
-from ...api.base import Requester
+from ...types.types import TextFormatT
+from ..protocols import ChartsCapable, RequestCapable
 
 
-class LeaderboardMethods(Requester):
+class LeaderboardMethods(RequestCapable, ChartsCapable):
     """Leaderboard methods of the public API."""
 
     def leaderboard(
@@ -11,7 +12,7 @@ class LeaderboardMethods(Requester):
         time_period: str = "day",
         per_page: int | None = None,
         page: int | None = None,
-        text_format: str | None = None,
+        text_format: TextFormatT | None = None,
     ) -> dict[str, Any]:
         """Gets the Genius community leaderboard.
 
@@ -45,7 +46,7 @@ class LeaderboardMethods(Requester):
         chart_genre: str = "all",
         per_page: int | None = None,
         page: int | None = None,
-        text_format: str | None = None,
+        text_format: TextFormatT | None = None,
         type_: str = "songs",
     ) -> dict[str, Any]:
         """Gets the Genius charts.
@@ -62,7 +63,7 @@ class LeaderboardMethods(Requester):
             per_page (:obj:`int`, optional): Number of results to
                 return per request. It can't be more than 50.
             page (:obj:`int`, optional): Paginated offset (number of the page).
-            text_format (:obj:`str`, optional): Text format of the results
+            text_format (:obj:`TextFormatT`, optional): Text format of the results
                 ('dom', 'html', 'markdown' or 'plain').
             type_ (:obj:`int`, optional): The type to get the charts for.
                 The default is ``songs``.

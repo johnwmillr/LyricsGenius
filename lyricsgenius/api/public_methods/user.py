@@ -1,10 +1,10 @@
 from typing import Any
 
-from ...api.base import Requester
 from ...types.types import TextFormatT
+from ..protocols import RequestCapable
 
 
-class UserMethods(Requester):
+class UserMethods(RequestCapable):
     """User methods of the public API."""
 
     def user(

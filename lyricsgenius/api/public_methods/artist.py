@@ -1,10 +1,10 @@
 from typing import Any
 
-from ...api.base import Requester
 from ...types.types import TextFormatT
+from ..protocols import RequestCapable
 
 
-class ArtistMethods(Requester):
+class ArtistMethods(RequestCapable):
     """Artist methods of the public API."""
 
     def artist(
@@ -81,7 +81,7 @@ class ArtistMethods(Requester):
         self,
         artist_id: int,
         per_page: int | None = None,
-        next_curosr: int | None = None,
+        next_cursor: int | None = None,
         text_format: TextFormatT | None = None,
     ) -> dict[str, Any]:
         """Gets contribution opportunities related to the artist.
@@ -104,10 +104,10 @@ class ArtistMethods(Requester):
 
         """
         raise NotImplementedError("This action requires a logged in user.")
-        endpoint = "artists/{}/contribution_opportunities".format(artist_id)
+        endpoint = "artists/{}/contribution_opportunities".format(artist_id)  # type: ignore
         params = {
             "per_page": per_page,
-            "next_curosr": next_curosr,
+            "next_cursor": next_cursor,
             "text_format": text_format or self.response_format,
         }
         return self._make_request(path=endpoint, params_=params, public_api=True)

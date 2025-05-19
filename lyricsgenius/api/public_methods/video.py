@@ -1,10 +1,10 @@
 from typing import Any
 
-from ...api.base import Requester
 from ...types.types import TextFormatT
+from ..protocols import RequestCapable
 
 
-class VideoMethods(Requester):
+class VideoMethods(RequestCapable):
     """Video methods of the public API."""
 
     def video(

@@ -1,10 +1,10 @@
 from typing import Any
 
-from ...api.base import Requester
 from ...types.types import TextFormatT
+from ..protocols import ChartsCapable, CoverArtsCapable, RequestCapable
 
 
-class AlbumMethods(Requester):
+class AlbumMethods(RequestCapable, CoverArtsCapable, ChartsCapable):
     """Album methods of the public API."""
 
     def album(

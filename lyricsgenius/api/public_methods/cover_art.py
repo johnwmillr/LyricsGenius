@@ -1,10 +1,10 @@
 from typing import Any
 
-from ...api.base import Requester
 from ...types.types import TextFormatT
+from ..protocols import CoverArtsCapable, RequestCapable
 
 
-class CoverArtMethods(Requester):
+class CoverArtMethods(RequestCapable, CoverArtsCapable):
     """Cover art methods of the public API."""
 
     def cover_arts(

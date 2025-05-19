@@ -1,10 +1,10 @@
 from typing import Any
 
-from ...api.base import Requester
 from ...types.types import TextFormatT
+from ..protocols import ChartsCapable, RequestCapable
 
 
-class MiscMethods(Requester):
+class MiscMethods(RequestCapable, ChartsCapable):
     """Miscellaneous Methods"""
 
     def line_item(
@@ -27,7 +27,7 @@ class MiscMethods(Requester):
         """
         raise NotImplementedError("This action requires a logged in user.")
 
-        endpoint = "line_items/{}".format(line_item_id)
+        endpoint = "line_items/{}".format(line_item_id)  # type: ignore
         params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
@@ -59,7 +59,7 @@ class MiscMethods(Requester):
 
         Warning:
             Some albums/songs either don't have page data or
-            their page data path can't be infered easily from
+            their page data path can't be inferred easily from
             the artist slug and their API path. So make sure to
             use this method with a try/except clause that catches
             404 errors. Check out the example below.
