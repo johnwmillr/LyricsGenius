@@ -4,11 +4,7 @@
 
 """API documentation: https://docs.genius.com/"""
 
-import json
-import os
 import re
-import shutil
-import time
 from typing import Any
 
 from bs4 import BeautifulSoup, Tag
@@ -674,77 +670,6 @@ class Genius(API, PublicAPI):
         if self.verbose:
             print(f"Done. Found {artist_obj.num_songs} songs.")
         return artist_obj
-
-    def save_artists(
-        self,
-        artists: list[Artist],
-        filename: str = "artist_lyrics",
-        overwrite: bool = False,
-        ensure_ascii: bool = True,
-    ) -> None:
-        """Saves lyrics from multiple Artist objects as JSON object.
-
-        Args:
-            artists (:obj:`list`): List of :class:`Artist <types.Artist>`
-                objects to save lyrics from.
-            filename (:obj:`str`, optional): Name of the output file.
-            overwrite (:obj:`bool`, optional): Overwrites preexisting file if `True`.
-                Otherwise prompts user for input.
-            ensure_ascii (:obj:`bool`, optional): If ensure_ascii is true
-              (the default), the output is guaranteed to have all incoming
-              non-ASCII characters escaped.
-
-        Examples:
-            .. code:: python
-
-                genius = Genius(token)
-                a = search_artist('Andy Shauf')
-                b = search_artist('Queen', max_song=10)
-                c = search_artist('The Beatles', max_songs=1)
-
-                genius.save_artists(artists=[a, b, c], filename='abc', overwrite=True)
-
-        """
-        if isinstance(artists, Artist):
-            artists = [artists]
-
-        # Create a temporary directory for lyrics
-        start = time.time()
-        tmp_dir = "tmp_lyrics"
-        if not os.path.isdir(tmp_dir):
-            os.mkdir(tmp_dir)
-            count = 0
-        else:
-            count = len(os.listdir(tmp_dir))
-
-        # Check if file already exists
-        if os.path.isfile(filename + ".json") and not overwrite:
-            msg = "{f} already exists. Overwrite?\n(y/n): ".format(f=filename)
-            if input(msg).lower() != "y":
-                print("Leaving file in place. Exiting.")
-                os.rmdir(tmp_dir)
-                return
-
-        # Extract each artist's lyrics in json format
-        # TODO: Fix this code. `all_lyrics` isn't updated properly.
-        all_lyrics: dict[str, Any] = {"artists": []}
-        for n, artist in enumerate(artists):
-            if isinstance(artist, Artist):
-                all_lyrics["artists"].append({})
-                f = "tmp_{n}_{a}".format(n=count + n, a=artist.name.replace(" ", ""))
-                tmp_file = os.path.join(tmp_dir, f)
-                if self.verbose:
-                    print(tmp_file)
-                all_lyrics["artists"][-1] = artist.save_lyrics(overwrite=True)
-
-        # Save all of the lyrics
-        with open(filename + ".json", "w", encoding="utf-8") as outfile:
-            json.dump(all_lyrics, outfile, ensure_ascii=ensure_ascii)
-
-        # Delete the temporary directory
-        shutil.rmtree(tmp_dir)
-        elapsed = (time.time() - start) / 60 / 60
-        print("Time elapsed: {t} hours".format(t=elapsed))
 
     def tag(
         self, name: str, page: int | None = None
