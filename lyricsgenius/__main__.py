@@ -1,8 +1,11 @@
 import argparse
 import os
-from typing import Literal
+from typing import Callable, Literal
 
 from . import Genius
+from .types import Album, Artist, Song
+
+SearchResult = Song | Artist | Album
 
 
 class Searcher:
@@ -13,6 +16,8 @@ class Searcher:
     ) -> None:
         self.api = api
         self.search_type = search_type
+        self.search_func: Callable[..., SearchResult | None]
+
         match search_type:
             case "song":
                 self.search_func = api.search_song
@@ -24,12 +29,10 @@ class Searcher:
                 raise ValueError(f"Unknown search type: {search_type}")
 
     def __call__(self, args: argparse.Namespace) -> None:
-        if self.search_type == "artist":
-            result = self.search_func(*args.terms, max_songs=args.max_songs)
-        else:
-            result = self.search_func(*args.terms)
-        if not result:
+        kwargs = {"max_songs": args.max_songs} if self.search_type == "artist" else {}
+        if not (result := self.search_func(*args.terms, **kwargs)):
             return
+
         for format in args.format:
             if not args.save:
                 print(result.to_text() if format == "txt" else result.to_json())
@@ -110,8 +113,6 @@ def main() -> None:
         )
 
     api = Genius(token, verbose=args.verbose, timeout=10)
-
-    # Handle the command-line inputs
     Searcher(api, args.search_type)(args)
 
 
