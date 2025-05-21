@@ -4,6 +4,8 @@
 
 from typing import Any
 
+from lyricsgenius.utils import format_filename
+
 from .base import BaseEntity
 
 
@@ -79,7 +81,7 @@ class Song(BaseEntity):
         verbose: bool = True,
     ) -> None:
         if filename is None:
-            filename = f"Lyrics_{self.artist.replace(' ', '')}_{self.title.replace(' ', '')}".lower()
+            filename = format_filename(f"saved_song_lyrics_{self.artist}_{self.title}")
 
         super().save_lyrics(
             filename=filename,

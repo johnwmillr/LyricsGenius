@@ -6,7 +6,7 @@
 from typing import Any
 
 from ..types.song import Song
-from ..utils import safe_unicode
+from ..utils import format_filename, safe_unicode
 from .base import BaseEntity
 
 
@@ -136,7 +136,9 @@ class Artist(BaseEntity):
         verbose: bool = True,
     ) -> None:
         if filename is None:
-            filename = "Lyrics_" + self.name.replace(" ", "")
+            filename = format_filename(
+                f"saved_artist_lyrics_{self.name}_{self.num_songs}_songs"
+            )
 
         return super().save_lyrics(
             filename=filename,

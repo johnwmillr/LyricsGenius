@@ -1,6 +1,6 @@
 from typing import Any
 
-from ..utils import convert_to_datetime
+from ..utils import convert_to_datetime, format_filename
 from .base import BaseEntity
 from .song import Song
 
@@ -89,7 +89,7 @@ class Album(BaseEntity):
         verbose: bool = True,
     ) -> None:
         if filename is None:
-            filename = "Lyrics_" + self.name.replace(" ", "")
+            filename = format_filename(f"saved_album_lyrics_{self.artist}_{self.name}")
 
         return super().save_lyrics(
             filename=filename,

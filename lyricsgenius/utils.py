@@ -130,6 +130,18 @@ def safe_unicode(s: str) -> str:
     return s.encode("utf-8").decode(sys.stdout.encoding, errors="replace")
 
 
+def format_filename(f: str) -> str:
+    """Formats a filename by replacing spaces with underscores.
+
+    Args:
+        f (:obj:`str`): a string.
+
+    Returns:
+        :obj:`str`: formatted string.
+    """
+    return re.sub(r"\s+", "_", f).strip().lower()
+
+
 def sanitize_filename(f: str) -> str:
     """Removes only filesystem‐invalid and control characters from a filename.
 
