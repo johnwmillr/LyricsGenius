@@ -10,6 +10,9 @@ LyricsGenius: a Python client for the Genius.com API
    :target: https://pypi.org/project/lyricsgenius/
 .. image:: https://img.shields.io/badge/python-3.x-brightgreen.svg
    :target: https://pypi.org/project/lyricsgenius/
+.. image:: https://img.shields.io/badge/Support%20this%20project-grey.svg?logo=github%20sponsors
+   :target: https://github.com/sponsors/johnwmillr
+
 
 `Genius.com`_ is a fun website. If you aren’t familiar with it, Genius hosts a
 bunch of song lyrics and lets users highlight and annotate passages with
@@ -53,7 +56,7 @@ file:
    from lyricsgenius import Genius
 
    genius = Genius(token)
-   genius.search_artist('Andy Shauf')
+   artist = genius.search_artist('Andy Shauf')
    artist.save_lyrics()
 
 But before using the library you will need to get an access token. Head over
@@ -83,6 +86,11 @@ to :ref:`setup` to get started.
    :caption: Misc
 
    contributing
+
+.. toctree::
+   :hidden:
+
+   404.rst
 
 .. _Genius.com: https://www.genius.com
 .. _“Words are flowing out like endless rain into a paper cup”:

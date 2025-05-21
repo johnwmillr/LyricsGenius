@@ -2,11 +2,10 @@ import unittest
 
 from requests.exceptions import HTTPError
 
-from . import genius
+from tests import genius
 
 
 class TestAPIBase(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up API base tests...\n")

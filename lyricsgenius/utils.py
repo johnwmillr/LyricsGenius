@@ -1,7 +1,7 @@
 """utility functions"""
 
-import re
 import os
+import re
 import sys
 import unicodedata
 from datetime import datetime
@@ -20,9 +20,9 @@ def auth_from_environment():
         Replaces variables that are not present with :obj:`None`.
 
     """
-    client_id = os.environ.get('GENIUS_CLIENT_ID')
-    redirect_uri = os.environ.get('GENIUS_REDIRECT_URI')
-    client_secret = os.environ.get('GENIUS_CLIENT_SECRET')
+    client_id = os.environ.get("GENIUS_CLIENT_ID")
+    redirect_uri = os.environ.get("GENIUS_REDIRECT_URI")
+    client_secret = os.environ.get("GENIUS_CLIENT_SECRET")
     return client_id, redirect_uri, client_secret
 
 
@@ -40,25 +40,24 @@ def convert_to_datetime(f):
         return None
 
     if isinstance(f, dict):
-        components = f
-        year = str(components['year']) if components.get('year') else None
-        month = str(components['month']).zfill(2) if components.get('month') else None
-        day = str(components['day']).zfill(2) if components.get('day') else None
+        year = f.get("year")
+        month = f.get("month")
+        day = f.get("day")
         if year and month:
-            date = '{year}-{month}'.format(year=year, month=month)
+            date = "{year}-{month:02}".format(year=year, month=month)
             if day:
-                date += '-' + day
+                date += "-{day:02}".format(day=day)
         elif year:
-            date = int(year)
+            date = str(year)
         else:
-            date = '0000-00-00'
+            return None
         f = date
 
-    if f.count('-') == 2:
+    if f.count("-") == 2:
         date_format = "%Y-%m-%d"
-    elif f.count('-') == 1:
+    elif f.count("-") == 1:
         date_format = "%Y-%m"
-    elif ',' in f:
+    elif "," in f:
         date_format = "%B %d, %Y"
     elif f.isdigit():
         date_format = "%Y"
@@ -82,7 +81,7 @@ def clean_str(s):
 
     """
     punctuation_ = punctuation + "’" + "\u200b"
-    string = s.translate(str.maketrans('', '', punctuation_)).strip().lower()
+    string = s.translate(str.maketrans("", "", punctuation_)).strip().lower()
     return unicodedata.normalize("NFKC", string)
 
 
@@ -100,10 +99,10 @@ def parse_redirected_url(url, flow):
         KeyError: if 'code'/'token' is not available or has multiple values.
 
     """
-    if flow == 'code':
+    if flow == "code":
         query = urlparse(url).query
-    elif flow == 'token':
-        query = re.sub(r'.*#access_', '', url)
+    elif flow == "token":
+        query = re.sub(r".*#access_", "", url)
     parameters = parse_qs(query)
     code = parameters.get(flow, None)
 
@@ -128,7 +127,7 @@ def safe_unicode(s):
         :obj:`str`
 
     """
-    return s.encode('utf-8').decode(sys.stdout.encoding, errors='replace')
+    return s.encode("utf-8").decode(sys.stdout.encoding, errors="replace")
 
 
 def sanitize_filename(f):

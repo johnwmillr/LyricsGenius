@@ -12,13 +12,15 @@ class BaseEntity(ABC):
         self.id = id
 
     @abstractmethod
-    def save_lyrics(self,
-                    filename,
-                    extension='json',
-                    overwrite=False,
-                    ensure_ascii=True,
-                    sanitize=True,
-                    verbose=True):
+    def save_lyrics(
+        self,
+        filename,
+        extension="json",
+        overwrite=False,
+        ensure_ascii=True,
+        sanitize=True,
+        verbose=True,
+    ):
         """Save Song(s) lyrics and metadata to a JSON or TXT file.
 
         If the extension is 'json' (the default), the lyrics will be saved
@@ -43,7 +45,7 @@ class BaseEntity(ABC):
         """
         extension = extension.lstrip(".").lower()
         msg = "extension must be JSON or TXT"
-        assert (extension == 'json') or (extension == 'txt'), msg
+        assert (extension == "json") or (extension == "txt"), msg
 
         # Determine the filename
         for ext in [".txt", ".TXT", ".json", ".JSON"]:
@@ -59,23 +61,23 @@ class BaseEntity(ABC):
             write_file = True
         elif verbose:
             msg = "{} already exists. Overwrite?\n(y/n): ".format(filename)
-            if input(msg).lower() == 'y':
+            if input(msg).lower() == "y":
                 write_file = True
 
         # Exit if we won't be saving a file
         if not write_file:
             if verbose:
-                print('Skipping file save.\n')
+                print("Skipping file save.\n")
             return
 
         # Save the lyrics to a file
-        if extension == 'json':
+        if extension == "json":
             self.to_json(filename, ensure_ascii=ensure_ascii, sanitize=sanitize)
         else:
             self.to_text(filename, sanitize=sanitize)
 
         if verbose:
-            print('Wrote {}.'.format(safe_unicode(filename)))
+            print("Wrote {}.".format(safe_unicode(filename)))
 
         return None
 
@@ -85,11 +87,7 @@ class BaseEntity(ABC):
         return self._body.copy()
 
     @abstractmethod
-    def to_json(self,
-                data,
-                filename=None,
-                sanitize=True,
-                ensure_ascii=True):
+    def to_json(self, data, filename=None, sanitize=True, ensure_ascii=True):
         """Converts the object to a json string.
 
         Args:
@@ -117,15 +115,12 @@ class BaseEntity(ABC):
 
         # Save Song object to a json file
         filename = sanitize_filename(filename) if sanitize else filename
-        with open(filename, 'w', encoding='utf-8') as ff:
-            json.dump(data, ff, indent=1, ensure_ascii=ensure_ascii)
+        with open(filename, "w", encoding="utf-8") as ff:
+            json.dump(data, ff, indent=4, ensure_ascii=ensure_ascii)
         return None
 
     @abstractmethod
-    def to_text(self,
-                data,
-                filename=None,
-                sanitize=True):
+    def to_text(self, data, filename=None, sanitize=True):
         """Converts song(s) lyrics to a single string.
 
         Args:
@@ -148,16 +143,14 @@ class BaseEntity(ABC):
 
         # Save song lyrics to a text file
         filename = sanitize_filename(filename) if sanitize else filename
-        with open(filename, 'w', encoding='utf-8') as ff:
+        with open(filename, "w", encoding="utf-8") as ff:
             ff.write(data)
         return None
 
     def __repr__(self):
         name = self.__class__.__name__
-        attrs = [x
-                 for x in list(self.__dict__.keys())
-                 if not x.startswith('_')]
-        attrs = ', '.join(attrs[:2])
+        attrs = [x for x in list(self.__dict__.keys()) if not x.startswith("_")]
+        attrs = ", ".join(attrs[:2])
         return "{}({}, ...)".format(name, attrs)
 
 
@@ -180,14 +173,14 @@ class Stats(object):
     """
 
     def __init__(self, json_dict):
-
         for key, value in json_dict.items():
             setattr(self, key, value)
 
     def __repr__(self):
         name = self.__class__.__name__
-        attrs = ', '.join(list(self.__dict__.keys()))
+        attrs = ", ".join(list(self.__dict__.keys()))
         return "{}({!r})".format(name, attrs)
+
 
 # class EntityWithLyrics(ABC, BaseEntity):
 #    """Entity that has lyrics."""
