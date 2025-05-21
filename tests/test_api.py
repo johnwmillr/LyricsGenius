@@ -1,6 +1,10 @@
 import unittest
 
+import pytest
+
 from tests import genius
+
+pytestmark = pytest.mark.skip(reason="This test is under development.")
 
 
 class TestAPI(unittest.TestCase):

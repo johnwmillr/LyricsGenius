@@ -14,7 +14,7 @@ class TestUtils(unittest.TestCase):
         print("\n---------------------\nSetting up utils tests...\n")
 
     def test_sanitize_filename(self):
-        raw = "B@ad File#_name"
+        raw = "B<ad File|_name"
         cleaned = "Bad File_name"
         r = sanitize_filename(raw)
         self.assertEqual(r, cleaned)

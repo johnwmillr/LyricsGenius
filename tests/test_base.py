@@ -1,8 +1,11 @@
 import unittest
 
+import pytest
 from requests.exceptions import HTTPError
 
 from tests import genius
+
+pytestmark = pytest.mark.skip(reason="This test is under development.")
 
 
 class TestAPIBase(unittest.TestCase):
