@@ -485,8 +485,6 @@ class Genius(API, PublicAPI):
         This method looks for the artist by the name or by the
         ID if it's provided in ``artist_id``. It returrns an
         :class:`Artist <types.Artist>` object if the search is successful.
-        If :obj:`allow_name_change` is True, the name of the artist is changed to the
-        artist name on Genius.
 
         Args:
             artist_name (:obj:`str`): Name of the artist to search for.
@@ -495,8 +493,7 @@ class Genius(API, PublicAPI):
             per_page (:obj:`int`, optional): Number of results to return
                 per search page. It can't be more than 50.
             get_full_info (:obj:`bool`, optional): Get full info for each song (slower).
-            allow_name_change (:obj:`bool`, optional): If True, search attempts to
-                switch to intended artist name.
+            allow_name_change (:obj:`bool`, optional): Doesn't do anything, exists to maintain backwards compatibility.
             artist_id (:obj:`int`, optional): Allows user to pass an artist ID.
             include_features (:obj:`bool`, optional): If True, includes tracks
                 featuring the artist.
@@ -527,7 +524,6 @@ class Genius(API, PublicAPI):
                 print("Searching for songs by {0}...\n".format(search_term))
 
             # Perform a Genius API search for the artist
-            found_artist = None
             response = self.search_all(search_term)
             found_artist = self._get_item_from_search_response(
                 response, search_term, type_="artist", result_type="name"
@@ -548,12 +544,10 @@ class Genius(API, PublicAPI):
 
         artist_info = self.artist(artist_id)["artist"]
         found_name = artist_info["name"]
-        if found_name != artist_name and allow_name_change:
-            if self.verbose:
-                print(
-                    "Changing artist name to '{a}'".format(a=safe_unicode(found_name))
-                )
-            artist_name = found_name
+        if found_name != artist_name and self.verbose:
+            print(
+                f"Found name ('{safe_unicode(found_name)}') differs from searched name ('{safe_unicode(artist_name)}')"
+            )
 
         # Create the Artist object
         artist = Artist(self, artist_info)
