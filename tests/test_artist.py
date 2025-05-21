@@ -413,14 +413,15 @@ def test_saving_json_file(artist_object: Artist, tmp_path: Path) -> None:
         filename=str(expected_filepath),
         extension=extension,
         overwrite=True,
-        sanitize=False,
         verbose=False,
     )
-    assert expected_filepath.is_file()
+    assert expected_filepath.is_file(), f"File not created at {expected_filepath}"
     # Simple content check (can be more thorough)
     content = expected_filepath.read_text()
-    assert f'"name": "{artist_object.name}' in content
-    assert '"title": "Assert Equals Blues"' in content  # Check for a song title
+    assert f'"name": "{artist_object.name}"' in content, content
+    assert '"title": "Assert Equals Blues"' in content, (
+        content
+    )  # Check for a song title
 
     # Test overwriting json file
     # Modify lyrics of first song temporarily to check overwrite
@@ -430,12 +431,13 @@ def test_saving_json_file(artist_object: Artist, tmp_path: Path) -> None:
         filename=str(expected_filepath),
         extension=extension,
         overwrite=True,
-        sanitize=False,
         verbose=False,
     )
-    assert expected_filepath.is_file()
+    assert expected_filepath.is_file(), (
+        f"Overwritten file not found at {expected_filepath}"
+    )
     content_after_overwrite = expected_filepath.read_text()
-    assert "Overwritten Lyrics Test" in content_after_overwrite
+    assert "Overwritten Lyrics Test" in content_after_overwrite, content_after_overwrite
     # Restore original lyrics if needed for other tests (though fixtures usually isolate)
     artist_object.songs[0].lyrics = original_lyrics
 
@@ -457,11 +459,11 @@ def test_saving_txt_file(artist_object: Artist, tmp_path: Path) -> None:
         sanitize=False,
         verbose=False,
     )
-    assert expected_filepath.is_file()
+    assert expected_filepath.is_file(), f"File not created at {expected_filepath}"
     # Simple content check
     content = expected_filepath.read_text()
-    assert "Assert Equals Blues" in content  # Check for song title
-    assert "[Chorus]" in content  # Check for lyrics content
+    assert "Assert Equals Blues" in content, content  # Check for song title
+    assert "[Chorus]" in content, content  # Check for lyrics content
 
     # Test overwriting txt file
     # Modify lyrics of first song temporarily to check overwrite
@@ -474,8 +476,12 @@ def test_saving_txt_file(artist_object: Artist, tmp_path: Path) -> None:
         sanitize=False,
         verbose=False,
     )
-    assert expected_filepath.is_file()
+    assert expected_filepath.is_file(), (
+        f"Overwritten file not found at {expected_filepath}"
+    )
     content_after_overwrite = expected_filepath.read_text()
-    assert "Overwritten Lyrics Test for TXT" in content_after_overwrite
+    assert "Overwritten Lyrics Test for TXT" in content_after_overwrite, (
+        content_after_overwrite
+    )
     # Restore original lyrics
     artist_object.songs[0].lyrics = original_lyrics

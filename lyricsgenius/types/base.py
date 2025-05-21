@@ -55,7 +55,7 @@ class BaseEntity(ABC):
         if overwrite or not os.path.isfile(filename):
             write_file = True
         elif verbose:
-            msg = "{} already exists. Overwrite?\n(y/n): ".format(filename)
+            msg = f"{filename} already exists. Overwrite?\n(y/n): "
             if input(msg).lower() == "y":
                 write_file = True
 
@@ -63,7 +63,7 @@ class BaseEntity(ABC):
         if not write_file:
             if verbose:
                 print("Skipping file save.\n")
-            return
+            return None
 
         # Save the lyrics to a file
         if extension == "json":
@@ -72,7 +72,7 @@ class BaseEntity(ABC):
             self.to_text(filename, sanitize=sanitize)
 
         if verbose:
-            print("Wrote {}.".format(safe_unicode(filename)))
+            print(f"Wrote {safe_unicode(filename)}.")
 
         return None
 
@@ -166,4 +166,4 @@ class BaseEntity(ABC):
         attrs = ", ".join(
             [x for x in list(self.__dict__.keys()) if not x.startswith("_")][:2]
         )
-        return "{}({}, ...)".format(name, attrs)
+        return f"{name}({attrs}, ...)"

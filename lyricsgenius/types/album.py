@@ -2,28 +2,28 @@ from typing import Any
 
 from ..utils import convert_to_datetime
 from .base import BaseEntity
-from .song import Song  # Import Song class
+from .song import Song
 
 
 class Album(BaseEntity):
     """An album from Genius."""
 
-    def __init__(self, body: dict[str, Any], songs: list[Song]) -> None:
+    def __init__(self, body: dict[str, Any], tracks: list[Song]) -> None:
         """
         Initialize an Album object.
 
         Args:
             body (dict[str, Any]): Album metadata.
-            songs (list[Song]): A list of Song objects for the album.
+            tracks (list[Song]): A list of Song objects for the album tracks.
         """
         self._body = body
         self.artist: dict[str, Any] = body["artist"]
 
         # Store tracks as a list of tuples: (inferred_track_number, Song_object)
         self.tracks: list[tuple[int, Song]] = []
-        for i, song_obj in enumerate(songs):
+        for i, track in enumerate(tracks):
             # Infer track number from the order in the list (1-based index)
-            self.tracks.append((i + 1, song_obj))
+            self.tracks.append((i + 1, track))
 
         self.release_date_components = convert_to_datetime(
             body.get("release_date_components")
@@ -39,8 +39,8 @@ class Album(BaseEntity):
     @property
     def _text_data(self) -> str:
         return "\n\n".join(
-            f"[Track {track_num}: {song_obj.title}]\n{song_obj.lyrics}"
-            for track_num, song_obj in self.tracks
+            f"[Track {track_num}: {track.title}]\n{track.lyrics}"
+            for track_num, track in self.tracks
         ).strip()
 
     def to_dict(self) -> dict[str, Any]:
@@ -50,11 +50,11 @@ class Album(BaseEntity):
         # Serialize tracks: create a list of dictionaries, each representing a track
         # with its number and the song data.
         serialized_tracks = []
-        for track_num, song_obj in self.tracks:
+        for track_num, track in self.tracks:
             serialized_tracks.append(
                 {
                     "number": track_num,
-                    "song": song_obj.to_dict(),
+                    "song": track.to_dict(),
                 }
             )
         body["tracks"] = serialized_tracks

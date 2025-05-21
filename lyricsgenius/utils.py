@@ -131,15 +131,17 @@ def safe_unicode(s: str) -> str:
 
 
 def sanitize_filename(f: str) -> str:
-    """Removes invalid characters from file name.
+    """Removes only filesystem‐invalid and control characters from a filename.
 
-    Args:
-        f (:obj:`str`): file name to sanitize.
-
-    Returns:
-        :obj:`str`: sanitized file name including only alphanumeric
-        characters, spaces, dots or underlines.
-
+    This will strip out characters disallowed on most OSes
+    (<>:"|?*) and any Unicode control codes—everything else,
+    including hyphens and slashes, is preserved.
     """
-    keepchars = (" ", ".", "_")
-    return "".join(c for c in f if c.isalnum() or c in keepchars).rstrip()
+
+    # characters disallowed on most filesystems (Windows, macOS HFS+, etc.)
+    invalid = set('<>:"|?*')
+    return "".join(
+        c
+        for c in f
+        if c not in invalid and unicodedata.category(c)[0] != "C"  # drop control chars
+    )

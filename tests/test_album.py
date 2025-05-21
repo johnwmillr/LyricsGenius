@@ -155,10 +155,10 @@ def test_saving_json_file(album_object: Album, tmp_path: Path) -> None:
     assert expected_filepath.is_file(), f"File not created at {expected_filepath}"
 
     content = expected_filepath.read_text()
-    assert f'"name": "{album_object.name}"' in content
-    assert f'"artist": "{album_object.artist["name"]}"' in content
-    assert '"title": "Setup Serenade"' in content
-    assert '"lyrics": "[Verse 1]\\nArrange the mocks' in content
+    assert f'"name": "{album_object.name}"' in content, content
+    assert f'"artist": "{album_object.artist["name"]}"' in content, content
+    assert '"title": "Setup Serenade"' in content, content
+    assert '"lyrics": "[Verse 1]\\nArrange the mocks' in content, content
 
     original_lyrics = album_object.tracks[0][1].lyrics
     album_object.tracks[0][1].lyrics = "Overwritten JSON Test"
@@ -169,9 +169,11 @@ def test_saving_json_file(album_object: Album, tmp_path: Path) -> None:
         sanitize=False,
         verbose=False,
     )
-    assert expected_filepath.is_file()
+    assert expected_filepath.is_file(), (
+        f"Overwritten file not found at {expected_filepath}"
+    )
     content_after_overwrite = expected_filepath.read_text()
-    assert "Overwritten JSON Test" in content_after_overwrite
+    assert "Overwritten JSON Test" in content_after_overwrite, content_after_overwrite
     album_object.tracks[0][1].lyrics = original_lyrics
 
 
@@ -191,10 +193,10 @@ def test_saving_txt_file(album_object: Album, tmp_path: Path) -> None:
     assert expected_filepath.is_file(), f"File not created at {expected_filepath}"
 
     content = expected_filepath.read_text()
-    assert "Track 1: Setup Serenade" in content
-    assert "[Verse 1]\nArrange the mocks" in content
-    assert "Track 2: Teardown Tango" in content
-    assert "[Verse 1]\nReset the state" in content
+    assert "Track 1: Setup Serenade" in content, content
+    assert "[Verse 1]\nArrange the mocks" in content, content
+    assert "Track 2: Teardown Tango" in content, content
+    assert "[Verse 1]\nReset the state" in content, content
 
     original_lyrics = album_object.tracks[0][1].lyrics
     album_object.tracks[0][1].lyrics = "Overwritten TXT Test"
@@ -205,7 +207,9 @@ def test_saving_txt_file(album_object: Album, tmp_path: Path) -> None:
         sanitize=False,
         verbose=False,
     )
-    assert expected_filepath.is_file()
+    assert expected_filepath.is_file(), (
+        f"Overwritten file not found at {expected_filepath}"
+    )
     content_after_overwrite = expected_filepath.read_text()
-    assert "Overwritten TXT Test" in content_after_overwrite
+    assert "Overwritten TXT Test" in content_after_overwrite, content_after_overwrite
     album_object.tracks[0][1].lyrics = original_lyrics

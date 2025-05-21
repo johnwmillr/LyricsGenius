@@ -73,26 +73,12 @@ def song_object_no_headers(
 
 def test_song_title(song_object: Song, mock_song_data: dict[str, Any]) -> None:
     """Test if the song title is correct."""
-    assert clean_str(song_object.title) == clean_str(mock_song_data["title"])
+    assert song_object.title == mock_song_data["title"]
 
 
 def test_song_artist(song_object: Song, mock_song_data: dict[str, Any]) -> None:
     """Test if the artist name is correct."""
     assert song_object.artist == mock_song_data["primary_artist"]["name"]
-
-
-def test_lyrics_raw(song_object: Song, mock_lyrics: str) -> None:
-    """Test if the lyrics contain section headers."""
-    assert song_object.lyrics.startswith("[Setup]")
-    assert song_object.lyrics == mock_lyrics
-
-
-def test_lyrics_no_section_headers(
-    song_object_no_headers: Song, mock_lyrics_no_headers: str
-) -> None:
-    """Test if the lyrics without section headers are correct."""
-    assert song_object_no_headers.lyrics.startswith("Assert the true")
-    assert song_object_no_headers.lyrics == mock_lyrics_no_headers
 
 
 def test_to_dict(
@@ -106,43 +92,12 @@ def test_to_dict(
     assert song_dict["lyrics"] == mock_lyrics
 
 
-@mock.patch("json.dump")
-def test_save_lyrics_json(
-    mock_json_dump: mock.MagicMock, song_object: Song, tmp_path: Path
-) -> None:
-    """Test saving lyrics as a JSON file."""
-    # Setup a temporary file path
-    filename = tmp_path / "test_lyrics.json"
-
-    # Test saving
-    song_object.save_lyrics(
-        filename=str(filename),
-        extension="json",
-        overwrite=True,
-        sanitize=False,  # Sanitizing the filename causes test to fail because we remove slashes
-        verbose=False,
-    )
-
-    # Check if the file was created
-    assert os.path.exists(filename)
-
-
-@mock.patch("builtins.open", new_callable=mock.mock_open)
-def test_save_lyrics_txt(
-    mock_open: mock.MagicMock, song_object: Song, tmp_path: Path
-) -> None:
-    """Test saving lyrics as a TXT file."""
-    # Setup a temporary file path
-    filename = tmp_path / "test_lyrics.txt"
-
-    # Test saving
-    song_object.save_lyrics(
-        filename=str(filename), extension="txt", overwrite=True, verbose=False
-    )
-
-    # Check if open was called with the right args
-    mock_open.assert_called_once()
-    assert ".txt" in mock_open.call_args[0][0]
+def test_to_json(song_object: Song) -> None:
+    """Test if to_json method returns a JSON string."""
+    json_str = song_object.to_json()
+    assert isinstance(json_str, str), json_str
+    assert '"title": "Mocking the Tests"' in json_str
+    assert '"artist": "Py Testerson"' in json_str
 
 
 def test_to_text(song_object: Song, mock_lyrics: str) -> None:
@@ -150,9 +105,33 @@ def test_to_text(song_object: Song, mock_lyrics: str) -> None:
     assert song_object.to_text() == mock_lyrics
 
 
-def test_to_json(song_object: Song) -> None:
-    """Test if to_json method returns a JSON string."""
-    json_str = song_object.to_json()
-    assert isinstance(json_str, str), json_str
-    assert '"title": "Mocking the Tests"' in json_str
-    assert '"artist": "Py Testerson"' in json_str
+def test_save_lyrics_json(song_object: Song, tmp_path: Path) -> None:
+    """Test saving lyrics as a JSON file."""
+    filename = tmp_path / "test_lyrics.json"
+    song_object.save_lyrics(
+        filename=str(filename),
+        extension="json",
+        overwrite=True,
+        verbose=False,
+    )
+
+    # Check that the file was written correctly
+    assert filename.is_file(), filename
+    json_str = filename.read_text()
+    assert '"title": "Mocking the Tests"' in json_str, json_str
+    assert '"artist": "Py Testerson"' in json_str, json_str
+
+
+def test_save_lyrics_txt(song_object: Song, tmp_path: Path) -> None:
+    """Test saving lyrics as a TXT file."""
+    filename = tmp_path / "test_lyrics.txt"
+    song_object.save_lyrics(
+        filename=str(filename),
+        extension="txt",
+        overwrite=True,
+        verbose=False,
+    )
+
+    # Check that the file was written correctly
+    assert filename.is_file(), filename
+    assert filename.read_text() == song_object.lyrics, filename

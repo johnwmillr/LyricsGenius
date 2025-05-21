@@ -385,7 +385,7 @@ class Genius(API, PublicAPI):
         album_id = album_info["id"]
         assert album_id is not None
 
-        album_songs: list[Song] = []
+        tracks: list[Song] = []
         next_page: int | None = 1
 
         # It's unlikely for an album to have >=50 songs,
@@ -405,12 +405,11 @@ class Genius(API, PublicAPI):
                 if song_lyrics is None:
                     song_lyrics = ""
 
-                song_obj = Song(lyrics=song_lyrics, body=song_info)
-                album_songs.append(song_obj)
+                tracks.append(Song(lyrics=song_lyrics, body=song_info))
 
             next_page = tracks_list_response["next_page"]
 
-        return Album(body=album_info, songs=album_songs)
+        return Album(body=album_info, tracks=tracks)
 
     def search_song(
         self,
