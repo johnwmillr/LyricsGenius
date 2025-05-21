@@ -50,7 +50,7 @@ class TestEndpoints(unittest.TestCase):
         msg = "Incorrect song annotation response."
         r = sorted(genius.song_annotations(1))
         real = r[0][0]
-        expected = "(I’m at bat)"
+        expected = "(I'm at bat)"
         self.assertEqual(real, expected, msg)
 
     def test_tag_results(self):
@@ -86,7 +86,7 @@ class TestLyrics(unittest.TestCase):
         cls.song_id = 2885745
         cls.lyrics_ending = (
             "[Outro]"
-            "\nNow I’m kicking leaves"
+            "\nNow I'm kicking leaves"
             "\nCursing the one that I love and the one I don't"
             "\nI wonder who you're thinking of"
         )
