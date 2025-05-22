@@ -51,17 +51,3 @@ class QuestionMethods(RequestCapable):
         elif song_id:
             params["song_id"] = song_id
         return self._make_request(path=endpoint, params_=params, public_api=True)
-
-    def question(
-        self, question_id: int, text_format: TextFormatT | None = None
-    ) -> dict[str, Any]:
-        raise NotImplementedError()
-
-    def question_answers(
-        self,
-        question_id: int,
-        per_page: int | None = None,
-        page: int | None = None,
-        text_format: TextFormatT | None = None,
-    ) -> dict[str, Any]:
-        raise NotImplementedError()
