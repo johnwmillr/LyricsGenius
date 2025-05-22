@@ -174,17 +174,6 @@ class MiscMethods(RequestCapable, ChartsCapable):
             params["comment_id"] = comment_id
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def charts(
-        self,
-        time_period: str = "day",
-        chart_genre: str = "all",
-        per_page: int | None = None,
-        page: int | None = None,
-        text_format: TextFormatT | None = None,
-        type_: str = "songs",
-    ) -> dict[str, Any]:
-        raise NotImplementedError()
-
     def verified_artists(
         self, per_page: int | None = None, page: int | None = None
     ) -> dict[str, Any]:

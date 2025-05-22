@@ -13,7 +13,7 @@ jobs:
       - uses: astral-sh/ruff-action@9828f49eb4cadf267b40eaa330295c412c68c1f9  # v3.2.2
 
   lint:
-    if: false  # Temporarily disabled
+    if: false  # Temporarily disabled while we work on supporting tox
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
