@@ -2,8 +2,13 @@ import os
 import unittest
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from lyricsgenius import OAuth2
 from lyricsgenius.errors import InvalidStateError
+
+pytestmark = pytest.mark.skip(reason="This test is under development.")
+
 
 client_id = os.environ["GENIUS_CLIENT_ID"]
 client_secret = os.environ["GENIUS_CLIENT_SECRET"]

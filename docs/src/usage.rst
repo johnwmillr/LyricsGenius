@@ -36,7 +36,7 @@ Add the song to the :class:`Artist <types.Artist>` object:
    # add_song accepts song names as well:
    # artist.add_song("To You")
 
-Save the artist’s songs to a JSON file:
+Save the artist's songs to a JSON file:
 
 .. code:: python
 
@@ -80,7 +80,7 @@ Search for and save lyrics to a given song and album:
    python3 -m lyricsgenius song "Begin Again" "Andy Shauf" --save
    python3 -m lyricsgenius album "The Party" "Andy Shauf" --save
 
-Search for five songs by ‘The Beatles’ and save the lyrics:
+Search for five songs by ‘The Beatles' and save the lyrics:
 
 .. code:: bash
 

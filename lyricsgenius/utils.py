@@ -9,7 +9,7 @@ from string import punctuation
 from urllib.parse import parse_qs, urlparse
 
 
-def auth_from_environment():
+def auth_from_environment() -> tuple[str | None, str | None, str | None]:
     """Gets credentials from environment variables.
 
     Uses the following env vars: ``GENIUS_CLIENT_ID``,
@@ -26,7 +26,7 @@ def auth_from_environment():
     return client_id, redirect_uri, client_secret
 
 
-def convert_to_datetime(f):
+def convert_to_datetime(f: str | dict[str, int] | None) -> datetime | None:
     """Converts argument to a datetime object.
 
     Args:
@@ -67,7 +67,7 @@ def convert_to_datetime(f):
     return datetime.strptime(f, date_format)
 
 
-def clean_str(s):
+def clean_str(s: str) -> str:
     """Cleans a string to help with string comparison.
 
     Removes punctuation and returns
@@ -80,12 +80,12 @@ def clean_str(s):
         :obj:`str`: Cleaned string.
 
     """
-    punctuation_ = punctuation + "’" + "\u200b"
+    punctuation_ = punctuation + "'" + "\u200b"
     string = s.translate(str.maketrans("", "", punctuation_)).strip().lower()
     return unicodedata.normalize("NFKC", string)
 
 
-def parse_redirected_url(url, flow):
+def parse_redirected_url(url: str, flow: str) -> str:
     """Parse a URL for parameter 'code'/'token'.
 
     Args:
@@ -114,11 +114,11 @@ def parse_redirected_url(url, flow):
     return code[0]
 
 
-def safe_unicode(s):
+def safe_unicode(s: str) -> str:
     """Encodes and decodes string based on user's STDOUT.
 
     Encodes string to ``utf-8`` and then decodes it based
-    on the user's STDOUT's encoding, replacing erros in the process.
+    on the user's STDOUT's encoding, replacing errors in the process.
 
     Args:
         s (:obj:`str`): a string.
@@ -130,16 +130,29 @@ def safe_unicode(s):
     return s.encode("utf-8").decode(sys.stdout.encoding, errors="replace")
 
 
-def sanitize_filename(f):
-    """Removes invalid characters from file name.
+def format_filename(f: str) -> str:
+    """Formats a filename by replacing spaces with underscores.
 
     Args:
-        f (:obj:`str`): file name to sanitize.
+        (:obj:`str`): a string.
 
     Returns:
-        :obj:`str`: sanitized file name including only alphanumeric
-        characters, spaces, dots or underlines.
-
+        :obj:`str`: formatted string.
     """
-    keepchars = (" ", ".", "_")
-    return "".join(c for c in f if c.isalnum() or c in keepchars).rstrip()
+    return re.sub(r"\s+", "_", f).strip().lower()
+
+
+def sanitize_filename(f: str) -> str:
+    r"""Removes only filesystem-invalid and control characters from a filename.
+
+    This will strip out characters disallowed on most OSes and any Unicode
+    control codes—everything else, including hyphens and slashes, is preserved.
+    """
+
+    # characters disallowed on most filesystems (Windows, macOS HFS+, etc.)
+    invalid = set('<>:"|?*')
+    return "".join(
+        c
+        for c in f
+        if c not in invalid and unicodedata.category(c)[0] != "C"  # drop control chars
+    )

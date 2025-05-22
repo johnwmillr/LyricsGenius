@@ -14,7 +14,7 @@ LyricsGenius: a Python client for the Genius.com API
    :target: https://github.com/sponsors/johnwmillr
 
 
-`Genius.com`_ is a fun website. If you aren’t familiar with it, Genius hosts a
+`Genius.com`_ is a fun website. If you aren't familiar with it, Genius hosts a
 bunch of song lyrics and lets users highlight and annotate passages with
 interpretations, explanations, and references. Originally called RapGenius.com
 and devoted to lyrics from rap and hip-hop songs, the website now includes
@@ -23,12 +23,12 @@ lyrics and annotations from all genres of music. You can figure out what
 Universe really means, or what Noname was referring to when she said `“Moses
 wrote my name in gold and Kanye did the eulogy”`_.
 
-It’s actually not too difficult to start pulling data from the Genius website.
+It's actually not too difficult to start pulling data from the Genius website.
 Genius is hip enough to provide a free application programming interface (API)
 that makes it easy for nerds to programmatically access song and artist data
-from their website. What the Genius API doesn’t provide, however,
+from their website. What the Genius API doesn't provide, however,
 is a way to download the lyrics themselves. With a little help from
-`Beautiful Soup`_ though, it’s possible to grab the song lyrics without too
+`Beautiful Soup`_ though, it's possible to grab the song lyrics without too
 much extra work. And LyricsGenius has done all of that for you already.
 
 ..
@@ -38,7 +38,7 @@ much extra work. And LyricsGenius has done all of that for you already.
 ``lyricsgenius`` provides a simple interface to the song, artist, and
 lyrics data stored on `Genius.com`_.
 
-Using this library you can convienently access the content on Genius.com
+Using this library you can conveniently access the content on Genius.com
 And much more using the public API.
 
 You can use ``pip`` to install lyricsgenius:

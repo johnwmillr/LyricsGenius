@@ -1,0 +1,67 @@
+{
+    "_type": "artist",
+    "api_path": "/artists/424242",
+    "header_image_url": "https://images.genius.com/fakepythonartist.jpg",
+    "id": 424242,
+    "image_url": "https://images.genius.com/fakepythonartist.jpg",
+    "is_meme_verified": true,
+    "is_verified": false,
+    "name": "Py Testerson",
+    "slug": "Py-testerson",
+    "url": "https://genius.com/artists/Py-testerson",
+    "description": {
+        "plain": "A legendary Pythonista known for writing the catchiest unit testing anthems. Famous for the album 'Mocking the Tests'."
+    },
+    "alternate_names": [
+        "pytestguru",
+        "Mock Maestro"
+    ],
+    "followers_count": 1234,
+    "song_count": 2,
+    "albums": [
+        {
+            "id": 9999999,
+            "name": "Mocking the Tests",
+            "full_title": "Mocking the Tests by Py Testerson",
+            "cover_art_url": "https://images.genius.com/fakealbumcover.png",
+            "release_date_for_display": "April 1, 2025",
+            "url": "https://genius.com/albums/Py-testerson/Mocking-the-tests"
+        }
+    ],
+    "popular_songs": [
+        {
+            "id": 2010101,
+            "title": "Setup Serenade",
+            "full_title": "Setup Serenade by Py Testerson",
+            "url": "https://genius.com/Py-testerson-setup-serenade-lyrics"
+        },
+        {
+            "id": 2010102,
+            "title": "Teardown Tango",
+            "full_title": "Teardown Tango by Py Testerson",
+            "url": "https://genius.com/Py-testerson-teardown-tango-lyrics"
+        }
+    ],
+    "description_annotation": {
+        "_type": "referent",
+        "annotator_id": 1010101,
+        "annotator_login": "pytestguru",
+        "api_path": "/referents/42424242",
+        "classification": "accepted",
+        "fragment": "Py Testerson",
+        "id": 42424242,
+        "is_description": true,
+        "is_image": false,
+        "path": "/42424242/Py-testerson/Py-testerson",
+        "range": {
+            "content": "Py Testerson"
+        },
+        "song_id": null,
+        "url": "https://genius.com/42424242/Py-testerson/Py-testerson",
+        "verified_annotator_ids": [],
+        "annotatable": {
+            "url": "https://genius.com/artists/Py-testerson"
+        },
+        "annotations": []
+    }
+}

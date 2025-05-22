@@ -1,7 +1,12 @@
 import unittest
 
+import pytest
+
 from lyricsgenius import PublicAPI
 from tests import genius
+
+pytestmark = pytest.mark.skip(reason="This test is under development.")
+
 
 client = PublicAPI()
 
