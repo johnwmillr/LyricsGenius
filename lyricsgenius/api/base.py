@@ -107,7 +107,10 @@ class Sender(RequestCapable):
             time.sleep(self.sleep_time)
 
         if response is None:
-            raise RuntimeError("Response is None, something went wrong.")
+            raise RuntimeError(
+                f"Response is None after {tries} attempts (max {self.retries}). "
+                f"Request details: method={method}, uri={uri}, params={params_}."
+            )
         if web:
             return {"html": response.text}
         if response.status_code == 200:

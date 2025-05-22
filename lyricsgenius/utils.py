@@ -118,7 +118,7 @@ def safe_unicode(s: str) -> str:
     """Encodes and decodes string based on user's STDOUT.
 
     Encodes string to ``utf-8`` and then decodes it based
-    on the user's STDOUT's encoding, replacing erros in the process.
+    on the user's STDOUT's encoding, replacing errors in the process.
 
     Args:
         s (:obj:`str`): a string.
@@ -134,7 +134,7 @@ def format_filename(f: str) -> str:
     """Formats a filename by replacing spaces with underscores.
 
     Args:
-        f (:obj:`str`): a string.
+        (:obj:`str`): a string.
 
     Returns:
         :obj:`str`: formatted string.
@@ -143,11 +143,10 @@ def format_filename(f: str) -> str:
 
 
 def sanitize_filename(f: str) -> str:
-    """Removes only filesystem‐invalid and control characters from a filename.
+    r"""Removes only filesystem-invalid and control characters from a filename.
 
-    This will strip out characters disallowed on most OSes
-    (<>:"|?*) and any Unicode control codes—everything else,
-    including hyphens and slashes, is preserved.
+    This will strip out characters disallowed on most OSes and any Unicode
+    control codes—everything else, including hyphens and slashes, is preserved.
     """
 
     # characters disallowed on most filesystems (Windows, macOS HFS+, etc.)
