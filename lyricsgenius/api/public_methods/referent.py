@@ -48,7 +48,7 @@ class ReferentMethods(object):
         Args:
             song_id (:obj:`int`, optional): song ID
             web_page_id (:obj:`int`, optional): web page ID
-            created_by_id (:obj:`int`, optional): User ID of the contributer
+            created_by_id (:obj:`int`, optional): User ID of the contributor
                 who created the annotation(s).
             per_page (:obj:`int`, optional): Number of results to
                 return per page. It can't be more than 50.

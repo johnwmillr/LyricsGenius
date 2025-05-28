@@ -7,7 +7,7 @@ Before we start installing the package, we'll need to get an access token.
 
 Authorization
 -------------
-First you’ll need to sign up for a (free) account
+First you'll need to sign up for a (free) account
 that authorizes access to `the Genius API`_. After signing up/
 logging in to your account, head out to the API section on Genius
 and `create a new API client`_. After creating your client, you can
