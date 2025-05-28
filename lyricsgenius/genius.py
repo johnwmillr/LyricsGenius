@@ -140,12 +140,12 @@ class Genius(API, PublicAPI):
             :attr:`Genius.remove_section_headers` attribute.
 
         """
-        msg = "You must supply either `song_id` or `song_url`."
-        assert any([song_id, song_url]), msg
         if song_url:
             path = song_url.replace("https://genius.com/", "")
-        else:
+        elif song_id:
             path = self.song(song_id)["song"]["path"][1:]
+        else:
+            raise ValueError("You must supply either `song_id` or `song_url`.")
 
         # Scrape the song lyrics from the HTML
         html = BeautifulSoup(
@@ -209,14 +209,14 @@ class Genius(API, PublicAPI):
 
         Args:
             response (:obj:`dict`): A response from
-                :meth:‍‍‍‍`Genius.search_all` to go through.
+                :meth:`Genius.search_all` to go through.
             search_term (:obj:`str`): The search term to match with the hit.
             type_ (:obj:`str`): Type of the hit we're looking for (e.g. song, artist).
             result_type (:obj:`str`): The part of the hit we want to match
                 (e.g. song title, artist's name).
 
         Returns:
-            :obj:‍‍`str` \\|‌ :obj:`None`:
+            :obj:`str` \\| :obj:`None`:
             - `None` if there is no hit in the :obj:`response`.
             - The matched result if matching succeeds.
             - The first hit if the matching fails.
@@ -435,7 +435,7 @@ class Genius(API, PublicAPI):
             return None
 
         # Reject non-songs (Liner notes, track lists, etc.)
-        # or songs with uncomplete lyrics (e.g. unreleased songs, instrumentals)
+        # or songs with missing lyrics (e.g. unreleased songs, instrumentals)
         if self.skip_non_songs and not self._result_is_lyrics(song_info):
             valid = False
         else:
@@ -483,7 +483,7 @@ class Genius(API, PublicAPI):
         """Searches for a specific artist and gets their songs.
 
         This method looks for the artist by the name or by the
-        ID if it's provided in ``artist_id``. It returrns an
+        ID if it's provided in ``artist_id``. It returns an
         :class:`Artist <types.Artist>` object if the search is successful.
 
         Args:
@@ -511,7 +511,7 @@ class Genius(API, PublicAPI):
                 for song in artist.songs:
                     print(song.lyrics)
 
-            Visit :class:`Aritst <types.Artist>` for more examples.
+            Visit :class:`Artist <types.Artist>` for more examples.
         """
 
         def find_artist_id(search_term):
@@ -612,9 +612,9 @@ class Genius(API, PublicAPI):
                     break
 
             # Move on to next page of search results
-            page = songs_on_page["next_page"]
-            if page is None:
-                break  # Exit search when last page is reached
+            page = songs_on_page.get("next_page")
+            if page is None or reached_max_songs:
+                break
 
         if self.verbose:
             print("Done. Found {n} songs.".format(n=artist.num_songs))

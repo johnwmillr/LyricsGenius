@@ -3,6 +3,17 @@
 
 Release notes
 =============
+
+3.6.3 (2025-05-31)
+------------------
+Changed
+*******
+
+-  Fixed a bug where ``Genius.search_artist()`` wouldn't obey the
+   `max_songs` parameter. Now it will return the correct number of songs
+   as specified.
+-  Fixed typos and removed random unicode characters.
+
 3.0.0 (2021-02-08)
 ------------------
 New

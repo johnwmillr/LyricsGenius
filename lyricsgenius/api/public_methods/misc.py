@@ -32,7 +32,7 @@ class MiscMethods(object):
 
         Page data will return all possible values for the album/song and
         the lyrics in HTML format if the item is a song!
-        Album page data will contian album info and tracks info as well.
+        Album page data will contain album info and tracks info as well.
 
         Args:
             album (:obj:`str`, optional): Album path
@@ -46,7 +46,7 @@ class MiscMethods(object):
 
         Warning:
             Some albums/songs either don't have page data or
-            their page data path can't be infered easily from
+            their page data path can't be inferred easily from
             the artist slug and their API path. So make sure to
             use this method with a try/except clause that catches
             404 errors. Check out the example below.

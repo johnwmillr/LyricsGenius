@@ -80,7 +80,7 @@ def clean_str(s):
         :obj:`str`: Cleaned string.
 
     """
-    punctuation_ = punctuation + "’" + "\u200b"
+    punctuation_ = punctuation + "'" + "\u200b"
     string = s.translate(str.maketrans("", "", punctuation_)).strip().lower()
     return unicodedata.normalize("NFKC", string)
 
@@ -118,7 +118,7 @@ def safe_unicode(s):
     """Encodes and decodes string based on user's STDOUT.
 
     Encodes string to ``utf-8`` and then decodes it based
-    on the user's STDOUT's encoding, replacing erros in the process.
+    on the user's STDOUT's encoding, replacing errors in the process.
 
     Args:
         s (:obj:`str`): a string.
