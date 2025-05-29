@@ -1,7 +1,15 @@
-class SongMethods(object):
+from typing import Any
+
+from ...types.types import TextFormatT
+from ..protocols import RequestCapable
+
+
+class SongMethods(RequestCapable):
     """Song methods of the public API."""
 
-    def song(self, song_id, text_format=None):
+    def song(
+        self, song_id: int, text_format: TextFormatT | None = None
+    ) -> dict[str, Any]:
         """Gets data for a specific song.
 
         Args:
@@ -17,7 +25,13 @@ class SongMethods(object):
         params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def song_activity(self, song_id, per_page=None, page=None, text_format=None):
+    def song_activity(
+        self,
+        song_id: int,
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets activities on a song.
 
         Args:
@@ -40,7 +54,13 @@ class SongMethods(object):
         }
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def song_comments(self, song_id, per_page=None, page=None, text_format=None):
+    def song_comments(
+        self,
+        song_id: int,
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets the comments on a song.
 
         Args:
@@ -63,7 +83,7 @@ class SongMethods(object):
         }
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def song_contributors(self, song_id):
+    def song_contributors(self, song_id: int) -> dict[str, Any]:
         """Gets the contributors of a song.
 
         This method will return users who have contributed

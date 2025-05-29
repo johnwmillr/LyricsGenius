@@ -1,7 +1,15 @@
-class AnnotationMethods(object):
+from typing import Any
+
+from ...types.types import TextFormatT
+from ..protocols import RequestCapable
+
+
+class AnnotationMethods(RequestCapable):
     """Annotation methods of the public API."""
 
-    def annotation(self, annotation_id, text_format=None):
+    def annotation(
+        self, annotation_id: int, text_format: TextFormatT | None = None
+    ) -> dict[str, Any]:
         """Gets data for a specific annotation.
 
         Args:
@@ -17,7 +25,9 @@ class AnnotationMethods(object):
         params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def annotation_edits(self, annotation_id, text_format=None):
+    def annotation_edits(
+        self, annotation_id: int, text_format: TextFormatT | None = None
+    ) -> dict[str, Any]:
         """Gets the edits on annotation (its versions).
 
         Args:
@@ -34,8 +44,12 @@ class AnnotationMethods(object):
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def annotation_comments(
-        self, annotation_id, per_page=None, page=None, text_format=None
-    ):
+        self,
+        annotation_id: int,
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets the comments on an annotation.
 
         Args:

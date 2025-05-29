@@ -4,6 +4,20 @@
 Release notes
 =============
 
+3.7.0 (2025-05-31)
+------------------
+New
+*******
+
+-  Added type annotations to the codebase.
+-  Uses Protocols to better define the interface of the ``PublicAPI``
+   mixins.
+-  Deleted the ``Stats`` class.
+-  Removed the ``Track`` class, replaced its functionality with the
+   ``Song`` class.
+-  Swapped the order of arguments to the ``Song`` class. The ``lyrics``
+   argument is now first and ``body`` is second.
+
 3.6.4 (2025-05-31)
 ------------------
 Changed
