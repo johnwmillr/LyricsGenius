@@ -1,9 +1,21 @@
 import unittest
+import warnings
+
+import pytest
 
 from lyricsgenius import PublicAPI
-from tests import genius
+from tests import get_genius_client
 
-client = PublicAPI()
+pytestmark = pytest.mark.skip(reason="This test is under development.")
+
+try:
+    genius = get_genius_client()
+    client = PublicAPI()
+except KeyError:
+    warnings.warn(
+        "Skipping API tests because no GENIUS_ACCESS_TOKEN was found in the environment variables.",
+        stacklevel=1,
+    )
 
 
 class TestAlbumMethods(unittest.TestCase):

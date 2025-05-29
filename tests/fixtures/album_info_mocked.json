@@ -1,0 +1,83 @@
+{
+    "_type": "album",
+    "api_path": "/albums/9999999",
+    "cover_art_thumbnail_url": "https://images.genius.com/fakealbumcover_thumb.png",
+    "cover_art_url": "https://images.genius.com/fakealbumcover.png",
+    "full_title": "Mocking the Tests by Py Testerson",
+    "id": 9999999,
+    "name": "Mocking the Tests",
+    "name_with_artist": "Mocking the Tests (artist: Py Testerson)",
+    "primary_artist_names": "Py Testerson",
+    "release_date_components": {
+        "year": 2025,
+        "month": 4,
+        "day": 1
+    },
+    "release_date_for_display": "April 1, 2025",
+    "url": "https://genius.com/albums/Py-testerson/Mocking-the-tests",
+    "artist": {
+        "_type": "artist",
+        "api_path": "/artists/424242",
+        "header_image_url": "https://images.genius.com/fakepythonartist.jpg",
+        "id": 424242,
+        "image_url": "https://images.genius.com/fakepythonartist.jpg",
+        "index_character": "p",
+        "is_meme_verified": true,
+        "is_verified": false,
+        "name": "Py Testerson",
+        "slug": "Py-testerson",
+        "url": "https://genius.com/artists/Py-testerson"
+    },
+    "primary_artists": [
+        {
+            "_type": "artist",
+            "api_path": "/artists/424242",
+            "header_image_url": "https://images.genius.com/fakepythonartist.jpg",
+            "id": 424242,
+            "image_url": "https://images.genius.com/fakepythonartist.jpg",
+            "index_character": "p"
+        }
+    ],
+    "comment_count": 2,
+    "custom_header_image_url": "https://images.genius.com/fakealbumcover_header.png",
+    "description_preview": "A concept album for Python unit testers, featuring tracks about mocking, patching, and debugging.",
+    "header_image_url": "https://images.genius.com/fakealbumcover_header.png",
+    "lock_state": "editable",
+    "pyongs_count": 7,
+    "release_date": "2025-04-01",
+    "song_pageviews": 4242,
+    "cover_arts": [
+        {},
+        {}
+    ],
+    "description_annotation": {
+        "_type": "referent",
+        "annotator_id": 1010101,
+        "annotator_login": "pytestguru",
+        "api_path": "/referents/123456789",
+        "classification": "accepted",
+        "fragment": "Mocking the Tests",
+        "id": 123456789,
+        "is_description": true,
+        "is_image": false,
+        "path": "/123456789/Mocking-the-tests/Mocking-the-tests",
+        "range": {
+            "content": "Mocking the Tests"
+        },
+        "song_id": null,
+        "url": "https://genius.com/123456789/Mocking-the-tests/Mocking-the-tests",
+        "verified_annotator_ids": [],
+        "annotatable": {
+            "url": "https://genius.com/albums/Py-testerson/Mocking-the-tests"
+        },
+        "annotations": []
+    },
+    "performance_groups": [
+        {},
+        {}
+    ],
+    "song_performances": [
+        {},
+        {}
+    ]
+}
