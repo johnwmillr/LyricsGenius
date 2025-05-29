@@ -4,6 +4,25 @@
 Release notes
 =============
 
+3.7.0 (2025-05-31)
+------------------
+New
+*******
+
+-  Added type annotations to the codebase.
+-  Uses Protocols to better define the interface of the ``PublicAPI``
+   mixins.
+-  Deleted the ``Stats`` class.
+-  Removed the ``Track`` class, replaced its functionality with the
+   ``Song`` class.
+-  Swapped the order of arguments to the ``Song`` class. The ``lyrics``
+   argument is now first and ``body`` is second.
+-  Removed the ``Genius.save_artists()`` method because it wasn't
+   helpful. You're better of just looping through a list of artists and
+   calling ``Artist.save_lyrics()`` on each one.
+-  Renamed the ``client_only_app`` parameter in ``OAuth2`` to
+   ``app_is_client_only``.
+
 3.6.4 (2025-05-31)
 ------------------
 Changed
