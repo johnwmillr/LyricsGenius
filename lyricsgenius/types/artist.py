@@ -4,6 +4,8 @@
 
 """Artist object"""
 
+import warnings
+
 from ..utils import safe_unicode
 from .base import BaseEntity
 
@@ -12,6 +14,12 @@ class Artist(BaseEntity):
     """An artist with songs from the Genius.com database."""
 
     def __init__(self, client, json_dict):
+        warnings.warn(
+            "The 'client' parameter and internal API client usage in the Artist class "
+            "are deprecated and will be removed in a future version.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         # Artist Constructor
         body = json_dict
         super().__init__(body["id"])
@@ -33,6 +41,12 @@ class Artist(BaseEntity):
         return len(self.songs)
 
     def add_song(self, new_song, verbose=True, include_features=False):
+        warnings.warn(
+            "The capability of `Artist.add_song` to fetch songs via API (when a string is provided) "
+            "is deprecated and will be removed in a future version.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         """Adds a song to the Artist.
 
         This method adds a new song to the artist object. It checks
@@ -89,6 +103,12 @@ class Artist(BaseEntity):
         return None
 
     def song(self, song_name):
+        warnings.warn(
+            "The capability of `Artist.song` to fetch songs via API "
+            "is deprecated and will be removed in a future version.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         """Gets the artist's song.
 
         If the song is in the artist's songs, returns the song. Otherwise searches

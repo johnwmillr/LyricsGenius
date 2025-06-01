@@ -4,20 +4,37 @@
 Release notes
 =============
 
+3.6.4 (2025-05-31)
+------------------
+Changed
+*******
+
+-  Added a `DeprecationWarning` to the ``Song``, ``Artist``, and ``Album``
+   classes. The ``Genius`` client will be removed from these classes in
+   a future release.
+-  Added a `DeprecationWarning` to the ``Track`` class. This class will
+   be removed in a future release. Its functionality will be
+   incorporated into the ``Song`` class.
+-  Added a `DeprecationWarning` to the ``Stats`` class. This class will
+   be removed in a future release.
+-  Added a `FutureWarning` to the ``Song`` constructor. Its signature
+   will change to ``Song(lyrics, body)`` instead of
+   ``Song(client, json_dict, lyrics)``.
+
 3.6.3 (2025-05-31)
 ------------------
 Changed
 *******
 
 -  Fixed a bug where ``Genius.search_artist()`` wouldn't obey the
-   `max_songs` parameter. Now it will return the correct number of songs
-   as specified.
+   ``max_songs`` parameter. Now it will return the correct number of
+   songs as specified.
 -  Fixed typos and removed random unicode characters.
 
 3.0.0 (2021-02-08)
 ------------------
 New
-***
+*****
 
 -  All requests now go through the ``Sender`` object. This provides
    features such as retries ``genius.retries`` and handling HTTP and
@@ -68,18 +85,18 @@ Other (CI, etc)
 ------------------
 Added
 *****
--  Added optional ``ensure_ascii`` parameter to the
-   following methods:
+
+-  Added optional ``ensure_ascii`` parameter to the following methods:
    :meth:`Genius.save_artists <api.Genius.save_artists>`,
    :meth:`Song.save_lyrics <types.Song.save_lyrics>`,
    :meth:`Song.to_json <types.Song.to_json>`,
    :meth:`Artist.save_lyrics <types.Artist.save_lyrics>`
    and :meth:`Artist.to_json <types.Artist.to_json>`
 
-
 2.0.1 (2020-09-20)
 ------------------
 Changed
 *******
-- :func:`Genius.lyrics`- Switched to using
-  regular expressions to find the ``new_div`` (:issue:`154`).
+
+-  :func:`Genius.lyrics` - Switched to using regular expressions to find
+   the ``new_div`` (:issue:`154`).

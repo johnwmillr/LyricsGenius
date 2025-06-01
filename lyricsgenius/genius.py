@@ -9,6 +9,7 @@ import os
 import re
 import shutil
 import time
+import warnings
 
 from bs4 import BeautifulSoup
 
@@ -646,6 +647,12 @@ class Genius(API, PublicAPI):
                 genius.save_artists(artists=[a, b, c], filename='abc', overwrite=True)
 
         """
+        warnings.warn(
+            "The 'save_artists' method is deprecated and will be removed in a future version. "
+            "Consider saving artists individually or using a different data persistence strategy.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         if isinstance(artists, Artist):
             artists = [artists]
 

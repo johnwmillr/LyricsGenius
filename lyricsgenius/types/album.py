@@ -1,3 +1,5 @@
+import warnings
+
 from ..utils import convert_to_datetime
 from .artist import Artist
 from .base import BaseEntity
@@ -7,6 +9,12 @@ class Album(BaseEntity):
     """An album from the Genius.com database."""
 
     def __init__(self, client, json_dict, tracks):
+        warnings.warn(
+            "The 'client' parameter and internal API client usage in the Album class "
+            "are deprecated and will be removed in a future version.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         body = json_dict
         super().__init__(body["id"])
         self._body = body
@@ -71,6 +79,14 @@ class Track(BaseEntity):
     """docstring for Track"""
 
     def __init__(self, client, json_dict, lyrics):
+        warnings.warn(
+            (
+                "The 'Track' class is deprecated and will be removed in a future version. "
+                "Its functionality will be incorporated into the 'Song' class."
+            ),
+            DeprecationWarning,
+            stacklevel=2,
+        )
         from .song import Song
 
         body = json_dict
