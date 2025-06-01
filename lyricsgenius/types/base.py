@@ -1,5 +1,6 @@
 import json
 import os
+import warnings
 from abc import ABC, abstractmethod
 
 from ..utils import safe_unicode, sanitize_filename
@@ -173,6 +174,11 @@ class Stats(object):
     """
 
     def __init__(self, json_dict):
+        warnings.warn(
+            "The 'Stats' class is deprecated and will be removed in a future version. ",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         for key, value in json_dict.items():
             setattr(self, key, value)
 

@@ -2,6 +2,7 @@
 # copyright 2025 John W. R. Miller
 # See LICENSE for details.
 
+import warnings
 from filecmp import cmp
 
 from .album import Album
@@ -13,6 +14,18 @@ class Song(BaseEntity):
     """A song from the Genius.com database."""
 
     def __init__(self, client, json_dict, lyrics=""):
+        warnings.warn(
+            "The 'client' parameter and internal API client usage in the Song class "
+            "are deprecated and will be removed in a future version.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        warnings.warn(
+            "The constructor signature will change in a future version. "
+            "It will change to Song(lyrics, body) instead of Song(client, json_dict, lyrics).",
+            FutureWarning,
+            stacklevel=2,
+        )
         body = json_dict
         super().__init__(body["id"])
         self._body = body
