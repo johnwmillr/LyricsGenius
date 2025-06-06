@@ -1,15 +1,21 @@
-class QuestionMethods(object):
+from typing import Any
+
+from ...types.types import TextFormatT
+from ..protocols import RequestCapable
+
+
+class QuestionMethods(RequestCapable):
     """Question methods of the public API."""
 
     def questions(
         self,
-        album_id=None,
-        song_id=None,
-        per_page=None,
-        page=None,
-        state=None,
-        text_format=None,
-    ):
+        album_id: int | None = None,
+        song_id: int | None = None,
+        per_page: int | None = None,
+        page: int | None = None,
+        state: str | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets the questions on an album or a song.
 
         You must supply one of :obj:`album_id` or :obj:`song_id`.

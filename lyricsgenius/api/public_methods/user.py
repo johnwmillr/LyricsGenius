@@ -1,7 +1,15 @@
-class UserMethods(object):
+from typing import Any
+
+from ...types.types import TextFormatT
+from ..protocols import RequestCapable
+
+
+class UserMethods(RequestCapable):
     """User methods of the public API."""
 
-    def user(self, user_id, text_format=None):
+    def user(
+        self, user_id: int, text_format: TextFormatT | None = None
+    ) -> dict[str, Any]:
         """Gets data for a specific user.
 
         Args:
@@ -19,10 +27,10 @@ class UserMethods(object):
 
     def user_accomplishments(
         self,
-        user_id,
-        per_page=None,
-        next_cursor=None,
-    ):
+        user_id: int,
+        per_page: int | None = None,
+        next_cursor: str | None = None,
+    ) -> dict[str, Any]:
         """Gets user's accomplishments.
 
         This methods gets the section titled "TOP ACCOMPLISHMENTS" in
@@ -43,7 +51,9 @@ class UserMethods(object):
         params = {"next_cursor": next_cursor, "per_page": per_page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def user_following(self, user_id, per_page=None, page=None):
+    def user_following(
+        self, user_id: int, per_page: int | None = None, page: int | None = None
+    ) -> dict[str, Any]:
         """Gets the accounts user follows.
 
         Args:
@@ -60,7 +70,9 @@ class UserMethods(object):
         params = {"page": page, "per_page": per_page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def user_followers(self, user_id, per_page=None, page=None):
+    def user_followers(
+        self, user_id: int, per_page: int | None = None, page: int | None = None
+    ) -> dict[str, Any]:
         """Gets user's followers.
 
         Args:
@@ -79,13 +91,13 @@ class UserMethods(object):
 
     def user_contributions(
         self,
-        user_id,
-        per_page=None,
-        next_cursor=None,
-        sort=None,
-        text_format=None,
-        type_=None,
-    ):
+        user_id: int,
+        per_page: int | None = None,
+        next_cursor: str | None = None,
+        sort: str | None = None,
+        text_format: TextFormatT | None = None,
+        type_: str | None = None,
+    ) -> dict[str, Any]:
         """Gets user's contributions.
 
         Args:
@@ -132,12 +144,12 @@ class UserMethods(object):
 
     def user_annotations(
         self,
-        user_id,
-        per_page=None,
-        next_cursor=None,
-        sort="popularity",
-        text_format=None,
-    ):
+        user_id: int,
+        per_page: int | None = None,
+        next_cursor: str | None = None,
+        sort: str = "popularity",
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets user's annotations.
 
         Alias for :meth:`user_contributions() <PublicAPI.user_contributions>`
@@ -168,12 +180,12 @@ class UserMethods(object):
 
     def user_articles(
         self,
-        user_id,
-        per_page=None,
-        next_cursor=None,
-        sort="popularity",
-        text_format=None,
-    ):
+        user_id: int,
+        per_page: int | None = None,
+        next_cursor: str | None = None,
+        sort: str = "popularity",
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets user's articles.
 
         Alias for :meth:`user_contributions() <PublicAPI.user_contributions>`
@@ -202,7 +214,13 @@ class UserMethods(object):
             type_="articles",
         )
 
-    def user_pyongs(self, user_id, per_page=None, next_cursor=None, text_format=None):
+    def user_pyongs(
+        self,
+        user_id: int,
+        per_page: int | None = None,
+        next_cursor: str | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets user's Pyongs.
 
         Alias for :meth:`user_contributions() <PublicAPI.user_contributions>`
@@ -229,8 +247,12 @@ class UserMethods(object):
         )
 
     def user_questions_and_answers(
-        self, user_id, per_page=None, next_cursor=None, text_format=None
-    ):
+        self,
+        user_id: int,
+        per_page: int | None = None,
+        next_cursor: str | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets user's Q&As.
 
         Alias for :meth:`user_contributions() <PublicAPI.user_contributions>`
@@ -257,8 +279,12 @@ class UserMethods(object):
         )
 
     def user_suggestions(
-        self, user_id, per_page=None, next_cursor=None, text_format=None
-    ):
+        self,
+        user_id: int,
+        per_page: int | None = None,
+        next_cursor: str | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets user's suggestions (comments).
 
         Alias for :meth:`user_contributions() <PublicAPI.user_contributions>`
@@ -286,12 +312,12 @@ class UserMethods(object):
 
     def user_transcriptions(
         self,
-        user_id,
-        per_page=None,
-        next_cursor=None,
-        sort="popularity",
-        text_format=None,
-    ):
+        user_id: int,
+        per_page: int | None = None,
+        next_cursor: str | None = None,
+        sort: str = "popularity",
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets user's transcriptions.
 
         Alias for :meth:`user_contributions() <PublicAPI.user_contributions>`
@@ -322,12 +348,12 @@ class UserMethods(object):
 
     def user_unreviewed(
         self,
-        user_id,
-        per_page=None,
-        next_cursor=None,
-        sort="popularity",
-        text_format=None,
-    ):
+        user_id: int,
+        per_page: int | None = None,
+        next_cursor: str | None = None,
+        sort: str = "popularity",
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets user's unreviewed annotations.
 
         Alias for :meth:`user_contributions() <PublicAPI.user_contributions>`

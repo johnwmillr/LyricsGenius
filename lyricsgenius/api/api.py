@@ -1,3 +1,6 @@
+from typing import Any, Literal
+
+from ..types.types import TextFormatT
 from .base import Sender
 from .public_methods import (
     AlbumMethods,
@@ -53,14 +56,14 @@ class API(Sender):
 
     def __init__(
         self,
-        access_token,
-        response_format="plain",
-        timeout=5,
-        sleep_time=0.2,
-        retries=0,
-        user_agent="",
-        proxy=None,
-    ):
+        access_token: str | None = None,
+        response_format: Literal["dom", "plain", "html"] = "plain",
+        timeout: int = 5,
+        sleep_time: float = 0.2,
+        retries: int = 0,
+        user_agent: str = "",
+        proxy: dict[str, str] | None = None,
+    ) -> None:
         super().__init__(
             access_token=access_token,
             response_format=response_format,
@@ -71,7 +74,7 @@ class API(Sender):
             proxy=proxy,
         )
 
-    def account(self, text_format=None):
+    def account(self, text_format: TextFormatT | None = None) -> dict[str, Any]:
         """Gets details about the current user.
 
         Requires scope: :obj:`me`.
@@ -88,7 +91,11 @@ class API(Sender):
         params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params)
 
-    def annotation(self, annotation_id, text_format=None):
+    def annotation(
+        self,
+        annotation_id: int,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets data for a specific annotation.
 
         Args:
@@ -106,16 +113,16 @@ class API(Sender):
 
     def create_annotation(
         self,
-        text,
-        raw_annotatable_url,
-        fragment,
-        before_html=None,
-        after_html=None,
-        canonical_url=None,
-        og_url=None,
-        title=None,
-        text_format=None,
-    ):
+        text: str,
+        raw_annotatable_url: str,
+        fragment: str,
+        before_html: str | None = None,
+        after_html: str | None = None,
+        canonical_url: str | None = None,
+        og_url: str | None = None,
+        title: str | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Creates an annotation for a web page.
 
         Requires scope: :obj:`create_annotation`.
@@ -173,7 +180,7 @@ class API(Sender):
             path=endpoint, method="POST", params_=params, json=payload
         )
 
-    def delete_annotation(self, annotation_id):
+    def delete_annotation(self, annotation_id: int) -> int | None:
         """Deletes an annotation created by the authenticated user.
 
         Requires scope: :obj:`manage_annotation`.
@@ -185,10 +192,15 @@ class API(Sender):
             :obj:`int`: 204 - which is the response's status code
 
         """
-        endpoint = "annotations/{}".format(annotation_id)
-        return self._make_request(path=endpoint, method="DELETE")
+        return self._make_request(
+            path=f"annotations/{annotation_id}", method="DELETE"
+        ).get("status_code")
 
-    def downvote_annotation(self, annotation_id, text_format=None):
+    def downvote_annotation(
+        self,
+        annotation_id: int,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Downvotes an annotation.
 
         Requires scope: :obj:`vote`.
@@ -202,11 +214,17 @@ class API(Sender):
             :obj:`dict`: The annotation.
 
         """
-        endpoint = "annotations/{}/downvote".format(annotation_id)
-        params = {"text_format": text_format or self.response_format}
-        return self._make_request(path=endpoint, method="PUT", params_=params)
+        return self._make_request(
+            path=f"annotations/{annotation_id}/downvote",
+            method="PUT",
+            params_={"text_format": text_format or self.response_format},
+        )
 
-    def unvote_annotation(self, annotation_id, text_format=None):
+    def unvote_annotation(
+        self,
+        annotation_id: int,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Removes user's vote for the annotation.
 
         Requires scope: :obj:`vote`.
@@ -220,23 +238,25 @@ class API(Sender):
             :obj:`dict`: The annotation.
 
         """
-        endpoint = "annotations/{}/unvote".format(annotation_id)
-        params = {"text_format": text_format or self.response_format}
-        return self._make_request(path=endpoint, method="PUT", params_=params)
+        return self._make_request(
+            path=f"annotations/{annotation_id}/unvote",
+            method="PUT",
+            params_={"text_format": text_format or self.response_format},
+        )
 
     def update_annotation(
         self,
-        annotation_id,
-        text,
-        raw_annotatable_url,
-        fragment,
-        before_html=None,
-        after_html=None,
-        canonical_url=None,
-        og_url=None,
-        title=None,
-        text_format=None,
-    ):
+        annotation_id: int,
+        text: str,
+        raw_annotatable_url: str,
+        fragment: str,
+        before_html: str | None = None,
+        after_html: str | None = None,
+        canonical_url: str | None = None,
+        og_url: str | None = None,
+        title: str | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Updates an annotation created by the authenticated user.
 
         Requires scope: :obj:`manage_annotation`.
@@ -265,8 +285,6 @@ class API(Sender):
         msg = "Must supply `canonical_url`, `og_url`, or `title`."
         assert any([canonical_url, og_url, title]), msg
 
-        endpoint = "annotations/{}".format(annotation_id)
-        params = {"text_format": text_format or self.response_format}
         payload = {
             "annotation": {"body": {"markdown": text}},
             "referent": {
@@ -284,10 +302,17 @@ class API(Sender):
             },
         }
         return self._make_request(
-            path=endpoint, method="PUT", params_=params, json=payload
+            path=f"annotations/{annotation_id}",
+            method="PUT",
+            params_={"text_format": text_format or self.response_format},
+            json=payload,
         )
 
-    def upvote_annotation(self, annotation_id, text_format=None):
+    def upvote_annotation(
+        self,
+        annotation_id: int,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Upvotes an annotation.
 
         Requires scope: :obj:`vote`.
@@ -301,11 +326,17 @@ class API(Sender):
             :obj:`dict`: The annotation.
 
         """
-        endpoint = "annotations/{}/upvote".format(annotation_id)
-        params = {"text_format": text_format or self.response_format}
-        return self._make_request(path=endpoint, method="PUT", params_=params)
+        return self._make_request(
+            path=f"annotations/{annotation_id}/upvote",
+            method="PUT",
+            params_={"text_format": text_format or self.response_format},
+        )
 
-    def artist(self, artist_id, text_format=None):
+    def artist(
+        self,
+        artist_id: int,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets data for a specific artist.
 
         Args:
@@ -324,11 +355,18 @@ class API(Sender):
                 print(artist['name'])
 
         """
-        params = {"text_format": text_format or self.response_format}
-        endpoint = "artists/{id}".format(id=artist_id)
-        return self._make_request(endpoint, params_=params)
+        return self._make_request(
+            path=f"artists/{artist_id}",
+            params_={"text_format": text_format or self.response_format},
+        )
 
-    def artist_songs(self, artist_id, per_page=None, page=None, sort="title"):
+    def artist_songs(
+        self,
+        artist_id: int,
+        per_page: int | None = None,
+        page: int | None = None,
+        sort: str = "title",
+    ) -> dict[str, Any]:
         """Gets artist's songs.
 
         Args:
@@ -363,20 +401,20 @@ class API(Sender):
                 songs = genius.artist_songs(380491, per_page=5, page=3)
 
         """
-        endpoint = "artists/{id}/songs".format(id=artist_id)
-
-        params = {"sort": sort, "per_page": per_page, "page": page}
-        return self._make_request(endpoint, params_=params)
+        return self._make_request(
+            path=f"artists/{artist_id}/songs",
+            params_={"sort": sort, "per_page": per_page, "page": page},
+        )
 
     def referents(
         self,
-        song_id=None,
-        web_page_id=None,
-        created_by_id=None,
-        per_page=None,
-        page=None,
-        text_format=None,
-    ):
+        song_id: int | None = None,
+        web_page_id: int | None = None,
+        created_by_id: int | None = None,
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets item's referents
 
         Args:
@@ -413,8 +451,7 @@ class API(Sender):
         assert bool(song_id) ^ bool(web_page_id), msg
 
         # Construct the URI
-        endpoint = "referents"
-        params = {"text_format": text_format or self.response_format}
+        params: dict[str, Any] = {"text_format": text_format or self.response_format}
         params = {
             "song_id": song_id,
             "web_page_id": web_page_id,
@@ -423,9 +460,11 @@ class API(Sender):
             "page": page,
             "text_format": text_format or self.response_format,
         }
-        return self._make_request(endpoint, params_=params)
+        return self._make_request(path="referents", params_=params)
 
-    def search_songs(self, search_term, per_page=None, page=None):
+    def search_songs(
+        self, search_term: str, per_page: int | None = None, page: int | None = None
+    ) -> dict[str, Any]:
         """Searches songs hosted on Genius.
 
         Args:
@@ -438,11 +477,16 @@ class API(Sender):
             :obj:`dict`
 
         """
-        endpoint = "search"
-        params = {"q": search_term, "per_page": per_page, "page": page}
-        return self._make_request(endpoint, params_=params)
+        return self._make_request(
+            path="search",
+            params_={"q": search_term, "per_page": per_page, "page": page},
+        )
 
-    def song(self, song_id, text_format=None):
+    def song(
+        self,
+        song_id: int,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets data for a specific song.
 
         Args:
@@ -461,11 +505,17 @@ class API(Sender):
                 print(song['full_title'])
 
         """
-        endpoint = "songs/{id}".format(id=song_id)
-        params = {"text_format": text_format or self.response_format}
-        return self._make_request(endpoint, params_=params)
+        return self._make_request(
+            path=f"songs/{song_id}",
+            params_={"text_format": text_format or self.response_format},
+        )
 
-    def web_page(self, raw_annotatable_url=None, canonical_url=None, og_url=None):
+    def web_page(
+        self,
+        raw_annotatable_url: str | None = None,
+        canonical_url: str | None = None,
+        og_url: str | None = None,
+    ) -> dict[str, Any]:
         """Gets data for a specific web page.
 
         Args:
@@ -496,13 +546,14 @@ class API(Sender):
         msg = "Must supply `raw_annotatable_url`, `canonical_url`, or `og_url`."
         assert any([raw_annotatable_url, canonical_url, og_url]), msg
 
-        endpoint = "web_pages/lookup"
-        params = {
-            "raw_annotatable_url": raw_annotatable_url,
-            "canonical_url": canonical_url,
-            "og_url": og_url,
-        }
-        return self._make_request(path=endpoint, params_=params)
+        return self._make_request(
+            path="web_pages/lookup",
+            params_={
+                "raw_annotatable_url": raw_annotatable_url,
+                "canonical_url": canonical_url,
+                "og_url": og_url,
+            },
+        )
 
 
 class PublicAPI(
@@ -552,13 +603,13 @@ class PublicAPI(
 
     def __init__(
         self,
-        response_format="plain",
-        timeout=5,
-        sleep_time=0.2,
-        retries=0,
-        user_agent="",
-        **kwargs,
-    ):
+        response_format: Literal["dom", "plain", "html"] = "plain",
+        timeout: int = 5,
+        sleep_time: float = 0.2,
+        retries: int = 0,
+        user_agent: str = "",
+        **kwargs: Any,
+    ) -> None:
         # If PublicAPI was instantiated directly
         # there is no need for a token anymore
         public_api_constructor = False if self.__class__.__name__ == "Genius" else True

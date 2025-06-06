@@ -1,7 +1,15 @@
-class MiscMethods(object):
+from typing import Any
+
+from ...types.types import TextFormatT
+from ..protocols import ChartsCapable, RequestCapable
+
+
+class MiscMethods(RequestCapable, ChartsCapable):
     """Miscellaneous Methods"""
 
-    def line_item(self, line_item_id, text_format=None):
+    def line_item(
+        self, line_item_id: int, text_format: TextFormatT | None = None
+    ) -> dict[str, Any]:
         """Gets data for a specific line item.
 
         Args:
@@ -19,11 +27,16 @@ class MiscMethods(object):
         """
         raise NotImplementedError("This action requires a logged in user.")
 
-        endpoint = "line_items/{}".format(line_item_id)
+        endpoint = "line_items/{}".format(line_item_id)  # type: ignore
         params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def page_data(self, album=None, song=None, artist=None):
+    def page_data(
+        self,
+        album: str | None = None,
+        song: str | None = None,
+        artist: str | None = None,
+    ) -> dict[str, Any]:
         """Gets page data of an item.
 
         If you want the page data of a song, you must supply
@@ -85,21 +98,20 @@ class MiscMethods(object):
         """
         assert any([album, song]), "You must pass either song or album."
         if song:
-            assert all([song, artist]), "You must pass artist."
-
-        if album:
-            endpoint = "page_data/album"
-            page_type = "albums"
-            item_path = album.replace("/albums/", "")
-        else:
-            endpoint = "page_data/song"
+            assert artist, "If you pass song, you must also pass artist."
             page_type = "songs"
-
-            # item path becomes something like: Artist/Song
+            # Ensure song and artist are not None before using them
             item_path = (
                 song[1:].replace(artist + "-", artist + "/").replace("-lyrics", "")
             )
+        elif album:
+            page_type = "albums"
+            item_path = album[1:]  # Ensure album is not None
+        else:
+            # This case should not be reachable due to the initial assert
+            raise ValueError("Invalid state: Neither song nor album provided.")
 
+        endpoint = "page_data"
         page_path = "/{page_type}/{item_path}".format(
             page_type=page_type, item_path=item_path
         )
@@ -108,8 +120,12 @@ class MiscMethods(object):
         return self._make_request(endpoint, params_=params, public_api=True)
 
     def voters(
-        self, annotation_id=None, answer_id=None, article_id=None, comment_id=None
-    ):
+        self,
+        annotation_id: int | None = None,
+        answer_id: int | None = None,
+        article_id: int | None = None,
+        comment_id: int | None = None,
+    ) -> dict[str, Any]:
         """Gets the voters of an item.
 
         You must supply one of :obj:`annotation_id`, :obj:`answer_id`, :obj:`article_id`
