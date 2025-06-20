@@ -102,6 +102,35 @@ class Artist(BaseEntity):
             )
         return None
 
+    def remove_song(self, song_name, verbose=True):
+        """Removes a song to the Artist.
+
+                This method removes a song previously added to the artist object. It checks
+                if the song is already in artist's songs and if is removes it
+                Args:
+                    song_name (:class:`Song <lyricsgenius.types.Song>`): Song to be added.
+                    verbose (:obj:`bool`, optional): prints operation result.
+
+                Returns:
+                    :obj:`Song`: song_name for success and None for failure.
+                """
+        if song_name.title in self.songs:
+            self.songs.remove(song_name.title)
+            self.num_songs -= 1
+            if verbose:
+                print('Removing {s} from {a}'.format(
+                    s=safe_unicode(song_name.title),
+                    a=safe_unicode(self.name))
+                )
+            return song_name
+
+        else:
+            print('No previously added song {s} from {a}'.format(
+                s=safe_unicode(song_name.title),
+                a=safe_unicode(self.name))
+            )
+            return None
+
     def song(self, song_name):
         warnings.warn(
             "The capability of `Artist.song` to fetch songs via API "
