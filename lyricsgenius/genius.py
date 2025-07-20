@@ -153,6 +153,14 @@ class Genius(API, PublicAPI):
             self._make_request(path, web=True).replace("<br/>", "\n"), "html.parser"
         )
 
+        # Remove LyricsHeader divs
+        removes = html.find_all(
+            "div", class_=re.compile("LyricsHeader__Container")
+        )
+        if removes:
+            for remove in removes:
+                remove.replace_with("")
+
         # Determine the class of the div
         divs = html.find_all(
             "div", class_=re.compile(r"^Lyrics-\w{2}.\w+.[1]|Lyrics__Container")
