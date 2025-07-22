@@ -11,7 +11,7 @@ import shutil
 import time
 import warnings
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString
 
 from .api import API, PublicAPI
 from .types import Album, Artist, Song, Track
@@ -149,23 +149,17 @@ class Genius(API, PublicAPI):
             raise ValueError("You must supply either `song_id` or `song_url`.")
 
         # Scrape the song lyrics from the HTML
-        html = BeautifulSoup(
-            self._make_request(path, web=True).replace("<br/>", "\n"), "html.parser"
-        )
+        soup = BeautifulSoup(self._make_request(path, web=True), "html.parser")
 
-        # Remove LyricsHeader divs
-        removes = html.find_all(
-            "div", class_=re.compile("LyricsHeader__Container")
-        )
+        # Remove LyricsHeader divs from the DOM
+        removes = soup.find_all("div", class_=re.compile("LyricsHeader__Container"))
         if removes:
             for remove in removes:
-                remove.replace_with("")
+                remove.decompose()
 
-        # Determine the class of the div
-        divs = html.find_all(
-            "div", class_=re.compile(r"^Lyrics-\w{2}.\w+.[1]|Lyrics__Container")
-        )
-        if divs is None or len(divs) <= 0:
+        # Find all lyrics containers
+        containers = soup.find_all("div", attrs={"data-lyrics-container": "true"})
+        if not containers:
             if self.verbose:
                 print(
                     "Couldn't find the lyrics section. "
@@ -174,7 +168,19 @@ class Genius(API, PublicAPI):
                 )
             return None
 
-        lyrics = "\n".join([div.get_text() for div in divs])
+        # Extract and join the lyrics
+        lyrics = ""
+        for container in containers:
+            if not container.contents:
+                lyrics += "\n"
+                continue
+            for element in container.contents:
+                if element.name == "br":
+                    lyrics += "\n"
+                elif isinstance(element, NavigableString):
+                    lyrics += str(element)
+                elif element.get("data-exclude-from-selection") != "true":
+                    lyrics += element.get_text(separator="\n")
 
         # Remove [Verse], [Bridge], etc.
         if self.remove_section_headers or remove_section_headers:
