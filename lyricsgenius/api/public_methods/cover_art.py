@@ -1,7 +1,18 @@
-class CoverArtMethods(object):
+from typing import Any
+
+from ...types.types import TextFormatT
+from ..protocols import CoverArtsCapable, RequestCapable
+
+
+class CoverArtMethods(RequestCapable, CoverArtsCapable):
     """Cover art methods of the public API."""
 
-    def cover_arts(self, album_id=None, song_id=None, text_format=None):
+    def cover_arts(
+        self,
+        song_id: int | None = None,
+        album_id: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets the cover arts of an album or a song.
 
         You must supply one of :obj:`album_id` or :obj:`song_id`.
@@ -24,7 +35,7 @@ class CoverArtMethods(object):
         condition = sum([bool(album_id), bool(song_id)]) == 1
         assert condition, msg
         endpoint = "cover_arts"
-        params = {"text_format": text_format or self.response_format}
+        params: dict[str, Any] = {"text_format": text_format or self.response_format}
         if album_id is not None:
             params["album_id"] = album_id
         else:

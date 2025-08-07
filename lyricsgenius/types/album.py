@@ -1,130 +1,95 @@
-import warnings
+from typing import Any
 
-from ..utils import convert_to_datetime
-from .artist import Artist
+from ..utils import convert_to_datetime, format_filename
 from .base import BaseEntity
+from .song import Song
 
 
 class Album(BaseEntity):
-    """An album from the Genius.com database."""
+    """An album from Genius."""
 
-    def __init__(self, client, json_dict, tracks):
-        warnings.warn(
-            "The 'client' parameter and internal API client usage in the Album class "
-            "are deprecated and will be removed in a future version.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        body = json_dict
-        super().__init__(body["id"])
+    def __init__(self, body: dict[str, Any], tracks: list[Song]) -> None:
+        """
+        Initialize an Album object.
+
+        Args:
+            body (dict[str, Any]): Album metadata.
+            tracks (list[Song]): A list of Song objects for the album tracks.
+        """
         self._body = body
-        self._client = client
-        self.artist = Artist(client, body["artist"])
-        self.tracks = tracks
+        self.artist: dict[str, Any] = body["artist"]
+
+        # Store tracks as a list of tuples: (inferred_track_number, Song_object)
+        self.tracks: list[tuple[int, Song]] = []
+        for i, track in enumerate(tracks):
+            # Infer track number from the order in the list (1-based index)
+            self.tracks.append((i + 1, track))
+
         self.release_date_components = convert_to_datetime(
             body.get("release_date_components")
         )
+        self.api_path: str = body["api_path"]
+        self.cover_art_thumbnail_url: str = body["cover_art_thumbnail_url"]
+        self.cover_art_url: str = body["cover_art_url"]
+        self.full_title: str = body["full_title"]
+        self.name: str = body["name"]
+        self.name_with_artist: str = body["name_with_artist"]
+        self.url: str = body["url"]
 
-        self.api_path = body.get("api_path")
-        self.cover_art_thumbnail_url = body.get("cover_art_thumbnail_url")
-        self.cover_art_url = body.get("cover_art_url")
-        self.full_title = body.get("full_title")
-        self.name = body.get("name")
-        self.name_with_artist = body.get("name_with_artist")
-        self.url = body.get("url")
-
-    def to_dict(self):
-        body = super().to_dict()
-        body["tracks"] = [track.to_dict() for track in self.tracks]
-        return body
-
-    def to_json(self, filename=None, sanitize=True, ensure_ascii=True):
-        data = self.to_dict()
-
-        return super().to_json(
-            data=data, filename=filename, sanitize=sanitize, ensure_ascii=ensure_ascii
-        )
-
-    def to_text(self, filename=None, sanitize=True):
-        data = "\n\n".join(
-            f"[Song {n}: {track.song.title}]\n{track.song.lyrics}"
-            for n, track in enumerate(self.tracks, start=1)
+    @property
+    def _text_data(self) -> str:
+        return "\n\n".join(
+            f"[Track {track_num}: {track.title}]\n{track.lyrics}"
+            for track_num, track in self.tracks
         ).strip()
 
-        return super().to_text(data=data, filename=filename, sanitize=sanitize)
-
-    def save_lyrics(
-        self,
-        filename=None,
-        extension="json",
-        overwrite=False,
-        ensure_ascii=True,
-        sanitize=True,
-        verbose=True,
-    ):
-        if filename is None:
-            filename = "Lyrics_" + self.name.replace(" ", "")
-
-        return super().save_lyrics(
-            filename=filename,
-            extension=extension,
-            overwrite=overwrite,
-            ensure_ascii=ensure_ascii,
-            sanitize=sanitize,
-            verbose=verbose,
-        )
-
-
-class Track(BaseEntity):
-    """docstring for Track"""
-
-    def __init__(self, client, json_dict, lyrics):
-        warnings.warn(
-            (
-                "The 'Track' class is deprecated and will be removed in a future version. "
-                "Its functionality will be incorporated into the 'Song' class."
-            ),
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        from .song import Song
-
-        body = json_dict
-        super().__init__(body["song"]["id"])
-        self._body = body
-        self.song = Song(client, body["song"], lyrics)
-
-        self.number = body["number"]
-
-    def to_dict(self):
+    def to_dict(self) -> dict[str, Any]:
         body = super().to_dict()
-        body["song"] = self.song.to_dict()
+        body["artist"] = self.artist["name"]
+
+        # Serialize tracks: create a list of dictionaries, each representing a track
+        # with its number and the song data.
+        serialized_tracks = []
+        for track_num, track in self.tracks:
+            serialized_tracks.append(
+                {
+                    "number": track_num,
+                    "song": track.to_dict(),
+                }
+            )
+        body["tracks"] = serialized_tracks
+
+        # Add release date string if components exist
+        if self.release_date_components:
+            body["release_date"] = self.release_date_components.strftime("%Y-%m-%d")
+        else:
+            body["release_date"] = None
         return body
 
-    def to_json(self, filename=None, sanitize=True, ensure_ascii=True):
-        data = self.to_dict()
-
+    def to_json(
+        self,
+        filename: str | None = None,
+        sanitize: bool = True,
+        ensure_ascii: bool = True,
+    ) -> str | None:
         return super().to_json(
-            data=data, filename=filename, sanitize=sanitize, ensure_ascii=ensure_ascii
+            filename=filename, sanitize=sanitize, ensure_ascii=ensure_ascii
         )
 
-    def to_text(self, filename=None, sanitize=True):
-        data = self.song.lyrics
-
-        return super().to_text(data=data, filename=filename, sanitize=sanitize)
+    def to_text(self, filename: str | None = None, sanitize: bool = True) -> str | None:
+        return super().to_text(filename=filename, sanitize=sanitize)
 
     def save_lyrics(
         self,
-        filename=None,
-        extension="json",
-        overwrite=False,
-        ensure_ascii=True,
-        sanitize=True,
-        verbose=True,
-    ):
+        filename: str | None = None,
+        extension: str = "json",
+        overwrite: bool = False,
+        ensure_ascii: bool = True,
+        sanitize: bool = True,
+        verbose: bool = True,
+    ) -> None:
         if filename is None:
-            filename = "Lyrics_{:02d}_{}".format(self.number, self.song.title)
-            filename = filename.replace(" ", "")
+            filename = format_filename(f"saved_album_lyrics_{self.artist}_{self.name}")
 
         return super().save_lyrics(
             filename=filename,
@@ -135,6 +100,23 @@ class Track(BaseEntity):
             verbose=verbose,
         )
 
-    def __repr__(self):
-        name = self.__class__.__name__
-        return "{}(number, song)".format(name)
+    def __str__(self) -> str:
+        """Return a string representation of the Album object."""
+        return f'"{self.name}" by {self.artist["name"]}, {len(self.tracks)} tracks'
+
+    def __repr__(self) -> str:
+        """Return a string representation of the Album object."""
+        return f"Album(name='{self.name}', artist='{self.artist['name']}')"
+
+    def __eq__(self, other: object) -> bool:
+        """Check if two Album objects are equal."""
+        if not isinstance(other, Album):
+            return False
+        if self._body.get("id", 1) == other._body.get("id", -1):
+            return True
+
+        return (
+            self.name == other.name
+            and self.artist["id"] == other.artist["id"]
+            and self.tracks == other.tracks
+        )
