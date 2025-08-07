@@ -2,12 +2,16 @@ import os
 import platform
 import time
 from json.decoder import JSONDecodeError
+from typing import Any
 
 import requests
-from requests.exceptions import HTTPError, Timeout
+from requests.exceptions import HTTPError, RequestException, Timeout
+
+from ..api.protocols import RequestCapable
+from ..types.types import ResponseFormatT
 
 
-class Sender(object):
+class Sender(RequestCapable):
     """Sends requests to Genius."""
 
     # Create a persistent requests connection
@@ -17,15 +21,15 @@ class Sender(object):
 
     def __init__(
         self,
-        access_token=None,
-        response_format="plain",
-        timeout=5,
-        sleep_time=0.2,
-        retries=0,
-        public_api_constructor=False,
-        user_agent="",
-        proxy=None,
-    ):
+        access_token: str | None = None,
+        response_format: ResponseFormatT = "plain",
+        timeout: int = 5,
+        sleep_time: float = 0.2,
+        retries: int = 0,
+        public_api_constructor: bool = False,
+        user_agent: str = "",
+        proxy: dict[str, str] | None = None,
+    ) -> None:
         self._session = requests.Session()
         user_agent_root = f"{platform.system()} {platform.release()}; Python {platform.python_version()}"
         self._session.headers = {
@@ -47,26 +51,32 @@ class Sender(object):
             self.access_token = "Bearer " + access_token
             self.authorization_header = {"authorization": self.access_token}
 
-        self.response_format = response_format.lower()
+        self.response_format = response_format
         self.timeout = timeout
         self.sleep_time = sleep_time
+        if retries < 0:
+            raise ValueError("retries must be a non-negative integer")
         self.retries = retries
 
     def _make_request(
-        self, path, method="GET", params_=None, public_api=False, web=False, **kwargs
-    ):
+        self,
+        path: str,
+        method: str = "GET",
+        params_: dict[str, Any] | list[tuple[Any, Any]] | None = None,
+        public_api: bool = False,
+        web: bool = False,
+        **kwargs: Any,
+    ) -> dict[str, Any]:
         """Makes a request to Genius."""
+        header = None
         if public_api:
             uri = self.PUBLIC_API_ROOT
-            header = None
         elif web:
             uri = self.WEB_ROOT
-            header = None
         else:
             uri = self.API_ROOT
             header = self.authorization_header
         uri += path
-
         params_ = params_ if params_ else {}
 
         # Make the request
@@ -83,12 +93,12 @@ class Sender(object):
                     headers=header,
                     **kwargs,
                 )
-                response.raise_for_status()
             except Timeout as e:
-                error = "Request timed out:\n{e}".format(e=e)
+                error = f"Request timed out:\n{e}"
                 if tries > self.retries:
                     raise Timeout(error) from e
             except HTTPError as e:
+                assert response is not None
                 error = get_description(e)
                 if response.status_code < 500 or tries > self.retries:
                     raise HTTPError(response.status_code, error) from e
@@ -96,29 +106,32 @@ class Sender(object):
             # Enforce rate limiting
             time.sleep(self.sleep_time)
 
-        if web:
-            return response.text
-        elif response.status_code == 200:
-            res = response.json()
-            return res.get("response", res)
-        elif response.status_code == 204:
-            return 204
-        else:
-            raise AssertionError(
-                "Response status code was neither 200, nor 204! It was {}".format(
-                    response.status_code
-                )
+        if response is None:
+            raise RuntimeError(
+                f"Response is None after {tries} attempts (max {self.retries}). "
+                f"Request details: method={method}, uri={uri}, params={params_}."
             )
+        if web:
+            return {"html": response.text}
+        if response.status_code == 200:
+            response_data: dict[str, Any] = response.json()
+            return response_data.get("response", response_data)
+        raise AssertionError(
+            f"Unexpected response status code: {response.status_code}. "
+            f"Expected 200 or 204. Response body: {response.text}. "
+            f"Response headers: {response.headers}."
+        )
 
 
-def get_description(e):
-    error = str(e)
+def get_description(e: RequestException) -> str:
+    """Extract a descriptive error message from a RequestException instance."""
     try:
-        res = e.response.json()
+        response = e.response.json() if e.response else {}
     except JSONDecodeError:
-        res = {}
-    description = (
-        res["meta"]["message"] if res.get("meta") else res.get("error_description")
+        return str(e)
+
+    description = response.get("meta", {}).get("message") or response.get(
+        "error_description"
     )
-    error += "\n{}".format(description) if description else ""
-    return error
+
+    return f"{e}\n{description}" if description else str(e)

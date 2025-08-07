@@ -99,7 +99,6 @@ Artist Methods
    Genius.artist_followers
    Genius.artist_leaderboard
    Genius.artist_songs
-   Genius.save_artists
    Genius.search_artist_songs
 
 
@@ -110,7 +109,6 @@ Artist Methods
 .. automethod:: Genius.artist_followers
 .. automethod:: Genius.artist_leaderboard
 .. automethod:: Genius.artist_songs
-.. automethod:: Genius.save_artists
 .. automethod:: Genius.search_artist_songs
 
 

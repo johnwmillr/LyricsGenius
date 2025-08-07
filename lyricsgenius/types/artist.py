@@ -2,51 +2,42 @@
 # copyright 2025 John W. R. Miller
 # See LICENSE for details.
 
-"""Artist object"""
 
-import warnings
+from typing import Any
 
-from ..utils import safe_unicode
+from ..utils import format_filename, safe_unicode
 from .base import BaseEntity
+from .song import Song
 
 
 class Artist(BaseEntity):
-    """An artist with songs from the Genius.com database."""
+    """An artist with songs from Genius."""
 
-    def __init__(self, client, json_dict):
-        warnings.warn(
-            "The 'client' parameter and internal API client usage in the Artist class "
-            "are deprecated and will be removed in a future version.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        # Artist Constructor
-        body = json_dict
-        super().__init__(body["id"])
+    def __init__(self, body: dict[str, Any]) -> None:
         self._body = body
-        self._client = client
-        self.songs = []
-        self.num_songs = len(self.songs)
+        self.songs: list[Song] = []
 
-        self.api_path = body["api_path"]
-        self.header_image_url = body["header_image_url"]
-        self.image_url = body["image_url"]
-        # self.iq = body['iq']
-        self.is_meme_verified = body["is_meme_verified"]
-        self.is_verified = body["is_verified"]
-        self.name = body["name"]
-        self.url = body["url"]
+        self.api_path: str = body["api_path"]
+        self.header_image_url: str = body["header_image_url"]
+        self.image_url: str = body["image_url"]
+        self.is_meme_verified: bool = body["is_meme_verified"]
+        self.is_verified: bool = body["is_verified"]
+        self.name: str = body["name"]
+        self.url: str = body["url"]
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.songs)
 
-    def add_song(self, new_song, verbose=True, include_features=False):
-        warnings.warn(
-            "The capability of `Artist.add_song` to fetch songs via API (when a string is provided) "
-            "is deprecated and will be removed in a future version.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
+    @property
+    def num_songs(self) -> int:
+        return len(self)
+
+    def add_song(
+        self,
+        new_song: Song,
+        verbose: bool = True,
+        include_features: bool = False,
+    ) -> Song | None:
         """Adds a song to the Artist.
 
         This method adds a new song to the artist object. It checks
@@ -60,7 +51,7 @@ class Artist(BaseEntity):
                 featuring the artist.
 
         Returns:
-            :obj:`int`: 0 for success and 1 for failure.
+            :obj:`Song`: Returns None on failure.
 
         Examples:
             .. code:: python
@@ -71,95 +62,83 @@ class Artist(BaseEntity):
                 # Way 1
                 song = genius.search_song('To You', artist.name)
                 artist.add_song(song)
-
-                # Way 2
-                artist.add_song('To You')
-
         """
-        if isinstance(new_song, str):
-            new_song = self._client.search_song(new_song)
-            if new_song is None:
-                return None
-        if any([song.title == new_song.title for song in self.songs]):
+        if new_song in self.songs:
             if verbose:
                 print(
-                    "{s} already in {a}, not adding song.".format(
-                        s=safe_unicode(new_song.title), a=safe_unicode(self.name)
-                    )
+                    f"{safe_unicode(new_song.title)} already in {safe_unicode(self.name)}, not adding song."
                 )
             return None
         if new_song.artist == self.name or (
-            include_features and any(new_song._body.get("featured_artists", []))
+            include_features
+            and self.name in [artist["name"] for artist in new_song.featured_artists]
         ):
             self.songs.append(new_song)
-            self.num_songs += 1
             return new_song
         if verbose:
             print(
-                "Can't add song by {b}, artist must be {a}.".format(
-                    b=safe_unicode(new_song.artist), a=safe_unicode(self.name)
-                )
+                f"Can't add song by {safe_unicode(new_song.artist)}, artist must be {safe_unicode(self.name)}."
             )
         return None
 
-    def song(self, song_name):
-        warnings.warn(
-            "The capability of `Artist.song` to fetch songs via API "
-            "is deprecated and will be removed in a future version.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        """Gets the artist's song.
-
-        If the song is in the artist's songs, returns the song. Otherwise searches
-        Genius for the song and then returns the song.
-
+    def get_song(self, song_id: int | None = None) -> Song | None:
+        title: str | None = None
+        """Returns a song by title or ID.
         Args:
-            song_name (:obj:`str`): name of the song.
-                the result is returned as a string.
-
+            song_id (:obj:`int`, optional): ID of the song.
+            title (:obj:`str`, optional): Title of the song.
         Returns:
-            :obj:`Song <types.Song>` \\|‌ :obj:`None`: If it can't find the song,
-            returns *None*.
-
+            :obj:`Song`: Returns the song object if found, otherwise None.
         """
-        for song in self.songs:
-            if song.title == song_name:
-                return song
+        if song_id is not None:
+            for song in self.songs:
+                if song._body["id"] == song_id:
+                    return song
+        elif title is not None:
+            for song in self.songs:
+                if song.title == title:
+                    return song
+        return None
 
-        song = self._client.search_song(song_name, self.name)
-        return song
+    @property
+    def _text_data(self) -> str:
+        """Returns the text data for the artist."""
+        return "\n\n".join(
+            f"[Song {n}: {song.title}]\n{song.lyrics}"
+            for n, song in enumerate(self.songs, start=1)
+        ).strip()
 
-    def to_dict(self):
+    def to_dict(self) -> dict[str, Any]:
         body = super().to_dict()
         body["songs"] = [song.to_dict() for song in self.songs]
         return body
 
-    def to_json(self, filename=None, sanitize=True, ensure_ascii=True):
-        data = self.to_dict()
+    def to_json(
+        self,
+        filename: str | None = None,
+        sanitize: bool = True,
+        ensure_ascii: bool = True,
+    ) -> str | None:
         return super().to_json(
-            data=data, filename=filename, sanitize=sanitize, ensure_ascii=ensure_ascii
+            filename=filename, sanitize=sanitize, ensure_ascii=ensure_ascii
         )
 
-    def to_text(self, filename=None, sanitize=True):
-        data = "\n\n".join(
-            f"[Song {n}: {song.title}]\n{song.lyrics}"
-            for n, song in enumerate(self.songs, start=1)
-        ).strip()
-        return super().to_text(data=data, filename=filename, sanitize=sanitize)
+    def to_text(self, filename: str | None = None, sanitize: bool = True) -> str | None:
+        return super().to_text(filename=filename, sanitize=sanitize)
 
     def save_lyrics(
         self,
-        filename=None,
-        extension="json",
-        overwrite=False,
-        ensure_ascii=True,
-        sanitize=True,
-        verbose=True,
-    ):
-        # Determine the filename
+        filename: str | None = None,
+        extension: str = "json",
+        overwrite: bool = False,
+        ensure_ascii: bool = True,
+        sanitize: bool = True,
+        verbose: bool = True,
+    ) -> None:
         if filename is None:
-            filename = "Lyrics_" + self.name.replace(" ", "")
+            filename = format_filename(
+                f"saved_artist_lyrics_{self.name}_{self.num_songs}_songs"
+            )
 
         return super().save_lyrics(
             filename=filename,
@@ -170,8 +149,24 @@ class Artist(BaseEntity):
             verbose=verbose,
         )
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return a string representation of the Artist object."""
-        msg = "{name}, {num} songs".format(name=self.name, num=self.num_songs)
+        msg = f"{self.name}, {self.num_songs} songs"
         msg = msg[:-1] if self.num_songs == 1 else msg
         return msg
+
+    def __repr__(self) -> str:
+        """Return a string representation of the Artist object."""
+        return f"Artist(name={self.name}, num_songs={self.num_songs})"
+
+    def __eq__(self, other: object) -> bool:
+        """Check if two Artist objects are equal."""
+        if not isinstance(other, Artist):
+            return False
+        if self._body.get("id", 1) == other._body.get("id", -1):
+            return True
+        if self.name != other.name or len(self.songs) != len(other.songs):
+            return False
+        return sorted(self.songs, key=lambda s: s.title) == sorted(
+            other.songs, key=lambda s: s.title
+        )

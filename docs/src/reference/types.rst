@@ -24,19 +24,6 @@ Classes
 .. autosummary::
    :nosignatures:
 
-   Stats
-   Track
-
-.. autoclass:: Stats
-    :members:
-    :member-order: bysource
-    :no-show-inheritance:
-
-.. autoclass:: Track
-    :members:
-    :member-order: bysource
-    :no-show-inheritance:
-
 
 Album
 ------
@@ -81,7 +68,7 @@ Attributes
      - :class:`datetime`
 
    * - tracks
-     - :obj:`list` of :class:`Track`
+     - :obj:`list` of :class:`Song`
 
    * - url
      - :obj:`str`
@@ -150,8 +137,8 @@ Methods
 .. autosummary::
    :nosignatures:
 
-   Artist.song
    Artist.add_song
+   Artist.get_song
    Artist.to_dict
    Artist.to_json
    Artist.to_text
@@ -221,9 +208,6 @@ Attributes
 
    * - song_art_image_url
      - :obj:`str`
-
-   * - stats
-     - :class:`Stats`
 
    * - title
      - :obj:`str`
