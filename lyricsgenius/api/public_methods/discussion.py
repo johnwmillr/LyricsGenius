@@ -1,7 +1,15 @@
-class DiscussionMethods(object):
+from typing import Any
+
+from ...types.types import TextFormatT
+from ..protocols import RequestCapable
+
+
+class DiscussionMethods(RequestCapable):
     """Discussion methods of the public API."""
 
-    def discussion(self, discussion_id, text_format=None):
+    def discussion(
+        self, discussion_id: int, text_format: TextFormatT | None = None
+    ) -> dict[str, Any]:
         """Gets data for a specific discussion.
 
         Args:
@@ -18,11 +26,11 @@ class DiscussionMethods(object):
         """
         raise NotImplementedError("This request returns a 403 error.")
 
-        endpoint = "discussions/{}".format(discussion_id)
+        endpoint = "discussions/{}".format(discussion_id)  # type: ignore
         params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def discussions(self, page=None):
+    def discussions(self, page: int | None = None) -> dict[str, Any]:
         """Gets discussions.
 
         Args:
@@ -38,8 +46,12 @@ class DiscussionMethods(object):
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
     def discussion_replies(
-        self, discussion_id, per_page=None, page=None, text_format=None
-    ):
+        self,
+        discussion_id: int,
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets the replies on a discussion.
 
         Args:
@@ -59,7 +71,7 @@ class DiscussionMethods(object):
         """
         raise NotImplementedError("This request returns a 403 error.")
 
-        endpoint = "discussions/{}/forum_posts".format(discussion_id)
+        endpoint = "discussions/{}/forum_posts".format(discussion_id)  # type: ignore
         params = {
             "per_page": per_page,
             "page": page,
