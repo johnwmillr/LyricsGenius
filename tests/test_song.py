@@ -14,7 +14,7 @@ from lyricsgenius.utils import clean_str
 def mock_song_data() -> dict[str, Any]:
     """Returns 'Mocking the Tests' from song_info_mocked.json as a dict."""
     with open("tests/fixtures/song_info_mocked.json", "r") as f:
-        return next(song for song in songs if song["id"] == 42424242)
+        return next(song for song in json.load(f) if song["id"] == 42424242)
 
 
 @pytest.fixture
