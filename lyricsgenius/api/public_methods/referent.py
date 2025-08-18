@@ -29,7 +29,7 @@ class ReferentMethods(RequestCapable, ChartsCapable):
             :meth:`referents() <PublicAPI.referents>` gets.
 
         """
-        params: dict[str, Any] | list[tuple[str, Any]] = {}
+        params: dict[str, Any] | list[tuple[str, Any]]
         params = {"text_format": text_format or self.response_format}
         if len(referent_ids) == 1:
             endpoint = f"referents/{referent_ids[0]}"

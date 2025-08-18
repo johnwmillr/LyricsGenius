@@ -98,7 +98,9 @@ class Song(BaseEntity):
             lyr = self.lyrics[:100] + "..."
         else:
             lyr = self.lyrics[:100]
-        return f'"{self.title}" by {self.artist}:\n    {lyr.replace("\n", "\n    ")}'
+        return '"{}" by {}:\n    {}'.format(
+            self.title, self.artist, lyr.replace("\n", "\n    ")
+        )
 
     def __repr__(self) -> str:
         """Return a string representation of the Song object."""

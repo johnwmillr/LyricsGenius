@@ -1,5 +1,5 @@
 """
-Tiny, focused Protocol definitions for static typing of mixin capabilities.
+Protocol definitions for static typing of mixin capabilities.
 """
 
 from typing import Any, Protocol
