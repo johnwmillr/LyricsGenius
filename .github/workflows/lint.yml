@@ -39,7 +39,7 @@ jobs:
 
 
   lint:
-    if: false  # Temporarily disabled
+    if: false  # Temporarily disabled while we work on supporting tox
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
