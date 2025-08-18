@@ -9,7 +9,7 @@ Release notes
 
 Changed
 *******
--  Updated the unit tests have been to avoid making actual requests to
+-  Updated the unit tests to avoid making actual requests to
    the Genius API.
 -  The tests now use fixtures in ``tests/fixtures/`` to mock the API
    responses.
