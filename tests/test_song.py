@@ -12,9 +12,9 @@ from lyricsgenius.utils import clean_str
 
 @pytest.fixture
 def mock_song_data() -> dict[str, Any]:
-    """Return the first song from song_info_mocked.json as a dict."""
+    """Returns 'Mocking the Tests' from song_info_mocked.json as a dict."""
     with open("tests/fixtures/song_info_mocked.json", "r") as f:
-        return json.load(f)[2]  # Use the third song (original test song)
+        return next(song for song in songs if song["id"] == 42424242)
 
 
 @pytest.fixture
