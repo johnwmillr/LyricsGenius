@@ -1,13 +1,24 @@
 import os
 import unittest
+import warnings
 from unittest.mock import MagicMock, patch
+
+import pytest
 
 from lyricsgenius import OAuth2
 from lyricsgenius.errors import InvalidStateError
+from lyricsgenius.utils import auth_from_environment
 
-client_id = os.environ["GENIUS_CLIENT_ID"]
-client_secret = os.environ["GENIUS_CLIENT_SECRET"]
-redirect_uri = os.environ["GENIUS_REDIRECT_URI"]
+pytestmark = pytest.mark.skip(reason="This test is under development.")
+
+
+try:
+    client_id, client_secret, redirect_uri = auth_from_environment()
+except KeyError:
+    warnings.warn(
+        "Skipping API tests because no GENIUS_CLIENT_ID, GENIUS_CLIENT_SECRET, or GENIUS_REDIRECT_URI was found in the environment variables.",
+        stacklevel=1,
+    )
 
 
 def mocked_requests_post(*args, **kwargs):

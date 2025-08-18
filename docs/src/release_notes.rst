@@ -4,6 +4,17 @@
 Release notes
 =============
 
+3.7.1 (2025-08-17)
+------------------
+
+Changed
+*******
+-  Updated the unit tests to avoid making actual requests to
+   the Genius API.
+-  The tests now use fixtures in ``tests/fixtures/`` to mock the API
+   responses.
+
+
 3.7.0 (2025-05-31)
 ------------------
 New
