@@ -7,7 +7,7 @@
 import re
 from typing import Any
 
-from bs4 import BeautifulSoup, Tag
+from bs4 import BeautifulSoup, NavigableString, Tag
 
 from .api import API, PublicAPI
 from .types import Album, Artist, Song
@@ -151,22 +151,17 @@ class Genius(API, PublicAPI):
             raise ValueError("You must supply either `song_id` or `song_url`.")
 
         # Scrape the song lyrics from the HTML
-        response: dict[str, str] | None = self._make_request(path, web=True)
-        if response is None or (html := response.get("html")) is None:
-            if self.verbose:
-                print(
-                    "Couldn't find the lyrics section. "
-                    "Please report this if the song has lyrics.\n"
-                    f"Song URL: https://genius.com/{path}"
-                )
-            return None
-        soup = BeautifulSoup(html.replace("<br/>", "\n"), "html.parser")
+        soup = BeautifulSoup(self._make_request(path, web=True)["html"], "html.parser")
 
-        # Determine the class of the div
-        divs = soup.find_all(
-            "div", class_=re.compile(r"^Lyrics-\w{2}.\w+.[1]|Lyrics__Container")
-        )
-        if divs is None or len(divs) <= 0:
+        # Remove LyricsHeader divs from the DOM
+        removes = soup.find_all("div", class_=re.compile("LyricsHeader__Container"))
+        if removes:
+            for remove in removes:
+                remove.decompose()
+
+        # Find all lyrics containers
+        containers = soup.find_all("div", attrs={"data-lyrics-container": "true"})
+        if not containers:
             if self.verbose:
                 print(
                     "Couldn't find the lyrics section. "
@@ -175,7 +170,21 @@ class Genius(API, PublicAPI):
                 )
             return None
 
-        lyrics = "\n".join([div.get_text() for div in divs])
+        # Extract and join the lyrics
+        lyrics = ""
+        for container in containers:
+            assert isinstance(container, Tag)
+            if not container.contents:
+                lyrics += "\n"
+                continue
+            for element in container.contents:
+                assert isinstance(element, (Tag, NavigableString))
+                if element.name == "br":
+                    lyrics += "\n"
+                elif isinstance(element, NavigableString):
+                    lyrics += str(element)
+                elif element.get("data-exclude-from-selection") != "true":
+                    lyrics += element.get_text(separator="\n")
 
         # Remove [Verse], [Bridge], etc.
         if self.remove_section_headers or remove_section_headers:
