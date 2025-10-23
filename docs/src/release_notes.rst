@@ -4,6 +4,17 @@
 Release notes
 =============
 
+3.7.3 (2025-10-22)
+------------------
+
+Changed
+*******
+-  Changed ``Genius.excluded_terms`` handling to treat default and custom
+   values as case-insensitive literal substrings, fixing cases where
+   parentheses or other punctuation were previously interpreted as regular
+   expression tokens.
+
+
 3.7.1 (2025-08-17)
 ------------------
 
