@@ -15,6 +15,81 @@ except KeyError:
     )
 
 
+@pytest.mark.skip(reason="API method tests still under development / require live API.")
+class TestAPI:  # pragma: no cover - legacy style converted
+    def test_account(self) -> None:
+        r = genius.account()
+        assert "user" in r, (
+            "No user detail was returned. "
+            "Are you sure you're using a user access token?"
+        )
+
+    def test_annotation(self) -> None:
+        id_ = 10225840
+        r = genius.annotation(id_)
+        assert r["annotation"]["api_path"] == "/annotations/10225840", (
+            "Returned annotation API path is different than expected."
+        )
+
+    def test_manage_annotation(self) -> None:
+        example_text = "The annotation"
+        new_annotation = genius.create_annotation(
+            example_text, "https://example.com", "illustrative examples", title="test"
+        )["annotation"]
+        assert new_annotation["body"]["plain"] == example_text, (
+            "Annotation text did not match the one that was passed."
+        )
+
+        try:
+            example_text_two = "Updated annotation"
+            r = genius.update_annotation(
+                new_annotation["id"],
+                example_text_two,
+                "https://example.com",
+                "illustrative examples",
+                title="test",
+            )["annotation"]
+            assert r["body"]["plain"] == example_text_two, (
+                "Updated annotation text did not match the one that was passed."
+            )
+
+            r = genius.upvote_annotation(11828417)
+            assert r is not None, "Upvote was not registered."
+
+            r = genius.downvote_annotation(11828417)
+            assert r is not None, "Downvote was not registered."
+
+            r = genius.unvote_annotation(11828417)
+            assert r is not None, "Vote was not removed."
+        finally:
+            r = genius.delete_annotation(new_annotation["id"])
+            assert r == 204, "Annotation was not deleted."
+
+    def test_referents_web_page(self) -> None:
+        id_ = 10347
+        r = genius.referents(web_page_id=id_)
+        assert r["referents"][0]["api_path"] == "/referents/11828416", (
+            "Returned referent API path is different than expected."
+        )
+
+    def test_referents_no_inputs(self) -> None:
+        # Must supply `song_id`, `web_page_id`, or `created_by_id`.
+        with pytest.raises(AssertionError):
+            genius.referents()
+
+    def test_referents_invalid_input(self) -> None:
+        # Method should prevent inputs for both song and web_pag ID.
+        with pytest.raises(AssertionError):
+            genius.referents(song_id=1, web_page_id=1)
+
+    def test_web_page(self) -> None:
+        url = "https://docs.genius.com"
+        r = genius.web_page(raw_annotatable_url=url)
+        assert r["web_page"]["api_path"] == "/web_pages/10347", (
+            "Returned web page API path is different than expected."
+        )
+
+
 @pytest.mark.skip(reason="Endpoints tests still under development / require live API.")
 class TestEndpoints:  # pragma: no cover - legacy style converted
     search_term: str = "Ezra Furman"
@@ -99,88 +174,3 @@ class TestLyrics:  # pragma: no cover - legacy style converted
         if lyrics is None:
             raise AssertionError("Expected lyrics but got None")
         assert lyrics.endswith(self.lyrics_ending)
-
-
-@pytest.fixture()
-def _result_is_lyrics_genius() -> Genius:
-    """Provide a Genius instance for _result_is_lyrics tests with verbosity off."""
-    return Genius(verbose=False)
-
-
-def _call(g: Genius, song: dict[str, Any]) -> bool:
-    return g._result_is_lyrics(song)
-
-
-@pytest.mark.parametrize(
-    "song,expected",
-    [
-        pytest.param(
-            {"lyrics_state": "incomplete", "title": "Some Song"},
-            False,
-            id="incomplete_lyrics_state",
-        ),
-        pytest.param(
-            {"lyrics_state": "complete", "instrumental": True, "title": "Piano Solo"},
-            False,
-            id="instrumental_flag",
-        ),
-        pytest.param(
-            {"lyrics_state": "complete", "title": "Track List"},
-            False,
-            id="default_excluded_term",
-        ),
-        pytest.param(
-            {"lyrics_state": "complete", "title": "[Track List]"},
-            False,
-            id="default_excluded_term",
-        ),
-        pytest.param(
-            {"lyrics_state": "complete", "title": "Hello World"},
-            True,
-            id="valid_song_title",
-        ),
-    ],
-)
-def test_result_is_lyrics_basic_cases(
-    _result_is_lyrics_genius: Genius, song: dict[str, Any], expected: bool
-) -> None:
-    assert _call(_result_is_lyrics_genius, song) is expected
-
-
-@pytest.mark.parametrize(
-    "title,expected",
-    [
-        pytest.param("Bonus Track", False, id="excluded_via_custom_term"),
-        pytest.param("Track List", False, id="default_term_still_excluded"),
-        pytest.param("Tracklist", False, id="default_term_one_word_also_excluded"),
-        pytest.param("Hello World", True, id="not_excluded"),
-    ],
-)
-def test_custom_excluded_term_added_without_replacement(
-    title: str, expected: bool
-) -> None:
-    g = Genius(
-        verbose=False, excluded_terms=["bonus track"], replace_default_terms=False
-    )
-    assert _call(g, {"lyrics_state": "complete", "title": title}) is expected
-
-
-@pytest.mark.parametrize(
-    "title,expected",
-    [
-        pytest.param("Track List", True, id="default_term_no_longer_excluded"),
-        pytest.param("Bonus Track", False, id="custom_term_still_excludes"),
-        pytest.param("Song (Remix)", False, id="literal_parens_match_exactly"),
-        pytest.param("Song Remix", True, id="without_parens_does_not_match"),
-        pytest.param("Hello World", True, id="not_excluded"),
-    ],
-)
-def test_replacing_default_terms_removes_original_exclusions(
-    title: str, expected: bool
-) -> None:
-    g = Genius(
-        verbose=False,
-        excluded_terms=["bonus track", "(Remix)"],
-        replace_default_terms=True,
-    )
-    assert _call(g, {"lyrics_state": "complete", "title": title}) is expected

@@ -60,8 +60,8 @@ class Genius(API, PublicAPI):
         Default excluded terms are the following literal strings (matched case-insensitively):
         'tracklist', 'track list', 'album art', 'album artwork', 'liner notes',
         'booklet', 'credits', 'interview', 'skit', and 'setlist'.
-        The default terms also include variations with parentheses
-            and brackets, e.g. '(tracklist)'.
+        The default terms also include variations with parentheses and brackets,
+        e.g. '(tracklist)'.
 
     """
 
