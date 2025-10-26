@@ -12,7 +12,7 @@ The full documentation for `lyricsgenius` is available online at [Read the Docs]
 Before using this package you'll need to sign up for a (free) account that authorizes access to [the Genius API](http://genius.com/api-clients). The Genius account provides a `access_token` that is required by the package. See the [Usage section](https://github.com/johnwmillr/LyricsGenius#usage) below for examples.
 
 ## Installation
-`lyricsgenius` requires Python 3.
+`lyricsgenius` requires Python 3.11 or greater.
 
 Use `pip` to install the package from PyPI:
 
