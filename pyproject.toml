@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "lyricsgenius"
-version = "3.7.2"
+version = "3.7.3"
 dependencies = ["beautifulsoup4>=4.12.3", "requests>=2.27.1"]
 requires-python = ">=3.10"
 authors = [{ name = "John W. R. Miller", email = "john.w.millr+lg@gmail.com" }]

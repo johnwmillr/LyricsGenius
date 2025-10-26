@@ -63,7 +63,7 @@ There are various options configurable as parameters within the
    # Include hits thought to be non-songs (e.g. track lists)
    genius.skip_non_songs = False
 
-   # Exclude songs with these words in their title
+   # Exclude songs with these words/phrases in their title (case-insensitive)
    genius.excluded_terms = ["(Remix)", "(Live)"]
 
 You can also call the package from the command line:
