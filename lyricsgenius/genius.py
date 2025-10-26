@@ -84,6 +84,7 @@ class Genius(API, PublicAPI):
         + [f"({term})" for term in default_terms]
         + [f"[{term}]" for term in default_terms]
     )
+    default_terms += ["(instrumental)", "[instrumental]"]
 
     def __init__(
         self,
