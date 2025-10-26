@@ -8,7 +8,7 @@ from lyricsgenius.genius import Genius
 @pytest.fixture()
 def _result_is_lyrics_genius() -> Genius:
     """Provide a Genius instance for _result_is_lyrics tests with verbosity off."""
-    return Genius(verbose=False)
+    return Genius(access_token="dummy_token_for_testing", verbose=False)
 
 
 def _call(g: Genius, song: dict[str, Any]) -> bool:
@@ -64,7 +64,10 @@ def test_custom_excluded_term_added_without_replacement(
     title: str, expected: bool
 ) -> None:
     g = Genius(
-        verbose=False, excluded_terms=["bonus track"], replace_default_terms=False
+        access_token="dummy_token_for_testing",
+        verbose=False,
+        excluded_terms=["bonus track"],
+        replace_default_terms=False,
     )
     assert _call(g, {"lyrics_state": "complete", "title": title}) is expected
 
@@ -83,6 +86,7 @@ def test_replacing_default_terms_removes_original_exclusions(
     title: str, expected: bool
 ) -> None:
     g = Genius(
+        access_token="dummy_token_for_testing",
         verbose=False,
         excluded_terms=["bonus track", "(Remix)"],
         replace_default_terms=True,
