@@ -167,7 +167,7 @@ class Genius(API, PublicAPI):
         soup = BeautifulSoup(self._make_request(path, web=True)["html"], "html.parser")
 
         # Remove LyricsHeader divs from the DOM
-        removes = soup.find_all("div", class_=re.compile("LyricsHeader__Container"))
+        removes = soup.find_all("div", class_=re.compile("LyricsHeader"))
         if removes:
             for remove in removes:
                 remove.decompose()
