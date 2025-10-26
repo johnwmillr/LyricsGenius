@@ -4,6 +4,21 @@
 Release notes
 =============
 
+3.7.3
+------------------
+
+Changed
+*******
+-  Changed ``Genius.excluded_terms`` handling to treat default and custom
+   values as case-insensitive literal substrings, fixing cases where
+   parentheses or other punctuation were previously interpreted as regular
+   expression tokens.
+-  Reorganized test suite: extracted ``_result_is_lyrics`` tests into
+   ``test_result_is_lyrics.py``, merged ``test_api.py`` into
+   ``test_genius_api.py``, and converted remaining unittest-style tests
+   to pytest.
+
+
 3.7.1 (2025-08-17)
 ------------------
 

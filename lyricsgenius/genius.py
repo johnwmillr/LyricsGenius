@@ -28,9 +28,12 @@ class Genius(API, PublicAPI):
             [Bridge], etc. headers from lyrics.
         skip_non_songs (:obj:`bool`, optional): If `True`, attempts to
             skip non-songs (e.g. track listings).
-        excluded_terms (:obj:`list`, optional): extra terms for flagging results
-            as non-lyrics.
-        replace_default_terms (:obj:`list`, optional): if True, replaces default
+        excluded_terms (:obj:`list[str]`, optional): Extra terms (literal strings)
+            for flagging song titles as non-lyrics. These are matched case-insensitively
+            as exact substrings within song titles. For example, ``"(Remix)"`` will match
+            any title containing the literal text "(Remix)". Special characters like
+            parentheses, brackets, and dots are treated as literal characters.
+        replace_default_terms (:obj:`bool`, optional): if True, replaces default
             excluded terms with user's. Default excluded terms are listed below.
         retries (:obj:`int`, optional): Number of retries in case of timeouts and
             errors with a >= 500 response code. By default, requests are only made once.
@@ -43,9 +46,9 @@ class Genius(API, PublicAPI):
             [Bridge], etc. headers from lyrics.
         skip_non_songs (:obj:`bool`, optional): If `True`, attempts to
             skip non-songs (e.g. track listings).
-        excluded_terms (:obj:`list`, optional): extra terms for flagging results
-            as non-lyrics.
-        replace_default_terms (:obj:`list`, optional): if True, replaces default
+        excluded_terms (:obj:`list[str]`, optional): Literal strings (case-insensitive)
+            for flagging song titles as non-lyrics.
+        replace_default_terms (:obj:`bool`, optional): if True, replaces default
             excluded terms with user's.
         retries (:obj:`int`, optional): Number of retries in case of timeouts and
             errors with a >= 500 response code. By default, requests are only made once.
@@ -54,24 +57,34 @@ class Genius(API, PublicAPI):
         :class:`Genius`
 
     Note:
-        Default excluded terms are the following regular expressions:
-        :obj:`track\\s?list`, :obj:`album art(work)?`, :obj:`liner notes`,
-        :obj:`booklet`, :obj:`credits`, :obj:`interview`, :obj:`skit`,
-        :obj:`instrumental`, and :obj:`setlist`.
+        Default excluded terms are the following literal strings (matched case-insensitively):
+        'tracklist', 'track list', 'album art', 'album artwork', 'liner notes',
+        'booklet', 'credits', 'interview', 'skit', and 'setlist'.
+        The default terms also include variations with parentheses and brackets,
+        e.g. '(tracklist)'.
 
     """
 
     default_terms = [
-        "track\\s?list",
-        "album art(work)?",
+        "tracklist",
+        "track list",
+        "album art",
+        "album artwork",
         "liner notes",
         "booklet",
         "credits",
         "interview",
         "skit",
-        "instrumental",
         "setlist",
     ]
+
+    # Add variations with parentheses and brackets
+    default_terms = (
+        default_terms
+        + [f"({term})" for term in default_terms]
+        + [f"[{term}]" for term in default_terms]
+    )
+    default_terms += ["(instrumental)", "[instrumental]"]
 
     def __init__(
         self,
@@ -195,29 +208,34 @@ class Genius(API, PublicAPI):
     def _result_is_lyrics(self, song: dict[str, Any]) -> bool:
         """Returns False if result from Genius is not actually song lyrics.
 
-        Sets the :attr:`lyricsgenius.Genius.excluded_terms` and
-        :attr:`lyricsgenius.Genius.replace_default_terms` as instance variables
-        within the Genius class.
+        Checks the song's lyrics_state, instrumental flag, and matches the title
+        against the :attr:`excluded_terms` literal strings (case-insensitive).
 
         Args:
-            song_title (:obj:`str`, optional): Title of the song.
+            song (:obj:`dict`): Song dictionary containing at minimum 'lyrics_state'
+                and 'title' keys.
 
         Returns:
-            :obj:`bool`: `True` if none of the terms are found in the song title.
+            :obj:`bool`: `True` if the song appears to have lyrics and its title
+            doesn't contain any excluded terms.
 
         Note:
-            Default excluded terms are the following: 'track\\s?list',
-            'album art(work)?', 'liner notes', 'booklet', 'credits',
-            'interview', 'skit', 'instrumental', and 'setlist'.
+            Default excluded terms are literal strings: 'tracklist', 'track list',
+            'album art', 'album artwork', 'liner notes', 'booklet', 'credits',
+            'interview', 'skit', and 'setlist'. These are matched case-insensitively
+            as substrings within the song title.
 
         """
-        if song["lyrics_state"] != "complete" or song.get("instrumental"):
+        if any(
+            [
+                song["lyrics_state"] != "complete",
+                song.get("instrumental"),
+            ]
+        ):
             return False
 
-        expression = r"".join(["({})|".format(term) for term in self.excluded_terms])
-        expression = expression.strip("|")
-        regex = re.compile(expression, re.IGNORECASE)
-        return not regex.search(clean_str(song["title"]))
+        regex = "|".join(re.escape(term) for term in self.excluded_terms)
+        return not re.search(regex, song["title"], flags=re.IGNORECASE)
 
     def _get_item_from_search_response(
         self, response: dict[str, Any], search_term: str, type_: str, result_type: str
