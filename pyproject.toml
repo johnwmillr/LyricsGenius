@@ -4,9 +4,9 @@ build-backend = "hatchling.build"
 
 [project]
 name = "lyricsgenius"
-version = "3.7.3"
+version = "3.7.4"
 dependencies = ["beautifulsoup4>=4.12.3", "requests>=2.27.1"]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 authors = [{ name = "John W. R. Miller", email = "john.w.millr+lg@gmail.com" }]
 description = "Download lyrics and metadata from Genius.com"
 readme = "README.md"
