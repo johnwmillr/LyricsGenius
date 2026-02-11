@@ -28,3 +28,6 @@ __pycache__
 dist
 build
 .idea
+
+# VS Code settings
+.github/
