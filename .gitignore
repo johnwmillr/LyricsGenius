@@ -30,4 +30,5 @@ build
 .idea
 
 # VS Code settings
+.vscode/
 .github/
