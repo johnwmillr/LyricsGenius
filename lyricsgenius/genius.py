@@ -488,10 +488,37 @@ class Genius(API, PublicAPI):
                 search_term = "{s} {a}".format(s=title, a=artist).strip()
             else:
                 search_term = "{s}".format(s=title).strip()
+
+            # Try search/multi first (the comprehensive search)
             search_response = self.search_all(search_term)
             song_info = self._get_item_from_search_response(
                 search_response, title, type_="song", result_type="title"
             )
+
+            # If search/multi returns no results, fallback to regular /search
+            # The /search endpoint handles certain queries better (e.g., with common words like "and", "und")
+            if song_info is None:
+                if self.verbose:
+                    print("Trying alternative search...")
+                search_response = self.search(search_term)
+
+                if "hits" in search_response and search_response["hits"]:
+                    # Try to find an exact match first
+                    for hit in search_response["hits"]:
+                        result = hit["result"]
+                        if clean_str(result.get("title", "")) == clean_str(title):
+                            song_info = result
+                            break
+
+                    # If no exact match and we have hits, use the first one
+                    if song_info is None:
+                        # Check if it's a song result (not artist, album, etc.)
+                        for hit in search_response["hits"]:
+                            result = hit["result"]
+                            # Verify it's a song by checking for expected fields
+                            if "primary_artist" in result and "url" in result:
+                                song_info = result
+                                break
 
         # Exit search if there were no results returned from API
         # Otherwise, move forward with processing the search results
