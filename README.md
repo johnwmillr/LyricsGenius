@@ -1,9 +1,8 @@
 # LyricsGenius: a Python client for the Genius.com API
-[![Build Status](https://travis-ci.org/johnwmillr/LyricsGenius.svg?branch=master)](https://travis-ci.org/johnwmillr/LyricsGenius)
-[![Documentation Status](https://readthedocs.org/projects/lyricsgenius/badge/?version=master)](https://lyricsgenius.readthedocs.io/en/latest/?badge=master)
+[![Build Status](https://github.com/johnwmillr/LyricsGenius/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/johnwmillr/LyricsGenius/actions/workflows/build.yml)
+[![Documentation Status](https://github.com/johnwmillr/LyricsGenius/actions/workflows/docs.yml/badge.svg?branch=master)](https://github.com/johnwmillr/LyricsGenius/actions/workflows/docs.yml)
 [![PyPI version](https://badge.fury.io/py/lyricsgenius.svg)](https://pypi.org/project/lyricsgenius/)
-[![Python version](https://img.shields.io/badge/python-3.x-brightgreen.svg)](https://pypi.org/project/lyricsgenius/)
-[![Donate](https://img.shields.io/badge/Support%20this%20project-grey.svg?logo=github%20sponsors)](https://github.com/sponsors/johnwmillr)
+[![Support this project](https://img.shields.io/badge/Support%20this%20project-grey.svg?logo=github%20sponsors)](https://github.com/sponsors/johnwmillr)
 
 `lyricsgenius` provides a simple interface to the song, artist, and lyrics data stored on [Genius.com](https://www.genius.com).
 
@@ -13,7 +12,7 @@ The full documentation for `lyricsgenius` is available online at [Read the Docs]
 Before using this package you'll need to sign up for a (free) account that authorizes access to [the Genius API](http://genius.com/api-clients). The Genius account provides a `access_token` that is required by the package. See the [Usage section](https://github.com/johnwmillr/LyricsGenius#usage) below for examples.
 
 ## Installation
-`lyricsgenius` requires Python 3.
+`lyricsgenius` requires Python 3.11 or greater.
 
 Use `pip` to install the package from PyPI:
 
@@ -99,20 +98,19 @@ You can also call the package from the command line:
 
 ```bash
 export GENIUS_ACCESS_TOKEN="my_access_token_here"
-python3 -m lyricsgenius --help
-```
+python -m lyricsgenius --help
 
-Search for and save lyrics to a given song and album:
+# Print a song's lyrics to stdout in text format
+python -m lyricsgenius song "Check the Rhyme" "A Tribe Called Quest" --format txt
 
-```bash
-python3 -m lyricsgenius song "Begin Again" "Andy Shauf" --save
-python3 -m lyricsgenius album "The Party" "Andy Shauf" --save
-```
+# Save a song's lyrics in JSON format
+python -m lyricsgenius song "Begin Again" "Andy Shauf" --format json --save
 
-Search for five songs by 'The Beatles' and save the lyrics:
+# Save a song's lyrics in both JSON and text formats
+python -m lyricsgenius song "Begin Again" "Andy Shauf" --format json txt --save
 
-```bash
-python3 -m lyricsgenius artist "The Beatles" --max-songs 5 --save
+# Save an artist's lyrics to text files (stopping after 2 songs)
+python -m lyricsgenius artist "The Beatles" --max-songs 2 --format txt --save
 ```
 
 ## Example projects

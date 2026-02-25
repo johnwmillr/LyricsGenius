@@ -2,7 +2,7 @@
 *.DS_Store
 
 # API credentials
-*.ini
+credentials.ini
 
 # May not want to commit lyrics text files
 *.txt
@@ -28,3 +28,6 @@ __pycache__
 dist
 build
 .idea
+
+# VS Code settings
+.vscode/

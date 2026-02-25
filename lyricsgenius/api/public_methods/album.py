@@ -1,7 +1,15 @@
-class AlbumMethods(object):
+from typing import Any
+
+from ...types.types import TextFormatT
+from ..protocols import ChartsCapable, CoverArtsCapable, RequestCapable
+
+
+class AlbumMethods(RequestCapable, CoverArtsCapable, ChartsCapable):
     """Album methods of the public API."""
 
-    def album(self, album_id, text_format=None):
+    def album(
+        self, album_id: int, text_format: TextFormatT | None = None
+    ) -> dict[str, Any]:
         """Gets data for a specific album.
 
         Args:
@@ -22,16 +30,18 @@ class AlbumMethods(object):
                 print(album['name'])
 
         """
-        endpoint = 'albums/{}'.format(album_id)
-        params = {'text_format': text_format or self.response_format}
+        endpoint = "albums/{}".format(album_id)
+        params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def albums_charts(self,
-                      time_period='day',
-                      chart_genre='all',
-                      per_page=None,
-                      page=None,
-                      text_format=None):
+    def albums_charts(
+        self,
+        time_period: str = "day",
+        chart_genre: str = "all",
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets the album charts.
 
         Alias for :meth:`charts() <PublicAPI.charts>`.
@@ -56,10 +66,16 @@ class AlbumMethods(object):
             per_page=per_page,
             page=page,
             text_format=text_format,
-            type_='albums'
+            type_="albums",
         )
 
-    def album_comments(self, album_id, per_page=None, page=None, text_format=None):
+    def album_comments(
+        self,
+        album_id: int,
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets the comments on an album page.
 
         Args:
@@ -74,13 +90,17 @@ class AlbumMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'albums/{}/comments'.format(album_id)
-        params = {'per_page': per_page,
-                  'page': page,
-                  'text_format': text_format or self.response_format}
+        endpoint = "albums/{}/comments".format(album_id)
+        params = {
+            "per_page": per_page,
+            "page": page,
+            "text_format": text_format or self.response_format,
+        }
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def album_cover_arts(self, album_id, text_format=None):
+    def album_cover_arts(
+        self, album_id: int, text_format: TextFormatT | None = None
+    ) -> dict[str, Any]:
         """Gets cover arts of a specific album.
 
         Alias for :meth:`cover_arts <PublicAPI.cover_arts>`.
@@ -109,7 +129,9 @@ class AlbumMethods(object):
         """
         return self.cover_arts(album_id=album_id, text_format=text_format)
 
-    def album_leaderboard(self, album_id, per_page=None, page=None):
+    def album_leaderboard(
+        self, album_id: int, per_page: int | None = None, page: int | None = None
+    ) -> dict[str, Any]:
         """Gets the leaderboard of an album.
 
         This method returns the album's top contributors.
@@ -124,12 +146,17 @@ class AlbumMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'albums/{}/leaderboard'.format(album_id)
-        params = {'per_page': per_page,
-                  'page': page}
+        endpoint = "albums/{}/leaderboard".format(album_id)
+        params = {"per_page": per_page, "page": page}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def album_tracks(self, album_id, per_page=None, page=None, text_format=None):
+    def album_tracks(
+        self,
+        album_id: int,
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets the tracks of a specific album.
 
         Args:
@@ -144,8 +171,10 @@ class AlbumMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'albums/{}/tracks'.format(album_id)
-        params = {'per_page': per_page,
-                  'page': page,
-                  'text_format': text_format or self.response_format}
+        endpoint = "albums/{}/tracks".format(album_id)
+        params = {
+            "per_page": per_page,
+            "page": page,
+            "text_format": text_format or self.response_format,
+        }
         return self._make_request(path=endpoint, params_=params, public_api=True)

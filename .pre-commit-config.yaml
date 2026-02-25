@@ -1,0 +1,17 @@
+fail_fast: true
+
+repos:
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.6.14 # uv version.
+    hooks:
+      - id: uv-lock
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.4 # Ruff version.
+    hooks:
+      - id: ruff
+        name: Lint with ruff
+        types_or: [python, pyi]
+        args: [--fix]
+      - id: ruff-format
+        name: Format with ruff
+        types_or: [python, pyi]

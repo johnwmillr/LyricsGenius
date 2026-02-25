@@ -1,7 +1,15 @@
-class MiscMethods(object):
+from typing import Any
+
+from ...types.types import TextFormatT
+from ..protocols import ChartsCapable, RequestCapable
+
+
+class MiscMethods(RequestCapable, ChartsCapable):
     """Miscellaneous Methods"""
 
-    def line_item(self, line_item_id, text_format=None):
+    def line_item(
+        self, line_item_id: int, text_format: TextFormatT | None = None
+    ) -> dict[str, Any]:
         """Gets data for a specific line item.
 
         Args:
@@ -17,13 +25,18 @@ class MiscMethods(object):
             ``NotImplementedError``.
 
         """
-        raise NotImplementedError('This action requires a logged in user.')
+        raise NotImplementedError("This action requires a logged in user.")
 
-        endpoint = 'line_items/{}'.format(line_item_id)
-        params = {'text_format': text_format or self.response_format}
+        endpoint = "line_items/{}".format(line_item_id)  # type: ignore
+        params = {"text_format": text_format or self.response_format}
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def page_data(self, album=None, song=None, artist=None):
+    def page_data(
+        self,
+        album: str | None = None,
+        song: str | None = None,
+        artist: str | None = None,
+    ) -> dict[str, Any]:
         """Gets page data of an item.
 
         If you want the page data of a song, you must supply
@@ -32,7 +45,7 @@ class MiscMethods(object):
 
         Page data will return all possible values for the album/song and
         the lyrics in HTML format if the item is a song!
-        Album page data will contian album info and tracks info as well.
+        Album page data will contain album info and tracks info as well.
 
         Args:
             album (:obj:`str`, optional): Album path
@@ -46,7 +59,7 @@ class MiscMethods(object):
 
         Warning:
             Some albums/songs either don't have page data or
-            their page data path can't be infered easily from
+            their page data path can't be inferred easily from
             the artist slug and their API path. So make sure to
             use this method with a try/except clause that catches
             404 errors. Check out the example below.
@@ -85,30 +98,34 @@ class MiscMethods(object):
         """
         assert any([album, song]), "You must pass either song or album."
         if song:
-            assert all([song, artist]), "You must pass artist."
-
-        if album:
-            endpoint = 'page_data/album'
-            page_type = 'albums'
-            item_path = album.replace('/albums/', '')
+            assert artist, "If you pass song, you must also pass artist."
+            page_type = "songs"
+            # Ensure song and artist are not None before using them
+            item_path = (
+                song[1:].replace(artist + "-", artist + "/").replace("-lyrics", "")
+            )
+        elif album:
+            page_type = "albums"
+            item_path = album[1:]  # Ensure album is not None
         else:
-            endpoint = 'page_data/song'
-            page_type = 'songs'
+            # This case should not be reachable due to the initial assert
+            raise ValueError("Invalid state: Neither song nor album provided.")
 
-            # item path becomes something like: Artist/Song
-            item_path = song[1:].replace(artist + '-', artist + '/').replace('-lyrics', '')
-
-        page_path = '/{page_type}/{item_path}'.format(page_type=page_type,
-                                                      item_path=item_path)
-        params = {'page_path': page_path}
+        endpoint = "page_data"
+        page_path = "/{page_type}/{item_path}".format(
+            page_type=page_type, item_path=item_path
+        )
+        params = {"page_path": page_path}
 
         return self._make_request(endpoint, params_=params, public_api=True)
 
-    def voters(self,
-               annotation_id=None,
-               answer_id=None,
-               article_id=None,
-               comment_id=None):
+    def voters(
+        self,
+        annotation_id: int | None = None,
+        answer_id: int | None = None,
+        article_id: int | None = None,
+        comment_id: int | None = None,
+    ) -> dict[str, Any]:
         """Gets the voters of an item.
 
         You must supply one of :obj:`annotation_id`, :obj:`answer_id`, :obj:`article_id`
@@ -126,27 +143,33 @@ class MiscMethods(object):
         """
         msg = "Must supply `annotation_id`, `answer_id`, `comment_id` or `article_id`"
         assert any([annotation_id, answer_id, article_id, comment_id]), msg
-        msg = ("Pass only one of "
-               "`annotation_id`, `answer_id`, `article_id` or `comment_id`"
-               ", not more than one.")
+        msg = (
+            "Pass only one of "
+            "`annotation_id`, `answer_id`, `article_id` or `comment_id`"
+            ", not more than one."
+        )
         condition = (
-            sum([bool(annotation_id),
-                 bool(answer_id),
-                 bool(article_id),
-                 bool(comment_id)])
+            sum(
+                [
+                    bool(annotation_id),
+                    bool(answer_id),
+                    bool(article_id),
+                    bool(comment_id),
+                ]
+            )
             == 1
         )
         assert condition, msg
 
-        endpoint = 'voters'
+        endpoint = "voters"
 
         params = {}
         if annotation_id:
-            params['annotation_id'] = annotation_id
+            params["annotation_id"] = annotation_id
         elif answer_id:
-            params['answer_id'] = answer_id
+            params["answer_id"] = answer_id
         elif article_id:
-            params['article_id'] = article_id
+            params["article_id"] = article_id
         elif comment_id:
-            params['comment_id'] = comment_id
+            params["comment_id"] = comment_id
         return self._make_request(path=endpoint, params_=params, public_api=True)

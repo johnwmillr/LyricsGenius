@@ -1,7 +1,15 @@
-class ReferentMethods(object):
+from typing import Any
+
+from ...types.types import TextFormatT
+from ..protocols import ChartsCapable, RequestCapable
+
+
+class ReferentMethods(RequestCapable, ChartsCapable):
     """Referent methods of the public API."""
 
-    def referent(self, referent_ids, text_format=None):
+    def referent(
+        self, referent_ids: list[int], text_format: TextFormatT | None = None
+    ) -> dict[str, Any]:
         """Gets data of one or more referents.
 
         This method can get multiple referents in one call,
@@ -21,19 +29,27 @@ class ReferentMethods(object):
             :meth:`referents() <PublicAPI.referents>` gets.
 
         """
-        params = {'text_format': text_format or self.response_format}
+        params: dict[str, Any] | list[tuple[str, Any]]
+        params = {"text_format": text_format or self.response_format}
         if len(referent_ids) == 1:
-            endpoint = 'referents/{}'.format(referent_ids[0])
+            endpoint = f"referents/{referent_ids[0]}"
         else:
-            endpoint = 'referents/multi'
-            params = [('text_format', params['text_format'])]
+            endpoint = "referents/multi"
+            params = [("text_format", params["text_format"])]
             for id in referent_ids:
-                params.append(('ids[]', id))
+                params.append(("ids[]", id))
 
         return self._make_request(path=endpoint, params_=params, public_api=True)
 
-    def referents(self, song_id=None, web_page_id=None,
-                  created_by_id=None, per_page=None, page=None, text_format=None):
+    def referents(
+        self,
+        song_id: int | None = None,
+        web_page_id: int | None = None,
+        created_by_id: int | None = None,
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets item's referents
 
         You must supply :obj:`song_id`, :obj:`web_page_id`, or :obj:`created_by_id`.
@@ -41,7 +57,7 @@ class ReferentMethods(object):
         Args:
             song_id (:obj:`int`, optional): song ID
             web_page_id (:obj:`int`, optional): web page ID
-            created_by_id (:obj:`int`, optional): User ID of the contributer
+            created_by_id (:obj:`int`, optional): User ID of the contributor
                 who created the annotation(s).
             per_page (:obj:`int`, optional): Number of results to
                 return per page. It can't be more than 50.
@@ -58,19 +74,24 @@ class ReferentMethods(object):
         assert bool(song_id) ^ bool(web_page_id), msg
 
         endpoint = "referents"
-        params = {'song_id': song_id,
-                  'web_page_id': web_page_id,
-                  'created_by_id': created_by_id,
-                  'per_page': per_page, 'page': page,
-                  'text_format': text_format or self.response_format}
+        params = {
+            "song_id": song_id,
+            "web_page_id": web_page_id,
+            "created_by_id": created_by_id,
+            "per_page": per_page,
+            "page": page,
+            "text_format": text_format or self.response_format,
+        }
         return self._make_request(endpoint, params_=params, public_api=True)
 
-    def referents_charts(self,
-                         time_period='day',
-                         chart_genre='all',
-                         per_page=None,
-                         page=None,
-                         text_format=None):
+    def referents_charts(
+        self,
+        time_period: str = "day",
+        chart_genre: str = "all",
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets the referents (lyrics) charts.
 
         Alias for :meth:`charts() <PublicAPI.charts>`.
@@ -95,5 +116,5 @@ class ReferentMethods(object):
             per_page=per_page,
             page=page,
             text_format=text_format,
-            type_='referents'
+            type_="referents",
         )

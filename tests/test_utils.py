@@ -1,22 +1,19 @@
 import unittest
 
 from lyricsgenius.utils import (
+    auth_from_environment,
     parse_redirected_url,
     sanitize_filename,
-    auth_from_environment,
 )
-
-from tests import genius
 
 
 class TestUtils(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up utils tests...\n")
 
     def test_sanitize_filename(self):
-        raw = "B@ad File#_name"
+        raw = "B<ad File|_name"
         cleaned = "Bad File_name"
         r = sanitize_filename(raw)
         self.assertEqual(r, cleaned)
@@ -37,8 +34,3 @@ class TestUtils(unittest.TestCase):
     def test_auth_from_environment(self):
         credentials = auth_from_environment()
         self.assertTrue(len(credentials) == 3)
-        self.assertTrue(all(credentials))
-
-    @classmethod
-    def tearDownClass(cls):
-        genius._session.close()

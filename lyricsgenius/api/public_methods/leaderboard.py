@@ -1,11 +1,19 @@
-class LeaderboardMethods(object):
+from typing import Any
+
+from ...types.types import TextFormatT
+from ..protocols import ChartsCapable, RequestCapable
+
+
+class LeaderboardMethods(RequestCapable, ChartsCapable):
     """Leaderboard methods of the public API."""
 
-    def leaderboard(self,
-                    time_period='day',
-                    per_page=None,
-                    page=None,
-                    text_format=None):
+    def leaderboard(
+        self,
+        time_period: str = "day",
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+    ) -> dict[str, Any]:
         """Gets the Genius community leaderboard.
 
         This method gets data of the community charts on the Genius.com page.
@@ -23,20 +31,24 @@ class LeaderboardMethods(object):
             :obj:`dict`
 
         """
-        path = 'leaderboard'
-        params = {'time_period': time_period,
-                  'per_page': per_page,
-                  'page': page,
-                  'text_format': text_format or self.response_format}
+        path = "leaderboard"
+        params = {
+            "time_period": time_period,
+            "per_page": per_page,
+            "page": page,
+            "text_format": text_format or self.response_format,
+        }
         return self._make_request(path=path, params_=params, public_api=True)
 
-    def charts(self,
-               time_period='day',
-               chart_genre='all',
-               per_page=None,
-               page=None,
-               text_format=None,
-               type_='songs'):
+    def charts(
+        self,
+        time_period: str = "day",
+        chart_genre: str = "all",
+        per_page: int | None = None,
+        page: int | None = None,
+        text_format: TextFormatT | None = None,
+        type_: str = "songs",
+    ) -> dict[str, Any]:
         """Gets the Genius charts.
 
         This method gets data of the chart on the Genius.com page.
@@ -51,7 +63,7 @@ class LeaderboardMethods(object):
             per_page (:obj:`int`, optional): Number of results to
                 return per request. It can't be more than 50.
             page (:obj:`int`, optional): Paginated offset (number of the page).
-            text_format (:obj:`str`, optional): Text format of the results
+            text_format (:obj:`TextFormatT`, optional): Text format of the results
                 ('dom', 'html', 'markdown' or 'plain').
             type_ (:obj:`int`, optional): The type to get the charts for.
                 The default is ``songs``.
@@ -66,10 +78,12 @@ class LeaderboardMethods(object):
             where you choose the *Type*.
 
         """
-        endpoint = type_ + '/chart'
-        params = {'time_period': time_period,
-                  'chart_genre': chart_genre,
-                  'per_page': per_page,
-                  'page': page,
-                  'text_format': text_format or self.response_format}
+        endpoint = type_ + "/chart"
+        params = {
+            "time_period": time_period,
+            "chart_genre": chart_genre,
+            "per_page": per_page,
+            "page": page,
+            "text_format": text_format or self.response_format,
+        }
         return self._make_request(path=endpoint, params_=params, public_api=True)

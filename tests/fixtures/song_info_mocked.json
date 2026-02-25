@@ -1,0 +1,161 @@
+[
+    {
+        "id": 2010101,
+        "title": "Setup Serenade",
+        "full_title": "Setup Serenade by Fixture Factory",
+        "path": "/Fixture-factory-setup-serenade-lyrics",
+        "primary_artist": {
+            "id": 101,
+            "name": "Fixture Factory",
+            "api_path": "/artists/101",
+            "header_image_url": "https://example.com/artist-header.jpg",
+            "image_url": "https://example.com/artist.jpg",
+            "is_meme_verified": false,
+            "is_verified": true,
+            "url": "https://genius.com/artists/Fixture-factory"
+        },
+        "album": {
+            "id": 301,
+            "name": "Mock Album",
+            "full_title": "Mock Album by Fixture Factory",
+            "name_with_artist": "Mock Album (Fixture Factory)",
+            "cover_art_url": "https://example.com/cover.jpg",
+            "cover_art_thumbnail_url": "https://example.com/cover-thumb.jpg",
+            "url": "https://genius.com/albums/Fixture-factory/Mock-album",
+            "api_path": "/albums/301",
+            "artist": {
+                "id": 101,
+                "name": "Fixture Factory",
+                "api_path": "/artists/101",
+                "header_image_url": "https://example.com/artist-header.jpg",
+                "image_url": "https://example.com/artist.jpg",
+                "is_meme_verified": false,
+                "is_verified": true,
+                "url": "https://genius.com/artists/Fixture-factory"
+            }
+        },
+        "api_path": "/songs/2010101",
+        "annotation_count": 2,
+        "header_image_thumbnail_url": "https://example.com/setup-thumb.jpg",
+        "header_image_url": "https://example.com/setup-header.jpg",
+        "lyrics_owner_id": 1,
+        "lyrics_state": "complete",
+        "pyongs_count": 5,
+        "song_art_image_thumbnail_url": "https://example.com/setup-art-thumb.jpg",
+        "song_art_image_url": "https://example.com/setup-art.jpg",
+        "title_with_featured": "Setup Serenade",
+        "url": "https://genius.com/Fixture-factory-setup-serenade-lyrics",
+        "stats": {
+            "pageviews": 100,
+            "unreviewed_annotations": 0,
+            "hot": false
+        },
+        "featured_artists": []
+    },
+    {
+        "id": 2010102,
+        "title": "Teardown Tango",
+        "full_title": "Teardown Tango by Fixture Factory",
+        "path": "/Fixture-factory-teardown-tango-lyrics",
+        "primary_artist": {
+            "id": 101,
+            "name": "Fixture Factory",
+            "api_path": "/artists/101",
+            "header_image_url": "https://example.com/artist-header.jpg",
+            "image_url": "https://example.com/artist.jpg",
+            "is_meme_verified": false,
+            "is_verified": true,
+            "url": "https://genius.com/artists/Fixture-factory"
+        },
+        "album": {
+            "id": 301,
+            "name": "Mock Album",
+            "full_title": "Mock Album by Fixture Factory",
+            "name_with_artist": "Mock Album (Fixture Factory)",
+            "cover_art_url": "https://example.com/cover.jpg",
+            "cover_art_thumbnail_url": "https://example.com/cover-thumb.jpg",
+            "url": "https://genius.com/albums/Fixture-factory/Mock-album",
+            "api_path": "/albums/301",
+            "artist": {
+                "id": 101,
+                "name": "Fixture Factory",
+                "api_path": "/artists/101",
+                "header_image_url": "https://example.com/artist-header.jpg",
+                "image_url": "https://example.com/artist.jpg",
+                "is_meme_verified": false,
+                "is_verified": true,
+                "url": "https://genius.com/artists/Fixture-factory"
+            }
+        },
+        "api_path": "/songs/2010102",
+        "annotation_count": 1,
+        "header_image_thumbnail_url": "https://example.com/teardown-thumb.jpg",
+        "header_image_url": "https://example.com/teardown-header.jpg",
+        "lyrics_owner_id": 1,
+        "lyrics_state": "complete",
+        "pyongs_count": 3,
+        "song_art_image_thumbnail_url": "https://example.com/teardown-art-thumb.jpg",
+        "song_art_image_url": "https://example.com/teardown-art.jpg",
+        "title_with_featured": "Teardown Tango",
+        "url": "https://genius.com/Fixture-factory-teardown-tango-lyrics",
+        "stats": {
+            "pageviews": 50,
+            "unreviewed_annotations": 0,
+            "hot": false
+        },
+        "featured_artists": []
+    },
+    {
+        "id": 42424242,
+        "title": "Mocking the Tests",
+        "full_title": "Mocking the Tests by Py Testerson",
+        "path": "/py-testerson-mocking-the-tests-lyrics",
+        "primary_artist": {
+            "id": 424242,
+            "name": "Py Testerson",
+            "api_path": "/artists/424242",
+            "header_image_url": "https://images.genius.com/fakepythonartist.jpg",
+            "image_url": "https://images.genius.com/fakepythonartist.jpg",
+            "is_meme_verified": true,
+            "is_verified": false,
+            "url": "https://genius.com/artists/Py-testerson"
+        },
+        "album": {
+            "id": 999999,
+            "name": "Mocking the Tests",
+            "full_title": "Mocking the Tests by Py Testerson",
+            "name_with_artist": "Mocking the Tests (Py Testerson)",
+            "cover_art_url": "https://images.genius.com/fakealbumcover.jpg",
+            "cover_art_thumbnail_url": "https://images.genius.com/fakealbumcover_thumb.jpg",
+            "url": "https://genius.com/albums/Py-testerson/Mocking-the-tests",
+            "api_path": "/albums/999999",
+            "artist": {
+                "id": 424242,
+                "name": "Py Testerson",
+                "api_path": "/artists/424242",
+                "header_image_url": "https://images.genius.com/fakepythonartist.jpg",
+                "image_url": "https://images.genius.com/fakepythonartist.jpg",
+                "is_meme_verified": true,
+                "is_verified": false,
+                "url": "https://genius.com/artists/Py-testerson"
+            }
+        },
+        "api_path": "/songs/42424242",
+        "annotation_count": 3,
+        "header_image_thumbnail_url": "https://images.genius.com/fakealbumcover_thumb.jpg",
+        "header_image_url": "https://images.genius.com/fakealbumcover.jpg",
+        "lyrics_owner_id": 1010101,
+        "lyrics_state": "complete",
+        "pyongs_count": 42,
+        "song_art_image_thumbnail_url": "https://images.genius.com/fakealbumcover_thumb.jpg",
+        "song_art_image_url": "https://images.genius.com/fakealbumcover.jpg",
+        "title_with_featured": "Mocking the Tests",
+        "url": "https://genius.com/py-testerson-mocking-the-tests-lyrics",
+        "stats": {
+            "pageviews": 1337,
+            "unreviewed_annotations": 3,
+            "hot": false
+        },
+        "featured_artists": []
+    }
+]

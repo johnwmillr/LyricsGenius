@@ -1,7 +1,22 @@
-class SearchMethods(object):
+from typing import Any, Literal
+
+from ..protocols import RequestCapable
+
+SearchItemTypeT = Literal[
+    "song", "lyric", "artist", "album", "video", "article", "user", "multi"
+]
+
+
+class SearchMethods(RequestCapable):
     """Search methods of the public API."""
 
-    def search(self, search_term, per_page=None, page=None, type_=''):
+    def search(
+        self,
+        search_term: str,
+        per_page: int | None = None,
+        page: int | None = None,
+        type_: SearchItemTypeT | None = None,
+    ) -> dict[str, Any]:
         """Searches Genius.
 
         Args:
@@ -9,8 +24,6 @@ class SearchMethods(object):
             per_page (:obj:`int`, optional): Number of results to
                 return per request. It can't be more than 5.
             page (:obj:`int`, optional): Paginated offset (number of the page).
-            text_format (:obj:`str`, optional): Text format of the results
-                ('dom', 'html', 'markdown' or 'plain').
             type_ (:obj:`str`, optional): Type of item to search for
                 ('song', 'lyric', 'artist', 'album', 'video',
                 'article', 'user' or 'multi').
@@ -35,16 +48,16 @@ class SearchMethods(object):
             can use the alias methods.
 
         """
-        if type_ == '':
-            path = 'search'
+        if type_ is None:
+            path = "search"
         else:
-            path = 'search/' + type_
-        params = {'q': search_term,
-                  'per_page': per_page,
-                  'page': page}
+            path = "search/" + type_
+        params = {"q": search_term, "per_page": per_page, "page": page}
         return self._make_request(path, params_=params, public_api=True)
 
-    def search_albums(self, search_term, per_page=None, page=None):
+    def search_albums(
+        self, search_term: str, per_page: int | None = None, page: int | None = None
+    ) -> dict[str, Any]:
         """Searches the albums on Genius.
 
         Alias for :meth:`search() <PublicAPI.search>`
@@ -61,10 +74,11 @@ class SearchMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'album'
-        return self.search(search_term, per_page, page, endpoint)
+        return self.search(search_term, per_page, page, "album")
 
-    def search_articles(self, search_term, per_page=None, page=None):
+    def search_articles(
+        self, search_term: str, per_page: int | None = None, page: int | None = None
+    ) -> dict[str, Any]:
         """Searches the articles on Genius.
 
         Alias for :meth:`search() <PublicAPI.search>`
@@ -81,10 +95,11 @@ class SearchMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'article'
-        return self.search(search_term, per_page, page, endpoint)
+        return self.search(search_term, per_page, page, "article")
 
-    def search_artists(self, search_term, per_page=None, page=None):
+    def search_artists(
+        self, search_term: str, per_page: int | None = None, page: int | None = None
+    ) -> dict[str, Any]:
         """Searches the artists on Genius.
 
         Alias for :meth:`search() <PublicAPI.search>`
@@ -101,10 +116,11 @@ class SearchMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'artist'
-        return self.search(search_term, per_page, page, endpoint)
+        return self.search(search_term, per_page, page, "artist")
 
-    def search_lyrics(self, search_term, per_page=None, page=None):
+    def search_lyrics(
+        self, search_term: str, per_page: int | None = None, page: int | None = None
+    ) -> dict[str, Any]:
         """Searches the lyrics on Genius.
 
         Alias for :meth:`search() <PublicAPI.search>`
@@ -121,10 +137,11 @@ class SearchMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'lyric'
-        return self.search(search_term, per_page, page, endpoint)
+        return self.search(search_term, per_page, page, "lyric")
 
-    def search_songs(self, search_term, per_page=None, page=None):
+    def search_songs(
+        self, search_term: str, per_page: int | None = None, page: int | None = None
+    ) -> dict[str, Any]:
         """Searches the songs on Genius.
 
         Alias for :meth:`search() <PublicAPI.search>`
@@ -141,10 +158,11 @@ class SearchMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'song'
-        return self.search(search_term, per_page, page, endpoint)
+        return self.search(search_term, per_page, page, "song")
 
-    def search_users(self, search_term, per_page=None, page=None):
+    def search_users(
+        self, search_term: str, per_page: int | None = None, page: int | None = None
+    ) -> dict[str, Any]:
         """Searches the users on Genius.
 
         Alias for :meth:`search() <PublicAPI.search>`
@@ -161,10 +179,11 @@ class SearchMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'user'
-        return self.search(search_term, per_page, page, endpoint)
+        return self.search(search_term, per_page, page, "user")
 
-    def search_videos(self, search_term, per_page=None, page=None):
+    def search_videos(
+        self, search_term: str, per_page: int | None = None, page: int | None = None
+    ) -> dict[str, Any]:
         """Searches the videos on Genius.
 
         Alias for :meth:`search() <PublicAPI.search>`
@@ -181,10 +200,11 @@ class SearchMethods(object):
             :obj:`dict`
 
         """
-        endpoint = 'video'
-        return self.search(search_term, per_page, page, endpoint)
+        return self.search(search_term, per_page, page, "video")
 
-    def search_all(self, search_term, per_page=None, page=None):
+    def search_all(
+        self, search_term: str, per_page: int | None = None, page: int | None = None
+    ) -> dict[str, Any]:
         """Searches all types.
 
         Including: albums, articles, lyrics, songs, users and
@@ -206,5 +226,4 @@ class SearchMethods(object):
             alongside other types.
 
         """
-        endpoint = 'multi'
-        return self.search(search_term, per_page, page, endpoint)
+        return self.search(search_term, per_page, page, "multi")

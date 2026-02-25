@@ -36,7 +36,7 @@ Add the song to the :class:`Artist <types.Artist>` object:
    # add_song accepts song names as well:
    # artist.add_song("To You")
 
-Save the artist’s songs to a JSON file:
+Save the artist's songs to a JSON file:
 
 .. code:: python
 
@@ -63,7 +63,7 @@ There are various options configurable as parameters within the
    # Include hits thought to be non-songs (e.g. track lists)
    genius.skip_non_songs = False
 
-   # Exclude songs with these words in their title
+   # Exclude songs with these words/phrases in their title (case-insensitive)
    genius.excluded_terms = ["(Remix)", "(Live)"]
 
 You can also call the package from the command line:
@@ -80,7 +80,7 @@ Search for and save lyrics to a given song and album:
    python3 -m lyricsgenius song "Begin Again" "Andy Shauf" --save
    python3 -m lyricsgenius album "The Party" "Andy Shauf" --save
 
-Search for five songs by ‘The Beatles’ and save the lyrics:
+Search for five songs by 'The Beatles' and save the lyrics:
 
 .. code:: bash
 

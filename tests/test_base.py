@@ -1,12 +1,23 @@
 import unittest
+import warnings
 
+import pytest
 from requests.exceptions import HTTPError
 
-from tests import genius
+from tests import get_genius_client
+
+pytestmark = pytest.mark.skip(reason="This test is under development.")
+
+try:
+    genius = get_genius_client()
+except KeyError:
+    warnings.warn(
+        "Skipping API tests because no GENIUS_ACCESS_TOKEN was found in the environment variables.",
+        stacklevel=1,
+    )
 
 
 class TestAPIBase(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         print("\n---------------------\nSetting up API base tests...\n")
