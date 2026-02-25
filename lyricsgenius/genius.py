@@ -761,7 +761,7 @@ class Genius(API, PublicAPI):
         response: dict[str, str] | None = self._make_request(
             path, params_=params, web=True
         )
-        if response is None or (html := response.get("text")) is None:
+        if response is None or (html := response.get("html")) is None:
             if self.verbose:
                 print(
                     "Couldn't find the lyrics section. "
