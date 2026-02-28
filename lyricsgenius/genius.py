@@ -100,6 +100,7 @@ class Genius(API, PublicAPI):
         retries: int = 0,
         user_agent: str = "",
         proxy: dict[str, str] | None = None,
+        per_page: int = 5,
     ) -> None:
         # Genius Client Constructor
         super().__init__(
@@ -115,6 +116,7 @@ class Genius(API, PublicAPI):
         self.verbose = verbose
         self.remove_section_headers = remove_section_headers
         self.skip_non_songs = skip_non_songs
+        self.per_page = per_page
 
         excluded_terms = excluded_terms if excluded_terms is not None else []
         if replace_default_terms:
@@ -620,11 +622,40 @@ class Genius(API, PublicAPI):
                 print("Searching for songs by {0}...\n".format(search_term))
 
             # Perform a Genius API search for the artist
+            # Loop through pages until we find an exact match or run out of results
             found_artist = None
-            response = self.search_all(search_term)
-            found_artist = self._get_item_from_search_response(
-                response, search_term, type_="artist", result_type="name"
-            )
+            page = 1
+            while not found_artist:
+                response = self.search_all(
+                    search_term, per_page=self.per_page, page=page
+                )
+
+                # Check if we got any results
+                result_count_on_page = max(
+                    (len(section["hits"]) for section in response["sections"]),
+                    default=0,
+                )
+                if result_count_on_page == 0:
+                    break
+
+                # Try to find an exact match on this page
+                candidate = self._get_item_from_search_response(
+                    response, search_term, type_="artist", result_type="name"
+                )
+
+                # Check if we got an exact match (not just a fallback)
+                if candidate and clean_str(candidate["name"]) == clean_str(search_term):
+                    found_artist = candidate
+                    break
+
+                # Check if there might be more pages
+                has_more_pages = result_count_on_page == self.per_page
+                page += 1
+
+                if not has_more_pages:
+                    # No exact match found, but use the best candidate we have
+                    found_artist = candidate
+                    break
 
             # Exit the search if we couldn't find an artist by the given name
             if not found_artist:

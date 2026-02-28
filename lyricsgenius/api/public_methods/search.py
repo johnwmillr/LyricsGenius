@@ -22,7 +22,7 @@ class SearchMethods(RequestCapable):
         Args:
             search_term (:obj:`str`): A term to search on Genius.
             per_page (:obj:`int`, optional): Number of results to
-                return per request. It can't be more than 50.
+                return per request. It can't be more than 5.
             page (:obj:`int`, optional): Paginated offset (number of the page).
             type_ (:obj:`str`, optional): Type of item to search for
                 ('song', 'lyric', 'artist', 'album', 'video',
