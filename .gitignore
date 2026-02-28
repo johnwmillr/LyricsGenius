@@ -31,3 +31,7 @@ build
 
 # VS Code settings
 .vscode/
+
+# GitHub Copilot config (skills, instructions)
+.github/copilot-instructions.md
+.github/skills
