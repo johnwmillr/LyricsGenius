@@ -102,6 +102,12 @@ class Genius(API, PublicAPI):
         proxy: dict[str, str] | None = None,
         per_page: int = 5,
     ) -> None:
+        if not 1 <= per_page <= 5:
+            raise ValueError(
+                "per_page must be between 1 and 5 inclusive when using "
+                "search_all(..., type_='multi')."
+            )
+
         # Genius Client Constructor
         super().__init__(
             access_token=access_token,
@@ -112,12 +118,6 @@ class Genius(API, PublicAPI):
             user_agent=user_agent,
             proxy=proxy,
         )
-
-        if not 1 <= per_page <= 5:
-            raise ValueError(
-                "per_page must be between 1 and 5 inclusive when using "
-                "search_all(..., type_='multi')."
-            )
 
         self.verbose = verbose
         self.remove_section_headers = remove_section_headers
@@ -633,8 +633,8 @@ class Genius(API, PublicAPI):
                 None  # Best fallback: first non-null result (most relevant)
             )
             page = 1
-            MAX_PAGES = 20  # Safety cap to prevent runaway pagination
-            while not found_artist and page <= MAX_PAGES:
+            max_pages = 20  # Safety cap to prevent runaway pagination
+            while not found_artist and page <= max_pages:
                 response = self.search_all(
                     search_term, per_page=self.per_page, page=page
                 )
