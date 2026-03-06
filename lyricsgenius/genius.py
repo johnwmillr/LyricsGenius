@@ -580,6 +580,7 @@ class Genius(API, PublicAPI):
         allow_name_change: bool = True,
         artist_id: int | None = None,
         include_features: bool = False,
+        max_pages: int = 10,
     ) -> Artist | None:
         """Searches for a specific artist and gets their songs.
 
@@ -601,6 +602,8 @@ class Genius(API, PublicAPI):
             artist_id (:obj:`int`, optional): Allows user to pass an artist ID.
             include_features (:obj:`bool`, optional): If True, includes tracks
                 featuring the artist.
+            max_pages (:obj:`int`, optional): Maximum number of search-result pages
+                to check when looking for an exact artist name match. Defaults to 10.
 
         Returns:
             :class:`Artist <types.Artist>`: Artist object containing
@@ -633,7 +636,6 @@ class Genius(API, PublicAPI):
                 None  # Best fallback: first non-null result (most relevant)
             )
             page = 1
-            max_pages = 20  # Safety cap to prevent runaway pagination
             while not found_artist and page <= max_pages:
                 response = self.search_all(
                     search_term, per_page=self.per_page, page=page
