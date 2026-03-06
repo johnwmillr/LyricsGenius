@@ -197,7 +197,7 @@ class TestArtistSearchPagination:
         assert result.name == "Radiohead Fan"
 
     def test_max_pages_cap_prevents_infinite_loop(self, g: Genius) -> None:
-        """Pagination must stop after MAX_PAGES=20 even with always-full pages."""
+        """Pagination must stop after max_pages=10 (default) even with always-full pages."""
         full_non_matching_hits = [
             _artist_hit(i, f"Radiohead Clone {i}") for i in range(5)
         ]
@@ -222,4 +222,4 @@ class TestArtistSearchPagination:
         ):
             g.search_artist("Radiohead", max_songs=0)
 
-        assert call_count == 20, "Should stop after MAX_PAGES=20 pages"
+        assert call_count == 10, "Should stop after max_pages=10 pages (default)"
