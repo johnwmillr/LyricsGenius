@@ -113,6 +113,12 @@ class Genius(API, PublicAPI):
             proxy=proxy,
         )
 
+        if not 1 <= per_page <= 5:
+            raise ValueError(
+                "per_page must be between 1 and 5 inclusive when using "
+                "search_all(..., type_='multi')."
+            )
+
         self.verbose = verbose
         self.remove_section_headers = remove_section_headers
         self.skip_non_songs = skip_non_songs
@@ -623,23 +629,50 @@ class Genius(API, PublicAPI):
 
             # Perform a Genius API search for the artist
             found_artist = None
-            page = 0
-            while not found_artist:
+            best_candidate = (
+                None  # Best fallback: first non-null result (most relevant)
+            )
+            page = 1
+            MAX_PAGES = 20  # Safety cap to prevent runaway pagination
+            while not found_artist and page <= MAX_PAGES:
                 response = self.search_all(
                     search_term, per_page=self.per_page, page=page
                 )
-                result_count_on_page = max(
-                    map(lambda section: len(section["hits"]), response["sections"])
+
+                # Check artist-section hits specifically to avoid false positives
+                # from other sections (songs, albums, etc.) keeping has_more_pages True
+                artist_section = next(
+                    (s for s in response["sections"] if s["type"] == "artist"),
+                    None,
                 )
-                if result_count_on_page == 0:
-                    break
-                has_more_pages = result_count_on_page == self.per_page
-                found_artist = self._get_item_from_search_response(
+                artist_hit_count = len(artist_section["hits"]) if artist_section else 0
+
+                if artist_hit_count == 0:
+                    break  # No artist results on this page; stop paginating
+
+                # Try to find a match on this page
+                candidate = self._get_item_from_search_response(
                     response, search_term, type_="artist", result_type="name"
                 )
-                page += 1
-                if not has_more_pages:
+
+                # Track the first non-null result as fallback (page 1 = most relevant)
+                if candidate and best_candidate is None:
+                    best_candidate = candidate
+
+                # Check if we got an exact match (not just a fallback)
+                if candidate and clean_str(candidate["name"]) == clean_str(search_term):
+                    found_artist = candidate
                     break
+
+                # Only continue to next page if the artist section was full
+                if artist_hit_count < self.per_page:
+                    break  # Last page reached; no exact match found
+
+                page += 1
+
+            # Fall back to the most relevant candidate (from page 1) if no exact match
+            if not found_artist:
+                found_artist = best_candidate
 
             # Exit the search if we couldn't find an artist by the given name
             if not found_artist:
