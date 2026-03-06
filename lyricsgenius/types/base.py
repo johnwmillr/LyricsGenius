@@ -1,6 +1,6 @@
 import json
-import os
 from abc import ABC, abstractmethod
+from pathlib import Path
 from typing import Any
 
 from ..utils import safe_unicode, sanitize_filename
@@ -26,7 +26,10 @@ class BaseEntity(ABC):
 
         Args:
             filename (:obj:`str`, optional): Output filename, a string.
-                If not specified, the result is returned as a string.
+                May include a full or relative directory path (e.g.
+                ``"output/my_song"``). The directory will be created
+                automatically if it does not exist.
+                If not specified, a default name is used.
             extension (:obj:`str`, optional): Format of the file (`json` or `txt`).
             overwrite (:obj:`bool`, optional): Overwrites preexisting file if `True`.
                 Otherwise prompts user for input.
@@ -45,17 +48,21 @@ class BaseEntity(ABC):
         msg = "extension must be JSON or TXT"
         assert (extension == "json") or (extension == "txt"), msg
 
-        # Standardize the extension
-        filename, _ = os.path.splitext(filename)
-        filename += "." + extension
-        filename = sanitize_filename(filename) if sanitize else filename
+        # Separate parent directory from stem so we sanitize only the filename
+        # portion, then reconstruct the full path.
+        p = Path(filename)
+        stem = sanitize_filename(p.stem) if sanitize else p.stem
+        p = p.with_name(stem + "." + extension)
+
+        # Create parent directory if needed (no-op when parent is cwd)
+        p.parent.mkdir(parents=True, exist_ok=True)
 
         # Check if file already exists
         write_file = False
-        if overwrite or not os.path.isfile(filename):
+        if overwrite or not p.is_file():
             write_file = True
         elif verbose:
-            msg = f"{filename} already exists. Overwrite?\n(y/n): "
+            msg = f"{p} already exists. Overwrite?\n(y/n): "
             if input(msg).lower() == "y":
                 write_file = True
 
@@ -67,12 +74,12 @@ class BaseEntity(ABC):
 
         # Save the lyrics to a file
         if extension == "json":
-            self.to_json(filename, ensure_ascii=ensure_ascii, sanitize=sanitize)
+            self.to_json(str(p), ensure_ascii=ensure_ascii, sanitize=False)
         else:
-            self.to_text(filename, sanitize=sanitize)
+            self.to_text(str(p), sanitize=False)
 
         if verbose:
-            print(f"Wrote {safe_unicode(filename)}.")
+            print(f"Wrote {safe_unicode(str(p))}.")
 
         return None
 
@@ -116,9 +123,10 @@ class BaseEntity(ABC):
             return json.dumps(data, indent=1, ensure_ascii=ensure_ascii)
 
         # Save Song object to a json file
-        filename = sanitize_filename(filename) if sanitize else filename
-        with open(filename, "w", encoding="utf-8") as ff:
-            json.dump(data, ff, indent=4, ensure_ascii=ensure_ascii)
+        p = Path(sanitize_filename(filename) if sanitize else filename)
+        p.write_text(
+            json.dumps(data, indent=4, ensure_ascii=ensure_ascii), encoding="utf-8"
+        )
         return None
 
     @property
@@ -156,9 +164,8 @@ class BaseEntity(ABC):
             return self._text_data
 
         # Save song lyrics to a text file
-        filename = sanitize_filename(filename) if sanitize else filename
-        with open(filename, "w", encoding="utf-8") as ff:
-            ff.write(self._text_data)
+        p = Path(sanitize_filename(filename) if sanitize else filename)
+        p.write_text(self._text_data, encoding="utf-8")
         return None
 
     def __repr__(self) -> str:
