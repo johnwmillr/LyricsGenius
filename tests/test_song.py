@@ -81,6 +81,58 @@ def test_song_artist(song_object: Song, mock_song_data: dict[str, Any]) -> None:
     assert song_object.artist == mock_song_data["primary_artist"]["name"]
 
 
+def test_song_primary_artists(
+    song_object: Song, mock_song_data: dict[str, Any]
+) -> None:
+    """Test if primary_artists is populated correctly."""
+    assert song_object.primary_artists == mock_song_data["primary_artists"]
+    assert song_object.primary_artists[0]["name"] == "Py Testerson"
+
+
+def test_song_writer_artists(song_object: Song, mock_song_data: dict[str, Any]) -> None:
+    """Test if writer_artists is populated correctly."""
+    assert song_object.writer_artists == mock_song_data["writer_artists"]
+    assert song_object.writer_artists[0]["name"] == "Test Writer"
+
+
+def test_song_producer_artists(
+    song_object: Song, mock_song_data: dict[str, Any]
+) -> None:
+    """Test if producer_artists is populated correctly."""
+    assert song_object.producer_artists == mock_song_data["producer_artists"]
+    assert song_object.producer_artists[0]["name"] == "Test Producer"
+
+
+def test_song_featured_artists(
+    song_object: Song, mock_song_data: dict[str, Any]
+) -> None:
+    """Test if featured_artists is populated correctly."""
+    assert song_object.featured_artists == mock_song_data["featured_artists"]
+    assert song_object.featured_artists[0]["name"] == "Mock Feature"
+
+
+def test_song_artist_fields_default_empty(
+    mock_song_data: dict[str, Any], mock_lyrics: str
+) -> None:
+    """Test that artist list fields default to empty lists when absent from body."""
+    body = {
+        k: v
+        for k, v in mock_song_data.items()
+        if k
+        not in (
+            "primary_artists",
+            "writer_artists",
+            "producer_artists",
+            "featured_artists",
+        )
+    }
+    song = Song(mock_lyrics, body)
+    assert song.primary_artists == []
+    assert song.writer_artists == []
+    assert song.producer_artists == []
+    assert song.featured_artists == []
+
+
 def test_to_dict(
     song_object: Song, mock_song_data: dict[str, Any], mock_lyrics: str
 ) -> None:
