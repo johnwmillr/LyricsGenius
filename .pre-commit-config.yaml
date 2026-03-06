@@ -15,3 +15,11 @@ repos:
       - id: ruff-format
         name: Format with ruff
         types_or: [python, pyi]
+  - repo: local
+    hooks:
+      - id: pytest
+        name: Run pytest
+        entry: uv run pytest
+        language: system
+        pass_filenames: false
+        always_run: true
