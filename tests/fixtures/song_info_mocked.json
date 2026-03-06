@@ -156,6 +156,53 @@
             "unreviewed_annotations": 3,
             "hot": false
         },
-        "featured_artists": []
+        "featured_artists": [
+            {
+                "id": 555555,
+                "name": "Mock Feature",
+                "api_path": "/artists/555555",
+                "header_image_url": "https://images.genius.com/mockfeature.jpg",
+                "image_url": "https://images.genius.com/mockfeature.jpg",
+                "is_meme_verified": false,
+                "is_verified": false,
+                "url": "https://genius.com/artists/Mock-feature"
+            }
+        ],
+        "primary_artists": [
+            {
+                "id": 424242,
+                "name": "Py Testerson",
+                "api_path": "/artists/424242",
+                "header_image_url": "https://images.genius.com/fakepythonartist.jpg",
+                "image_url": "https://images.genius.com/fakepythonartist.jpg",
+                "is_meme_verified": true,
+                "is_verified": false,
+                "url": "https://genius.com/artists/Py-testerson"
+            }
+        ],
+        "writer_artists": [
+            {
+                "id": 666666,
+                "name": "Test Writer",
+                "api_path": "/artists/666666",
+                "header_image_url": "https://images.genius.com/testwriter.jpg",
+                "image_url": "https://images.genius.com/testwriter.jpg",
+                "is_meme_verified": false,
+                "is_verified": false,
+                "url": "https://genius.com/artists/Test-writer"
+            }
+        ],
+        "producer_artists": [
+            {
+                "id": 777777,
+                "name": "Test Producer",
+                "api_path": "/artists/777777",
+                "header_image_url": "https://images.genius.com/testproducer.jpg",
+                "image_url": "https://images.genius.com/testproducer.jpg",
+                "is_meme_verified": false,
+                "is_verified": false,
+                "url": "https://genius.com/artists/Test-producer"
+            }
+        ]
     }
 ]

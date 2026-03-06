@@ -45,6 +45,9 @@ class Song(BaseEntity):
         self.title_with_featured: str | None = body.get("title_with_featured")
         self.url: str | None = body.get("url")
         self.featured_artists: list[dict[str, Any]] = body.get("featured_artists", [])
+        self.primary_artists: list[dict[str, Any]] = body.get("primary_artists", [])
+        self.writer_artists: list[dict[str, Any]] = body.get("writer_artists", [])
+        self.producer_artists: list[dict[str, Any]] = body.get("producer_artists", [])
 
     @property
     def _text_data(self) -> str:
