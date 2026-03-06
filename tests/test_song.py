@@ -135,3 +135,51 @@ def test_save_lyrics_txt(song_object: Song, tmp_path: Path) -> None:
     # Check that the file was written correctly
     assert filename.is_file(), filename
     assert filename.read_text() == song_object.lyrics, filename
+
+
+def test_save_lyrics_with_path_json(song_object: Song, tmp_path: Path) -> None:
+    """Test that save_lyrics creates the directory when a path is included in filename."""
+    output_dir = tmp_path / "output" / "nested"
+    song_object.save_lyrics(
+        filename=str(output_dir / "test_song"),
+        extension="json",
+        overwrite=True,
+        verbose=False,
+    )
+
+    saved_file = output_dir / "test_song.json"
+    assert saved_file.is_file(), f"Expected file at {saved_file}"
+    content = saved_file.read_text()
+    assert '"title": "Mocking the Tests"' in content, content
+    assert '"artist": "Py Testerson"' in content, content
+
+
+def test_save_lyrics_with_path_txt(song_object: Song, tmp_path: Path) -> None:
+    """Test that save_lyrics creates the directory when a path is included in filename."""
+    output_dir = tmp_path / "lyrics_output"
+    song_object.save_lyrics(
+        filename=str(output_dir / "test_song"),
+        extension="txt",
+        overwrite=True,
+        verbose=False,
+    )
+
+    saved_file = output_dir / "test_song.txt"
+    assert saved_file.is_file(), f"Expected file at {saved_file}"
+    assert saved_file.read_text() == song_object.lyrics
+
+
+def test_save_lyrics_path_creates_directory(song_object: Song, tmp_path: Path) -> None:
+    """Test that save_lyrics creates the parent directory if it doesn't exist."""
+    new_dir = tmp_path / "brand_new_dir"
+    assert not new_dir.exists()
+
+    song_object.save_lyrics(
+        filename=str(new_dir / "out"),
+        extension="json",
+        overwrite=True,
+        verbose=False,
+    )
+
+    assert new_dir.is_dir()
+    assert (new_dir / "out.json").is_file()
