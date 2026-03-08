@@ -352,6 +352,7 @@ class Genius(API, PublicAPI):
         album_id: int | None = None,
         get_full_info: bool = True,
         text_format: TextFormatT | None = None,
+        fetch_lyrics: bool = True,
     ) -> Album | None:
         """Searches for a specific album and gets its songs.
 
@@ -365,6 +366,10 @@ class Genius(API, PublicAPI):
                 for the album (slower if no album_id present).
             text_format (:obj:`str`, optional): Text format of the results
                 ('dom', 'html', 'markdown' or 'plain').
+            fetch_lyrics (:obj:`bool`, optional): If `True` (default), scrapes
+                lyrics for each track. Set to `False` to skip lyrics fetching
+                and return only track metadata — significantly faster for large
+                albums.
 
         Returns:
             :class:`Album <types.Album>` \\| :obj:`None`: On success,
@@ -431,8 +436,10 @@ class Genius(API, PublicAPI):
             for track_data in tracks_list_response["tracks"]:
                 song_info = track_data["song"]
                 song_lyrics = None
-                if song_info["lyrics_state"] == "complete" and not song_info.get(
-                    "instrumental"
+                if (
+                    fetch_lyrics
+                    and song_info["lyrics_state"] == "complete"
+                    and not song_info.get("instrumental")
                 ):
                     song_lyrics = self.lyrics(song_url=song_info["url"])
 
