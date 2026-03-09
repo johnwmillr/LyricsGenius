@@ -6,6 +6,7 @@ from unittest import mock
 
 import pytest
 
+from lyricsgenius import Genius
 from lyricsgenius.types import Album, Artist, Song
 from lyricsgenius.utils import sanitize_filename
 
@@ -213,3 +214,93 @@ def test_saving_txt_file(album_object: Album, tmp_path: Path) -> None:
     content_after_overwrite = expected_filepath.read_text()
     assert "Overwritten TXT Test" in content_after_overwrite, content_after_overwrite
     album_object.tracks[0][1].lyrics = original_lyrics
+
+
+@pytest.fixture
+def genius_client() -> Genius:
+    return Genius("dummy_access_token", verbose=False, sleep_time=0)
+
+
+def _make_search_all_response(album_data: dict[str, Any]) -> dict[str, Any]:
+    hit = {"index": "album", "result": album_data}
+    return {
+        "sections": [
+            {"type": "top_hits", "hits": [hit]},
+            {"type": "album", "hits": [hit]},
+        ]
+    }
+
+
+def _make_album_tracks_response(songs: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "tracks": [{"song": s, "number": i + 1} for i, s in enumerate(songs)],
+        "next_page": None,
+    }
+
+
+def test_fetch_lyrics_true_calls_lyrics(
+    genius_client: Genius,
+    mock_album_data: dict[str, Any],
+    mock_track_data_list: list[dict[str, Any]],
+) -> None:
+    """When fetch_lyrics=True (default), lyrics() should be called for each track."""
+    with (
+        mock.patch.object(
+            genius_client,
+            "search_all",
+            return_value=_make_search_all_response(mock_album_data),
+        ),
+        mock.patch.object(
+            genius_client, "album", return_value={"album": mock_album_data}
+        ),
+        mock.patch.object(
+            genius_client,
+            "album_tracks",
+            return_value=_make_album_tracks_response(mock_track_data_list),
+        ),
+        mock.patch.object(
+            genius_client, "lyrics", return_value="some lyrics"
+        ) as mock_lyrics,
+    ):
+        result = genius_client.search_album(
+            name=mock_album_data["name"], fetch_lyrics=True
+        )
+
+    assert result is not None
+    assert mock_lyrics.call_count == len(mock_track_data_list)
+    for _, track in result.tracks:
+        assert track.lyrics == "some lyrics"
+
+
+def test_fetch_lyrics_false_skips_lyrics(
+    genius_client: Genius,
+    mock_album_data: dict[str, Any],
+    mock_track_data_list: list[dict[str, Any]],
+) -> None:
+    """When fetch_lyrics=False, lyrics() is not called and tracks have empty lyrics."""
+    with (
+        mock.patch.object(
+            genius_client,
+            "search_all",
+            return_value=_make_search_all_response(mock_album_data),
+        ),
+        mock.patch.object(
+            genius_client, "album", return_value={"album": mock_album_data}
+        ),
+        mock.patch.object(
+            genius_client,
+            "album_tracks",
+            return_value=_make_album_tracks_response(mock_track_data_list),
+        ),
+        mock.patch.object(
+            genius_client, "lyrics", return_value="some lyrics"
+        ) as mock_lyrics,
+    ):
+        result = genius_client.search_album(
+            name=mock_album_data["name"], fetch_lyrics=False
+        )
+
+    assert result is not None
+    assert mock_lyrics.call_count == 0
+    for _, track in result.tracks:
+        assert track.lyrics == ""
