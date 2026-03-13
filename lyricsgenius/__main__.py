@@ -1,9 +1,12 @@
 import argparse
+import logging
 import os
 from typing import Callable, Literal
 
 from . import Genius
 from .types import Album, Artist, Song
+
+logger = logging.getLogger(__name__)
 
 SearchResult = Song | Artist | Album
 
@@ -37,8 +40,7 @@ class Searcher:
             if not args.save:
                 print(result.to_text() if format == "txt" else result.to_json())
             else:
-                if args.verbose:
-                    print(f"Saving lyrics in {format.upper()} format.")
+                logger.info("Saving lyrics in %s format.", format.upper())
                 result.save_lyrics(extension=format, overwrite=args.overwrite)
 
 
@@ -99,9 +101,18 @@ def main() -> None:
         help="Specify your Genius API access token (optional). If not provided, it will be read from the GENIUS_ACCESS_TOKEN environment variable.",
     )
     optional.add_argument(
-        "-v", "--verbose", action="store_true", help="Turn on the API verbosity"
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Enable verbose logging output (sets log level to DEBUG)",
     )
     args: argparse.Namespace = parser.parse_args()
+
+    if args.verbose:
+        logging.basicConfig(
+            level=logging.DEBUG,
+            format="%(levelname)s %(name)s: %(message)s",
+        )
 
     # Create an instance of the Genius class
     token: str | None = (
@@ -112,7 +123,7 @@ def main() -> None:
             "Must provide access token either as an argument or as an environment variable."
         )
 
-    api = Genius(token, verbose=args.verbose, timeout=10)
+    api = Genius(token, timeout=10)
     Searcher(api, args.search_type)(args)
 
 
