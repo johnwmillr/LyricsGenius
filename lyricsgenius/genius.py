@@ -4,7 +4,9 @@
 
 """API documentation: https://docs.genius.com/"""
 
+import logging
 import re
+import warnings
 from typing import Any
 
 from bs4 import BeautifulSoup, NavigableString, Tag
@@ -13,6 +15,9 @@ from .api import API, PublicAPI
 from .types import Album, Artist, Song
 from .types.types import ResponseFormatT, TextFormatT
 from .utils import clean_str, safe_unicode
+
+_UNSET: object = object()
+logger = logging.getLogger(__name__)
 
 
 class Genius(API, PublicAPI):
@@ -23,7 +28,13 @@ class Genius(API, PublicAPI):
         response_format (:obj:`str`, optional): API response format (dom, plain, html).
         timeout (:obj:`int`, optional): time before quitting on response (seconds).
         sleep_time (:obj:`str`, optional): time to wait between requests.
-        verbose (:obj:`bool`, optional): Turn printed messages on or off.
+        verbose: Deprecated. Use Python's ``logging`` module to control output.
+            To replicate the old ``verbose=True`` behaviour, configure the
+            ``lyricsgenius`` logger at ``INFO`` or ``DEBUG`` level::
+
+                import logging
+                logging.getLogger("lyricsgenius").setLevel(logging.DEBUG)
+
         remove_section_headers (:obj:`bool`, optional): If `True`, removes [Chorus],
             [Bridge], etc. headers from lyrics.
         skip_non_songs (:obj:`bool`, optional): If `True`, attempts to
@@ -41,7 +52,6 @@ class Genius(API, PublicAPI):
         proxy (:obj:`dict[str, str]`, optional): Proxy settings.
 
     Attributes:
-        verbose (:obj:`bool`, optional): Turn printed messages on or off.
         remove_section_headers (:obj:`bool`, optional): If `True`, removes [Chorus],
             [Bridge], etc. headers from lyrics.
         skip_non_songs (:obj:`bool`, optional): If `True`, attempts to
@@ -92,7 +102,7 @@ class Genius(API, PublicAPI):
         response_format: ResponseFormatT = "plain",
         timeout: int = 5,
         sleep_time: float = 0.2,
-        verbose: bool = True,
+        verbose: object = _UNSET,
         remove_section_headers: bool = False,
         skip_non_songs: bool = True,
         excluded_terms: list[str] | None = None,
@@ -102,6 +112,14 @@ class Genius(API, PublicAPI):
         proxy: dict[str, str] | None = None,
         per_page: int = 5,
     ) -> None:
+        if verbose is not _UNSET:
+            warnings.warn(
+                "The 'verbose' parameter is deprecated and has no effect. "
+                "Configure logging instead: "
+                "logging.getLogger('lyricsgenius').setLevel(logging.DEBUG)",
+                DeprecationWarning,
+                stacklevel=2,
+            )
         if not 1 <= per_page <= 5:
             raise ValueError(
                 "per_page must be between 1 and 5 inclusive when using "
@@ -119,7 +137,6 @@ class Genius(API, PublicAPI):
             proxy=proxy,
         )
 
-        self.verbose = verbose
         self.remove_section_headers = remove_section_headers
         self.skip_non_songs = skip_non_songs
         self.per_page = per_page
@@ -183,12 +200,12 @@ class Genius(API, PublicAPI):
         # Find all lyrics containers
         containers = soup.find_all("div", attrs={"data-lyrics-container": "true"})
         if not containers:
-            if self.verbose:
-                print(
-                    "Couldn't find the lyrics section. "
-                    "Please report this if the song has lyrics.\n"
-                    "Song URL: https://genius.com/{}".format(path)
-                )
+            logger.warning(
+                "Couldn't find the lyrics section. "
+                "Please report this if the song has lyrics.\n"
+                "Song URL: https://genius.com/%s",
+                path,
+            )
             return None
 
         # Extract and join the lyrics
@@ -376,7 +393,7 @@ class Genius(API, PublicAPI):
             the album object is returned, otherwise `None`.
 
         Tip:
-            Set :attr:`Genius.verbose` to `True` to read why the search fails.
+            Set the ``lyricsgenius`` logger to ``INFO`` level to see search progress.
 
         Examples:
             .. code:: python
@@ -389,11 +406,11 @@ class Genius(API, PublicAPI):
         msg = "You must pass either a `name` or an `album_id`."
         assert any([name, album_id]), msg
 
-        if self.verbose and name:
+        if name:
             if artist:
-                print('Searching for "{s}" by {a}...'.format(s=name, a=artist))
+                logger.info('Searching for "%s" by %s...', name, artist)
             else:
-                print('Searching for "{s}"...'.format(s=name))
+                logger.info('Searching for "%s"...', name)
 
         if album_id:
             album_info = self.album(album_id, text_format)["album"]
@@ -412,8 +429,8 @@ class Genius(API, PublicAPI):
         # Exit search if there were no results returned from API
         # Otherwise, move forward with processing the search results
         if album_info is None:
-            if self.verbose and name:
-                print("No results found for: '{s}'".format(s=search_term))
+            if name:
+                logger.warning("No results found for: '%s'", search_term)
             return None
 
         # If the album was searched, query the API using the album id so the full info can be retrieved
@@ -474,7 +491,7 @@ class Genius(API, PublicAPI):
             the song object is returned, otherwise `None`.
 
         Tip:
-            Set :attr:`Genius.verbose` to `True` to read why the search fails.
+            Set the ``lyricsgenius`` logger to ``INFO`` level to see search progress.
 
         Examples:
             .. code:: python
@@ -490,11 +507,11 @@ class Genius(API, PublicAPI):
         if title is None and song_id is None:
             assert any([title, song_id]), msg
 
-        if self.verbose and title:
+        if title:
             if artist:
-                print('Searching for "{s}" by {a}...'.format(s=title, a=artist))
+                logger.info('Searching for "%s" by %s...', title, artist)
             else:
-                print('Searching for "{s}"...'.format(s=title))
+                logger.info('Searching for "%s"...', title)
 
         if song_id:
             song_info = self.song(song_id)["song"]
@@ -513,8 +530,7 @@ class Genius(API, PublicAPI):
             # If search/multi returns no results, fallback to regular /search
             # The /search endpoint handles certain queries better (e.g., with common words like "and", "und")
             if song_info is None:
-                if self.verbose:
-                    print("Trying alternative search...")
+                logger.debug("Trying alternative search...")
                 search_response = self.search(search_term)
 
                 if "hits" in search_response and search_response["hits"]:
@@ -538,8 +554,8 @@ class Genius(API, PublicAPI):
         # Exit search if there were no results returned from API
         # Otherwise, move forward with processing the search results
         if song_info is None:
-            if self.verbose and title:
-                print("No results found for: '{s}'".format(s=search_term))
+            if title:
+                logger.warning("No results found for: '%s'", search_term)
             return None
 
         # Reject non-songs (Liner notes, track lists, etc.)
@@ -550,8 +566,7 @@ class Genius(API, PublicAPI):
             valid = True
 
         if not valid:
-            if self.verbose:
-                print("Specified song does not contain lyrics. Rejecting.")
+            logger.debug("Specified song does not contain lyrics. Rejecting.")
             return None
 
         # Download full song info (an API call) unless told not to by user
@@ -567,14 +582,12 @@ class Genius(API, PublicAPI):
 
         # Skip results when URL is a 404 or lyrics are missing
         if self.skip_non_songs and not lyrics:
-            if self.verbose:
-                print("Specified song does not have a valid lyrics. Rejecting.")
+            logger.debug("Specified song does not have valid lyrics. Rejecting.")
             return None
 
         # Return a Song object with lyrics if we've made it this far
         song = Song(lyrics=lyrics if lyrics is not None else "", body=song_info)
-        if self.verbose:
-            print("Done.")
+        logger.info("Done.")
         return song
 
     def search_artist(
@@ -634,8 +647,7 @@ class Genius(API, PublicAPI):
             None if there were not results
 
             """
-            if self.verbose:
-                print("Searching for songs by {0}...\n".format(search_term))
+            logger.info("Searching for songs by %s...", search_term)
 
             # Perform a Genius API search for the artist
             found_artist = None
@@ -685,8 +697,7 @@ class Genius(API, PublicAPI):
 
             # Exit the search if we couldn't find an artist by the given name
             if not found_artist:
-                if self.verbose:
-                    print("No results found for '{a}'.".format(a=search_term))
+                logger.warning("No results found for '%s'.", search_term)
                 return None
             # Assume the top search result is the intended artist
             return found_artist["id"]
@@ -699,10 +710,7 @@ class Genius(API, PublicAPI):
         artist_info = self.artist(artist_id)["artist"]
         found_name = artist_info["name"]
         if found_name != artist_name and allow_name_change:
-            if self.verbose:
-                print(
-                    "Changing artist name to '{a}'".format(a=safe_unicode(found_name))
-                )
+            logger.info("Changing artist name to '%s'", safe_unicode(found_name))
             artist_name = found_name
 
         # Create the Artist object
@@ -728,9 +736,10 @@ class Genius(API, PublicAPI):
 
                 # Reject non-song results (e.g. Linear Notes, Tracklists, etc.)
                 if not valid:
-                    if self.verbose:
-                        s = song_info["title"]
-                        print('"{s}" is not valid. Skipping.'.format(s=safe_unicode(s)))
+                    logger.debug(
+                        'Skipping "%s": not a valid song.',
+                        safe_unicode(song_info["title"]),
+                    )
                     continue
 
                 # Create the Song object from lyrics and metadata
@@ -744,14 +753,10 @@ class Genius(API, PublicAPI):
                 song = Song(lyrics=lyrics if lyrics is not None else "", body=song_info)
 
                 # Attempt to add the Song to the Artist
-                result = artist.add_song(
-                    song, verbose=False, include_features=include_features
-                )
-                if result is not None and self.verbose:
-                    print(
-                        'Song {n}: "{t}"'.format(
-                            n=artist.num_songs, t=safe_unicode(song.title)
-                        )
+                result = artist.add_song(song, include_features=include_features)
+                if result is not None:
+                    logger.info(
+                        'Song %d: "%s"', artist.num_songs, safe_unicode(song.title)
                     )
 
                 # Exit search if the max number of songs has been met
@@ -759,14 +764,7 @@ class Genius(API, PublicAPI):
                     max_songs is not None and artist.num_songs >= max_songs
                 )
                 if reached_max_songs:
-                    if self.verbose:
-                        print(
-                            (
-                                "\nReached user-specified song limit ({m}).".format(
-                                    m=max_songs
-                                )
-                            )
-                        )
+                    logger.info("Reached user-specified song limit (%d).", max_songs)
                     break
 
             # Move on to next page of search results
@@ -774,8 +772,7 @@ class Genius(API, PublicAPI):
             if page is None or reached_max_songs:
                 break
 
-        if self.verbose:
-            print(f"Done. Found {artist.num_songs} songs.")
+        logger.info("Done. Found %d songs.", artist.num_songs)
         return artist
 
     def tag(
@@ -819,12 +816,12 @@ class Genius(API, PublicAPI):
             path, params_=params, web=True
         )
         if response is None or (html := response.get("html")) is None:
-            if self.verbose:
-                print(
-                    "Couldn't find the lyrics section. "
-                    "Please report this if the song has lyrics.\n"
-                    f"Song URL: https://genius.com/{path}"
-                )
+            logger.warning(
+                "Couldn't find the lyrics section. "
+                "Please report this if the song has lyrics.\n"
+                "Song URL: https://genius.com/%s",
+                path,
+            )
             return None
 
         soup = BeautifulSoup(html, "html.parser")
@@ -832,8 +829,7 @@ class Genius(API, PublicAPI):
 
         ul = soup.find("ul", class_="song_list")
         if ul is None:
-            if self.verbose:
-                print(f"Couldn't find the song list for tag '{name}'. ")
+            logger.warning("Couldn't find the song list for tag '%s'.", name)
             return {"hits": [], "next_page": None}
         assert isinstance(ul, Tag)
         for li in ul.find_all("li"):
