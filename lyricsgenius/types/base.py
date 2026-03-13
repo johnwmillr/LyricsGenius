@@ -1,9 +1,12 @@
 import json
+import logging
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Any
 
 from ..utils import safe_unicode, sanitize_filename
+
+logger = logging.getLogger(__name__)
 
 
 class BaseEntity(ABC):
@@ -17,7 +20,6 @@ class BaseEntity(ABC):
         overwrite: bool = False,
         ensure_ascii: bool = True,
         sanitize: bool = True,
-        verbose: bool = True,
     ) -> None:
         """Save Song(s) lyrics and metadata to a JSON or TXT file.
 
@@ -37,7 +39,6 @@ class BaseEntity(ABC):
                 (the default), the output is guaranteed to have all incoming
                 non-ASCII characters escaped.
             sanitize (:obj:`bool`, optional): Sanitizes the filename if `True`.
-            verbose (:obj:`bool`, optional): prints operation result.
 
         Warning:
             If you set :obj:`sanitize` to `False`, the file name may contain
@@ -61,15 +62,14 @@ class BaseEntity(ABC):
         write_file = False
         if overwrite or not p.is_file():
             write_file = True
-        elif verbose:
+        else:
             msg = f"{p} already exists. Overwrite?\n(y/n): "
             if input(msg).lower() == "y":
                 write_file = True
 
         # Exit if we won't be saving a file
         if not write_file:
-            if verbose:
-                print("Skipping file save.\n")
+            logger.debug("Skipping file save.")
             return None
 
         # Save the lyrics to a file
@@ -78,8 +78,7 @@ class BaseEntity(ABC):
         else:
             self.to_text(str(p), sanitize=False)
 
-        if verbose:
-            print(f"Wrote {safe_unicode(str(p))}.")
+        logger.debug("Wrote %s.", safe_unicode(str(p)))
 
         return None
 

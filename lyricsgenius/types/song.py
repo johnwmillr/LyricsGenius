@@ -2,11 +2,14 @@
 # copyright 2025 John W. R. Miller
 # See LICENSE for details.
 
+import warnings
 from typing import Any
 
 from lyricsgenius.utils import format_filename
 
 from .base import BaseEntity
+
+_UNSET: object = object()
 
 
 class Song(BaseEntity):
@@ -81,8 +84,16 @@ class Song(BaseEntity):
         overwrite: bool = False,
         ensure_ascii: bool = True,
         sanitize: bool = True,
-        verbose: bool = True,
+        verbose: object = _UNSET,
     ) -> None:
+        if verbose is not _UNSET:
+            warnings.warn(
+                "The 'verbose' parameter is deprecated and has no effect. "
+                "Configure logging instead: "
+                "logging.getLogger('lyricsgenius').setLevel(logging.DEBUG)",
+                DeprecationWarning,
+                stacklevel=2,
+            )
         if filename is None:
             filename = format_filename(f"saved_song_lyrics_{self.artist}_{self.title}")
 
@@ -92,7 +103,6 @@ class Song(BaseEntity):
             overwrite=overwrite,
             ensure_ascii=ensure_ascii,
             sanitize=sanitize,
-            verbose=verbose,
         )
 
     def __str__(self) -> str:

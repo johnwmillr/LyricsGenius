@@ -3,11 +3,16 @@
 # See LICENSE for details.
 
 
+import logging
+import warnings
 from typing import Any
 
 from ..utils import format_filename, safe_unicode
 from .base import BaseEntity
 from .song import Song
+
+_UNSET: object = object()
+logger = logging.getLogger(__name__)
 
 
 class Artist(BaseEntity):
@@ -35,7 +40,7 @@ class Artist(BaseEntity):
     def add_song(
         self,
         new_song: Song,
-        verbose: bool = True,
+        verbose: object = _UNSET,
         include_features: bool = False,
     ) -> Song | None:
         """Adds a song to the Artist.
@@ -46,7 +51,7 @@ class Artist(BaseEntity):
 
         Args:
             new_song (:class:`Song <lyricsgenius.types.Song>`): Song to be added.
-            verbose (:obj:`bool`, optional): prints operation result.
+            verbose: Deprecated. Use Python's ``logging`` module to control output.
             include_features (:obj:`bool`, optional): If True, includes tracks
                 featuring the artist.
 
@@ -63,11 +68,20 @@ class Artist(BaseEntity):
                 song = genius.search_song('To You', artist.name)
                 artist.add_song(song)
         """
+        if verbose is not _UNSET:
+            warnings.warn(
+                "The 'verbose' parameter is deprecated and has no effect. "
+                "Configure logging instead: "
+                "logging.getLogger('lyricsgenius').setLevel(logging.DEBUG)",
+                DeprecationWarning,
+                stacklevel=2,
+            )
         if new_song in self.songs:
-            if verbose:
-                print(
-                    f"{safe_unicode(new_song.title)} already in {safe_unicode(self.name)}, not adding song."
-                )
+            logger.debug(
+                "%s already in %s, not adding song.",
+                safe_unicode(new_song.title),
+                safe_unicode(self.name),
+            )
             return None
         if new_song.artist == self.name or (
             include_features
@@ -75,10 +89,11 @@ class Artist(BaseEntity):
         ):
             self.songs.append(new_song)
             return new_song
-        if verbose:
-            print(
-                f"Can't add song by {safe_unicode(new_song.artist)}, artist must be {safe_unicode(self.name)}."
-            )
+        logger.debug(
+            "Can't add song by %s, artist must be %s.",
+            safe_unicode(new_song.artist),
+            safe_unicode(self.name),
+        )
         return None
 
     def get_song(self, song_id: int | None = None) -> Song | None:
@@ -133,8 +148,16 @@ class Artist(BaseEntity):
         overwrite: bool = False,
         ensure_ascii: bool = True,
         sanitize: bool = True,
-        verbose: bool = True,
+        verbose: object = _UNSET,
     ) -> None:
+        if verbose is not _UNSET:
+            warnings.warn(
+                "The 'verbose' parameter is deprecated and has no effect. "
+                "Configure logging instead: "
+                "logging.getLogger('lyricsgenius').setLevel(logging.DEBUG)",
+                DeprecationWarning,
+                stacklevel=2,
+            )
         if filename is None:
             filename = format_filename(
                 f"saved_artist_lyrics_{self.name}_{self.num_songs}_songs"
@@ -146,7 +169,6 @@ class Artist(BaseEntity):
             overwrite=overwrite,
             ensure_ascii=ensure_ascii,
             sanitize=sanitize,
-            verbose=verbose,
         )
 
     def __str__(self) -> str:

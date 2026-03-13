@@ -1,8 +1,11 @@
+import warnings
 from typing import Any
 
 from ..utils import convert_to_datetime, format_filename
 from .base import BaseEntity
 from .song import Song
+
+_UNSET: object = object()
 
 
 class Album(BaseEntity):
@@ -86,8 +89,16 @@ class Album(BaseEntity):
         overwrite: bool = False,
         ensure_ascii: bool = True,
         sanitize: bool = True,
-        verbose: bool = True,
+        verbose: object = _UNSET,
     ) -> None:
+        if verbose is not _UNSET:
+            warnings.warn(
+                "The 'verbose' parameter is deprecated and has no effect. "
+                "Configure logging instead: "
+                "logging.getLogger('lyricsgenius').setLevel(logging.DEBUG)",
+                DeprecationWarning,
+                stacklevel=2,
+            )
         if filename is None:
             filename = format_filename(f"saved_album_lyrics_{self.artist}_{self.name}")
 
@@ -97,7 +108,6 @@ class Album(BaseEntity):
             overwrite=overwrite,
             ensure_ascii=ensure_ascii,
             sanitize=sanitize,
-            verbose=verbose,
         )
 
     def __str__(self) -> str:

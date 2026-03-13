@@ -1,3 +1,4 @@
+import logging
 import os
 import webbrowser
 from typing import Any, ClassVar, Self
@@ -7,6 +8,8 @@ from .api.base import Sender
 from .errors import InvalidStateError
 from .types.types import ScopeT
 from .utils import parse_redirected_url
+
+logger = logging.getLogger(__name__)
 
 
 class OAuth2(Sender):
@@ -45,7 +48,7 @@ class OAuth2(Sender):
         if os.environ.get("GENIUS_ACCESS_TOKEN"):
             super().__init__()
         else:
-            print(
+            logger.warning(
                 "GENIUS_ACCESS_TOKEN not found in environment. "
                 "Falling back to the public API (some features may be unavailable)."
             )
@@ -155,7 +158,7 @@ class OAuth2(Sender):
 
         """
         url = self.url
-        print("Opening browser for Genius login...")
+        logger.info("Opening browser for Genius login...")
         webbrowser.open(url)
         redirected = input("Please paste redirect URL: ").strip()
 
