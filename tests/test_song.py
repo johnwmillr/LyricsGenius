@@ -164,7 +164,6 @@ def test_save_lyrics_json(song_object: Song, tmp_path: Path) -> None:
         filename=str(filename),
         extension="json",
         overwrite=True,
-        verbose=False,
     )
 
     # Check that the file was written correctly
@@ -181,7 +180,6 @@ def test_save_lyrics_txt(song_object: Song, tmp_path: Path) -> None:
         filename=str(filename),
         extension="txt",
         overwrite=True,
-        verbose=False,
     )
 
     # Check that the file was written correctly
@@ -196,7 +194,6 @@ def test_save_lyrics_with_path_json(song_object: Song, tmp_path: Path) -> None:
         filename=str(output_dir / "test_song"),
         extension="json",
         overwrite=True,
-        verbose=False,
     )
 
     saved_file = output_dir / "test_song.json"
@@ -213,7 +210,6 @@ def test_save_lyrics_with_path_txt(song_object: Song, tmp_path: Path) -> None:
         filename=str(output_dir / "test_song"),
         extension="txt",
         overwrite=True,
-        verbose=False,
     )
 
     saved_file = output_dir / "test_song.txt"
@@ -230,7 +226,6 @@ def test_save_lyrics_path_creates_directory(song_object: Song, tmp_path: Path) -
         filename=str(new_dir / "out"),
         extension="json",
         overwrite=True,
-        verbose=False,
     )
 
     assert new_dir.is_dir()
