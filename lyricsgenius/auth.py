@@ -1,3 +1,4 @@
+import os
 import webbrowser
 from typing import Any, ClassVar, Self
 from urllib.parse import urlencode
@@ -41,7 +42,14 @@ class OAuth2(Sender):
         state: str | None = None,
         app_is_client_only: bool = False,
     ) -> None:
-        super().__init__()
+        if os.environ.get("GENIUS_ACCESS_TOKEN"):
+            super().__init__()
+        else:
+            print(
+                "GENIUS_ACCESS_TOKEN not found in environment. "
+                "Falling back to the public API (some features may be unavailable)."
+            )
+            super().__init__(public_api_constructor=True)
         msg = (
             "You must provide a client_secret "
             "if you intend to use the full code exchange."
