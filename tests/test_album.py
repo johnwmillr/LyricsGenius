@@ -151,7 +151,6 @@ def test_saving_json_file(album_object: Album, tmp_path: Path) -> None:
         extension=extension,
         overwrite=True,
         sanitize=False,
-        verbose=False,
     )
     assert expected_filepath.is_file(), f"File not created at {expected_filepath}"
 
@@ -168,7 +167,6 @@ def test_saving_json_file(album_object: Album, tmp_path: Path) -> None:
         extension=extension,
         overwrite=True,
         sanitize=False,
-        verbose=False,
     )
     assert expected_filepath.is_file(), (
         f"Overwritten file not found at {expected_filepath}"
@@ -189,7 +187,6 @@ def test_saving_txt_file(album_object: Album, tmp_path: Path) -> None:
         extension=extension,
         overwrite=True,
         sanitize=False,
-        verbose=False,
     )
     assert expected_filepath.is_file(), f"File not created at {expected_filepath}"
 
@@ -206,7 +203,6 @@ def test_saving_txt_file(album_object: Album, tmp_path: Path) -> None:
         extension=extension,
         overwrite=True,
         sanitize=False,
-        verbose=False,
     )
     assert expected_filepath.is_file(), (
         f"Overwritten file not found at {expected_filepath}"
@@ -218,7 +214,7 @@ def test_saving_txt_file(album_object: Album, tmp_path: Path) -> None:
 
 @pytest.fixture
 def genius_client() -> Genius:
-    return Genius("dummy_access_token", verbose=False, sleep_time=0)
+    return Genius("dummy_access_token", sleep_time=0)
 
 
 def _make_search_all_response(album_data: dict[str, Any]) -> dict[str, Any]:

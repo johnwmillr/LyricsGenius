@@ -312,7 +312,7 @@ def test_add_song_from_same_artist(
 ) -> None:
     """Test adding a song by the same artist."""
     initial_song_count = artist_object.num_songs
-    artist_object.add_song(song_to_add_object, verbose=False)
+    artist_object.add_song(song_to_add_object)
     assert artist_object.num_songs == initial_song_count + 1
     assert song_to_add_object in artist_object.songs
     # No need to manually clean up state, fixtures handle isolation
@@ -351,7 +351,7 @@ def test_add_song_from_different_artist(
 ) -> None:
     """Test attempting to add a song by a different artist."""
     initial_song_count = artist_object.num_songs
-    artist_object.add_song(another_song_object, verbose=False)
+    artist_object.add_song(another_song_object)
     # Assert that the song count did NOT change
     assert artist_object.num_songs == initial_song_count
     assert another_song_object not in artist_object.songs
@@ -367,15 +367,11 @@ def test_add_song_with_includes_features(
 
     # 1. Add to primary artist (Pytest Fixture) - should work regardless of include_features
     initial_count_primary = artist_object.num_songs
-    artist_object.add_song(
-        song_with_feature_object, verbose=False, include_features=False
-    )
+    artist_object.add_song(song_with_feature_object, include_features=False)
     assert artist_object.num_songs == initial_count_primary + 1
     artist_object.songs.pop()  # Reset for next check
 
-    artist_object.add_song(
-        song_with_feature_object, verbose=False, include_features=True
-    )
+    artist_object.add_song(song_with_feature_object, include_features=True)
     assert artist_object.num_songs == initial_count_primary + 1
     artist_object.songs.pop()  # Clean up
 
@@ -384,17 +380,13 @@ def test_add_song_with_includes_features(
     assert initial_count_featured == 0  # Starts empty
 
     # Should succeed only if include_features=True
-    featured_artist_object.add_song(
-        song_with_feature_object, verbose=False, include_features=True
-    )
+    featured_artist_object.add_song(song_with_feature_object, include_features=True)
     assert featured_artist_object.num_songs == initial_count_featured + 1
     assert song_with_feature_object in featured_artist_object.songs
     featured_artist_object.songs.pop()  # Reset
 
     # Should fail if include_features=False
-    featured_artist_object.add_song(
-        song_with_feature_object, verbose=False, include_features=False
-    )
+    featured_artist_object.add_song(song_with_feature_object, include_features=False)
     assert featured_artist_object.num_songs == initial_count_featured
     assert song_with_feature_object not in featured_artist_object.songs
 
@@ -413,7 +405,6 @@ def test_saving_json_file(artist_object: Artist, tmp_path: Path) -> None:
         filename=str(expected_filepath),
         extension=extension,
         overwrite=True,
-        verbose=False,
     )
     assert expected_filepath.is_file(), f"File not created at {expected_filepath}"
     # Simple content check (can be more thorough)
@@ -431,7 +422,6 @@ def test_saving_json_file(artist_object: Artist, tmp_path: Path) -> None:
         filename=str(expected_filepath),
         extension=extension,
         overwrite=True,
-        verbose=False,
     )
     assert expected_filepath.is_file(), (
         f"Overwritten file not found at {expected_filepath}"
@@ -457,7 +447,6 @@ def test_saving_txt_file(artist_object: Artist, tmp_path: Path) -> None:
         extension=extension,
         overwrite=True,
         sanitize=False,
-        verbose=False,
     )
     assert expected_filepath.is_file(), f"File not created at {expected_filepath}"
     # Simple content check
@@ -474,7 +463,6 @@ def test_saving_txt_file(artist_object: Artist, tmp_path: Path) -> None:
         extension=extension,
         overwrite=True,
         sanitize=False,
-        verbose=False,
     )
     assert expected_filepath.is_file(), (
         f"Overwritten file not found at {expected_filepath}"

@@ -51,7 +51,7 @@ def _artist_info(id_: int, name: str) -> dict[str, Any]:
 @pytest.fixture
 def g() -> Genius:
     """Genius instance with a dummy token; no real API calls are made."""
-    return Genius("dummy_access_token", verbose=False, sleep_time=0, per_page=5)
+    return Genius("dummy_access_token", sleep_time=0, per_page=5)
 
 
 # ---------------------------------------------------------------------------
@@ -65,11 +65,11 @@ class TestPerPageValidation:
     @pytest.mark.parametrize("bad_value", [0, -1, 6, 50, 100])
     def test_raises_for_out_of_range_values(self, bad_value: int) -> None:
         with pytest.raises(ValueError, match="per_page must be between 1 and 5"):
-            Genius("dummy_token", verbose=False, sleep_time=0, per_page=bad_value)
+            Genius("dummy_token", sleep_time=0, per_page=bad_value)
 
     @pytest.mark.parametrize("good_value", [1, 2, 3, 4, 5])
     def test_accepts_valid_values(self, good_value: int) -> None:
-        client = Genius("dummy_token", verbose=False, sleep_time=0, per_page=good_value)
+        client = Genius("dummy_token", sleep_time=0, per_page=good_value)
         assert client.per_page == good_value
 
 
