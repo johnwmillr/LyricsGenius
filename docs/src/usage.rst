@@ -54,9 +54,6 @@ There are various options configurable as parameters within the
 
 .. code:: python
 
-   # Turn off status messages
-   genius.verbose = False 
-
    # Remove section headers (e.g. [Chorus]) from lyrics when searching
    genius.remove_section_headers = True 
 
@@ -65,6 +62,13 @@ There are various options configurable as parameters within the
 
    # Exclude songs with these words/phrases in their title (case-insensitive)
    genius.excluded_terms = ["(Remix)", "(Live)"]
+
+By default the library is silent. To enable progress logging:
+
+.. code:: python
+
+   import lyricsgenius
+   lyricsgenius.enable_logging()  # defaults to DEBUG; pass logging.INFO for less output
 
 You can also call the package from the command line:
 

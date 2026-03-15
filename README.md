@@ -88,10 +88,16 @@ album.save_lyrics()
 There are various options configurable as parameters within the `Genius` class:
 
 ```python
-genius.verbose = False # Turn off status messages
 genius.remove_section_headers = True # Remove section headers (e.g. [Chorus]) from lyrics when searching
 genius.skip_non_songs = False # Include hits thought to be non-songs (e.g. track lists)
 genius.excluded_terms = ["(Remix)", "(Live)"] # Exclude songs with these words in their title
+```
+
+By default the library is silent. To enable progress logging:
+
+```python
+import lyricsgenius
+lyricsgenius.enable_logging()  # defaults to DEBUG; pass logging.INFO for less output
 ```
 
 You can also call the package from the command line:
