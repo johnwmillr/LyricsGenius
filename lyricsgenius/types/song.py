@@ -1,5 +1,5 @@
 # LyricsGenius
-# copyright 2025 John W. R. Miller
+# copyright 2026 John W. R. Miller
 # See LICENSE for details.
 
 import warnings

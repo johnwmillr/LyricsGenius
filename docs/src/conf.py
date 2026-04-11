@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath("../.."))
 # -- Project information -----------------------------------------------------
 
 project = "lyricsgenius"
-copyright = "2025, John W. R. Miller, Allerter"
+copyright = "2026, John W. R. Miller, Allerter"
 author = "John W. R. Miller, Allerter"
 
 # -- General configuration ---------------------------------------------------
