@@ -6,7 +6,6 @@
 
 import logging
 import re
-import warnings
 from typing import Any
 
 from bs4 import BeautifulSoup, NavigableString, Tag
@@ -16,7 +15,6 @@ from .types import Album, Artist, Song
 from .types.types import ResponseFormatT, TextFormatT
 from .utils import clean_str, safe_unicode
 
-_UNSET: object = object()
 logger = logging.getLogger(__name__)
 
 
@@ -28,13 +26,6 @@ class Genius(API, PublicAPI):
         response_format (:obj:`str`, optional): API response format (dom, plain, html).
         timeout (:obj:`int`, optional): time before quitting on response (seconds).
         sleep_time (:obj:`str`, optional): time to wait between requests.
-        verbose: Deprecated. Use Python's ``logging`` module to control output.
-            To replicate the old ``verbose=True`` behaviour, configure the
-            ``lyricsgenius`` logger at ``INFO`` or ``DEBUG`` level::
-
-                import logging
-                logging.getLogger("lyricsgenius").setLevel(logging.DEBUG)
-
         remove_section_headers (:obj:`bool`, optional): If `True`, removes [Chorus],
             [Bridge], etc. headers from lyrics.
         skip_non_songs (:obj:`bool`, optional): If `True`, attempts to
@@ -102,7 +93,6 @@ class Genius(API, PublicAPI):
         response_format: ResponseFormatT = "plain",
         timeout: int = 5,
         sleep_time: float = 0.2,
-        verbose: object = _UNSET,
         remove_section_headers: bool = False,
         skip_non_songs: bool = True,
         excluded_terms: list[str] | None = None,
@@ -112,14 +102,6 @@ class Genius(API, PublicAPI):
         proxy: dict[str, str] | None = None,
         per_page: int = 5,
     ) -> None:
-        if verbose is not _UNSET:
-            warnings.warn(
-                "The 'verbose' parameter is deprecated and has no effect. "
-                "Configure logging instead: "
-                "logging.getLogger('lyricsgenius').setLevel(logging.DEBUG)",
-                DeprecationWarning,
-                stacklevel=2,
-            )
         if not 1 <= per_page <= 5:
             raise ValueError(
                 "per_page must be between 1 and 5 inclusive when using "

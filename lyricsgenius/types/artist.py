@@ -4,14 +4,12 @@
 
 
 import logging
-import warnings
 from typing import Any
 
 from ..utils import format_filename, safe_unicode
 from .base import BaseEntity
 from .song import Song
 
-_UNSET: object = object()
 logger = logging.getLogger(__name__)
 
 
@@ -40,7 +38,6 @@ class Artist(BaseEntity):
     def add_song(
         self,
         new_song: Song,
-        verbose: object = _UNSET,
         include_features: bool = False,
     ) -> Song | None:
         """Adds a song to the Artist.
@@ -51,7 +48,6 @@ class Artist(BaseEntity):
 
         Args:
             new_song (:class:`Song <lyricsgenius.types.Song>`): Song to be added.
-            verbose: Deprecated. Use Python's ``logging`` module to control output.
             include_features (:obj:`bool`, optional): If True, includes tracks
                 featuring the artist.
 
@@ -68,14 +64,6 @@ class Artist(BaseEntity):
                 song = genius.search_song('To You', artist.name)
                 artist.add_song(song)
         """
-        if verbose is not _UNSET:
-            warnings.warn(
-                "The 'verbose' parameter is deprecated and has no effect. "
-                "Configure logging instead: "
-                "logging.getLogger('lyricsgenius').setLevel(logging.DEBUG)",
-                DeprecationWarning,
-                stacklevel=2,
-            )
         if new_song in self.songs:
             logger.debug(
                 "%s already in %s, not adding song.",
@@ -148,16 +136,7 @@ class Artist(BaseEntity):
         overwrite: bool = False,
         ensure_ascii: bool = True,
         sanitize: bool = True,
-        verbose: object = _UNSET,
     ) -> None:
-        if verbose is not _UNSET:
-            warnings.warn(
-                "The 'verbose' parameter is deprecated and has no effect. "
-                "Configure logging instead: "
-                "logging.getLogger('lyricsgenius').setLevel(logging.DEBUG)",
-                DeprecationWarning,
-                stacklevel=2,
-            )
         if filename is None:
             filename = format_filename(
                 f"saved_artist_lyrics_{self.name}_{self.num_songs}_songs"
