@@ -88,7 +88,9 @@ class Album(BaseEntity):
         sanitize: bool = True,
     ) -> None:
         if filename is None:
-            filename = format_filename(f"saved_album_lyrics_{self.artist}_{self.name}")
+            filename = format_filename(
+                f"saved_album_lyrics_{self.artist['name']}_{self.name}"
+            )
 
         return super().save_lyrics(
             filename=filename,
