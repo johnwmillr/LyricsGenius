@@ -212,6 +212,28 @@ def test_saving_txt_file(album_object: Album, tmp_path: Path) -> None:
     album_object.tracks[0][1].lyrics = original_lyrics
 
 
+def test_default_save_lyrics_filename_uses_artist_name(
+    album_object: Album, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.chdir(tmp_path)
+
+    album_object.save_lyrics(overwrite=True)
+
+    expected_filepath = (
+        tmp_path / "saved_album_lyrics_py_testerson_mocking_the_tests.json"
+    )
+    assert expected_filepath.is_file(), (
+        f"Default file not created at {expected_filepath}"
+    )
+
+    created_files = list(tmp_path.iterdir())
+    assert len(created_files) == 1
+    assert created_files[0].name == expected_filepath.name
+
+    content = expected_filepath.read_text()
+    assert f'"artist": "{album_object.artist["name"]}"' in content, content
+
+
 @pytest.fixture
 def genius_client() -> Genius:
     return Genius("dummy_access_token", sleep_time=0)
