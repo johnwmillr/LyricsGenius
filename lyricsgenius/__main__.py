@@ -36,12 +36,17 @@ class Searcher:
         if not (result := self.search_func(*args.terms, **kwargs)):
             return
 
+        output_file = getattr(args, "output_file", None)
         for format in args.format:
             if not args.save:
                 print(result.to_text() if format == "txt" else result.to_json())
             else:
                 logger.info("Saving lyrics in %s format.", format.upper())
-                result.save_lyrics(extension=format, overwrite=args.overwrite)
+                result.save_lyrics(
+                    filename=output_file,
+                    extension=format,
+                    overwrite=args.overwrite,
+                )
 
 
 def main() -> None:
@@ -86,6 +91,12 @@ def main() -> None:
         action="store_true",
         default=False,
         help="Overwrite the file if it already exists",
+    )
+    optional.add_argument(
+        "--output-file",
+        type=str,
+        default=None,
+        help="Specify output filename when using --save",
     )
     optional.add_argument(
         "-n",
