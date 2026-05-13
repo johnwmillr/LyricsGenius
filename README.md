@@ -115,6 +115,9 @@ python -m lyricsgenius song "Begin Again" "Andy Shauf" --format json --save
 # Save a song's lyrics in both JSON and text formats
 python -m lyricsgenius song "Begin Again" "Andy Shauf" --format json txt --save
 
+# Save a song's lyrics with a custom filename
+python -m lyricsgenius song "Begin Again" "Andy Shauf" --format json --save --output-file my_song
+
 # Save an artist's lyrics to text files (stopping after 2 songs)
 python -m lyricsgenius artist "The Beatles" --max-songs 2 --format txt --save
 ```
