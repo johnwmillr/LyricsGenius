@@ -245,7 +245,12 @@ class Genius(API, PublicAPI):
         return not re.search(regex, song["title"], flags=re.IGNORECASE)
 
     def _get_item_from_search_response(
-        self, response: dict[str, Any], search_term: str, type_: str, result_type: str
+        self,
+        response: dict[str, Any],
+        search_term: str,
+        type_: str,
+        result_type: str,
+        artist: str | None = None,
     ) -> dict[str, Any] | None:
         """Gets the desired item from the search results.
 
@@ -287,7 +292,10 @@ class Genius(API, PublicAPI):
 
         for hit in hits:
             item = hit["result"]
-            if clean_str(item[result_type]) == clean_str(search_term):
+            if type_ == "song" and result_type == "title":
+                if self._result_is_match(item, search_term, artist):
+                    return item
+            elif clean_str(item[result_type]) == clean_str(search_term):
                 return item
 
         # If the desired type is song lyrics and none of the results matched,
@@ -295,8 +303,15 @@ class Genius(API, PublicAPI):
         if type_ == "song" and self.skip_non_songs:
             for hit in hits:
                 song: dict[str, Any] = hit["result"]
+                if artist and clean_str(song["primary_artist"]["name"]) != clean_str(
+                    artist
+                ):
+                    continue
                 if self._result_is_lyrics(song):
                     return song
+
+        if type_ == "song" and artist:
+            return None
 
         return hits[0]["result"] if hits else None
 
@@ -506,7 +521,11 @@ class Genius(API, PublicAPI):
             # Try search/multi first (the comprehensive search)
             search_response = self.search_all(search_term)
             song_info = self._get_item_from_search_response(
-                search_response, title, type_="song", result_type="title"
+                search_response,
+                title,
+                type_="song",
+                result_type="title",
+                artist=artist,
             )
 
             # If search/multi returns no results, fallback to regular /search
@@ -519,7 +538,7 @@ class Genius(API, PublicAPI):
                     # Try to find an exact match first
                     for hit in search_response["hits"]:
                         result = hit["result"]
-                        if clean_str(result.get("title", "")) == clean_str(title):
+                        if self._result_is_match(result, title, artist):
                             song_info = result
                             break
 
@@ -530,6 +549,10 @@ class Genius(API, PublicAPI):
                             result = hit["result"]
                             # Verify it's a song by checking for expected fields
                             if "primary_artist" in result and "url" in result:
+                                if artist and clean_str(
+                                    result["primary_artist"]["name"]
+                                ) != clean_str(artist):
+                                    continue
                                 song_info = result
                                 break
 
