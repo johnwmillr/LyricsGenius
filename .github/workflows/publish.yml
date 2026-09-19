@@ -23,24 +23,24 @@ jobs:
         run: |
           pypi_version=$(curl -s https://pypi.org/pypi/lyricsgenius/json | jq -r .info.version)
           echo "Latest version: $pypi_version"
-          echo "::set-output name=pypi_version::$pypi_version"
+          echo "pypi_version=$pypi_version" >> "$GITHUB_OUTPUT"
 
       - name: Parse the version from pyproject.toml
         id: get-version-from-pyproject
         run: |
           pyproject_version=$(grep -oP '(?<=^version = ")[^"]*' pyproject.toml)
           echo "pyproject.toml version: $pyproject_version"
-          echo "::set-output name=pyproject_version::$pyproject_version"
+          echo "pyproject_version=$pyproject_version" >> "$GITHUB_OUTPUT"
 
       - name: Check if the project version is changed
         id: set-version-changed-var
         run: |
           if [ "${{ steps.get-version-from-pypi.outputs.pypi_version }}" != "${{ steps.get-version-from-pyproject.outputs.pyproject_version }}" ]; then
             echo "The local project differs from the PyPI version. Need to build and publish."
-            echo "CHANGED=true" >> $GITHUB_OUTPUT
+            echo "CHANGED=true" >> "$GITHUB_OUTPUT"
           else
             echo "The local project is the same as the PyPI version. No need to build or publish."
-            echo "CHANGED=false" >> $GITHUB_OUTPUT
+            echo "CHANGED=false" >> "$GITHUB_OUTPUT"
           fi
 
   build:
@@ -97,3 +97,10 @@ jobs:
           repository-url: https://upload.pypi.org/legacy/
           verbose: false
           skip-existing: false
+
+  github-release:
+    name: Create the GitHub release
+    needs: publish-to-pypi
+    permissions:
+      contents: write
+    uses: ./.github/workflows/github-release.yml

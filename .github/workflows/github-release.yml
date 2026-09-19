@@ -1,0 +1,141 @@
+name: github-release
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: Version to release, e.g. 3.12.2. Defaults to the version in pyproject.toml.
+        required: false
+        type: string
+      target:
+        description: Commit-ish to tag. Defaults to the commit that triggered the workflow.
+        required: false
+        type: string
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to release, e.g. 3.12.2. Defaults to the version in pyproject.toml.
+        required: false
+        type: string
+      target:
+        description: Commit-ish to tag. Defaults to the commit that triggered the workflow.
+        required: false
+        type: string
+
+jobs:
+  github-release:
+    name: Create the GitHub release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Resolve the version and tag
+        id: resolve
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+          INPUT_TARGET: ${{ inputs.target }}
+        run: |
+          set -euo pipefail
+          version="$INPUT_VERSION"
+          if [ -z "$version" ]; then
+            version=$(grep -oP '(?<=^version = ")[^"]*' pyproject.toml)
+          fi
+          target="$INPUT_TARGET"
+          if [ -z "$target" ]; then
+            target="$GITHUB_SHA"
+          fi
+          echo "Version: $version"
+          echo "Tag: v$version"
+          echo "Target: $target"
+          {
+            echo "version=$version"
+            echo "tag=v$version"
+            echo "target=$target"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Check whether the release already exists
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.resolve.outputs.version }}
+          TAG: ${{ steps.resolve.outputs.tag }}
+        run: |
+          set -euo pipefail
+          exists=false
+          # Older releases were tagged without the "v" prefix, so check both spellings
+          # to avoid publishing a duplicate release for a version that already has one.
+          for tag in "$TAG" "$VERSION"; do
+            if gh release view "$tag" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+              echo "Release $tag already exists. Nothing to do."
+              exists=true
+              break
+            fi
+          done
+          echo "exists=$exists" >> "$GITHUB_OUTPUT"
+
+      - name: Download the built package
+        if: steps.check.outputs.exists == 'false'
+        continue-on-error: true  # There is nothing to download when run via workflow_dispatch
+        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e  # v4.2.1
+        with:
+          name: built-package
+          path: dist/
+
+      - name: Build the release notes
+        if: steps.check.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.resolve.outputs.version }}
+          TAG: ${{ steps.resolve.outputs.tag }}
+          TARGET: ${{ steps.resolve.outputs.target }}
+        run: |
+          set -euo pipefail
+
+          # The hand-written notes for this version, if docs/src/release_notes.rst has any.
+          python3 .github/scripts/extract_release_notes.py "$VERSION" > notes.md
+
+          # GitHub's own "What's Changed" summary of the merged pull requests.
+          gh api "repos/$GITHUB_REPOSITORY/releases/generate-notes" \
+            --method POST \
+            --raw-field tag_name="$TAG" \
+            --raw-field target_commitish="$TARGET" \
+            --jq .body > generated-notes.md
+
+          if [ -s notes.md ]; then
+            printf '\n\n' >> notes.md
+          fi
+          cat generated-notes.md >> notes.md
+
+          echo "::group::Release notes"
+          cat notes.md
+          echo "::endgroup::"
+
+      - name: Create the release
+        if: steps.check.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.resolve.outputs.tag }}
+          TARGET: ${{ steps.resolve.outputs.target }}
+        run: |
+          set -euo pipefail
+          assets=()
+          if [ -d dist ] && [ -n "$(ls -A dist)" ]; then
+            for asset in dist/*; do
+              assets+=("$asset")
+            done
+            echo "Attaching: ${assets[*]}"
+          else
+            echo "No built package to attach."
+          fi
+          gh release create "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$TARGET" \
+            --title "$TAG" \
+            --notes-file notes.md \
+            "${assets[@]}"
