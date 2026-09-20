@@ -58,3 +58,38 @@ def test_search_song_returns_none_when_artist_does_not_match() -> None:
         result = g.search_song("Santa", artist="Madonna", get_full_info=False)
 
     assert result is None
+
+
+def test_search_song_tolerates_hit_missing_title() -> None:
+    """A malformed hit without a ``title`` must not raise, just fail to match."""
+    g = Genius("dummy_access_token", sleep_time=0, skip_non_songs=False)
+    malformed = _song_hit(1, "Santa", "Madonna")
+    del malformed["result"]["title"]
+    search_all_response = _search_all_response(
+        [malformed, _song_hit(2, "Santa", "Madonna")]
+    )
+
+    with (
+        mock.patch.object(g, "search_all", return_value=search_all_response),
+        mock.patch.object(g, "search", return_value={"hits": []}),
+    ):
+        result = g.search_song("Santa", artist="Madonna", get_full_info=False)
+
+    assert result is not None
+    assert result.artist == "Madonna"
+
+
+def test_search_song_tolerates_hit_missing_primary_artist() -> None:
+    """A malformed hit without ``primary_artist`` must not raise."""
+    g = Genius("dummy_access_token", sleep_time=0, skip_non_songs=True)
+    malformed = _song_hit(1, "Santa", "Madonna")
+    del malformed["result"]["primary_artist"]
+    search_all_response = _search_all_response([malformed])
+
+    with (
+        mock.patch.object(g, "search_all", return_value=search_all_response),
+        mock.patch.object(g, "search", return_value={"hits": []}),
+    ):
+        result = g.search_song("Santa", artist="Madonna", get_full_info=False)
+
+    assert result is None

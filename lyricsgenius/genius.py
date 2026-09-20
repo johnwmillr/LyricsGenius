@@ -303,9 +303,9 @@ class Genius(API, PublicAPI):
         if type_ == "song" and self.skip_non_songs:
             for hit in hits:
                 song: dict[str, Any] = hit["result"]
-                if artist and clean_str(song["primary_artist"]["name"]) != clean_str(
-                    artist
-                ):
+                if artist and clean_str(
+                    song.get("primary_artist", {}).get("name", "")
+                ) != clean_str(artist):
                     continue
                 if self._result_is_lyrics(song):
                     return song
@@ -319,11 +319,11 @@ class Genius(API, PublicAPI):
         self, result: dict[str, Any], title: str, artist: str | None = None
     ) -> bool:
         """Returns `True` if search result matches searched song."""
-        result_title = clean_str(result["title"])
+        result_title = clean_str(result.get("title", ""))
         title_is_match = result_title == clean_str(title)
         if not artist:
             return title_is_match
-        result_artist = clean_str(result["primary_artist"]["name"])
+        result_artist = clean_str(result.get("primary_artist", {}).get("name", ""))
         return title_is_match and result_artist == clean_str(artist)
 
     def song_annotations(
