@@ -4,6 +4,34 @@
 Release notes
 =============
 
+3.14.0 (2026-09-22)
+-------------------
+
+New
+*******
+-  Added an ``--output-file`` option to the command line interface for
+   saving lyrics under a custom filename. The existing ``-o``/``--overwrite``
+   flag is unchanged.
+
+
+3.13.0 (2026-09-22)
+-------------------
+
+Changed
+*******
+-  ``Genius.search_song()`` now respects the ``artist`` argument when one is
+   given. An ambiguous title could previously return a song by a different
+   artist; it now returns ``None`` when no result matches the requested
+   artist.
+-  Search result matching tolerates results missing ``title`` or
+   ``primary_artist`` rather than raising ``KeyError``.
+
+Other
+*******
+-  GitHub releases are now created automatically alongside each PyPI
+   release, so the two no longer drift apart.
+
+
 3.7.3
 ------------------
 
