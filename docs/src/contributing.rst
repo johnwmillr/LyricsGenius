@@ -26,5 +26,22 @@ to test your changes:
 - ``tox``: runs all tests (both of the ones above).
 
 
+Releasing
+*********
+Releases are driven entirely by tags. The package version is derived from the
+tag by ``hatch-vcs``, so there is no version to bump anywhere in the tree.
+
+To cut a release, tag a commit on ``master`` and push the tag:
+
+.. code:: bash
+
+    git tag v3.15.0
+    git push origin v3.15.0
+
+Pushing a ``v*`` tag runs the ``publish`` workflow, which builds the package,
+uploads it to PyPI, and creates the matching GitHub release with the built
+artifacts attached. A run that fails partway can simply be re-run; nothing
+needs to change in the repository first.
+
 
 .. _open an issue: https://github.com/johnwmillr/LyricsGenius/issues

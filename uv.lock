@@ -254,7 +254,6 @@ wheels = [
 
 [[package]]
 name = "lyricsgenius"
-version = "3.14.0"
 source = { editable = "." }
 dependencies = [
     { name = "beautifulsoup4" },

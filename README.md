@@ -133,3 +133,13 @@ python -m lyricsgenius artist "The Beatles" --max-songs 2 --format txt --save
 
 ## Contributing
 Please contribute! If you want to fix a bug, suggest improvements, or add new features to the project, just [open an issue](https://github.com/johnwmillr/LyricsGenius/issues) or send me a pull request.
+
+## Releasing
+Releases are driven by tags. The package version is derived from the tag, so there is no version to bump anywhere in the repository — tag a commit on `master` and push the tag:
+
+```bash
+git tag v3.15.0
+git push origin v3.15.0
+```
+
+That builds the package, publishes it to PyPI, and creates the matching GitHub release. A run that fails partway can simply be re-run.

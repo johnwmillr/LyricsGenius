@@ -1,10 +1,10 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
 name = "lyricsgenius"
-version = "3.14.0"
+dynamic = ["version"]
 dependencies = ["beautifulsoup4>=4.12.3", "requests>=2.27.1"]
 requires-python = ">=3.11"
 authors = [{ name = "John W. R. Miller", email = "john.w.millr+lg@gmail.com" }]
@@ -55,6 +55,10 @@ dev = [
     "types-html5lib>=1.1.11.20241018",
     "types-requests>=2.32.0.20250328",
 ]
+
+# The version is read from the release tag, so nothing in the tree needs bumping.
+[tool.hatch.version]
+source = "vcs"
 
 [[tool.uv.index]]
 name = "testpypi"
