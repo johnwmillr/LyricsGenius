@@ -21,8 +21,30 @@ jobs:
       - name: Get the latest version from PyPI
         id: get-version-from-pypi
         run: |
-          pypi_version=$(curl -s https://pypi.org/pypi/lyricsgenius/json | jq -r .info.version)
-          echo "Latest version: $pypi_version"
+          set -euo pipefail
+          # PyPI serves this through a CDN, so a plain read can return a stale
+          # version for a minute or two after a release. A stale read here makes
+          # the check below think an already-published version still needs
+          # publishing. Ask for a revalidated response and vary the URL; neither
+          # is guaranteed, which is why the publish step also tolerates a
+          # version that already exists.
+          http_code=$(curl --silent --show-error --location \
+            --header 'Cache-Control: no-cache' \
+            --header 'Pragma: no-cache' \
+            --output pypi.json \
+            --write-out '%{http_code}' \
+            "https://pypi.org/pypi/lyricsgenius/json?cachebust=$(date +%s)")
+
+          case "$http_code" in
+            200) pypi_version=$(jq -r .info.version pypi.json) ;;
+            404) pypi_version="" ;;  # Not published yet
+            *)
+              echo "Unexpected HTTP $http_code from PyPI" >&2
+              exit 1
+              ;;
+          esac
+
+          echo "Latest version: ${pypi_version:-<none>}"
           echo "pypi_version=$pypi_version" >> "$GITHUB_OUTPUT"
 
       - name: Parse the version from pyproject.toml
@@ -96,7 +118,10 @@ jobs:
         with:
           repository-url: https://upload.pypi.org/legacy/
           verbose: false
-          skip-existing: false
+          # A version that is already on PyPI means the check above read a stale
+          # CDN response, not that anything is wrong. Skip it instead of failing
+          # the run; a genuinely broken upload still fails.
+          skip-existing: true
 
   github-release:
     name: Create the GitHub release
