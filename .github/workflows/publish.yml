@@ -2,78 +2,19 @@ name: publish
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - v*
   workflow_dispatch:
 
 jobs:
-  project-version-is-changed:
-    name: Check if project version is changed
-    runs-on: ubuntu-latest
-    outputs:
-      CHANGED: ${{ steps.set-version-changed-var.outputs.CHANGED }}
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          persist-credentials: false
-
-      - name: Get the latest version from PyPI
-        id: get-version-from-pypi
-        run: |
-          set -euo pipefail
-          # PyPI serves this through a CDN, so a plain read can return a stale
-          # version for a minute or two after a release. A stale read here makes
-          # the check below think an already-published version still needs
-          # publishing. Ask for a revalidated response and vary the URL; neither
-          # is guaranteed, which is why the publish step also tolerates a
-          # version that already exists.
-          http_code=$(curl --silent --show-error --location \
-            --header 'Cache-Control: no-cache' \
-            --header 'Pragma: no-cache' \
-            --output pypi.json \
-            --write-out '%{http_code}' \
-            "https://pypi.org/pypi/lyricsgenius/json?cachebust=$(date +%s)")
-
-          case "$http_code" in
-            200) pypi_version=$(jq -r .info.version pypi.json) ;;
-            404) pypi_version="" ;;  # Not published yet
-            *)
-              echo "Unexpected HTTP $http_code from PyPI" >&2
-              exit 1
-              ;;
-          esac
-
-          echo "Latest version: ${pypi_version:-<none>}"
-          echo "pypi_version=$pypi_version" >> "$GITHUB_OUTPUT"
-
-      - name: Parse the version from pyproject.toml
-        id: get-version-from-pyproject
-        run: |
-          pyproject_version=$(grep -oP '(?<=^version = ")[^"]*' pyproject.toml)
-          echo "pyproject.toml version: $pyproject_version"
-          echo "pyproject_version=$pyproject_version" >> "$GITHUB_OUTPUT"
-
-      - name: Check if the project version is changed
-        id: set-version-changed-var
-        run: |
-          if [ "${{ steps.get-version-from-pypi.outputs.pypi_version }}" != "${{ steps.get-version-from-pyproject.outputs.pyproject_version }}" ]; then
-            echo "The local project differs from the PyPI version. Need to build and publish."
-            echo "CHANGED=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "The local project is the same as the PyPI version. No need to build or publish."
-            echo "CHANGED=false" >> "$GITHUB_OUTPUT"
-          fi
-
   build:
     name: build
     runs-on: ubuntu-latest
-    needs: project-version-is-changed
-    if: needs.project-version-is-changed.outputs.CHANGED == 'true'
     steps:
       - name: Checkout the repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
+          fetch-depth: 0  # hatch-vcs reads the version from the tags and history
           persist-credentials: false
 
       - name: Install uv and set the Python version
@@ -118,9 +59,8 @@ jobs:
         with:
           repository-url: https://upload.pypi.org/legacy/
           verbose: false
-          # A version that is already on PyPI means the check above read a stale
-          # CDN response, not that anything is wrong. Skip it instead of failing
-          # the run; a genuinely broken upload still fails.
+          # Keeps a re-run of a partially failed release harmless: the files
+          # that made it are skipped instead of failing the upload.
           skip-existing: true
 
   github-release:

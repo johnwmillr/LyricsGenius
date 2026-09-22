@@ -2,6 +2,11 @@ name: publish-to-testpypi
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: Version to publish, e.g. 3.15.0rc1. Defaults to a dev version derived from the commit.
+        required: false
+        type: string
 
 jobs:
   build:
@@ -12,6 +17,7 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
+          fetch-depth: 0  # hatch-vcs reads the version from the tags and history
           persist-credentials: false
 
       - name: Install uv and set the Python version
@@ -26,7 +32,32 @@ jobs:
         with:
           python-version-file: ".python-version"
 
+      - name: Resolve the version to publish
+        id: resolve
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+          REF_TYPE: ${{ github.ref_type }}
+          RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          set -euo pipefail
+          version="$INPUT_VERSION"
+          if [ -z "$version" ] && [ "$REF_TYPE" != "tag" ]; then
+            # Off a tag, hatch-vcs appends a local segment (+g<sha>) that PyPI and
+            # TestPyPI both reject. Derive the same version without it, and use the
+            # run number as the dev counter so every dispatch gets a fresh version
+            # rather than being silently skipped by skip-existing.
+            base=$(uvx --with setuptools-scm python -c \
+              "from setuptools_scm import get_version; print(get_version(local_scheme='no-local-version'))")
+            version="${base%%.dev*}.dev${RUN_NUMBER}"
+          fi
+          # On a tag with no override, leave this empty and let hatch-vcs derive it.
+          echo "Version: ${version:-<derived from the tag>}"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
       - name: Build the package
+        env:
+          # setuptools-scm, which hatch-vcs wraps, honours this. Empty means "derive".
+          SETUPTOOLS_SCM_PRETEND_VERSION: ${{ steps.resolve.outputs.version }}
         run: uv build
 
       - name: Upload artifacts

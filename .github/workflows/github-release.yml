@@ -4,21 +4,13 @@ on:
   workflow_call:
     inputs:
       version:
-        description: Version to release, e.g. 3.12.2. Defaults to the version in pyproject.toml.
-        required: false
-        type: string
-      target:
-        description: Commit-ish to tag. Defaults to the commit that triggered the workflow.
+        description: Version to release, e.g. 3.12.2. Defaults to the tag the run was triggered by.
         required: false
         type: string
   workflow_dispatch:
     inputs:
       version:
-        description: Version to release, e.g. 3.12.2. Defaults to the version in pyproject.toml.
-        required: false
-        type: string
-      target:
-        description: Commit-ish to tag. Defaults to the commit that triggered the workflow.
+        description: Version to release, e.g. 3.12.2. Defaults to the tag the run was triggered by.
         required: false
         type: string
 
@@ -39,24 +31,25 @@ jobs:
         id: resolve
         env:
           INPUT_VERSION: ${{ inputs.version }}
-          INPUT_TARGET: ${{ inputs.target }}
+          REF_NAME: ${{ github.ref_name }}
+          REF_TYPE: ${{ github.ref_type }}
         run: |
           set -euo pipefail
           version="$INPUT_VERSION"
           if [ -z "$version" ]; then
-            version=$(grep -oP '(?<=^version = ")[^"]*' pyproject.toml)
-          fi
-          target="$INPUT_TARGET"
-          if [ -z "$target" ]; then
-            target="$GITHUB_SHA"
+            # The tag is the version; nothing in the tree carries one any more.
+            if [ "$REF_TYPE" != "tag" ]; then
+              echo "Not running on a tag, so there is no version to release." >&2
+              echo "Re-run with the version input set, or push a vX.Y.Z tag." >&2
+              exit 1
+            fi
+            version="${REF_NAME#v}"
           fi
           echo "Version: $version"
           echo "Tag: v$version"
-          echo "Target: $target"
           {
             echo "version=$version"
             echo "tag=v$version"
-            echo "target=$target"
           } >> "$GITHUB_OUTPUT"
 
       - name: Check whether the release already exists
@@ -93,7 +86,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.resolve.outputs.version }}
           TAG: ${{ steps.resolve.outputs.tag }}
-          TARGET: ${{ steps.resolve.outputs.target }}
         run: |
           set -euo pipefail
 
@@ -104,7 +96,6 @@ jobs:
           gh api "repos/$GITHUB_REPOSITORY/releases/generate-notes" \
             --method POST \
             --raw-field tag_name="$TAG" \
-            --raw-field target_commitish="$TARGET" \
             --jq .body > generated-notes.md
 
           if [ -s notes.md ]; then
@@ -121,7 +112,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.resolve.outputs.tag }}
-          TARGET: ${{ steps.resolve.outputs.target }}
         run: |
           set -euo pipefail
           assets=()
@@ -133,9 +123,10 @@ jobs:
           else
             echo "No built package to attach."
           fi
+          # The tag already exists -- pushing it is what started the release -- so
+          # this only creates the release and attaches the assets.
           gh release create "$TAG" \
             --repo "$GITHUB_REPOSITORY" \
-            --target "$TARGET" \
             --title "$TAG" \
             --notes-file notes.md \
             "${assets[@]}"
