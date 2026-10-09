@@ -17,6 +17,12 @@ repos:
         types_or: [python, pyi]
   - repo: local
     hooks:
+      - id: mypy
+        name: Type check with mypy
+        entry: uv run mypy
+        language: system
+        types_or: [python, pyi]
+        pass_filenames: false
       - id: pytest
         name: Run pytest
         entry: uv run pytest
