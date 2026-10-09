@@ -8,6 +8,19 @@ from datetime import datetime
 from string import punctuation
 from urllib.parse import parse_qs, urlparse
 
+_JS_ESCAPE = re.compile(
+    r"\\(x[0-9a-fA-F]{2}|u\{[0-9a-fA-F]+\}|u[0-9a-fA-F]{4}|\r\n|.)", re.S
+)
+_JS_SIMPLE_ESCAPES = {
+    "n": "\n",
+    "r": "\r",
+    "t": "\t",
+    "b": "\b",
+    "f": "\f",
+    "v": "\v",
+    "0": "\0",
+}
+
 
 def auth_from_environment() -> tuple[str | None, str | None, str | None]:
     """Gets credentials from environment variables.
@@ -128,6 +141,40 @@ def safe_unicode(s: str) -> str:
 
     """
     return s.encode("utf-8").decode(sys.stdout.encoding, errors="replace")
+
+
+def decode_js_string(literal: str) -> str:
+    r"""Decodes the body of a single-quoted JavaScript string literal.
+
+    Handles the escapes JavaScript allows (``\'``, ``\n``, ``\xNN``,
+    ``\uXXXX``, ``\u{...}`` and line continuations), joining surrogate
+    pairs into single characters.
+
+    Args:
+        literal (:obj:`str`): the text between the quotes.
+
+    Returns:
+        :obj:`str`: decoded string.
+
+    Raises:
+        UnicodeDecodeError: if the literal contains an unpaired surrogate.
+
+    """
+
+    def replace(match: re.Match[str]) -> str:
+        escape = match.group(1)
+        if escape[0] == "x":
+            return chr(int(escape[1:], 16))
+        if escape[0] == "u":
+            return chr(int(escape[1:].strip("{}"), 16))
+        if escape in ("\n", "\r", "\r\n", "\u2028", "\u2029"):
+            return ""  # Line continuation
+        # Anything else (\', \", \/, \\, ...) stands for itself
+        return _JS_SIMPLE_ESCAPES.get(escape, escape)
+
+    decoded = _JS_ESCAPE.sub(replace, literal)
+    # \uXXXX escapes may encode surrogate pairs; join them into real characters
+    return decoded.encode("utf-16", "surrogatepass").decode("utf-16")
 
 
 def format_filename(f: str) -> str:

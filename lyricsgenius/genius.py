@@ -4,6 +4,7 @@
 
 """API documentation: https://docs.genius.com/"""
 
+import json
 import logging
 import re
 from typing import Any
@@ -13,9 +14,37 @@ from bs4 import BeautifulSoup, NavigableString, Tag
 from .api import API, PublicAPI
 from .types import Album, Artist, Song
 from .types.types import ResponseFormatT, TextFormatT
-from .utils import clean_str, safe_unicode
+from .utils import clean_str, decode_js_string, safe_unicode
 
 logger = logging.getLogger(__name__)
+
+# Song pages embed their state as `window.__PRELOADED_STATE__ = JSON.parse('...')`,
+# where the argument is a single-quoted JS string literal holding JSON.
+_PRELOADED_STATE = re.compile(
+    r"window\.__PRELOADED_STATE__\s*=\s*JSON\.parse\('((?:[^'\\]|\\.)*)'\)", re.S
+)
+
+
+def _preloaded_lyrics_html(page: str) -> str | None:
+    """Returns the lyrics HTML from a song page's embedded state, if present."""
+    match = _PRELOADED_STATE.search(page)
+    if not match:
+        return None
+    try:
+        state = json.loads(decode_js_string(match.group(1)))
+        html = state["songPage"]["lyricsData"]["body"]["html"]
+    except (ValueError, KeyError, TypeError):
+        return None
+    return html if isinstance(html, str) else None
+
+
+def _lyrics_text(element: Tag | NavigableString) -> str:
+    """Returns an element's text, with <br> tags already turned into newlines."""
+    if isinstance(element, NavigableString):
+        return str(element)
+    if element.get("data-exclude-from-selection") == "true":
+        return ""
+    return element.get_text()
 
 
 class Genius(API, PublicAPI):
@@ -162,6 +191,10 @@ class Genius(API, PublicAPI):
             This method removes the song headers based on the value of the
             :attr:`Genius.remove_section_headers` attribute.
 
+        Note:
+            Lyrics are read from the page's lyrics sections. If the page has
+            none, they are read from the song data embedded in the page instead.
+
         """
         if song_url:
             path = song_url.replace("https://genius.com/", "")
@@ -171,7 +204,8 @@ class Genius(API, PublicAPI):
             raise ValueError("You must supply either `song_id` or `song_url`.")
 
         # Scrape the song lyrics from the HTML
-        soup = BeautifulSoup(self._make_request(path, web=True)["html"], "html.parser")
+        page = self._make_request(path, web=True)["html"]
+        soup = BeautifulSoup(page, "html.parser")
 
         # Remove LyricsHeader divs from the DOM
         removes = soup.find_all("div", class_=re.compile("LyricsHeader"))
@@ -181,30 +215,36 @@ class Genius(API, PublicAPI):
 
         # Find all lyrics containers
         containers = soup.find_all("div", attrs={"data-lyrics-container": "true"})
-        if not containers:
-            logger.warning(
-                "Couldn't find the lyrics section. "
-                "Please report this if the song has lyrics.\n"
-                "Song URL: https://genius.com/%s",
-                path,
-            )
-            return None
-
-        # Extract and join the lyrics
-        lyrics = ""
-        for container in containers:
-            assert isinstance(container, Tag)
-            if not container.contents:
-                lyrics += "\n"
-                continue
-            for element in container.contents:
-                assert isinstance(element, (Tag, NavigableString))
-                if element.name == "br":
+        if containers:
+            for br in soup.find_all("br"):
+                br.replace_with(NavigableString("\n"))
+            lyrics = ""
+            for container in containers:
+                assert isinstance(container, Tag)
+                if not container.contents:
                     lyrics += "\n"
-                elif isinstance(element, NavigableString):
-                    lyrics += str(element)
-                elif element.get("data-exclude-from-selection") != "true":
-                    lyrics += element.get_text(separator="\n")
+                for element in container.contents:
+                    assert isinstance(element, (Tag, NavigableString))
+                    lyrics += _lyrics_text(element)
+        else:
+            # Fall back to the lyrics HTML embedded in the page's state.
+            # Its newlines are only formatting; line breaks come from <br> tags.
+            html = _preloaded_lyrics_html(page)
+            lyrics = ""
+            if html:
+                fragment = BeautifulSoup(html.replace("\n", ""), "html.parser")
+                for br in fragment.find_all("br"):
+                    br.replace_with(NavigableString("\n"))
+                lyrics = fragment.get_text()
+            if not lyrics.strip():
+                logger.warning(
+                    "Couldn't find the lyrics section. "
+                    "Please report this if the song has lyrics.\n"
+                    "Song URL: https://genius.com/%s",
+                    path,
+                )
+                return None
+            logger.debug("Read lyrics from the page's embedded state: %s", path)
 
         # Remove [Verse], [Bridge], etc.
         if self.remove_section_headers or remove_section_headers:
