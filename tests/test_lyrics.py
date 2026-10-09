@@ -4,7 +4,7 @@ from unittest import mock
 
 import pytest
 
-from lyricsgenius.genius import Genius, _decode_js_string, _preloaded_lyrics_html
+from lyricsgenius.genius import Genius, _preloaded_lyrics_html
 
 SONG_URL = "https://genius.com/Mocking-the-tests-lyrics"
 
@@ -95,22 +95,6 @@ def test_lyrics_returns_none_when_nothing_is_found(
     with caplog.at_level(logging.WARNING, logger="lyricsgenius.genius"):
         assert scrape(genius, page) is None
     assert "Couldn't find the lyrics section" in caplog.text
-
-
-@pytest.mark.parametrize(
-    ("literal", "expected"),
-    [
-        (r"plain", "plain"),
-        (r"it\'s \"quoted\" \/ \\", 'it\'s "quoted" / \\'),
-        (r"\x41B\u{43}", "ABC"),
-        (r"line\nbreak\ttab", "line\nbreak\ttab"),
-        (r"🎵", "🎵"),
-        ("continued\\\nline", "continuedline"),
-        (r"\q", "q"),
-    ],
-)
-def test_decode_js_string(literal: str, expected: str) -> None:
-    assert _decode_js_string(literal) == expected
 
 
 def test_preloaded_lyrics_html_handles_escaped_json() -> None:

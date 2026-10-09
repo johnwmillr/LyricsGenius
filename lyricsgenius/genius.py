@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup, NavigableString, Tag
 from .api import API, PublicAPI
 from .types import Album, Artist, Song
 from .types.types import ResponseFormatT, TextFormatT
-from .utils import clean_str, safe_unicode
+from .utils import clean_str, decode_js_string, safe_unicode
 
 logger = logging.getLogger(__name__)
 
@@ -23,37 +23,6 @@ logger = logging.getLogger(__name__)
 _PRELOADED_STATE = re.compile(
     r"window\.__PRELOADED_STATE__\s*=\s*JSON\.parse\('((?:[^'\\]|\\.)*)'\)", re.S
 )
-_JS_ESCAPE = re.compile(
-    r"\\(x[0-9a-fA-F]{2}|u\{[0-9a-fA-F]+\}|u[0-9a-fA-F]{4}|\r\n|.)", re.S
-)
-_JS_SIMPLE_ESCAPES = {
-    "n": "\n",
-    "r": "\r",
-    "t": "\t",
-    "b": "\b",
-    "f": "\f",
-    "v": "\v",
-    "0": "\0",
-}
-
-
-def _decode_js_string(literal: str) -> str:
-    """Decodes the body of a single-quoted JS string literal."""
-
-    def replace(match: re.Match[str]) -> str:
-        escape = match.group(1)
-        if escape[0] == "x":
-            return chr(int(escape[1:], 16))
-        if escape[0] == "u":
-            return chr(int(escape[1:].strip("{}"), 16))
-        if escape in ("\n", "\r", "\r\n", "\u2028", "\u2029"):
-            return ""  # Line continuation
-        # Anything else (\', \", \/, \\, ...) stands for itself
-        return _JS_SIMPLE_ESCAPES.get(escape, escape)
-
-    decoded = _JS_ESCAPE.sub(replace, literal)
-    # \uXXXX escapes may encode surrogate pairs; join them into real characters
-    return decoded.encode("utf-16", "surrogatepass").decode("utf-16")
 
 
 def _preloaded_lyrics_html(page: str) -> str | None:
@@ -62,7 +31,7 @@ def _preloaded_lyrics_html(page: str) -> str | None:
     if not match:
         return None
     try:
-        state = json.loads(_decode_js_string(match.group(1)))
+        state = json.loads(decode_js_string(match.group(1)))
         html = state["songPage"]["lyricsData"]["body"]["html"]
     except (ValueError, KeyError, TypeError):
         return None
