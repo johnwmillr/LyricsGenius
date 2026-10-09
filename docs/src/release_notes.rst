@@ -4,6 +4,23 @@
 Release notes
 =============
 
+3.15.0 (2026-10-08)
+-------------------
+
+New
+*******
+-  If a song page has no lyrics sections (for example after Genius changes
+   its page layout), ``Genius.lyrics()`` now reads the lyrics from the song
+   data embedded in the page instead of returning ``None``.
+
+Fixed
+*******
+-  ``Genius.lyrics()`` no longer splits a line where part of it was
+   formatted or annotated. For example, "Bring a friend, join the crowd,
+   whoever wanna come along" on BTS "Dynamite" used to come out as two
+   lines.
+
+
 3.14.0 (2026-09-22)
 -------------------
 
