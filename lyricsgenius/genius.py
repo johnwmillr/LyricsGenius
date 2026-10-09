@@ -217,7 +217,7 @@ class Genius(API, PublicAPI):
         containers = soup.find_all("div", attrs={"data-lyrics-container": "true"})
         if containers:
             for br in soup.find_all("br"):
-                br.replace_with("\n")
+                br.replace_with(NavigableString("\n"))
             lyrics = ""
             for container in containers:
                 assert isinstance(container, Tag)
@@ -234,7 +234,7 @@ class Genius(API, PublicAPI):
             if html:
                 fragment = BeautifulSoup(html.replace("\n", ""), "html.parser")
                 for br in fragment.find_all("br"):
-                    br.replace_with("\n")
+                    br.replace_with(NavigableString("\n"))
                 lyrics = fragment.get_text()
             if not lyrics.strip():
                 logger.warning(
