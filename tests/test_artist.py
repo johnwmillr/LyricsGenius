@@ -90,13 +90,17 @@ def test_artist_add_song_takes_features_only_when_asked(
     ("kwargs", "title"),
     [
         pytest.param({"song_id": 2}, "Patch Decorator Funk", id="by_id"),
+        pytest.param(
+            {"title": "Patch Decorator Funk"}, "Patch Decorator Funk", id="by_title"
+        ),
         pytest.param({"song_id": 99}, None, id="missing_id"),
+        pytest.param({"title": "Missing"}, None, id="missing_title"),
     ],
 )
-def test_artist_get_song_finds_song(
+def test_artist_get_song_finds_song_by_id_or_title(
     artist: Artist, kwargs: dict[str, Any], title: str | None
 ) -> None:
-    """A song is found by its ID, or None is returned."""
+    """A song is found by its ID or title, or None is returned."""
     song = artist.get_song(**kwargs)
 
     assert (song.title if song else None) == title
