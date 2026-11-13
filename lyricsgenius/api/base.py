@@ -67,7 +67,20 @@ class Sender(RequestCapable):
         web: bool = False,
         **kwargs: Any,
     ) -> dict[str, Any]:
-        """Makes a request to Genius."""
+        """Makes a request to Genius.
+
+        Returns:
+            :obj:`dict`: ``{"html": ...}`` for web pages, an empty dict for
+            204 responses, otherwise the JSON body's ``response`` field
+            (or the whole body if it has none).
+
+        Raises:
+            HTTPError: If the response status is 4xx, or 5xx after all
+                retries. ``args`` holds the status code and a description,
+                and ``response`` holds the response.
+            Timeout: If the request times out after all retries.
+
+        """
         header = None
         if public_api:
             uri = self.PUBLIC_API_ROOT
@@ -93,15 +106,19 @@ class Sender(RequestCapable):
                     headers=header,
                     **kwargs,
                 )
+                response.raise_for_status()
             except Timeout as e:
                 error = f"Request timed out:\n{e}"
                 if tries > self.retries:
                     raise Timeout(error) from e
             except HTTPError as e:
-                assert response is not None
-                error = get_description(e)
-                if response.status_code < 500 or tries > self.retries:
-                    raise HTTPError(response.status_code, error) from e
+                status_code = e.response.status_code
+                if status_code < 500 or tries > self.retries:
+                    raise HTTPError(
+                        status_code, get_description(e), response=e.response
+                    ) from e
+                # Retry server errors
+                response = None
 
             # Enforce rate limiting
             time.sleep(self.sleep_time)
@@ -113,20 +130,16 @@ class Sender(RequestCapable):
             )
         if web:
             return {"html": response.text}
-        if response.status_code == 200:
-            response_data: dict[str, Any] = response.json()
-            return response_data.get("response", response_data)
-        raise AssertionError(
-            f"Unexpected response status code: {response.status_code}. "
-            f"Expected 200 or 204. Response body: {response.text}. "
-            f"Response headers: {response.headers}."
-        )
+        if response.status_code == 204:
+            return {}
+        response_data: dict[str, Any] = response.json()
+        return response_data.get("response", response_data)
 
 
 def get_description(e: RequestException) -> str:
     """Extract a descriptive error message from a RequestException instance."""
     try:
-        response = e.response.json() if e.response else {}
+        response = e.response.json() if e.response is not None else {}
     except JSONDecodeError:
         return str(e)
 

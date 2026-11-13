@@ -180,7 +180,7 @@ class API(Sender):
             path=endpoint, method="POST", params_=params, json=payload
         )
 
-    def delete_annotation(self, annotation_id: int) -> int | None:
+    def delete_annotation(self, annotation_id: int) -> int:
         """Deletes an annotation created by the authenticated user.
 
         Requires scope: :obj:`manage_annotation`.
@@ -189,12 +189,14 @@ class API(Sender):
             annotation_id (:obj:`int`): Annotation ID.
 
         Returns:
-            :obj:`int`: 204 - which is the response's status code
+            :obj:`int`: 204, the status code of a successful deletion.
+
+        Raises:
+            HTTPError: If Genius rejects the deletion.
 
         """
-        return self._make_request(
-            path=f"annotations/{annotation_id}", method="DELETE"
-        ).get("status_code")
+        self._make_request(path=f"annotations/{annotation_id}", method="DELETE")
+        return 204
 
     def downvote_annotation(
         self,
