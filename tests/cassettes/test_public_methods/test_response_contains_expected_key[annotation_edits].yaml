@@ -1,0 +1,26 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/annotations/10225840/versions?text_format=html
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"versions\":[{\"body\":{\"html\":\"<p>For
+        example, the id of this annotation is 10225839</p>\"},\"created_at\":1470946328,\"id\":101333150,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"[avatar
+        credit]\\n\\n\\n\\nHi, I\u2019m nightpool. I\u2019m a editor moderator tech-head
+        at Genius, and you\u2019ll find me in a bunch of different places. I love
+        making 2 letter edits to lyrics that totally change their meaning! Feel free
+        to hit me up about whatever\u2014especially if its about the site. I have
+        a special passion for the Genius metagame.\\n\\n\\n\\n\\n\\nwhat the water
+        wants is hurricanes\\nand sailboats to ride on its back\\nwhat the water wants
+        is sunkiss\\nand land to run in to and back\",\"api_path\":\"/users/188555\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/503912f69fd1692084e2d55fa18839e3.900x900x1.jpg\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/503912f69fd1692084e2d55fa18839e3.900x900x1.jpg\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/503912f69fd1692084e2d55fa18839e3.900x900x1.jpg\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/503912f69fd1692084e2d55fa18839e3.900x900x1.jpg\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://images.genius.com/16e44a62093c06e563351a1c80bcb018.500x600x5.gif\",\"human_readable_role_for_display\":\"Staff\",\"id\":188555,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"nightpool\",\"name\":\"nightpool\",\"role_for_display\":\"staff\",\"url\":\"https://genius.com/nightpool\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":59538}}]}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

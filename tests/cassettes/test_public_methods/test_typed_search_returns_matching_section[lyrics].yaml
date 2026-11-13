@@ -1,0 +1,34 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/search/lyric?q=test&per_page=2&page=1
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"sections\":[{\"type\":\"lyric\",\"hits\":[{\"highlights\":[{\"property\":\"lyrics\",\"value\":\"since
+        wrestling\\nInfesting in your kid's ears and nesting\\nTesting, \\\"Attention,
+        please\\\"\\nFeel the tension soon as someone mentions\",\"snippet\":true,\"ranges\":[{\"start\":57,\"end\":61}]}],\"index\":\"lyric\",\"matched_words\":1,\"nb_exact_words\":0,\"nb_typos\":0,\"type\":\"song\",\"result\":{\"_type\":\"song\",\"annotation_count\":54,\"api_path\":\"/songs/811\",\"artist_names\":\"Eminem\",\"full_title\":\"Without
+        Me by\_Eminem\",\"header_image_thumbnail_url\":\"https://images.genius.com/5231bedc8897a200a713e682ba12c704.300x300x1.png\",\"header_image_url\":\"https://images.genius.com/5231bedc8897a200a713e682ba12c704.1000x1000x1.png\",\"hidden\":false,\"id\":811,\"instrumental\":false,\"lyrics_owner_id\":3,\"lyrics_state\":\"complete\",\"lyrics_updated_at\":1788430933,\"path\":\"/Eminem-without-me-lyrics\",\"pending_lyrics_edits_count\":0,\"primary_artist_names\":\"Eminem\",\"pyongs_count\":453,\"relationships_index_url\":\"https://genius.com/Eminem-without-me-sample\",\"release_date_components\":{\"year\":2002,\"month\":4,\"day\":29},\"release_date_for_display\":\"April
+        29, 2002\",\"release_date_with_abbreviated_month_for_display\":\"Apr. 29,
+        2002\",\"song_art_image_thumbnail_url\":\"https://images.genius.com/5231bedc8897a200a713e682ba12c704.300x300x1.png\",\"song_art_image_url\":\"https://images.genius.com/5231bedc8897a200a713e682ba12c704.1000x1000x1.png\",\"stats\":{\"unreviewed_annotations\":7,\"concurrents\":4,\"hot\":false,\"pageviews\":13629494},\"title\":\"Without
+        Me\",\"title_with_featured\":\"Without Me\",\"updated_at\":1794536794,\"updated_by_human_at\":1791749837,\"url\":\"https://genius.com/Eminem-without-me-lyrics\",\"featured_artists\":[],\"primary_artist\":{\"_type\":\"artist\",\"api_path\":\"/artists/45\",\"header_image_url\":\"https://images.genius.com/7879bf220b8614a7fe4617006f132a92.1000x391x1.png\",\"id\":45,\"image_url\":\"https://images.genius.com/d009c9eeda5c9c060172d861f5edafc6.921x921x1.png\",\"index_character\":\"e\",\"is_meme_verified\":true,\"is_verified\":true,\"links_config\":null,\"name\":\"Eminem\",\"slug\":\"Eminem\",\"url\":\"https://genius.com/artists/Eminem\",\"iq\":298987},\"primary_artists\":[{\"_type\":\"artist\",\"api_path\":\"/artists/45\",\"header_image_url\":\"https://images.genius.com/7879bf220b8614a7fe4617006f132a92.1000x391x1.png\",\"id\":45,\"image_url\":\"https://images.genius.com/d009c9eeda5c9c060172d861f5edafc6.921x921x1.png\",\"index_character\":\"e\",\"is_meme_verified\":true,\"is_verified\":true,\"links_config\":null,\"name\":\"Eminem\",\"slug\":\"Eminem\",\"url\":\"https://genius.com/artists/Eminem\",\"iq\":298987}]}},{\"highlights\":[{\"property\":\"lyrics\",\"value\":\"m
+        a motherfuckin' starboy\\nEvery day, a nigga try to test me, ah\\nEvery day,
+        a nigga try to end\",\"snippet\":true,\"ranges\":[{\"start\":52,\"end\":56}]}],\"index\":\"lyric\",\"matched_words\":1,\"nb_exact_words\":0,\"nb_typos\":0,\"type\":\"song\",\"result\":{\"_type\":\"song\",\"annotation_count\":19,\"api_path\":\"/songs/2851948\",\"artist_names\":\"The
+        Weeknd (Ft. Daft Punk)\",\"full_title\":\"Starboy by\_The\_Weeknd (Ft.\_Daft\_Punk)\",\"header_image_thumbnail_url\":\"https://images.genius.com/e5926fe79d3129ad62d1c06568d4fbea.300x300x1.png\",\"header_image_url\":\"https://images.genius.com/e5926fe79d3129ad62d1c06568d4fbea.1000x1000x1.png\",\"hidden\":false,\"id\":2851948,\"instrumental\":false,\"lyrics_owner_id\":282633,\"lyrics_state\":\"complete\",\"lyrics_updated_at\":1673848986,\"path\":\"/The-weeknd-starboy-lyrics\",\"pending_lyrics_edits_count\":1,\"primary_artist_names\":\"The
+        Weeknd\",\"pyongs_count\":640,\"relationships_index_url\":\"https://genius.com/The-weeknd-starboy-sample\",\"release_date_components\":{\"year\":2016,\"month\":9,\"day\":21},\"release_date_for_display\":\"September
+        21, 2016\",\"release_date_with_abbreviated_month_for_display\":\"Sep. 21,
+        2016\",\"song_art_image_thumbnail_url\":\"https://images.genius.com/e5926fe79d3129ad62d1c06568d4fbea.300x300x1.png\",\"song_art_image_url\":\"https://images.genius.com/e5926fe79d3129ad62d1c06568d4fbea.1000x1000x1.png\",\"stats\":{\"unreviewed_annotations\":0,\"concurrents\":4,\"hot\":false,\"pageviews\":9787888},\"title\":\"Starboy\",\"title_with_featured\":\"Starboy
+        (Ft.\_Daft\_Punk)\",\"updated_at\":1794040995,\"updated_by_human_at\":1786962101,\"url\":\"https://genius.com/The-weeknd-starboy-lyrics\",\"featured_artists\":[{\"_type\":\"artist\",\"api_path\":\"/artists/13585\",\"header_image_url\":\"https://images.genius.com/65cd354bc41531872aca3356dc06eb83.1000x562x1.jpg\",\"id\":13585,\"image_url\":\"https://images.genius.com/fc66a06980755603458979cb342a27bd.1000x1000x1.png\",\"index_character\":\"d\",\"is_meme_verified\":false,\"is_verified\":false,\"links_config\":null,\"name\":\"Daft
+        Punk\",\"slug\":\"Daft-punk\",\"url\":\"https://genius.com/artists/Daft-punk\"}],\"primary_artist\":{\"_type\":\"artist\",\"api_path\":\"/artists/2358\",\"header_image_url\":\"https://images.genius.com/4f53cc8d9d521bf6a1c5b37b8867ccef.1000x333x1.jpg\",\"id\":2358,\"image_url\":\"https://images.genius.com/f81165c1ef2601f62dc1f591c356de99.1000x1000x1.png\",\"index_character\":\"w\",\"is_meme_verified\":false,\"is_verified\":true,\"links_config\":null,\"name\":\"The
+        Weeknd\",\"slug\":\"The-weeknd\",\"url\":\"https://genius.com/artists/The-weeknd\",\"iq\":17887},\"primary_artists\":[{\"_type\":\"artist\",\"api_path\":\"/artists/2358\",\"header_image_url\":\"https://images.genius.com/4f53cc8d9d521bf6a1c5b37b8867ccef.1000x333x1.jpg\",\"id\":2358,\"image_url\":\"https://images.genius.com/f81165c1ef2601f62dc1f591c356de99.1000x1000x1.png\",\"index_character\":\"w\",\"is_meme_verified\":false,\"is_verified\":true,\"links_config\":null,\"name\":\"The
+        Weeknd\",\"slug\":\"The-weeknd\",\"url\":\"https://genius.com/artists/The-weeknd\",\"iq\":17887}]}}]}],\"next_page\":2}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

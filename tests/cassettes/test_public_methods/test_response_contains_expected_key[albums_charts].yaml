@@ -1,0 +1,27 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/albums/chart?time_period=day&chart_genre=all&per_page=2&page=1&text_format=html
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"chart_items\":[{\"_type\":\"chart_item\",\"type\":\"album\",\"item\":{\"_type\":\"album\",\"api_path\":\"/albums/1779553\",\"cover_art_thumbnail_url\":\"https://images.genius.com/d95da8b4b8a180d747afd01b3a308fc5.300x300x1.png\",\"cover_art_url\":\"https://images.genius.com/d95da8b4b8a180d747afd01b3a308fc5.1000x1000x1.png\",\"full_title\":\"Echo
+        by Ecco2k\",\"id\":1779553,\"name\":\"Echo\",\"name_with_artist\":\"Echo (artist:
+        Ecco2k)\",\"primary_artist_names\":\"Ecco2k\",\"pusher_channel\":\"album-1779553\",\"release_date_components\":{\"year\":2026,\"month\":11,\"day\":12},\"release_date_for_display\":\"November
+        12, 2026\",\"updated_at\":1794548095,\"url\":\"https://genius.com/albums/Ecco2k/Echo\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"set_album_color_gradient\"]},\"artist\":{\"_type\":\"artist\",\"api_path\":\"/artists/152872\",\"header_image_url\":\"https://images.genius.com/56ee8b55e3cbca7269125db9ba92d615.806x1000x1.jpg\",\"id\":152872,\"image_url\":\"https://images.genius.com/4302c959f76092e454ae905cab6d8939.1000x1000x1.jpg\",\"index_character\":\"e\",\"is_meme_verified\":false,\"is_verified\":true,\"links_config\":null,\"name\":\"Ecco2k\",\"slug\":\"Ecco2k\",\"url\":\"https://genius.com/artists/Ecco2k\",\"iq\":1034},\"primary_artists\":[{\"_type\":\"artist\",\"api_path\":\"/artists/152872\",\"header_image_url\":\"https://images.genius.com/56ee8b55e3cbca7269125db9ba92d615.806x1000x1.jpg\",\"id\":152872,\"image_url\":\"https://images.genius.com/4302c959f76092e454ae905cab6d8939.1000x1000x1.jpg\",\"index_character\":\"e\",\"is_meme_verified\":false,\"is_verified\":true,\"links_config\":null,\"name\":\"Ecco2k\",\"slug\":\"Ecco2k\",\"url\":\"https://genius.com/artists/Ecco2k\",\"iq\":1034}]}},{\"_type\":\"chart_item\",\"type\":\"album\",\"item\":{\"_type\":\"album\",\"api_path\":\"/albums/1393345\",\"cover_art_thumbnail_url\":\"https://images.genius.com/0b0033e0a3fa2a51380fef67eeb4f8b2.300x300x1.png\",\"cover_art_url\":\"https://images.genius.com/0b0033e0a3fa2a51380fef67eeb4f8b2.1000x1000x1.png\",\"full_title\":\"\u041B\u044E\u0431\u043E\u0432\u044C
+        \u0438 \u0420\u0430\u043A\u0435\u0442\u044B, \u0427.1 (Love and Rockets) by
+        GONE.Fludd\",\"id\":1393345,\"name\":\"\u041B\u044E\u0431\u043E\u0432\u044C
+        \u0438 \u0420\u0430\u043A\u0435\u0442\u044B, \u0427.1 (Love and Rockets)\",\"name_with_artist\":\"\u041B\u044E\u0431\u043E\u0432\u044C
+        \u0438 \u0420\u0430\u043A\u0435\u0442\u044B, \u0427.1 (Love and Rockets) (artist:
+        GONE.Fludd)\",\"primary_artist_names\":\"GONE.Fludd\",\"pusher_channel\":\"album-1393345\",\"release_date_components\":{\"year\":2026,\"month\":11,\"day\":13},\"release_date_for_display\":\"November
+        13, 2026\",\"updated_at\":1794546564,\"url\":\"https://genius.com/albums/Gonefludd/1-love-and-rockets\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"set_album_color_gradient\"]},\"artist\":{\"_type\":\"artist\",\"api_path\":\"/artists/299966\",\"header_image_url\":\"https://images.genius.com/5d337bae43681eecd63b74d56785ace2.1000x794x1.jpg\",\"id\":299966,\"image_url\":\"https://images.genius.com/69cf6a21ea98a01ae0ae02e85f849190.795x1000x1.png\",\"index_character\":\"g\",\"is_meme_verified\":false,\"is_verified\":true,\"links_config\":null,\"name\":\"GONE.Fludd\",\"slug\":\"Gonefludd\",\"url\":\"https://genius.com/artists/Gonefludd\",\"iq\":12631},\"primary_artists\":[{\"_type\":\"artist\",\"api_path\":\"/artists/299966\",\"header_image_url\":\"https://images.genius.com/5d337bae43681eecd63b74d56785ace2.1000x794x1.jpg\",\"id\":299966,\"image_url\":\"https://images.genius.com/69cf6a21ea98a01ae0ae02e85f849190.795x1000x1.png\",\"index_character\":\"g\",\"is_meme_verified\":false,\"is_verified\":true,\"links_config\":null,\"name\":\"GONE.Fludd\",\"slug\":\"Gonefludd\",\"url\":\"https://genius.com/artists/Gonefludd\",\"iq\":12631}]}}],\"next_page\":2}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

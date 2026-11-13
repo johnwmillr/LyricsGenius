@@ -1,0 +1,32 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/users/1/contributions/transcriptions?per_page=2&sort=popularity&text_format=html
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"contribution_groups\":[{\"contribution_type\":\"song\",\"date\":1346002356,\"contributions\":[{\"_type\":\"song\",\"annotation_count\":1,\"api_path\":\"/songs/86251\",\"artist_names\":\"Avril
+        Lavigne\",\"full_title\":\"Complicated by\_Avril\_Lavigne\",\"header_image_thumbnail_url\":\"https://images.genius.com/c0f519bbe1f007e4ea0f9e50ad853eab.300x300x1.png\",\"header_image_url\":\"https://images.genius.com/c0f519bbe1f007e4ea0f9e50ad853eab.1000x1000x1.png\",\"hidden\":false,\"id\":86251,\"instrumental\":false,\"lyrics_owner_id\":1,\"lyrics_state\":\"complete\",\"lyrics_updated_at\":1791806936,\"path\":\"/Avril-lavigne-complicated-lyrics\",\"pending_lyrics_edits_count\":0,\"primary_artist_names\":\"Avril
+        Lavigne\",\"pyongs_count\":79,\"relationships_index_url\":\"https://genius.com/Avril-lavigne-complicated-sample\",\"release_date_components\":{\"year\":2002,\"month\":3,\"day\":11},\"release_date_for_display\":\"March
+        11, 2002\",\"release_date_with_abbreviated_month_for_display\":\"Mar. 11,
+        2002\",\"song_art_image_thumbnail_url\":\"https://images.genius.com/c0f519bbe1f007e4ea0f9e50ad853eab.300x300x1.png\",\"song_art_image_url\":\"https://images.genius.com/c0f519bbe1f007e4ea0f9e50ad853eab.1000x1000x1.png\",\"stats\":{\"unreviewed_annotations\":0,\"hot\":false,\"pageviews\":953096},\"title\":\"Complicated\",\"title_with_featured\":\"Complicated\",\"updated_at\":1794543390,\"updated_by_human_at\":1794169496,\"url\":\"https://genius.com/Avril-lavigne-complicated-lyrics\",\"featured_artists\":[],\"primary_artist\":{\"_type\":\"artist\",\"api_path\":\"/artists/2224\",\"header_image_url\":\"https://images.genius.com/b315fe1743d0e2b5c7a04cfa6dc725f7.1000x333x1.jpg\",\"id\":2224,\"image_url\":\"https://images.genius.com/0b8ca06f7aafefbb135752b47deac5d1.1000x1000x1.jpg\",\"index_character\":\"a\",\"is_meme_verified\":false,\"is_verified\":true,\"links_config\":null,\"name\":\"Avril
+        Lavigne\",\"slug\":\"Avril-lavigne\",\"url\":\"https://genius.com/artists/Avril-lavigne\",\"iq\":1109},\"primary_artists\":[{\"_type\":\"artist\",\"api_path\":\"/artists/2224\",\"header_image_url\":\"https://images.genius.com/b315fe1743d0e2b5c7a04cfa6dc725f7.1000x333x1.jpg\",\"id\":2224,\"image_url\":\"https://images.genius.com/0b8ca06f7aafefbb135752b47deac5d1.1000x1000x1.jpg\",\"index_character\":\"a\",\"is_meme_verified\":false,\"is_verified\":true,\"links_config\":null,\"name\":\"Avril
+        Lavigne\",\"slug\":\"Avril-lavigne\",\"url\":\"https://genius.com/artists/Avril-lavigne\",\"iq\":1109}]}]},{\"contribution_type\":\"song\",\"date\":1386450171,\"contributions\":[{\"_type\":\"song\",\"annotation_count\":7,\"api_path\":\"/songs/291543\",\"artist_names\":\"Lou
+        Bega\",\"full_title\":\"Mambo No. 5 (A Little Bit of...) by\_Lou\_Bega\",\"header_image_thumbnail_url\":\"https://images.genius.com/3325090c5c5f1aef1d4dcae89714f8ac.300x300x1.jpg\",\"header_image_url\":\"https://images.genius.com/3325090c5c5f1aef1d4dcae89714f8ac.1000x1000x1.jpg\",\"hidden\":false,\"id\":291543,\"instrumental\":false,\"lyrics_owner_id\":1,\"lyrics_state\":\"complete\",\"lyrics_updated_at\":1785788300,\"path\":\"/Lou-bega-mambo-no-5-a-little-bit-of-lyrics\",\"pending_lyrics_edits_count\":0,\"primary_artist_names\":\"Lou
+        Bega\",\"pyongs_count\":17,\"relationships_index_url\":\"https://genius.com/Lou-bega-mambo-no-5-a-little-bit-of-sample\",\"release_date_components\":{\"year\":1999,\"month\":7,\"day\":19},\"release_date_for_display\":\"July
+        19, 1999\",\"release_date_with_abbreviated_month_for_display\":\"Jul. 19,
+        1999\",\"song_art_image_thumbnail_url\":\"https://images.genius.com/3325090c5c5f1aef1d4dcae89714f8ac.300x300x1.jpg\",\"song_art_image_url\":\"https://images.genius.com/3325090c5c5f1aef1d4dcae89714f8ac.1000x1000x1.jpg\",\"stats\":{\"unreviewed_annotations\":4,\"concurrents\":2,\"hot\":false,\"pageviews\":736535},\"title\":\"Mambo
+        No. 5 (A Little Bit of...)\",\"title_with_featured\":\"Mambo No. 5 (A Little
+        Bit of...)\",\"updated_at\":1792218233,\"updated_by_human_at\":1785788300,\"url\":\"https://genius.com/Lou-bega-mambo-no-5-a-little-bit-of-lyrics\",\"featured_artists\":[],\"primary_artist\":{\"_type\":\"artist\",\"api_path\":\"/artists/106322\",\"header_image_url\":\"https://images.genius.com/f64d79035cf3f66279bff88bf4390224.1000x1000x1.jpg\",\"id\":106322,\"image_url\":\"https://images.genius.com/2fad23535eae6768019147f0d7315c93.999x999x1.jpg\",\"index_character\":\"l\",\"is_meme_verified\":false,\"is_verified\":false,\"links_config\":null,\"name\":\"Lou
+        Bega\",\"slug\":\"Lou-bega\",\"url\":\"https://genius.com/artists/Lou-bega\"},\"primary_artists\":[{\"_type\":\"artist\",\"api_path\":\"/artists/106322\",\"header_image_url\":\"https://images.genius.com/f64d79035cf3f66279bff88bf4390224.1000x1000x1.jpg\",\"id\":106322,\"image_url\":\"https://images.genius.com/2fad23535eae6768019147f0d7315c93.999x999x1.jpg\",\"index_character\":\"l\",\"is_meme_verified\":false,\"is_verified\":false,\"links_config\":null,\"name\":\"Lou
+        Bega\",\"slug\":\"Lou-bega\",\"url\":\"https://genius.com/artists/Lou-bega\"}]}]}],\"next_cursor\":2}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

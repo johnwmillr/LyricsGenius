@@ -83,8 +83,8 @@ def convert_to_datetime(f: str | dict[str, int] | None) -> datetime | None:
 def clean_str(s: str) -> str:
     """Cleans a string to help with string comparison.
 
-    Removes punctuation and returns
-    a stripped, NFKC normalized string in lowercase.
+    Removes punctuation and accents (so "JAŸ-Z" matches "Jay-Z"), collapses
+    whitespace and returns a stripped, NFKC normalized string in lowercase.
 
     Args:
         s (:obj:`str`): A string.
@@ -94,7 +94,10 @@ def clean_str(s: str) -> str:
 
     """
     punctuation_ = punctuation + "'" + "\u200b"
-    string = s.translate(str.maketrans("", "", punctuation_)).strip().lower()
+    decomposed = unicodedata.normalize("NFKD", s)
+    unaccented = "".join(c for c in decomposed if not unicodedata.combining(c))
+    string = unaccented.translate(str.maketrans("", "", punctuation_)).lower()
+    string = " ".join(string.split())
     return unicodedata.normalize("NFKC", string)
 
 

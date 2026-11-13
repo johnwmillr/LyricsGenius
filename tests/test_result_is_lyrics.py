@@ -1,3 +1,5 @@
+"""Tests for how Genius decides whether a search result is a song with lyrics."""
+
 from typing import Any
 
 import pytest
@@ -5,18 +7,8 @@ import pytest
 from lyricsgenius.genius import Genius
 
 
-@pytest.fixture()
-def _result_is_lyrics_genius() -> Genius:
-    """Provide a Genius instance for _result_is_lyrics tests with verbosity off."""
-    return Genius(access_token="dummy_token_for_testing")
-
-
-def _call(g: Genius, song: dict[str, Any]) -> bool:
-    return g._result_is_lyrics(song)
-
-
 @pytest.mark.parametrize(
-    "song,expected",
+    ("song", "expected"),
     [
         pytest.param(
             {"lyrics_state": "incomplete", "title": "Some Song"},
@@ -36,7 +28,7 @@ def _call(g: Genius, song: dict[str, Any]) -> bool:
         pytest.param(
             {"lyrics_state": "complete", "title": "[Track List]"},
             False,
-            id="default_excluded_term",
+            id="bracketed_default_excluded_term",
         ),
         pytest.param(
             {"lyrics_state": "complete", "title": "Hello World"},
@@ -45,14 +37,15 @@ def _call(g: Genius, song: dict[str, Any]) -> bool:
         ),
     ],
 )
-def test_result_is_lyrics_basic_cases(
-    _result_is_lyrics_genius: Genius, song: dict[str, Any], expected: bool
+def test_result_is_lyrics_classifies_results(
+    genius: Genius, song: dict[str, Any], expected: bool
 ) -> None:
-    assert _call(_result_is_lyrics_genius, song) is expected
+    """Only complete, non-instrumental results with allowed titles have lyrics."""
+    assert genius._result_is_lyrics(song) is expected
 
 
 @pytest.mark.parametrize(
-    "title,expected",
+    ("title", "expected"),
     [
         pytest.param("Bonus Track", False, id="excluded_via_custom_term"),
         pytest.param("Track List", False, id="default_term_still_excluded"),
@@ -60,19 +53,21 @@ def test_result_is_lyrics_basic_cases(
         pytest.param("Hello World", True, id="not_excluded"),
     ],
 )
-def test_custom_excluded_term_added_without_replacement(
+def test_result_is_lyrics_adds_custom_terms_to_defaults(
     title: str, expected: bool
 ) -> None:
+    """Custom excluded terms apply alongside the default ones."""
     g = Genius(
         access_token="dummy_token_for_testing",
         excluded_terms=["bonus track"],
         replace_default_terms=False,
     )
-    assert _call(g, {"lyrics_state": "complete", "title": title}) is expected
+
+    assert g._result_is_lyrics({"lyrics_state": "complete", "title": title}) is expected
 
 
 @pytest.mark.parametrize(
-    "title,expected",
+    ("title", "expected"),
     [
         pytest.param("Track List", True, id="default_term_no_longer_excluded"),
         pytest.param("Bonus Track", False, id="custom_term_still_excludes"),
@@ -81,12 +76,12 @@ def test_custom_excluded_term_added_without_replacement(
         pytest.param("Hello World", True, id="not_excluded"),
     ],
 )
-def test_replacing_default_terms_removes_original_exclusions(
-    title: str, expected: bool
-) -> None:
+def test_result_is_lyrics_can_replace_default_terms(title: str, expected: bool) -> None:
+    """Replacing the default terms leaves only the custom ones, matched literally."""
     g = Genius(
         access_token="dummy_token_for_testing",
         excluded_terms=["bonus track", "(Remix)"],
         replace_default_terms=True,
     )
-    assert _call(g, {"lyrics_state": "complete", "title": title}) is expected
+
+    assert g._result_is_lyrics({"lyrics_state": "complete", "title": title}) is expected

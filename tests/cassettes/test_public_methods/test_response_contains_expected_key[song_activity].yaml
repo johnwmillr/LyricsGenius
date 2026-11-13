@@ -1,0 +1,22 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/songs/378195/activity_stream/line_items?text_format=html&per_page=2&page=1
+  response:
+    body:
+      string: '{"meta":{"status":200},"response":{"line_items":[{"_type":"activity_stream/line_item","action":"upvoted","action_name":"upvoted","actor_avatars":[{"tiny":{"url":"https://images.genius.com/avatars/tiny/88fe6f500d7c46b8f383aa7627b379ad","bounding_box":{"width":16,"height":16}},"thumb":{"url":"https://images.genius.com/avatars/thumb/88fe6f500d7c46b8f383aa7627b379ad","bounding_box":{"width":32,"height":32}},"small":{"url":"https://images.genius.com/avatars/small/88fe6f500d7c46b8f383aa7627b379ad","bounding_box":{"width":100,"height":100}},"medium":{"url":"https://images.genius.com/avatars/medium/88fe6f500d7c46b8f383aa7627b379ad","bounding_box":{"width":300,"height":400}}}],"api_path":"/line_items/323259087","detail_api_path":"/comments/2303016","event_ids":[323259087],"focus_api_path":"/comments/2303016","href":"https://genius.com/Sia-chandelier-lyrics","icon_url":{"1x":"https://assets.genius.com/images/api/activity_upvoted_1x.png","2x":"https://assets.genius.com/images/api/activity_upvoted_2x.png","3x":"https://assets.genius.com/images/api/activity_upvoted_3x.png"},"timestamp":1793991931,"iq_gained":1.0,"message":{"html":"Fateh_037
+        upvoted Yix''s suggestion"},"message_components":{"key":"user.Vote.comment","params":{"actors":"Fateh_037","verb":"upvoted","target":"Yix''s
+        suggestion","context":"","count":1}},"strategy":"user_upvoted_comment","unread":false},{"_type":"activity_stream/line_item","action":"upvoted","action_name":"upvoted","actor_avatars":[{"tiny":{"url":"https://filepicker-images.genius.com/97055c01ffa48a83e334e76f064e1f513fc90f4da81421ce5c8d08ad4a9ba498%2Frldo0d4evzh","bounding_box":{"width":16,"height":16}},"thumb":{"url":"https://filepicker-images.genius.com/97055c01ffa48a83e334e76f064e1f513fc90f4da81421ce5c8d08ad4a9ba498%2Frldo0d4evzh","bounding_box":{"width":32,"height":32}},"small":{"url":"https://filepicker-images.genius.com/97055c01ffa48a83e334e76f064e1f513fc90f4da81421ce5c8d08ad4a9ba498%2Frldo0d4evzh","bounding_box":{"width":100,"height":100}},"medium":{"url":"https://filepicker-images.genius.com/97055c01ffa48a83e334e76f064e1f513fc90f4da81421ce5c8d08ad4a9ba498%2Frldo0d4evzh","bounding_box":{"width":300,"height":400}}}],"api_path":"/line_items/321848365","detail_api_path":"/referents/2941057","event_ids":[321848365],"focus_api_path":"/referents/2941057","href":"https://genius.com/2941058/Sia-chandelier/Keep-my-glass-full-until-mornin-light-cause-im-just-holdin-on-for-tonight","icon_url":{"1x":"https://assets.genius.com/images/api/activity_upvoted_1x.png","2x":"https://assets.genius.com/images/api/activity_upvoted_2x.png","3x":"https://assets.genius.com/images/api/activity_upvoted_3x.png"},"timestamp":1793463828,"iq_gained":2.0,"message":{"html":"sallioxi
+        upvoted Sia''s annotation on <em>Chandelier</em>"},"message_components":{"key":"user.Vote.annotation","params":{"actors":"sallioxi","verb":"upvoted","target":"Sia''s
+        annotation","context":"on <em>Chandelier</em>","count":1}},"strategy":"user_upvoted_annotation","unread":false}],"next_page":2}}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

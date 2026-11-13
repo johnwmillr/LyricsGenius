@@ -1,0 +1,19 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/artists/1665/followers?per_page=2&page=1
+  response:
+    body:
+      string: '{"meta":{"status":200},"response":{"followers":[{"_type":"user","about_me_summary":"","api_path":"/users/14360574","avatar":{"tiny":{"url":"https://images.genius.com/avatars/tiny/5a956373f14332a008208354ba8afc51","bounding_box":{"width":16,"height":16}},"thumb":{"url":"https://images.genius.com/avatars/thumb/5a956373f14332a008208354ba8afc51","bounding_box":{"width":32,"height":32}},"small":{"url":"https://images.genius.com/avatars/small/5a956373f14332a008208354ba8afc51","bounding_box":{"width":100,"height":100}},"medium":{"url":"https://images.genius.com/avatars/medium/5a956373f14332a008208354ba8afc51","bounding_box":{"width":300,"height":400}}},"header_image_url":"https://assets.genius.com/images/default_banner.png","human_readable_role_for_display":"Contributor","id":14360574,"is_meme_verified":false,"is_verified":false,"login":"Aldair92","name":"Aldair92","role_for_display":"contributor","url":"https://genius.com/Aldair92","current_user_metadata":{"permissions":[],"excluded_permissions":["follow"],"interactions":{"following":false}},"iq":12606},{"_type":"user","about_me_summary":"Music
+        lover. Music maker. Linguaphile.\n\n\n\nHaug Creative","api_path":"/users/21428253","avatar":{"tiny":{"url":"https://images.genius.com/avatars/tiny/2d44ce0e6f62b81fac700051018dcb72","bounding_box":{"width":16,"height":16}},"thumb":{"url":"https://images.genius.com/avatars/thumb/2d44ce0e6f62b81fac700051018dcb72","bounding_box":{"width":32,"height":32}},"small":{"url":"https://images.genius.com/avatars/small/2d44ce0e6f62b81fac700051018dcb72","bounding_box":{"width":100,"height":100}},"medium":{"url":"https://images.genius.com/avatars/medium/2d44ce0e6f62b81fac700051018dcb72","bounding_box":{"width":300,"height":400}}},"header_image_url":"https://images.genius.com/9d1eb481252ccc4ac782752d3b087536.1000x674x1.jpg","human_readable_role_for_display":"Contributor","id":21428253,"is_meme_verified":false,"is_verified":false,"login":"corhugs","name":"corhugs","role_for_display":"contributor","url":"https://genius.com/corhugs","current_user_metadata":{"permissions":[],"excluded_permissions":["follow"],"interactions":{"following":false}},"iq":277744}],"next_page":2}}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

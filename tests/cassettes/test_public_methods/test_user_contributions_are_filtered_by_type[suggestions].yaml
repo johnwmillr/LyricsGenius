@@ -1,0 +1,32 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/users/1/contributions/comments?per_page=2&text_format=html
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"contribution_groups\":[{\"contribution_type\":\"comment\",\"date\":1580848216,\"contributions\":[{\"_type\":\"comment\",\"api_path\":\"/comments/7555010\",\"body\":{\"html\":\"<p>Awesome!</p>\"},\"commentable_id\":10318,\"commentable_type\":\"Article\",\"created_at\":1580848216,\"deleted_at\":null,\"disposition\":\"comment\",\"has_voters\":true,\"id\":7555010,\"pinned_role\":null,\"state\":\"pending\",\"votes_total\":17,\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"vote\",\"accept\",\"reject\",\"mark_spam\",\"integrate\",\"archive\",\"destroy\"],\"interactions\":{\"vote\":null}},\"anonymous_author\":null,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"Run
+        into the spike.\",\"api_path\":\"/users/1\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/309317b058db685d81a4013a498925d0\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/309317b058db685d81a4013a498925d0\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/309317b058db685d81a4013a498925d0\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/309317b058db685d81a4013a498925d0\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://images.genius.com/3627d3d369773390525af3e3cd5a34a5.1000x333x1.jpg\",\"human_readable_role_for_display\":\"Staff\",\"id\":1,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"LEMON\",\"name\":\"Tom
+        Lehman\",\"role_for_display\":\"staff\",\"url\":\"https://genius.com/LEMON\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":64821},\"commentable\":{\"_type\":\"article\",\"api_path\":\"/articles/10318\",\"id\":10318,\"link_title\":\"Genius'
+        Flagship Series 'Verified' Comes To Apple Music\",\"title\":\"Genius' Flagship
+        Series 'Verified' Comes To Apple Music\",\"type\":\"Article\",\"url\":\"https://genius.com/a/genius-flagship-series-verified-comes-to-apple-music\",\"author\":{\"_type\":\"user\",\"about_me_summary\":\"Founded
+        in 2009, Genius is a unique multimedia company that\u2019s powered by community,
+        our in-house creative team, and the artists themselves. We serve music knowledge
+        to over 100\",\"api_path\":\"/users/1548008\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/751480ffb2e3063d10e0af35397d356d\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/751480ffb2e3063d10e0af35397d356d\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/751480ffb2e3063d10e0af35397d356d\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/751480ffb2e3063d10e0af35397d356d\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://images.genius.com/822a5f872a1fcfe377695dc0046c6bc6.900x176x1.jpg\",\"human_readable_role_for_display\":\"Verified
+        Artist\",\"id\":1548008,\"is_meme_verified\":true,\"is_verified\":true,\"login\":\"Genius\",\"name\":\"Genius\",\"role_for_display\":\"verified_artist\",\"url\":\"https://genius.com/Genius\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":80559}},\"reason\":null}]},{\"contribution_type\":\"comment\",\"date\":1556290966,\"contributions\":[{\"_type\":\"comment\",\"api_path\":\"/comments/6867255\",\"body\":{\"html\":\"<p>Is
+        \u201Cyou\u2019ll never find another like me\u201D a\u2014potentially subconscious\u2014reference
+        to Chiddy Bang\u2019s <a href=\\\"https://genius.com/Pearl-jam-mind-your-manners-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/187984\\\">Mind Your Manners</a>?</p>\"},\"commentable_id\":17036217,\"commentable_type\":\"Annotation\",\"created_at\":1556290966,\"deleted_at\":null,\"disposition\":\"suggestion\",\"has_voters\":false,\"id\":6867255,\"pinned_role\":null,\"state\":\"archived\",\"votes_total\":0,\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"vote\",\"accept\",\"reject\",\"mark_spam\",\"integrate\",\"archive\",\"destroy\"],\"interactions\":{\"vote\":null}},\"anonymous_author\":null,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"Run
+        into the spike.\",\"api_path\":\"/users/1\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/309317b058db685d81a4013a498925d0\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/309317b058db685d81a4013a498925d0\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/309317b058db685d81a4013a498925d0\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/309317b058db685d81a4013a498925d0\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://images.genius.com/3627d3d369773390525af3e3cd5a34a5.1000x333x1.jpg\",\"human_readable_role_for_display\":\"Staff\",\"id\":1,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"LEMON\",\"name\":\"Tom
+        Lehman\",\"role_for_display\":\"staff\",\"url\":\"https://genius.com/LEMON\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":64821},\"commentable\":{\"_type\":\"annotation\",\"api_path\":\"/annotations/17036217\",\"id\":17036217,\"link_title\":\"thebreakup's
+        annotation on ME! by\_Taylor\_Swift (Ft.\_Brendon\_Urie)\",\"title\":\"ME!\",\"type\":\"Annotation\",\"url\":\"https://genius.com/17036217/Taylor-swift-me/I-promise-that-youll-never-find-another-like-me\",\"author\":null},\"reason\":null}]}],\"next_cursor\":2}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

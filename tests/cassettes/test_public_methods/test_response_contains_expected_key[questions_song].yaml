@@ -1,0 +1,101 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/questions?per_page=2&page=1&text_format=html&song_id=378195
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"questions\":[{\"_type\":\"question\",\"body\":\"What
+        did Sia say about \\\"Chandelier\\\"?\",\"contributors_count\":1,\"created_at\":1545712290,\"default_key\":\"artist_comment\",\"has_voters\":false,\"id\":348769,\"pin_order\":196608.0,\"questionable_id\":378195,\"questionable_type\":\"Song\",\"state\":\"pinned\",\"url\":\"https://genius.com/Sia-chandelier-lyrics/questions/348769\",\"votes_total\":0,\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"vote\",\"add_answer\",\"update_answer_source\",\"update\",\"archive\",\"pin\",\"unpin\",\"move\",\"moderate\",\"add_verified_answer\",\"view_qa_page\"],\"iq_by_action\":{},\"interactions\":{\"vote\":null}},\"answer\":{\"_type\":\"answer\",\"body\":{\"html\":\"<p>Sia
+        said about the experience of writing the song,</p>\\n\\n<blockquote><p>I usually
+        think, \u2018Oh this would work for Rihanna,\u2019 or \u2018This would be
+        a good one for Bey or Katy.\u2019  But this time I was like, \u2018Uh-oh,
+        I think I just wrote a full-blown pop song for myself by accident!\u2019 My
+        friend Jesse Sharkin and I were jamming in the studio, I was playing piano
+        and him on the marimba, and this gem popped out.</p></blockquote>\"},\"body_for_edit\":\"Sia
+        said about the experience of writing the song,\\n\\n>I usually think, 'Oh
+        this would work for Rihanna,' or 'This would be a good one for Bey or Katy.'
+        \ But this time I was like, 'Uh-oh, I think I just wrote a full-blown pop
+        song for myself by accident!' My friend Jesse Sharkin and I were jamming in
+        the studio, I was playing piano and him on the marimba, and this gem popped
+        out.\",\"created_at\":1545712290,\"editorial_state\":\"normal\",\"has_voters\":true,\"id\":164704,\"votes_total\":5,\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"vote\",\"edit\",\"destroy\"],\"interactions\":{\"vote\":null}},\"answer_source\":null,\"authors\":[{\"_type\":\"user_attribution\",\"attribution\":1.0,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"\",\"api_path\":\"/users/4274810\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/fd0479727aab2b825e5ab551e62aecee\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/fd0479727aab2b825e5ab551e62aecee\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/fd0479727aab2b825e5ab551e62aecee\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/fd0479727aab2b825e5ab551e62aecee\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Editor\",\"id\":4274810,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"Kristian_Lin\",\"name\":\"Kristian_Lin\",\"role_for_display\":\"editor\",\"url\":\"https://genius.com/Kristian_Lin\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":3017103}}]},\"author\":{\"_type\":\"user\",\"about_me_summary\":\"\",\"api_path\":\"/users/4274810\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/fd0479727aab2b825e5ab551e62aecee\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/fd0479727aab2b825e5ab551e62aecee\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/fd0479727aab2b825e5ab551e62aecee\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/fd0479727aab2b825e5ab551e62aecee\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Editor\",\"id\":4274810,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"Kristian_Lin\",\"name\":\"Kristian_Lin\",\"role_for_display\":\"editor\",\"url\":\"https://genius.com/Kristian_Lin\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":3017103},\"default_question\":{\"answer_prefix\":null,\"id\":\"artist_comment:song:378195\"}},{\"_type\":\"question\",\"body\":\"Is
+        there a live performance of \\\"Chandelier\\\" by Sia?\",\"contributors_count\":1,\"created_at\":1749056723,\"default_key\":\"live_performance\",\"has_voters\":false,\"id\":1356156,\"pin_order\":327680.0,\"questionable_id\":378195,\"questionable_type\":\"Song\",\"state\":\"pinned\",\"url\":\"https://genius.com/Sia-chandelier-lyrics/questions/1356156\",\"votes_total\":0,\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"vote\",\"add_answer\",\"update_answer_source\",\"update\",\"archive\",\"pin\",\"unpin\",\"move\",\"moderate\",\"add_verified_answer\",\"view_qa_page\"],\"iq_by_action\":{},\"interactions\":{\"vote\":null}},\"answer\":{\"_type\":\"answer\",\"body\":{\"html\":\"<p></p><div
+        class=\\\"embedly_preview embedly_preview--video\\\">\\n<iframe loading=\\\"lazy\\\"
+        type=\\\"text/html\\\" width=\\\"640\\\" height=\\\"390\\\" frameborder=\\\"0\\\"
+        allowfullscreen=\\\"1\\\" src=\\\"https://www.youtube-nocookie.com/embed/8Hg_rIqOZHc?modestbranding=1&amp;start=0&amp;showinfo=0&amp;enablejsapi=1&amp;origin=genius.com\\\"></iframe>\\n</div>\"},\"body_for_edit\":\"https://youtu.be/8Hg_rIqOZHc\",\"created_at\":1749056723,\"editorial_state\":\"normal\",\"has_voters\":true,\"id\":919470,\"votes_total\":11,\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"vote\",\"edit\",\"destroy\"],\"interactions\":{\"vote\":null}},\"answer_source\":null,\"authors\":[{\"_type\":\"user_attribution\",\"attribution\":1.0,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"AKA:
+        MaksimKravchuk (my full name)\\n\\nI changed the Profile name just in case,
+        then I will change it back to this name.\\n\\nAt the moment, I\u2019m re-uploading
+        the lyrics with song headers (like YesterOwl).\\n\\nI\u2019m Maxim (he/him),
+        15 (Kyiv, Ukraine \U0001F1FA\U0001F1E6; Eastern European Time)\\nLanguages:
+        transcribing songs in Ukrainian and English\\nI created this account in April
+        2024 and I first visited Genius in spring 2023.\\n\\nMilestones:\\n50,000
+        IQ \u2013 07.05.2025\\n60,000 IQ \u2013 17.05.2025\\n70,000 IQ \u2013 27.05.2025\\n80,000
+        IQ \u2013 03.06.2025\\n90,000 IQ \u2013 10.06.2025\\n100,000 IQ \u2013 19.06.2025\\n110,000
+        IQ \u2013 01.07.2025\\n120,000 IQ \u2013 13.07.2025\\n125,000 IQ \u2013 24.07.2025\\n130,000
+        IQ \u2013 25.07.2025\\n140,000 IQ \u2013 07.08.2025\\n150,000 IQ \u2013 [?]\\n160,000
+        IQ \u2013 [?]\\n170,000 IQ \u2013 [?]\\n175,000 IQ \u2013 [?]\\n180,000 IQ
+        \u2013 [?]\\n190,000 IQ \u2013 [?]\\n200,000 IQ \u2013 [?]\\n\\nTop Scholars
+        Weekly:\\nTop Scholars Weekly #288 (02.03.2025): #8 on Pop \u2014 5,938 IQ\\nTop
+        Scholars Weekly #292 (30.03.2025): #6 on Pop \u2014 7,560 IQ\\nTop Scholars
+        Weekly #298 (12.05.2025): #6 on Rock \u2014 3,652 IQ\\nTop Scholars Weekly
+        #299 (19.05.2025): #7 on Independent \u2014 1,354 IQ\\nTop Scholars Weekly
+        #300 (25.05.2025): #8 on Independent \u2014 1,358 IQ\\nTop Scholars Weekly
+        #301 (02.06.2025): #5 on Independent \u2014 1,917 IQ, #7 on Non-Music \u2014
+        1,122 IQ, #9 on Rock \u2014 3,572 IQ & #7 on R&B \u2014 1,125 IQ\\nTop Scholars
+        Weekly #302 (09.06.2025): #5 on Pop \u2014 10,739 IQ & #9 on Rock \u2014 4,482
+        IQ\\nTop Scholars Weekly #303 (16.06.2025): #1 on Independent \u2014 2,338
+        IQ & #2 on R&B \u2014 2,854 IQ\\nTop Scholars Weekly #304 (22.06.2025): #4
+        on Country \u2014 1,366 IQ, #1 on Independent \u2014 3,292 IQ & #3 on R&B
+        \u2014 2,420 IQ\\nTop Scholars Weekly #305 (30.06.2025): #10 on R&B \u2014
+        1,056 IQ\\nTop Scholars Weekly #306 (07.07.2025): #3 on \u0423\u043A\u0440\u0430\u0457\u043D\u0430
+        (Ukraine) \u2014 421 IQ, #7 on Independent \u2014 1,498 IQ & #10 on Pop \u2014
+        7,300 IQ\\nTop Scholars Weekly #307 (14.07.2025): #4 on Art Rock \u2014 143
+        IQ, #1 on Independent \u2014 2,200 IQ & #10 on Rock \u2014 2,547 IQ\\nTop
+        Scholars Weekly #308 (21.07.2025): #6 on Soul \u2014 555 IQ\\nTop Scholars
+        Weekly #309 (27.07.2025): #8 on Pop \u2014 8,748 IQ\\nTop Scholars Weekly
+        #310 (04.08.2025): #9 on R&B \u2014 1,019 IQ\\nTop Scholars Weekly #311 (11.08.2025):
+        #4 on R&B \u2014 1,706 IQ\\n\\nAvatar \u2013 Louis Eliot\\nCover Art \u2013
+        sunset in the city\",\"api_path\":\"/users/21754275\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/6a6cff25217409dc39f861cb067191e5\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/6a6cff25217409dc39f861cb067191e5\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/6a6cff25217409dc39f861cb067191e5\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/6a6cff25217409dc39f861cb067191e5\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://filepicker-images.genius.com/c3279fdf76f4b9f0d10f319340998f897d71d5af9b72c00f184adfd3c75c0614%2Fnf53kw147uj\",\"human_readable_role_for_display\":\"Contributor\",\"id\":21754275,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"CivilizationoftheNight\",\"name\":\"CivilizationoftheNight\",\"role_for_display\":\"contributor\",\"url\":\"https://genius.com/CivilizationoftheNight\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":149331}}]},\"author\":{\"_type\":\"user\",\"about_me_summary\":\"AKA:
+        MaksimKravchuk (my full name)\\n\\nI changed the Profile name just in case,
+        then I will change it back to this name.\\n\\nAt the moment, I\u2019m re-uploading
+        the lyrics with song headers (like YesterOwl).\\n\\nI\u2019m Maxim (he/him),
+        15 (Kyiv, Ukraine \U0001F1FA\U0001F1E6; Eastern European Time)\\nLanguages:
+        transcribing songs in Ukrainian and English\\nI created this account in April
+        2024 and I first visited Genius in spring 2023.\\n\\nMilestones:\\n50,000
+        IQ \u2013 07.05.2025\\n60,000 IQ \u2013 17.05.2025\\n70,000 IQ \u2013 27.05.2025\\n80,000
+        IQ \u2013 03.06.2025\\n90,000 IQ \u2013 10.06.2025\\n100,000 IQ \u2013 19.06.2025\\n110,000
+        IQ \u2013 01.07.2025\\n120,000 IQ \u2013 13.07.2025\\n125,000 IQ \u2013 24.07.2025\\n130,000
+        IQ \u2013 25.07.2025\\n140,000 IQ \u2013 07.08.2025\\n150,000 IQ \u2013 [?]\\n160,000
+        IQ \u2013 [?]\\n170,000 IQ \u2013 [?]\\n175,000 IQ \u2013 [?]\\n180,000 IQ
+        \u2013 [?]\\n190,000 IQ \u2013 [?]\\n200,000 IQ \u2013 [?]\\n\\nTop Scholars
+        Weekly:\\nTop Scholars Weekly #288 (02.03.2025): #8 on Pop \u2014 5,938 IQ\\nTop
+        Scholars Weekly #292 (30.03.2025): #6 on Pop \u2014 7,560 IQ\\nTop Scholars
+        Weekly #298 (12.05.2025): #6 on Rock \u2014 3,652 IQ\\nTop Scholars Weekly
+        #299 (19.05.2025): #7 on Independent \u2014 1,354 IQ\\nTop Scholars Weekly
+        #300 (25.05.2025): #8 on Independent \u2014 1,358 IQ\\nTop Scholars Weekly
+        #301 (02.06.2025): #5 on Independent \u2014 1,917 IQ, #7 on Non-Music \u2014
+        1,122 IQ, #9 on Rock \u2014 3,572 IQ & #7 on R&B \u2014 1,125 IQ\\nTop Scholars
+        Weekly #302 (09.06.2025): #5 on Pop \u2014 10,739 IQ & #9 on Rock \u2014 4,482
+        IQ\\nTop Scholars Weekly #303 (16.06.2025): #1 on Independent \u2014 2,338
+        IQ & #2 on R&B \u2014 2,854 IQ\\nTop Scholars Weekly #304 (22.06.2025): #4
+        on Country \u2014 1,366 IQ, #1 on Independent \u2014 3,292 IQ & #3 on R&B
+        \u2014 2,420 IQ\\nTop Scholars Weekly #305 (30.06.2025): #10 on R&B \u2014
+        1,056 IQ\\nTop Scholars Weekly #306 (07.07.2025): #3 on \u0423\u043A\u0440\u0430\u0457\u043D\u0430
+        (Ukraine) \u2014 421 IQ, #7 on Independent \u2014 1,498 IQ & #10 on Pop \u2014
+        7,300 IQ\\nTop Scholars Weekly #307 (14.07.2025): #4 on Art Rock \u2014 143
+        IQ, #1 on Independent \u2014 2,200 IQ & #10 on Rock \u2014 2,547 IQ\\nTop
+        Scholars Weekly #308 (21.07.2025): #6 on Soul \u2014 555 IQ\\nTop Scholars
+        Weekly #309 (27.07.2025): #8 on Pop \u2014 8,748 IQ\\nTop Scholars Weekly
+        #310 (04.08.2025): #9 on R&B \u2014 1,019 IQ\\nTop Scholars Weekly #311 (11.08.2025):
+        #4 on R&B \u2014 1,706 IQ\\n\\nAvatar \u2013 Louis Eliot\\nCover Art \u2013
+        sunset in the city\",\"api_path\":\"/users/21754275\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/6a6cff25217409dc39f861cb067191e5\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/6a6cff25217409dc39f861cb067191e5\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/6a6cff25217409dc39f861cb067191e5\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/6a6cff25217409dc39f861cb067191e5\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://filepicker-images.genius.com/c3279fdf76f4b9f0d10f319340998f897d71d5af9b72c00f184adfd3c75c0614%2Fnf53kw147uj\",\"human_readable_role_for_display\":\"Contributor\",\"id\":21754275,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"CivilizationoftheNight\",\"name\":\"CivilizationoftheNight\",\"role_for_display\":\"contributor\",\"url\":\"https://genius.com/CivilizationoftheNight\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":149331},\"default_question\":{\"answer_prefix\":null,\"id\":\"live_performance:song:378195\"}}],\"next_page\":2}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

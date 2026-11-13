@@ -1,0 +1,28 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/referents/chart?time_period=day&chart_genre=all&per_page=2&page=1&text_format=html
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"chart_items\":[{\"_type\":\"chart_item\",\"type\":\"referent\",\"item\":{\"_type\":\"referent\",\"annotator_id\":20028316,\"annotator_login\":\"holidayslaughter\",\"api_path\":\"/referents/42336871\",\"classification\":\"accepted\",\"fragment\":\"Ah,
+        crushing rocks (Uh-huh), Suica card\\n Ah, acid wash (Uh-huh), Suica card
+        (Ooh)\\n Ah, crushing rocks (Uh-huh), Suica card (Uh-huh)\\n Ah, crushing
+        rocks\",\"id\":42336871,\"is_description\":false,\"path\":\"/42336871/Ecco2k-industrial-strength/Ah-crushing-rocks-uh-huh-suica-card-ah-acid-wash-uh-huh-suica-card-ooh-ah-crushing-rocks-uh-huh-suica-card-uh-huh-ah-crushing-rocks\",\"range\":{\"content\":\"Ah,
+        crushing rocks (Uh-huh), Suica card\\n Ah, acid wash (Uh-huh), Suica card
+        (Ooh)\\n Ah, crushing rocks (Uh-huh), Suica card (Uh-huh)\\n Ah, crushing
+        rocks\"},\"song_id\":14607636,\"url\":\"https://genius.com/42336871/Ecco2k-industrial-strength/Ah-crushing-rocks-uh-huh-suica-card-ah-acid-wash-uh-huh-suica-card-ooh-ah-crushing-rocks-uh-huh-suica-card-uh-huh-ah-crushing-rocks\",\"verified_annotator_ids\":[],\"annotatable\":{\"_type\":\"song\",\"api_path\":\"/songs/14607636\",\"context\":\"Ecco2k\",\"id\":14607636,\"image_url\":\"https://images.genius.com/d95da8b4b8a180d747afd01b3a308fc5.1000x1000x1.png\",\"link_title\":\"Industrial
+        Strength by\_Ecco2k\",\"title\":\"Industrial Strength\",\"type\":\"Song\",\"url\":\"https://genius.com/Ecco2k-industrial-strength-lyrics\"}}},{\"_type\":\"chart_item\",\"type\":\"referent\",\"item\":{\"_type\":\"referent\",\"annotator_id\":22474909,\"annotator_login\":\"Dexhylia\",\"api_path\":\"/referents/42337046\",\"classification\":\"unreviewed\",\"fragment\":\"Criminal,
+        Rallize D\xE9nud\xE9\",\"id\":42337046,\"is_description\":false,\"path\":\"/42337046/Ecco2k-cuban-heel/Criminal-rallize-denude\",\"range\":{\"content\":\"Criminal,
+        Rallize D\xE9nud\xE9\"},\"song_id\":14607598,\"url\":\"https://genius.com/42337046/Ecco2k-cuban-heel/Criminal-rallize-denude\",\"verified_annotator_ids\":[],\"annotatable\":{\"_type\":\"song\",\"api_path\":\"/songs/14607598\",\"context\":\"Ecco2k\",\"id\":14607598,\"image_url\":\"https://images.genius.com/d95da8b4b8a180d747afd01b3a308fc5.1000x1000x1.png\",\"link_title\":\"Cuban
+        Heel by\_Ecco2k\",\"title\":\"Cuban Heel\",\"type\":\"Song\",\"url\":\"https://genius.com/Ecco2k-cuban-heel-lyrics\"}}}],\"next_page\":2}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

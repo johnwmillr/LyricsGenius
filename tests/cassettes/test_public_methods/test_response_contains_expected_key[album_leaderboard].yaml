@@ -1,0 +1,25 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/albums/104614/leaderboard?per_page=2&page=1
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"leaderboard\":[{\"_type\":\"user_attribution\",\"attribution_value\":9513.0,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"Sia
+        Kate Isobelle Furler (born December 18, 1975), popularly known as Sia, is
+        an Australian pop singer and songwriter. She is also part of the supergroup,
+        LSD alongside British\",\"api_path\":\"/users/656681\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/676b6af6b2e1e96b83c5bbba8f0718b0\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/676b6af6b2e1e96b83c5bbba8f0718b0\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/676b6af6b2e1e96b83c5bbba8f0718b0\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/676b6af6b2e1e96b83c5bbba8f0718b0\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://images.genius.com/570d01b6da3e0d9f5abc5ddaebdd6825.1000x989x1.jpg\",\"human_readable_role_for_display\":\"Verified
+        Artist\",\"id\":656681,\"is_meme_verified\":false,\"is_verified\":true,\"login\":\"siamusic\",\"name\":\"Sia\",\"role_for_display\":\"verified_artist\",\"url\":\"https://genius.com/siamusic\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":9643}},{\"_type\":\"user_attribution\",\"attribution_value\":641.8,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"\u201Ci
+        rip and i rhyme. i rhyme and i rip. thats the way dylon spit.\u201D\\n\\nFind
+        me on Twitter @AGSPinelli\\n\\nOr hit up my blog, Everything Ecstatic. One
+        love.\",\"api_path\":\"/users/150910\",\"avatar\":{\"tiny\":{\"url\":\"https://s3.amazonaws.com/rapgenius/avatars/tiny/zmkfqkztReGZ0zuiuLXp.png\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://s3.amazonaws.com/rapgenius/avatars/thumb/zmkfqkztReGZ0zuiuLXp.png\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://s3.amazonaws.com/rapgenius/avatars/small/zmkfqkztReGZ0zuiuLXp.png\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://s3.amazonaws.com/rapgenius/avatars/medium/zmkfqkztReGZ0zuiuLXp.png\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Editor\",\"id\":150910,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"Spinelli\",\"name\":\"Spinelli\",\"role_for_display\":\"editor\",\"url\":\"https://genius.com/Spinelli\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":169159}}],\"next_page\":2,\"total_members\":538}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

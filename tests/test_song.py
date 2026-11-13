@@ -1,232 +1,186 @@
+"""Tests for the Song type: its fields, serialization and saving to disk."""
+
 import json
-import os
 from pathlib import Path
 from typing import Any
-from unittest import mock
 
 import pytest
 
 from lyricsgenius.types import Song
-from lyricsgenius.utils import clean_str
+
+LYRICS = (
+    "[Setup]\n"
+    "Assert the true, mock the new\n"
+    "Patch the world, see it through\n"
+    "\n"
+    "[Act]\n"
+    "Call the function, watch it run"
+)
+ARTIST_LISTS = (
+    "primary_artists",
+    "writer_artists",
+    "producer_artists",
+    "featured_artists",
+)
 
 
 @pytest.fixture
-def mock_song_data() -> dict[str, Any]:
-    """Returns 'Mocking the Tests' from song_info_mocked.json as a dict."""
-    with open("tests/fixtures/song_info_mocked.json", "r") as f:
-        return next(song for song in json.load(f) if song["id"] == 42424242)
+def song_data() -> dict[str, Any]:
+    """Provides the data for the invented song "Mocking the Tests"."""
+    songs = json.loads(Path("tests/fixtures/song_info_mocked.json").read_text())
+    return next(song for song in songs if song["id"] == 42424242)
 
 
 @pytest.fixture
-def mock_lyrics() -> str:
-    """Create mock lyrics for testing."""
-    return (
-        "[Setup]\n"
-        "Assert the true, mock the new\n"
-        "Patch the world, see it through\n"
-        "Arrange the state, don't delay\n"
-        "\n"
-        "[Act]\n"
-        "Call the function, watch it run\n"
-        "Did it break? Was it fun?\n"
-        "Capture output, every byte\n"
-        "\n"
-        "[Assert]\n"
-        "Check the value, is it right?\n"
-        "Compare the strings, day and night\n"
-        "Test complete, green light bright"
-    )
+def song(song_data: dict[str, Any]) -> Song:
+    """Provides a Song built from the invented data and lyrics."""
+    return Song(LYRICS, song_data)
 
 
-@pytest.fixture
-def mock_lyrics_no_headers() -> str:
-    """Create mock lyrics without section headers."""
-    return (
-        "Assert the true, mock the new\n"
-        "Patch the world, see it through\n"
-        "Arrange the state, don't delay\n"
-        "\n"
-        "Call the function, watch it run\n"
-        "Did it break? Was it fun?\n"
-        "Capture output, every byte\n"
-        "\n"
-        "Check the value, is it right?\n"
-        "Compare the strings, day and night\n"
-        "Test complete, green light bright"
-    )
+def test_song_reads_artist_from_primary_artist(song: Song) -> None:
+    """The artist is the primary artist's name."""
+    assert song.artist == "Py Testerson"
 
 
-@pytest.fixture
-def song_object(mock_song_data: dict[str, Any], mock_lyrics: str) -> Song:
-    """Create a Song object with mock data."""
-    return Song(mock_lyrics, mock_song_data)
+def test_song_artist_lists_default_to_empty(song_data: dict[str, Any]) -> None:
+    """Artist lists missing from the song data default to empty lists."""
+    body = {k: v for k, v in song_data.items() if k not in ARTIST_LISTS}
+
+    song = Song(LYRICS, body)
+
+    assert [getattr(song, name) for name in ARTIST_LISTS] == [[], [], [], []]
 
 
-@pytest.fixture
-def song_object_no_headers(
-    mock_song_data: dict[str, Any],
-    mock_lyrics_no_headers: str,
-) -> Song:
-    """Create a Song object with mock data and no section headers."""
-    return Song(mock_lyrics_no_headers, mock_song_data)
-
-
-def test_song_title(song_object: Song, mock_song_data: dict[str, Any]) -> None:
-    """Test if the song title is correct."""
-    assert song_object.title == mock_song_data["title"]
-
-
-def test_song_artist(song_object: Song, mock_song_data: dict[str, Any]) -> None:
-    """Test if the artist name is correct."""
-    assert song_object.artist == mock_song_data["primary_artist"]["name"]
-
-
-def test_song_primary_artists(
-    song_object: Song, mock_song_data: dict[str, Any]
+def test_song_to_dict_adds_artist_and_lyrics(
+    song: Song, song_data: dict[str, Any]
 ) -> None:
-    """Test if primary_artists is populated correctly."""
-    assert song_object.primary_artists == mock_song_data["primary_artists"]
-    assert song_object.primary_artists[0]["name"] == "Py Testerson"
+    """The dict form is the song data plus its artist name and lyrics."""
+    assert song.to_dict() == {**song_data, "artist": "Py Testerson", "lyrics": LYRICS}
 
 
-def test_song_writer_artists(song_object: Song, mock_song_data: dict[str, Any]) -> None:
-    """Test if writer_artists is populated correctly."""
-    assert song_object.writer_artists == mock_song_data["writer_artists"]
-    assert song_object.writer_artists[0]["name"] == "Test Writer"
+def test_song_to_json_serializes_dict_form(song: Song) -> None:
+    """The JSON form encodes the dict form."""
+    json_str = song.to_json()
+
+    assert json_str is not None
+    assert json.loads(json_str) == song.to_dict()
 
 
-def test_song_producer_artists(
-    song_object: Song, mock_song_data: dict[str, Any]
+def test_song_to_text_returns_lyrics(song: Song) -> None:
+    """The text form is the lyrics."""
+    assert song.to_text() == LYRICS
+
+
+@pytest.mark.parametrize("extension", ["json", "txt"])
+@pytest.mark.parametrize("directory", ["", "output/nested"], ids=["flat", "nested"])
+def test_song_save_lyrics_writes_serialized_song(
+    song: Song, tmp_path: Path, extension: str, directory: str
 ) -> None:
-    """Test if producer_artists is populated correctly."""
-    assert song_object.producer_artists == mock_song_data["producer_artists"]
-    assert song_object.producer_artists[0]["name"] == "Test Producer"
+    """Saving writes the JSON or text form, creating missing directories."""
+    path = tmp_path / directory / f"song.{extension}"
+
+    song.save_lyrics(filename=str(tmp_path / directory / "song"), extension=extension)
+
+    if extension == "json":
+        assert json.loads(path.read_text()) == song.to_dict()
+    else:
+        assert path.read_text() == LYRICS
 
 
-def test_song_featured_artists(
-    song_object: Song, mock_song_data: dict[str, Any]
+def test_song_save_lyrics_rejects_other_formats(song: Song, tmp_path: Path) -> None:
+    """Only JSON and text files can be saved."""
+    with pytest.raises(AssertionError, match="JSON or TXT"):
+        song.save_lyrics(filename=str(tmp_path / "song"), extension="csv")
+
+
+@pytest.mark.parametrize(
+    ("answer", "replaced"),
+    [
+        pytest.param("y", True, id="yes"),
+        pytest.param("n", False, id="no"),
+    ],
+)
+def test_song_save_lyrics_asks_before_overwriting(
+    song: Song,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    answer: str,
+    replaced: bool,
 ) -> None:
-    """Test if featured_artists is populated correctly."""
-    assert song_object.featured_artists == mock_song_data["featured_artists"]
-    assert song_object.featured_artists[0]["name"] == "Mock Feature"
+    """An existing file is replaced only if the user agrees."""
+    path = tmp_path / "song.txt"
+    path.write_text("old")
+    prompts: list[str] = []
+
+    def _answer(prompt: str) -> str:
+        prompts.append(prompt)
+        return answer
+
+    monkeypatch.setattr("builtins.input", _answer)
+
+    song.save_lyrics(filename=str(tmp_path / "song"), extension="txt")
+
+    assert len(prompts) == 1
+    assert path.read_text() == (LYRICS if replaced else "old")
 
 
-def test_song_artist_fields_default_empty(
-    mock_song_data: dict[str, Any], mock_lyrics: str
+def test_song_save_lyrics_overwrites_without_asking_when_told(
+    song: Song, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """Test that artist list fields default to empty lists when absent from body."""
-    body = {
-        k: v
-        for k, v in mock_song_data.items()
-        if k
-        not in (
-            "primary_artists",
-            "writer_artists",
-            "producer_artists",
-            "featured_artists",
-        )
-    }
-    song = Song(mock_lyrics, body)
-    assert song.primary_artists == []
-    assert song.writer_artists == []
-    assert song.producer_artists == []
-    assert song.featured_artists == []
+    """With overwrite=True, an existing file is replaced without a prompt."""
+    path = tmp_path / "song.txt"
+    path.write_text("old")
+    monkeypatch.setattr("builtins.input", pytest.fail)
+
+    song.save_lyrics(filename=str(tmp_path / "song"), extension="txt", overwrite=True)
+
+    assert path.read_text() == LYRICS
 
 
-def test_to_dict(
-    song_object: Song, mock_song_data: dict[str, Any], mock_lyrics: str
+@pytest.mark.parametrize(
+    ("ensure_ascii", "expected"),
+    [
+        pytest.param(True, '"Beyonc\\u00e9"', id="escaped"),
+        pytest.param(False, '"Beyoncé"', id="kept"),
+    ],
+)
+def test_song_save_lyrics_honors_ensure_ascii(
+    song_data: dict[str, Any], tmp_path: Path, ensure_ascii: bool, expected: str
 ) -> None:
-    """Test if the to_dict method returns the correct data."""
-    song_dict = song_object.to_dict()
-    assert song_dict["id"] == mock_song_data["id"]
-    assert song_dict["title"] == mock_song_data["title"]
-    assert song_dict["artist"] == mock_song_data["primary_artist"]["name"]
-    assert song_dict["lyrics"] == mock_lyrics
+    """Non-ASCII characters are escaped in the JSON file unless told otherwise."""
+    song = Song(LYRICS, {**song_data, "title": "Beyoncé"})
+
+    song.save_lyrics(filename=str(tmp_path / "song"), ensure_ascii=ensure_ascii)
+
+    assert expected in (tmp_path / "song.json").read_text(encoding="utf-8")
 
 
-def test_to_json(song_object: Song) -> None:
-    """Test if to_json method returns a JSON string."""
-    json_str = song_object.to_json()
-    assert isinstance(json_str, str), json_str
-    assert '"title": "Mocking the Tests"' in json_str
-    assert '"artist": "Py Testerson"' in json_str
-
-
-def test_to_text(song_object: Song, mock_lyrics: str) -> None:
-    """Test if to_text method returns the lyrics."""
-    assert song_object.to_text() == mock_lyrics
-
-
-def test_save_lyrics_json(song_object: Song, tmp_path: Path) -> None:
-    """Test saving lyrics as a JSON file."""
-    filename = tmp_path / "test_lyrics.json"
-    song_object.save_lyrics(
-        filename=str(filename),
-        extension="json",
-        overwrite=True,
+@pytest.mark.parametrize(
+    ("sanitize", "name"),
+    [
+        pytest.param(True, "What's up.txt", id="sanitized"),
+        pytest.param(False, "What's up?.txt", id="kept"),
+    ],
+)
+def test_song_save_lyrics_sanitizes_filename(
+    song: Song, tmp_path: Path, sanitize: bool, name: str
+) -> None:
+    """Characters invalid in filenames are removed from the name unless told not to."""
+    song.save_lyrics(
+        filename=str(tmp_path / "What's up?"), extension="txt", sanitize=sanitize
     )
 
-    # Check that the file was written correctly
-    assert filename.is_file(), filename
-    json_str = filename.read_text()
-    assert '"title": "Mocking the Tests"' in json_str, json_str
-    assert '"artist": "Py Testerson"' in json_str, json_str
+    assert [path.name for path in tmp_path.iterdir()] == [name]
 
 
-def test_save_lyrics_txt(song_object: Song, tmp_path: Path) -> None:
-    """Test saving lyrics as a TXT file."""
-    filename = tmp_path / "test_lyrics.txt"
-    song_object.save_lyrics(
-        filename=str(filename),
-        extension="txt",
-        overwrite=True,
-    )
+def test_song_save_lyrics_default_filename_uses_artist_and_title(
+    song: Song, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Without a filename, the file is named after the artist and title."""
+    monkeypatch.chdir(tmp_path)
 
-    # Check that the file was written correctly
-    assert filename.is_file(), filename
-    assert filename.read_text() == song_object.lyrics, filename
+    song.save_lyrics()
 
-
-def test_save_lyrics_with_path_json(song_object: Song, tmp_path: Path) -> None:
-    """Test that save_lyrics creates the directory when a path is included in filename."""
-    output_dir = tmp_path / "output" / "nested"
-    song_object.save_lyrics(
-        filename=str(output_dir / "test_song"),
-        extension="json",
-        overwrite=True,
-    )
-
-    saved_file = output_dir / "test_song.json"
-    assert saved_file.is_file(), f"Expected file at {saved_file}"
-    content = saved_file.read_text()
-    assert '"title": "Mocking the Tests"' in content, content
-    assert '"artist": "Py Testerson"' in content, content
-
-
-def test_save_lyrics_with_path_txt(song_object: Song, tmp_path: Path) -> None:
-    """Test that save_lyrics creates the directory when a path is included in filename."""
-    output_dir = tmp_path / "lyrics_output"
-    song_object.save_lyrics(
-        filename=str(output_dir / "test_song"),
-        extension="txt",
-        overwrite=True,
-    )
-
-    saved_file = output_dir / "test_song.txt"
-    assert saved_file.is_file(), f"Expected file at {saved_file}"
-    assert saved_file.read_text() == song_object.lyrics
-
-
-def test_save_lyrics_path_creates_directory(song_object: Song, tmp_path: Path) -> None:
-    """Test that save_lyrics creates the parent directory if it doesn't exist."""
-    new_dir = tmp_path / "brand_new_dir"
-    assert not new_dir.exists()
-
-    song_object.save_lyrics(
-        filename=str(new_dir / "out"),
-        extension="json",
-        overwrite=True,
-    )
-
-    assert new_dir.is_dir()
-    assert (new_dir / "out.json").is_file()
+    assert [path.name for path in tmp_path.iterdir()] == [
+        "saved_song_lyrics_py_testerson_mocking_the_tests.json"
+    ]

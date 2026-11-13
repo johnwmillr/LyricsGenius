@@ -1,0 +1,35 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/editorial_placements/latest?per_page=2&page=1&text_format=html
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"editorial_placements\":[{\"content_type\":\"article\",\"content\":{\"_type\":\"article\",\"api_path\":\"/articles/17227\",\"article_type\":\"news\",\"author_list_for_display\":\"Ken
+        Partridge\",\"dek\":\"It stars Chinese supermodel Ming Xi.\",\"draft\":false,\"featured_slot\":\"home_mobile_desktop_first\",\"for_homepage\":true,\"for_mobile\":true,\"generic_sponsorship\":false,\"id\":17227,\"preview_image\":\"https://images.genius.com/f05d7652337e071f54202e8a8c393f4f.2732x1702x1.png\",\"published_at\":1794507780,\"pyongs_count\":0,\"sponsor_image\":null,\"sponsor_image_style\":\"normal\",\"sponsor_link\":\"\",\"sponsor_phrase\":\"\",\"sponsored\":false,\"title\":\"The
+        Weeknd Releases Music Video For \u201CHong Kong\u201D\",\"url\":\"https://genius.com/a/the-weeknd-releases-music-video-for-hong-kong\",\"votes_total\":2,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"A
+        music and pop-culture writer based in Brooklyn, Kenneth Partridge is into
+        making moves, starting grooves, and pretty much everything OMC sings about
+        in \u201CHow Bizarre.\u201D Peep his work at http://www.kennethpartridge.com.\",\"api_path\":\"/users/2384027\",\"avatar\":{\"tiny\":{\"url\":\"https://images.rapgenius.com/avatars/tiny/4f02be6ae2f4a9011324c44550f013e4\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.rapgenius.com/avatars/thumb/4f02be6ae2f4a9011324c44550f013e4\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.rapgenius.com/avatars/small/4f02be6ae2f4a9011324c44550f013e4\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.rapgenius.com/avatars/medium/4f02be6ae2f4a9011324c44550f013e4\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Staff\",\"id\":2384027,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"KPartridge\",\"name\":\"Ken
+        Partridge\",\"role_for_display\":\"staff\",\"url\":\"https://genius.com/KPartridge\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":42090},\"sponsorship\":{\"_type\":\"article\",\"api_path\":\"/articles/17227\",\"sponsor_image\":null,\"sponsor_image_style\":\"normal\",\"sponsor_link\":\"\",\"sponsor_phrase\":\"\",\"sponsored\":false}}},{\"content_type\":\"video\",\"content\":{\"_type\":\"video\",\"api_path\":\"/videos/21325\",\"article_url\":\"https://genius.com/a/cage-the-elephant-perform-make-it-easy-live\",\"author_list_for_display\":\"Genius\",\"dek\":\"Watch
+        them perform the song on the latest episode of \u2019Open Mic.\u2019\\r\\n\",\"description\":\"Last
+        week, veteran rockers Cage The Elephant announced plans to release their seventh
+        studio album, Dying In Reverse, on February 5. With the news came the project\u2019s
+        lead single, \u201CMake It Easy,\u201D, a catchy, grungy rocker produced by
+        SADPONY and\u2026\",\"dfp_kv\":[{\"name\":\"brightcove_video_id\",\"values\":[\"6408244439112\"]},{\"name\":\"topic\",\"values\":[]},{\"name\":\"has_transcript\",\"values\":[\"false\"]},{\"name\":\"song_id\",\"values\":[]},{\"name\":\"artist_id\",\"values\":[]},{\"name\":\"primary_tag_id\",\"values\":[]},{\"name\":\"video_series\",\"values\":[\"open-mic\"]}],\"duration\":230763,\"id\":21325,\"poster_attributes\":{\"height\":720,\"width\":1280},\"poster_url\":\"https://images.genius.com/2eb3ea740fad4d2f9265a342ac8a14d2.1000x563x1.jpg\",\"provider\":\"brightcove\",\"provider_id\":\"6408244439112\",\"provider_params\":[{\"name\":\"policy_key\",\"value\":\"BCpkADawqM1Yf2IElyF6jfI5WI9Q_UAa8Lz3mmqoN0btQzu-1LWMaRV4q6Tm7Fzh1LrovZfmf6rHqYXe_OdkLc9eTQiNrj2s_4t_gA0KfeiNKhrqNmRPrfQjTfgJRsGeyVoNA-qlxc9LBrtA\"}],\"short_title\":\"Cage
+        The Elephant Perform \u201CMake It Easy\u201D Live\",\"title\":\"Cage The
+        Elephant Perform \u201CMake It Easy\u201D Live\",\"type\":\"video\",\"url\":\"https://genius.com/videos/Cage-the-elephant-perform-make-it-easy-live\",\"video_attributes\":{\"width\":1280,\"height\":720},\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"view_relevance_reason\"]},\"published_at\":1794499200,\"view_count\":5156,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"Founded
+        in 2009, Genius is a unique multimedia company that\u2019s powered by community,
+        our in-house creative team, and the artists themselves. We serve music knowledge
+        to over 100\",\"api_path\":\"/users/1548008\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/751480ffb2e3063d10e0af35397d356d\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/751480ffb2e3063d10e0af35397d356d\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/751480ffb2e3063d10e0af35397d356d\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/751480ffb2e3063d10e0af35397d356d\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://images.genius.com/822a5f872a1fcfe377695dc0046c6bc6.900x176x1.jpg\",\"human_readable_role_for_display\":\"Verified
+        Artist\",\"id\":1548008,\"is_meme_verified\":true,\"is_verified\":true,\"login\":\"Genius\",\"name\":\"Genius\",\"role_for_display\":\"verified_artist\",\"url\":\"https://genius.com/Genius\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":80559},\"sponsorship\":{\"_type\":\"article\",\"api_path\":\"/articles/17223\",\"sponsor_image\":null,\"sponsor_image_style\":\"normal\",\"sponsor_link\":\"\",\"sponsor_phrase\":\"\",\"sponsored\":false}}}],\"next_page\":2}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

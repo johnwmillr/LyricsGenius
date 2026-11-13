@@ -47,6 +47,14 @@ def _lyrics_text(element: Tag | NavigableString) -> str:
     return element.get_text()
 
 
+def _span_texts(element: Tag, class_: str) -> list[str]:
+    """Returns the text of each span with the class, with Genius's \xa0 as spaces."""
+    return [
+        span.get_text().strip().replace("\xa0", " ")
+        for span in element.find_all("span", class_=class_)
+    ]
+
+
 class Genius(API, PublicAPI):
     """User-level interface with the Genius.com API and public API.
 
@@ -550,6 +558,7 @@ class Genius(API, PublicAPI):
             else:
                 logger.info('Searching for "%s"...', title)
 
+        song_info: dict[str, Any] | None = None
         if song_id:
             song_info = self.song(song_id)["song"]
         elif title:
@@ -882,15 +891,11 @@ class Genius(API, PublicAPI):
             a = li.a
             assert isinstance(a, Tag)
             url = a.attrs["href"]
-            # Genius uses \xa0 in the HTML to add spaces
-            span = a.span
-            assert isinstance(span, Tag)
-            song = [x.replace("\xa0", " ") for x in span.stripped_strings]
-            title = song[0]
-            artists = song[2].split(" & ")
-            featured_artists = [name for name in song[4:-1] if len(name) > 1]
             element = a.find("span", class_="title_with_artists")
             assert isinstance(element, Tag)
+            title = _span_texts(element, "song_title")[0]
+            artists = _span_texts(element, "primary_artist_name")
+            featured_artists = _span_texts(element, "featured_artist_name")
             title_with_artists = element.get_text().strip().replace("\xa0", " ")
 
             hit = {

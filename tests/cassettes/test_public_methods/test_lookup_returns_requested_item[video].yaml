@@ -1,0 +1,57 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/videos/18681?text_format=html
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"video\":{\"_type\":\"video\",\"api_path\":\"/videos/18681\",\"article_url\":\"https://genius.com/a/machine-gun-kelly-reacts-to-lizzo-polo-g-comethazine-on-the-cosign\",\"author_list_for_display\":\"Rahel
+        Gebreyes\",\"body\":{\"html\":\"<p>Cleveland rapper <a href=\\\"https://genius.com/artists/Machine-gun-kelly\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/artists/1665\\\">Machine Gun Kelly</a>
+        sat down with Genius for the latest episode of <em>The Cosign</em> to review
+        some of the fresh talent coming out of the Midwest.</p>\\n\\n<p>From <a href=\\\"https://genius.com/artists/Lizzo\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/artists/84514\\\">Lizzo</a>\u2019s
+        body-positive dance anthem, <a href=\\\"https://genius.com/Lizzo-tempo-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/4312315\\\">\u201CTempo,\u201D</a>
+        to <a href=\\\"https://genius.com/artists/Polo-g\\\" rel=\\\"noopener\\\"
+        data-api_path=\\\"/artists/1553158\\\">Polo G</a>\u2019s emotional recollection
+        of his come-up, <a href=\\\"https://genius.com/Polo-g-through-da-storm-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/4601528\\\">\u201CThrough da
+        Storm,\u201D</a> to <a href=\\\"https://genius.com/artists/Comethazine\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/artists/989525\\\">Comethazine</a>\u2019s
+        high-energy track, <a href=\\\"https://genius.com/Comethazine-nonsense-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/4200647\\\">\u201CNONSENSE,\u201D</a>
+        MGK shared his thoughts on the Midwest rappers making noise today.</p>\\n\\n<p>MGK
+        said one of the qualities that sets Midwest rap music apart from other areas
+        is its combination of lyrical content and the reality of the streets. After
+        watching the music videos, he was glad to see that the new rappers were still
+        carrying that legacy forward.</p>\\n\\n<p>\u201CAs far as the new generation
+        of Midwest artists, I love this. I love that the storytelling is still there.
+        That\u2019s all I really care about,\u201D he said. \u201CThe production and
+        beats are going to change over time, just because sound changes, but the storytelling
+        and the darkness is still there.\u201D</p>\\n\\n<p>Watch the video above to
+        see which new Midwest rapper received Machine Gun Kelly\u2019s cosign and
+        subscribe to the <a href=\\\"https://www.youtube.com/user/RapGeniusVideo\\\"
+        rel=\\\"noopener\\\">Genius YouTube page.</a></p>\"},\"comment_count\":3,\"dek\":\"\\\"As
+        far as the new generation of Midwest artists, I love this. I love that the
+        storytelling is still there.\\\"\",\"description\":\"Cleveland rapper Machine
+        Gun Kelly sat down with Genius for the latest episode of The Cosign to review
+        some of the fresh talent coming out of the Midwest.\\n\\nFrom Lizzo\u2019s
+        body-positive dance anthem, \u201CTempo,\u201D to Polo G\u2019s emotional
+        recollection of his\u2026\",\"dfp_kv\":[{\"name\":\"brightcove_video_id\",\"values\":[\"6073306119001\"]},{\"name\":\"topic\",\"values\":[\"weed\"]},{\"name\":\"has_transcript\",\"values\":[\"true\"]},{\"name\":\"song_id\",\"values\":[\"4094049\",\"4200647\",\"4539513\",\"4601528\"]},{\"name\":\"artist_id\",\"values\":[\"1665\",\"84514\",\"182049\",\"193351\",\"499861\",\"642979\",\"669466\",\"671661\",\"989525\",\"1104421\",\"1117837\",\"1117838\",\"1532948\",\"1549192\",\"1553158\",\"1571764\",\"1639635\",\"1740781\",\"1896751\"]},{\"name\":\"primary_tag_id\",\"values\":[\"1434\"]},{\"name\":\"video_series\",\"values\":[\"the-cosign\"]}],\"duration\":436395,\"has_voters\":true,\"id\":18681,\"poster_attributes\":{\"height\":720,\"width\":1280},\"poster_url\":\"https://images.genius.com/0d0b3b5dc1e73cc9ac468277593e241d.1000x563x1.jpg\",\"provider\":\"brightcove\",\"provider_id\":\"6073306119001\",\"provider_params\":[{\"name\":\"policy_key\",\"value\":\"BCpkADawqM1Yf2IElyF6jfI5WI9Q_UAa8Lz3mmqoN0btQzu-1LWMaRV4q6Tm7Fzh1LrovZfmf6rHqYXe_OdkLc9eTQiNrj2s_4t_gA0KfeiNKhrqNmRPrfQjTfgJRsGeyVoNA-qlxc9LBrtA\"}],\"pyongs_count\":1,\"short_title\":\"Machine
+        Gun Kelly Reacts To New Midwest Rappers (Lizzo, Polo G, Comethazine) \",\"title\":\"Machine
+        Gun Kelly Reacts To New Midwest Rappers On \u2018The Cosign\u2019\",\"twitter_share_message\":\"Machine
+        Gun Kelly Reacts To New Midwest Rappers On 'The Cosign'\",\"type\":\"video\",\"url\":\"https://genius.com/videos/Machine-gun-kelly-reacts-to-new-midwest-rappers-lizzo-polo-g-comethazine\",\"video_attributes\":{\"width\":1280,\"height\":720},\"votes_total\":2,\"current_user_metadata\":{\"permissions\":[\"create_comment\"],\"excluded_permissions\":[\"view_relevance_reason\",\"vote\",\"pyong\",\"view_video_sources\",\"edit_article\",\"destroy_article\"],\"interactions\":{\"pyong\":false,\"vote\":null}},\"published_at\":1565892180,\"view_count\":3983253,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"\",\"api_path\":\"/users/6841335\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/8b416de4d8d55a4b84ea5ba45a06429f\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/8b416de4d8d55a4b84ea5ba45a06429f\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/8b416de4d8d55a4b84ea5ba45a06429f\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/8b416de4d8d55a4b84ea5ba45a06429f\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://images.genius.com/c08af3740e352880a002660b141f5d4b.940x160x1.jpg\",\"human_readable_role_for_display\":\"Contributor\",\"id\":6841335,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"rgebreyes\",\"name\":\"Rahel
+        Gebreyes\",\"role_for_display\":\"contributor\",\"url\":\"https://genius.com/rgebreyes\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":352},\"authors\":[{\"_type\":\"user\",\"about_me_summary\":\"\",\"api_path\":\"/users/6841335\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/8b416de4d8d55a4b84ea5ba45a06429f\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/8b416de4d8d55a4b84ea5ba45a06429f\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/8b416de4d8d55a4b84ea5ba45a06429f\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/8b416de4d8d55a4b84ea5ba45a06429f\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://images.genius.com/c08af3740e352880a002660b141f5d4b.940x160x1.jpg\",\"human_readable_role_for_display\":\"Contributor\",\"id\":6841335,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"rgebreyes\",\"name\":\"Rahel
+        Gebreyes\",\"role_for_display\":\"contributor\",\"url\":\"https://genius.com/rgebreyes\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":352}],\"primary_video_list\":{\"_type\":\"video_list\",\"api_path\":\"/video_lists/19\",\"app_list_view_logo\":\"https://assets.genius.com/images/show_logos_for_app/show_the_cosign\",\"description\":null,\"id\":19,\"mobile_title_image_url\":\"https://images.genius.com/bf8f3e29bc5a3593f908bff875658fd9.1200x1200x1.png\",\"show_dates\":false,\"slug\":\"the-cosign\",\"title\":\"The
+        Cosign\",\"url\":\"https://genius.com/shows/the-cosign\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[]}},\"sponsorship\":{\"_type\":\"article\",\"api_path\":\"/articles/8821\",\"sponsor_image\":null,\"sponsor_image_style\":\"normal\",\"sponsor_link\":\"\",\"sponsor_phrase\":\"\",\"sponsored\":false}}}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1
