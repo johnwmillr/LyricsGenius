@@ -34,13 +34,22 @@ def pytest_collection_modifyitems(
             item.add_marker(skip_live)
 
 
-def _refuse_lyrics_pages(request: Any) -> Any:
-    """Stops a cassette from recording a lyrics page, which holds real lyrics."""
+def _refuse_private_requests(request: Any) -> Any:
+    """Stops a cassette from recording lyrics pages or the token owner's account.
+
+    Lyrics pages hold real lyrics, and the account endpoint returns the token
+    owner's email address and other private details.
+    """
     if request.host == "genius.com" and request.path.endswith("-lyrics"):
         raise RuntimeError(
             f"Refusing to record {request.uri}: cassettes must not contain "
             "real lyrics. Use an invented page in tests/fixtures or mark the "
             "test live."
+        )
+    if request.host == "api.genius.com" and request.path == "/account":
+        raise RuntimeError(
+            f"Refusing to record {request.uri}: it returns the token owner's "
+            "private account details. Mark the test live."
         )
     return request
 
@@ -57,10 +66,10 @@ def _strip_response_headers(response: dict[str, Any]) -> dict[str, Any]:
 
 @pytest.fixture(scope="module")
 def vcr_config() -> dict[str, Any]:
-    """Configures cassettes to omit credentials, cookies and machine details."""
+    """Configures cassettes to omit credentials, cookies and private data."""
     return {
         "filter_headers": ["authorization", "cookie", "user-agent"],
-        "before_record_request": _refuse_lyrics_pages,
+        "before_record_request": _refuse_private_requests,
         "before_record_response": _strip_response_headers,
         "decode_compressed_response": True,
     }
