@@ -67,7 +67,20 @@ class Sender(RequestCapable):
         web: bool = False,
         **kwargs: Any,
     ) -> dict[str, Any]:
-        """Makes a request to Genius."""
+        """Makes a request to Genius.
+
+        Returns:
+            :obj:`dict`: ``{"html": ...}`` for web pages, an empty dict for
+            204 responses, otherwise the JSON body's ``response`` field
+            (or the whole body if it has none).
+
+        Raises:
+            HTTPError: If the response status is 4xx, or 5xx after all
+                retries. ``args`` holds the status code and a description,
+                and ``response`` holds the response.
+            Timeout: If the request times out after all retries.
+
+        """
         header = None
         if public_api:
             uri = self.PUBLIC_API_ROOT
@@ -118,7 +131,7 @@ class Sender(RequestCapable):
         if web:
             return {"html": response.text}
         if response.status_code == 204:
-            return {"status_code": 204}
+            return {}
         response_data: dict[str, Any] = response.json()
         return response_data.get("response", response_data)
 

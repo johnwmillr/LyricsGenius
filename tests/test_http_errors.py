@@ -149,6 +149,18 @@ def test_server_error_raises_after_retries_are_exhausted() -> None:
     assert request.call_count == 2
 
 
-def test_no_content_response_returns_status_code(genius: Genius) -> None:
+def test_no_content_response_returns_empty_dict(genius: Genius) -> None:
+    with _patch_request(genius, return_value=_response(204)):
+        assert genius._make_request("annotations/1", method="DELETE") == {}
+
+
+def test_delete_annotation_returns_204(genius: Genius) -> None:
     with _patch_request(genius, return_value=_response(204)):
         assert genius.delete_annotation(1) == 204
+
+
+def test_delete_annotation_raises_on_error(genius: Genius) -> None:
+    forbidden = _json_response(403, {"meta": {"status": 403}})
+    with _patch_request(genius, return_value=forbidden):
+        with pytest.raises(HTTPError):
+            genius.delete_annotation(1)
