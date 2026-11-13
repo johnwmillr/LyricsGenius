@@ -88,7 +88,7 @@ class MiscMethods(RequestCapable, ChartsCapable):
                 try:
                     page_data = genius.page_data(artist=artist_slug, song=song_path)
                 except HTTPError as e:
-                    print("Couldn't find page data {}".format(e.status_code))
+                    print("Couldn't find page data {}".format(e.response.status_code))
                     page_data = None
 
                 if page_data is not None:
