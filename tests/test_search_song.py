@@ -245,3 +245,19 @@ def test_search_song_by_id_skips_search(genius: Genius) -> None:
     search_all.assert_not_called()
     assert result is not None
     assert result.title == "Santa"
+
+
+def test_search_song_rejects_results_that_are_not_songs(genius: Genius) -> None:
+    """With skip_non_songs, a result such as a tracklist is rejected unread."""
+    hit = _song_hit(1, "Santa (Tracklist)", "Madonna", lyrics_state="complete")
+
+    with (
+        mock.patch.object(
+            genius, "search_all", return_value=_search_all_response([hit])
+        ),
+        mock.patch.object(genius, "lyrics", return_value="words") as lyrics,
+    ):
+        result = genius.search_song("Santa (Tracklist)", get_full_info=False)
+
+    assert result is None
+    lyrics.assert_not_called()

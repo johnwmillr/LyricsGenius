@@ -200,3 +200,19 @@ def test_lyrics_removes_lyrics_header(genius: Genius, song_page: str) -> None:
     )
 
     assert _scrape(genius, page) == EXPECTED_LYRICS
+
+
+def test_lyrics_reads_empty_container_as_blank_line(
+    genius: Genius, song_page: str
+) -> None:
+    """An empty lyrics container stands for a blank line between its neighbors."""
+    second = '<div data-lyrics-container="true" class="Lyrics__Container-sc-12f9e8d3-1"><br><a'
+    page = song_page.replace(
+        second, '<div data-lyrics-container="true"></div>' + second, 1
+    )
+
+    assert page != song_page
+
+    lyrics = _scrape(genius, page)
+
+    assert lyrics == EXPECTED_LYRICS.replace("watch it run\n", "watch it run\n\n", 1)

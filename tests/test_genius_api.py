@@ -118,6 +118,9 @@ def test_tag_returns_first_page_of_songs(genius: Genius) -> None:
     assert by_title["Despacito (Remix)"]["featured_artists"] == ["Justin Bieber"]
     assert by_title["Starboy"]["artists"] == ["The Weeknd"]
     assert by_title["Starboy"]["featured_artists"] == ["Daft Punk"]
+    assert by_title["Despacito (Remix)"]["url"] == (
+        "https://genius.com/Luis-fonsi-and-daddy-yankee-despacito-remix-lyrics"
+    )
 
 
 def test_search_song_requires_title_or_id(genius: Genius) -> None:
@@ -176,9 +179,29 @@ def test_referents_accepts_creator_alone(genius: Genius) -> None:
     with mock.patch.object(
         genius, "_make_request", return_value={"referents": []}
     ) as request:
-        genius.referents(created_by_id=7)
+        genius.referents(created_by_id=7, per_page=3)
 
     params = request.call_args.kwargs["params_"]
     assert params["created_by_id"] == 7
+    assert params["per_page"] == 3
     assert params["song_id"] is None
     assert params["web_page_id"] is None
+
+
+def test_artist_songs_sends_sort_and_paging(genius: Genius) -> None:
+    """An artist's songs are requested with the given sort, page and page size."""
+    with mock.patch.object(genius, "_make_request", return_value={}) as request:
+        genius.artist_songs(1665, sort="title", per_page=7, page=2)
+
+    request.assert_called_once_with(
+        path="artists/1665/songs",
+        params_={"sort": "title", "per_page": 7, "page": 2},
+    )
+
+
+def test_tag_requests_the_given_page(genius: Genius) -> None:
+    """A later page of a tag is requested by number."""
+    with mock.patch.object(genius, "_make_request", return_value=None) as request:
+        genius.tag("pop", page=3)
+
+    assert request.call_args.kwargs["params_"] == {"page": 3}

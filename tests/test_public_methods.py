@@ -2,6 +2,7 @@
 
 import inspect
 from typing import Any
+from unittest import mock
 
 import pytest
 from requests.exceptions import HTTPError
@@ -346,3 +347,16 @@ def test_unsupported_method_raises_not_implemented(
     """Methods Genius doesn't serve to anonymous clients raise, saying why."""
     with pytest.raises(NotImplementedError, match=reason):
         _call(public_api, method, kwargs)
+
+
+@pytest.mark.parametrize(
+    "id_kind", ["annotation_id", "answer_id", "article_id", "comment_id"]
+)
+def test_voters_sends_the_given_id(public_api: PublicAPI, id_kind: str) -> None:
+    """Voters can be looked up for each kind of item, sending its ID."""
+    with mock.patch.object(
+        public_api, "_make_request", return_value={"voters": []}
+    ) as request:
+        public_api.voters(**{id_kind: 5})
+
+    assert request.call_args.kwargs["params_"] == {id_kind: 5}

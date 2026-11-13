@@ -1,10 +1,13 @@
 """Tests for the string, filename and URL helpers in lyricsgenius.utils."""
 
+from datetime import datetime
+
 import pytest
 
 from lyricsgenius.utils import (
     auth_from_environment,
     clean_str,
+    convert_to_datetime,
     decode_js_string,
     parse_redirected_url,
     sanitize_filename,
@@ -108,3 +111,34 @@ def test_clean_str_matches_spellings_of_the_same_name(
 def test_clean_str_keeps_distinct_names_distinct() -> None:
     """Removing accents doesn't make different names compare equal."""
     assert clean_str("Jay-Z") != clean_str("Jay Rock")
+
+
+def test_parse_redirected_url_rejects_repeated_value() -> None:
+    """A redirect URL with the parameter given twice raises KeyError."""
+    with pytest.raises(KeyError, match="Multiple"):
+        parse_redirected_url("https://example.com/callback?code=a&code=b", "code")
+
+
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        pytest.param(
+            {"year": 2025, "month": 4, "day": 9}, datetime(2025, 4, 9), id="full_date"
+        ),
+        pytest.param(
+            {"year": 2025, "month": 4}, datetime(2025, 4, 1), id="year_and_month"
+        ),
+        pytest.param({"year": 2025}, datetime(2025, 1, 1), id="year_only"),
+        pytest.param({}, None, id="no_components"),
+        pytest.param(None, None, id="none"),
+        pytest.param("2025-04-09", datetime(2025, 4, 9), id="iso_date"),
+        pytest.param("April 9, 2025", datetime(2025, 4, 9), id="long_date"),
+        pytest.param("April 2025", datetime(2025, 4, 1), id="month_and_year"),
+        pytest.param("2025", datetime(2025, 1, 1), id="year_string"),
+    ],
+)
+def test_convert_to_datetime_reads_genius_date_forms(
+    value: str | dict[str, int] | None, expected: datetime | None
+) -> None:
+    """Dates given as components or in Genius's string forms become datetimes."""
+    assert convert_to_datetime(value) == expected
