@@ -85,17 +85,18 @@ def test_web_page_returns_page_for_url(genius: Genius) -> None:
     assert response["web_page"]["id"] == WEB_PAGE_ID
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(allow_playback_repeats=True)
 def test_song_annotations_pairs_fragments_with_annotations(genius: Genius) -> None:
-    """Song annotations pair each annotated fragment with its annotation bodies."""
+    """Each referent's fragment is paired with the bodies of all its annotations."""
+    referents = genius.referents(song_id=SONG_ID)["referents"]
+
     annotations = genius.song_annotations(SONG_ID)
 
-    assert annotations
-    for fragment, bodies in annotations:
-        assert isinstance(fragment, str)
-        assert fragment
-        assert bodies
-        assert all(isinstance(body, list) for body in bodies)
+    assert referents
+    assert annotations == [
+        (r["fragment"], [list(a["body"].values()) for a in r["annotations"]])
+        for r in referents
+    ]
 
 
 @pytest.mark.vcr
