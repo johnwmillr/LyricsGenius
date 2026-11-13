@@ -1,4 +1,4 @@
-"""Tests for how search_artist pages through search results to find an artist."""
+"""Tests for search_artist: finding the artist and collecting their songs."""
 
 from collections.abc import Iterator
 from contextlib import contextmanager
@@ -152,3 +152,158 @@ def test_search_artist_stops_after_ten_pages(genius: Genius) -> None:
 
     search_all, _ = mocks
     assert search_all.call_count == 10
+
+
+ARTIST_ID = 7
+ARTIST_NAME = "Py Testerson"
+
+
+def _song(
+    id_: int,
+    title: str,
+    artist: str = ARTIST_NAME,
+    lyrics_state: str = "complete",
+    featured: list[str] | None = None,
+) -> dict[str, Any]:
+    """Builds a song entry as artist_songs returns it."""
+    return {
+        "id": id_,
+        "title": title,
+        "primary_artist": {"name": artist},
+        "featured_artists": [{"name": name} for name in featured or []],
+        "lyrics_state": lyrics_state,
+        "url": f"https://genius.com/song-{id_}",
+    }
+
+
+def _page(songs: list[dict[str, Any]], next_page: int | None) -> dict[str, Any]:
+    """Builds one page of artist_songs results."""
+    return {"songs": songs, "next_page": next_page}
+
+
+@contextmanager
+def _mocked_songs(
+    genius: Genius, pages: list[dict[str, Any]]
+) -> Iterator[tuple[mock.Mock, mock.Mock, mock.Mock]]:
+    """Serves the artist, the pages of songs, and lyrics named after each URL."""
+    with (
+        mock.patch.object(
+            genius, "artist", return_value=_artist_info(ARTIST_ID, ARTIST_NAME)
+        ),
+        mock.patch.object(genius, "artist_songs", side_effect=pages) as artist_songs,
+        mock.patch.object(
+            genius, "lyrics", side_effect=lambda song_url: f"lyrics of {song_url}"
+        ) as lyrics,
+        mock.patch.object(
+            genius, "song", side_effect=lambda id_: {"song": {"full_info": id_}}
+        ) as song,
+    ):
+        yield artist_songs, lyrics, song
+
+
+def test_search_artist_collects_valid_songs_across_pages(genius: Genius) -> None:
+    """Songs are gathered from every page, skipping non-songs and other artists."""
+    pages = [
+        _page([_song(1, "First"), _song(2, "Tracklist")], next_page=2),
+        _page([_song(3, "Second"), _song(4, "Theirs", artist="Someone Else")], None),
+    ]
+
+    with _mocked_songs(genius, pages) as (artist_songs, _, _):
+        artist = genius.search_artist(
+            ARTIST_NAME,
+            artist_id=ARTIST_ID,
+            sort="title",
+            per_page=7,
+            get_full_info=False,
+        )
+
+    assert artist is not None
+    assert artist_songs.call_args_list == [
+        mock.call(artist_id=ARTIST_ID, per_page=7, page=1, sort="title"),
+        mock.call(artist_id=ARTIST_ID, per_page=7, page=2, sort="title"),
+    ]
+    assert [song.title for song in artist.songs] == ["First", "Second"]
+    assert [song.lyrics for song in artist.songs] == [
+        "lyrics of https://genius.com/song-1",
+        "lyrics of https://genius.com/song-3",
+    ]
+
+
+def test_search_artist_stops_at_max_songs(genius: Genius) -> None:
+    """Collection stops once max_songs songs are added, without the next page."""
+    pages = [
+        _page([_song(1, "First"), _song(2, "Second")], next_page=2),
+        _page([_song(3, "Third")], next_page=None),
+    ]
+
+    with _mocked_songs(genius, pages) as (artist_songs, lyrics, _):
+        artist = genius.search_artist(
+            ARTIST_NAME, artist_id=ARTIST_ID, max_songs=1, get_full_info=False
+        )
+
+    assert artist is not None
+    assert [song.title for song in artist.songs] == ["First"]
+    assert artist_songs.call_count == 1
+    assert lyrics.call_count == 1
+
+
+def test_search_artist_skips_lyrics_request_for_incomplete_songs(
+    genius: Genius,
+) -> None:
+    """A song whose lyrics aren't complete is kept with empty lyrics, unfetched."""
+    genius.skip_non_songs = False
+    pages = [_page([_song(1, "Unreleased", lyrics_state="unreleased")], None)]
+
+    with _mocked_songs(genius, pages) as (_, lyrics, _):
+        artist = genius.search_artist(
+            ARTIST_NAME, artist_id=ARTIST_ID, get_full_info=False
+        )
+
+    assert artist is not None
+    assert [song.lyrics for song in artist.songs] == [""]
+    lyrics.assert_not_called()
+
+
+def test_search_artist_merges_full_song_info(genius: Genius) -> None:
+    """With get_full_info, each song's full data is fetched by ID and merged in."""
+    pages = [_page([_song(1, "First"), _song(3, "Second")], None)]
+
+    with _mocked_songs(genius, pages) as (_, _, song):
+        artist = genius.search_artist(ARTIST_NAME, artist_id=ARTIST_ID)
+
+    assert artist is not None
+    assert song.call_args_list == [mock.call(1), mock.call(3)]
+    assert [s._body["full_info"] for s in artist.songs] == [1, 3]
+
+
+@pytest.mark.parametrize(
+    ("include_features", "titles"),
+    [
+        pytest.param(True, ["Own", "Featured On"], id="included"),
+        pytest.param(False, ["Own"], id="excluded"),
+    ],
+)
+def test_search_artist_includes_features_only_when_asked(
+    genius: Genius, include_features: bool, titles: list[str]
+) -> None:
+    """Songs that only feature the artist are kept only with include_features."""
+    pages = [
+        _page(
+            [
+                _song(1, "Own"),
+                _song(2, "Featured On", artist="Headliner", featured=[ARTIST_NAME]),
+            ],
+            None,
+        )
+    ]
+
+    with _mocked_songs(genius, pages):
+        artist = genius.search_artist(
+            ARTIST_NAME,
+            artist_id=ARTIST_ID,
+            include_features=include_features,
+            get_full_info=False,
+        )
+
+    assert artist is not None
+    assert [song.title for song in artist.songs] == titles
