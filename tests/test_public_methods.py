@@ -1,5 +1,6 @@
 """Tests for the PublicAPI methods, replayed from recorded genius.com/api responses."""
 
+import inspect
 from typing import Any
 
 import pytest
@@ -16,6 +17,11 @@ USER_ID = 1
 VIDEO_ID = 18681
 WEB_PAGE_ID = 10347
 REFERENT_IDS = [20793764, 20641014]
+COMMENTED_ANNOTATION_ID = 2941046
+PER_PAGE = 2
+
+# Methods whose endpoints return a fixed page size whatever per_page says.
+_IGNORES_PER_PAGE = {"artist_activity", "search_artist_songs"}
 
 # Recorded 2026-11-13: genius.com/api/page_data returned 404 for every page
 # path tried, including the documented album and song forms.
@@ -26,8 +32,28 @@ _PAGE_DATA_REMOVED = pytest.mark.xfail(
 )
 
 
+# Sent to every method that accepts them. They differ from the defaults, so
+# each recorded request pins the names of the parameters the method sends.
+_OPTIONAL_PARAMS: dict[str, Any] = {
+    "per_page": PER_PAGE,
+    "page": 1,
+    "text_format": "html",
+}
+
+
+def _accepts(client: PublicAPI, method: str, param: str) -> bool:
+    """Reports whether a method takes the given parameter."""
+    return param in inspect.signature(getattr(client, method)).parameters
+
+
 def _call(client: PublicAPI, method: str, kwargs: dict[str, Any]) -> dict[str, Any]:
-    response: dict[str, Any] = getattr(client, method)(**kwargs)
+    """Calls a method with its arguments plus any optional parameters it takes."""
+    optional = {
+        name: value
+        for name, value in _OPTIONAL_PARAMS.items()
+        if name not in kwargs and _accepts(client, method, name)
+    }
+    response: dict[str, Any] = getattr(client, method)(**kwargs, **optional)
     return response
 
 
@@ -84,7 +110,7 @@ def test_lookup_returns_requested_item(
         ),
         pytest.param(
             "annotation_comments",
-            {"annotation_id": ANNOTATION_ID},
+            {"annotation_id": COMMENTED_ANNOTATION_ID},
             "comments",
             id="annotation_comments",
         ),
@@ -123,17 +149,28 @@ def test_lookup_returns_requested_item(
         ),
         pytest.param(
             "search_artist_songs",
-            {"artist_id": ARTIST_ID, "search_term": "test"},
+            {"artist_id": ARTIST_ID, "search_term": "bad"},
             "songs",
             id="search_artist_songs",
         ),
         pytest.param(
-            "cover_arts", {"album_id": ALBUM_ID}, "cover_arts", id="cover_arts"
+            "cover_arts",
+            {"song_id": SONG_ID},
+            "cover_arts",
+            id="cover_arts_song",
+            marks=pytest.mark.xfail(
+                raises=HTTPError,
+                strict=True,
+                reason="Genius now requires album_id: 400 'must include one of: album_id'",
+            ),
         ),
         pytest.param("discussions", {}, "discussions", id="discussions"),
         pytest.param("leaderboard", {}, "leaderboard", id="leaderboard"),
         pytest.param("charts", {}, "chart_items", id="charts"),
         pytest.param("questions", {"album_id": ALBUM_ID}, "questions", id="questions"),
+        pytest.param(
+            "questions", {"song_id": SONG_ID}, "questions", id="questions_song"
+        ),
         pytest.param(
             "referents", {"web_page_id": WEB_PAGE_ID}, "referents", id="referents"
         ),
@@ -168,11 +205,14 @@ def test_lookup_returns_requested_item(
         ),
         pytest.param(
             "user_contributions",
-            {"user_id": USER_ID},
+            # Genius returns no groups for small page sizes, such as 2.
+            {"user_id": USER_ID, "per_page": 20},
             "contribution_groups",
             id="user_contributions",
         ),
         pytest.param("videos", {"video_id": VIDEO_ID}, "videos", id="videos"),
+        pytest.param("videos", {"song_id": SONG_ID}, "videos", id="videos_song"),
+        pytest.param("videos", {"album_id": ALBUM_ID}, "videos", id="videos_album"),
         pytest.param(
             "videos",
             {"video_id": VIDEO_ID, "series": True},
@@ -185,10 +225,17 @@ def test_lookup_returns_requested_item(
 def test_response_contains_expected_key(
     public_api: PublicAPI, method: str, kwargs: dict[str, Any], key: str
 ) -> None:
-    """Each method's response contains the key that holds its results."""
+    """Each method returns results under its key, at most per_page of them."""
     response = _call(public_api, method, kwargs)
 
-    assert key in response
+    results = response[key]
+    assert results
+    if (
+        isinstance(results, list)
+        and _accepts(public_api, method, "per_page")
+        and method not in _IGNORES_PER_PAGE
+    ):
+        assert len(results) <= kwargs.get("per_page", PER_PAGE)
 
 
 @pytest.mark.vcr

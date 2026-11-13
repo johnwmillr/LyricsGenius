@@ -5,46 +5,66 @@ interactions:
       application:
       - LyricsGenius
     method: GET
-    uri: https://genius.com/api/artists/1665?text_format=plain
+    uri: https://genius.com/api/artists/1665?text_format=html
   response:
     body:
       string: "{\"meta\":{\"status\":200},\"response\":{\"artist\":{\"_type\":\"artist\",\"alternate_names\":[\"Machine
-        Gun Kelly\",\"Richard Colson Baker\",\"Colson Baker\"],\"api_path\":\"/artists/1665\",\"description\":{\"plain\":\"Initially
+        Gun Kelly\",\"Richard Colson Baker\",\"Colson Baker\"],\"api_path\":\"/artists/1665\",\"description\":{\"html\":\"<p>Initially
         emerging as a lyrical rapper before diversifying his catalog to include pop
-        realms and adding pop punk to his repertoire, a transition that led to Billboard
-        dubbing him the \u201CCrown Prince of Pop Punk\u201D, Machine Gun Kelly (born
-        Colson Baker on April 22, 1990) is an American rapper, singer, songwriter,
-        and actor from Cleveland, Ohio.\\n\\nTraveling the world because of his parents'
-        jobs before settling down in Cleveland, Machine Gun Kelly, commonly referred
-        to as MGK, earned his stage name for his lightning-fast delivery while still
-        in high school. His breakthrough came at the start of the 2010s with his party-rap
-        hit \u201CWild Boy\u201D, mixing his lightning-fast flow with hedonistic,
-        party-ready lyrics over a bass-heavy beat. He would go on to release two more
-        rap albums before making his crossover into pop.\\n\\nHis third album, bloom,
+        realms and adding pop punk to his repertoire, a transition that led to <a
+        href=\\\"https://www.billboard.com/music/features/machine-gun-kelly-billboard-cover-story-2022-interview-1235047603/\\\"
+        rel=\\\"noopener nofollow\\\">Billboard dubbing him the \u201CCrown Prince
+        of Pop Punk\u201D</a>, Machine Gun Kelly (born Colson Baker on April 22, 1990)
+        is an American rapper, singer, songwriter, and actor from Cleveland, Ohio.</p>\\n\\n<p>Traveling
+        the world because of his parents' jobs before settling down in Cleveland,
+        Machine Gun Kelly, commonly referred to as MGK, <a href=\\\"https://www.cleveland.com/popmusic/2010/11/clevelands_own_machine_gun_kel.html\\\"
+        rel=\\\"noopener nofollow\\\">earned his stage name</a> for his lightning-fast
+        delivery while still in high school. His breakthrough came at the start of
+        the 2010s with his party-rap hit <a href=\\\"https://genius.com/Machine-gun-kelly-wild-boy-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/55635\\\">\u201CWild Boy\u201D</a>,
+        mixing his lightning-fast flow with hedonistic, party-ready lyrics over a
+        bass-heavy beat. He would go on to release two more rap albums before making
+        his crossover into pop.</p>\\n\\n<p>His third album, <a href=\\\"https://genius.com/albums/Machine-gun-kelly/Bloom\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/albums/338893\\\"><em>bloom</em></a>,
         marked a stylistic and commercial turning point for the Ohio rapper. Led by
-        his smash hit single \u201CBad Things\u201D, a pop-rap duet with, at-the-time,
-        rising songstress Camila Cabello, the album saw his style pivot to pop and
-        his sales increase accordingly. With \u201CBad Things\u201D becoming a top
-        five hit on the Hot 100 and reaching the top spot of the pop charts, as well
-        as the album\u2019s other hit, \u201CAt My Best\u201D, nearly cracking the
-        top 20 of the pop charts, the album became the most successful of Machine
-        Gun Kelly\u2019s career.\\n\\nAfter a highly-publicized feud with Eminem and
-        a critically-acclaimed rap-rock album in 2018 and 2019, respectively, Machine
-        Gun Kelly started to become a household name in 2020 with the release of Tickets
-        To My Downfall, reviving pop punk with a uniquely hip-hop-inspired spin. The
-        approach proved successful, with the album\u2019s single my ex\u2019s best
-        friend\u201D staying on the Hot 100 chart for a full year. At the front of
-        a revival of pop-punk and rock music in the mainstream, he followed up with
-        2022\u2019s mainstream sellout, for which he earned a Grammy nomination, a
-        first in his career.\\n\\nTo date, Machine Gun Kelly has certified sales of
-        25 million singles and 2.5 million albums.\"},\"description_preview\":\"Initially
-        emerging as a lyrical rapper before diversifying his catalog to include pop
-        realms and adding pop punk to his repertoire, a transition that led to Billboard
-        dubbing him the \u201CCrown Prince of Pop Punk\u201D, Machine Gun Kelly (born
-        Colson Baker on April 22, 1990) is an American rapper, singer, songwriter,
-        and actor from Cleveland, Ohio.\\n\\nTraveling the world because of his parents'
-        jobs before settling down in Cleveland, Machine Gun Kelly, commonly referred
-        to as MGK, earned his stage name for his lightning-fast delivery while still
+        his smash hit single <a href=\\\"https://genius.com/Machine-gun-kelly-and-camila-cabello-bad-things-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/2879457\\\">\u201CBad Things\u201D</a>,
+        a pop-rap duet with, at-the-time, rising songstress <a href=\\\"https://genius.com/artists/Camila-cabello\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/artists/609667\\\">Camila Cabello</a>,
+        the album saw his style pivot to pop and his sales increase accordingly. With
+        \u201CBad Things\u201D becoming a top five hit on the Hot 100 and reaching
+        <a href=\\\"https://www.billboard.com/artist/machine-gun-kelly/\\\" rel=\\\"noopener
+        nofollow\\\">the top spot of the pop charts</a>, as well as the album\u2019s
+        other hit, <a href=\\\"https://genius.com/Machine-gun-kelly-at-my-best-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/3023065\\\">\u201CAt My Best\u201D</a>,
+        nearly cracking the top 20 of the pop charts, the album became the most successful
+        of Machine Gun Kelly\u2019s career.</p>\\n\\n<p>After a <a href=\\\"https://genius.com/Machine-gun-kelly-rap-devil-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/3937522\\\">highly-publicized
+        feud with Eminem</a> and a <a href=\\\"https://genius.com/albums/Machine-gun-kelly/Hotel-diablo\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/albums/517831\\\">critically-acclaimed
+        rap-rock album</a> in 2018 and 2019, respectively, Machine Gun Kelly started
+        to become a household name in 2020 with the release of <a href=\\\"https://genius.com/albums/Machine-gun-kelly/Tickets-to-my-downfall-sold-out-deluxe\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/albums/683403\\\"><em>Tickets To My
+        Downfall</em></a>, reviving pop punk with a uniquely hip-hop-inspired spin.
+        The approach proved successful, with the album\u2019s single <a href=\\\"https://genius.com/Machine-gun-kelly-and-blackbear-my-exs-best-friend-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/5838882\\\">my ex\u2019s best
+        friend\u201D</a> staying <a href=\\\"https://www.billboard.com/artist/machine-gun-kelly/\\\"
+        rel=\\\"noopener nofollow\\\">on the Hot 100 chart for a full year</a>. At
+        the front of a revival of pop-punk and rock music in the mainstream, he followed
+        up with 2022\u2019s <a href=\\\"https://genius.com/albums/Machine-gun-kelly/Mainstream-sellout-life-in-pink-deluxe\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/albums/834633\\\"><em>mainstream sellout</em></a>,
+        for which he earned a <a href=\\\"https://www.etonline.com/machine-gun-kelly-finds-closure-with-first-grammy-nomination-after-10-years-exclusive-194481\\\"
+        rel=\\\"noopener nofollow\\\">Grammy nomination</a>, a first in his career.</p>\\n\\n<p>To
+        date, Machine Gun Kelly has <a href=\\\"https://www.riaa.com/gold-platinum/?tab_active=default-award&amp;se=Machine+gun+kelly#search_section\\\"
+        rel=\\\"noopener nofollow\\\">certified sales</a> of 25 million singles and
+        2.5 million albums.</p>\"},\"description_preview\":\"Initially emerging as
+        a lyrical rapper before diversifying his catalog to include pop realms and
+        adding pop punk to his repertoire, a transition that led to Billboard dubbing
+        him the \u201CCrown Prince of Pop Punk\u201D, Machine Gun Kelly (born Colson
+        Baker on April 22, 1990) is an American rapper, singer, songwriter, and actor
+        from Cleveland, Ohio.\\n\\nTraveling the world because of his parents' jobs
+        before settling down in Cleveland, Machine Gun Kelly, commonly referred to
+        as MGK, earned his stage name for his lightning-fast delivery while still
         in high school. His breakthrough came at the start of the 2010s with his party-rap
         hit \u201CWild Boy\u201D, mixing his lightning-fast flow with hedonistic,
         party-ready lyrics over a bass-heavy beat. He would go on to release two more
@@ -68,35 +88,55 @@ interactions:
         25 million singles and 2.5 million albums.\",\"facebook_name\":\"machinegunkellymusic\",\"header_image_url\":\"https://images.genius.com/b53227534e0572ce2e9aff2a4e64e8c3.1000x563x1.jpg\",\"id\":1665,\"image_url\":\"https://images.genius.com/e8aa944406aeca9c8d6739651583022b.1000x1000x1.jpg\",\"index_character\":\"m\",\"instagram_name\":\"machinegunkelly\",\"is_meme_verified\":true,\"is_verified\":true,\"links_config\":null,\"name\":\"mgk\",\"name_components\":{\"base_name\":\"mgk\",\"disambiguator\":null},\"slug\":\"Mgk\",\"social_links\":{\"twitter\":\"machinegunkelly\",\"facebook\":\"machinegunkellymusic\",\"instagram\":\"machinegunkelly\"},\"tracking_paths\":{\"aggregate\":\"/artists/Mgk\",\"concurrent\":\"/artists/Mgk\"},\"translation_artist\":false,\"twitter_name\":\"machinegunkelly\",\"url\":\"https://genius.com/artists/Mgk\",\"current_user_metadata\":{\"permissions\":[\"view_activity_stream\",\"view_discography\"],\"excluded_permissions\":[\"edit\",\"edit_images\",\"edit_names\",\"edit_anything\",\"merge\",\"sort_artist_songs\",\"follow\",\"view_contribution_opportunities\",\"edit_translation_artist\",\"split\",\"sort_artist_songs_by_lyrics_edit_proposals\",\"report_as_abusive\",\"see_short_id\"],\"interactions\":{\"following\":false}},\"followers_count\":4554,\"iq\":29789,\"artist_relationships\":[{\"_type\":\"artist_relationship\",\"relationship_type\":\"member_of\",\"artists\":[{\"_type\":\"artist\",\"api_path\":\"/artists/1130126\",\"header_image_url\":\"https://images.genius.com/9b9833a6ede5d12f39592d3af1db7d06.720x234x1.jpg\",\"id\":1130126,\"image_url\":\"https://images.genius.com/e398114b4cf11057ebb633ded1c173b3.332x332x1.jpg\",\"index_character\":\"e\",\"is_meme_verified\":false,\"is_verified\":false,\"links_config\":null,\"name\":\"EST
         19XX\",\"slug\":\"Est-19xx\",\"url\":\"https://genius.com/artists/Est-19xx\"}]}],\"description_annotation\":{\"_type\":\"referent\",\"annotator_id\":5942,\"annotator_login\":\"brod132\",\"api_path\":\"/referents/6926226\",\"classification\":\"accepted\",\"fragment\":\"mgk\",\"id\":6926226,\"ios_app_url\":\"genius://referents/6926226\",\"is_description\":true,\"is_image\":false,\"path\":\"/6926226/Mgk/Mgk\",\"range\":{\"content\":\"mgk\"},\"song_id\":null,\"url\":\"https://genius.com/6926226/Mgk/Mgk\",\"verified_annotator_ids\":[],\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"add_pinned_annotation_to\",\"add_community_annotation_to\"],\"relationships\":{}},\"tracking_paths\":{\"aggregate\":\"/6926226/Mgk/Mgk\",\"concurrent\":\"/artists/Mgk\"},\"twitter_share_message\":\"\u201CInitially
         emerging as a lyrical rapper before diversifying his catalog to include pop
-        realms and\u2026\u201D \u2014@Genius\",\"annotatable\":{\"_type\":\"artist\",\"api_path\":\"/artists/1665\",\"context\":null,\"id\":1665,\"image_url\":\"https://images.genius.com/e8aa944406aeca9c8d6739651583022b.1000x1000x1.jpg\",\"link_title\":\"mgk\",\"title\":\"mgk\",\"type\":\"Artist\",\"url\":\"https://genius.com/artists/Mgk\"},\"annotations\":[{\"_type\":\"annotation\",\"api_path\":\"/annotations/6926226\",\"being_created\":false,\"body\":{\"plain\":\"Initially
+        realms and\u2026\u201D \u2014@Genius\",\"annotatable\":{\"_type\":\"artist\",\"api_path\":\"/artists/1665\",\"context\":null,\"id\":1665,\"image_url\":\"https://images.genius.com/e8aa944406aeca9c8d6739651583022b.1000x1000x1.jpg\",\"link_title\":\"mgk\",\"title\":\"mgk\",\"type\":\"Artist\",\"url\":\"https://genius.com/artists/Mgk\"},\"annotations\":[{\"_type\":\"annotation\",\"api_path\":\"/annotations/6926226\",\"being_created\":false,\"body\":{\"html\":\"<p>Initially
         emerging as a lyrical rapper before diversifying his catalog to include pop
-        realms and adding pop punk to his repertoire, a transition that led to Billboard
-        dubbing him the \u201CCrown Prince of Pop Punk\u201D, Machine Gun Kelly (born
-        Colson Baker on April 22, 1990) is an American rapper, singer, songwriter,
-        and actor from Cleveland, Ohio.\\n\\nTraveling the world because of his parents'
-        jobs before settling down in Cleveland, Machine Gun Kelly, commonly referred
-        to as MGK, earned his stage name for his lightning-fast delivery while still
-        in high school. His breakthrough came at the start of the 2010s with his party-rap
-        hit \u201CWild Boy\u201D, mixing his lightning-fast flow with hedonistic,
-        party-ready lyrics over a bass-heavy beat. He would go on to release two more
-        rap albums before making his crossover into pop.\\n\\nHis third album, bloom,
+        realms and adding pop punk to his repertoire, a transition that led to <a
+        href=\\\"https://www.billboard.com/music/features/machine-gun-kelly-billboard-cover-story-2022-interview-1235047603/\\\"
+        rel=\\\"noopener nofollow\\\">Billboard dubbing him the \u201CCrown Prince
+        of Pop Punk\u201D</a>, Machine Gun Kelly (born Colson Baker on April 22, 1990)
+        is an American rapper, singer, songwriter, and actor from Cleveland, Ohio.</p>\\n\\n<p>Traveling
+        the world because of his parents' jobs before settling down in Cleveland,
+        Machine Gun Kelly, commonly referred to as MGK, <a href=\\\"https://www.cleveland.com/popmusic/2010/11/clevelands_own_machine_gun_kel.html\\\"
+        rel=\\\"noopener nofollow\\\">earned his stage name</a> for his lightning-fast
+        delivery while still in high school. His breakthrough came at the start of
+        the 2010s with his party-rap hit <a href=\\\"https://genius.com/Machine-gun-kelly-wild-boy-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/55635\\\">\u201CWild Boy\u201D</a>,
+        mixing his lightning-fast flow with hedonistic, party-ready lyrics over a
+        bass-heavy beat. He would go on to release two more rap albums before making
+        his crossover into pop.</p>\\n\\n<p>His third album, <a href=\\\"https://genius.com/albums/Machine-gun-kelly/Bloom\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/albums/338893\\\"><em>bloom</em></a>,
         marked a stylistic and commercial turning point for the Ohio rapper. Led by
-        his smash hit single \u201CBad Things\u201D, a pop-rap duet with, at-the-time,
-        rising songstress Camila Cabello, the album saw his style pivot to pop and
-        his sales increase accordingly. With \u201CBad Things\u201D becoming a top
-        five hit on the Hot 100 and reaching the top spot of the pop charts, as well
-        as the album\u2019s other hit, \u201CAt My Best\u201D, nearly cracking the
-        top 20 of the pop charts, the album became the most successful of Machine
-        Gun Kelly\u2019s career.\\n\\nAfter a highly-publicized feud with Eminem and
-        a critically-acclaimed rap-rock album in 2018 and 2019, respectively, Machine
-        Gun Kelly started to become a household name in 2020 with the release of Tickets
-        To My Downfall, reviving pop punk with a uniquely hip-hop-inspired spin. The
-        approach proved successful, with the album\u2019s single my ex\u2019s best
-        friend\u201D staying on the Hot 100 chart for a full year. At the front of
-        a revival of pop-punk and rock music in the mainstream, he followed up with
-        2022\u2019s mainstream sellout, for which he earned a Grammy nomination, a
-        first in his career.\\n\\nTo date, Machine Gun Kelly has certified sales of
-        25 million singles and 2.5 million albums.\"},\"comment_count\":0,\"community\":true,\"created_at\":1318781509,\"custom_preview\":null,\"deleted\":false,\"embed_content\":\"<blockquote
+        his smash hit single <a href=\\\"https://genius.com/Machine-gun-kelly-and-camila-cabello-bad-things-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/2879457\\\">\u201CBad Things\u201D</a>,
+        a pop-rap duet with, at-the-time, rising songstress <a href=\\\"https://genius.com/artists/Camila-cabello\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/artists/609667\\\">Camila Cabello</a>,
+        the album saw his style pivot to pop and his sales increase accordingly. With
+        \u201CBad Things\u201D becoming a top five hit on the Hot 100 and reaching
+        <a href=\\\"https://www.billboard.com/artist/machine-gun-kelly/\\\" rel=\\\"noopener
+        nofollow\\\">the top spot of the pop charts</a>, as well as the album\u2019s
+        other hit, <a href=\\\"https://genius.com/Machine-gun-kelly-at-my-best-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/3023065\\\">\u201CAt My Best\u201D</a>,
+        nearly cracking the top 20 of the pop charts, the album became the most successful
+        of Machine Gun Kelly\u2019s career.</p>\\n\\n<p>After a <a href=\\\"https://genius.com/Machine-gun-kelly-rap-devil-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/3937522\\\">highly-publicized
+        feud with Eminem</a> and a <a href=\\\"https://genius.com/albums/Machine-gun-kelly/Hotel-diablo\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/albums/517831\\\">critically-acclaimed
+        rap-rock album</a> in 2018 and 2019, respectively, Machine Gun Kelly started
+        to become a household name in 2020 with the release of <a href=\\\"https://genius.com/albums/Machine-gun-kelly/Tickets-to-my-downfall-sold-out-deluxe\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/albums/683403\\\"><em>Tickets To My
+        Downfall</em></a>, reviving pop punk with a uniquely hip-hop-inspired spin.
+        The approach proved successful, with the album\u2019s single <a href=\\\"https://genius.com/Machine-gun-kelly-and-blackbear-my-exs-best-friend-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/5838882\\\">my ex\u2019s best
+        friend\u201D</a> staying <a href=\\\"https://www.billboard.com/artist/machine-gun-kelly/\\\"
+        rel=\\\"noopener nofollow\\\">on the Hot 100 chart for a full year</a>. At
+        the front of a revival of pop-punk and rock music in the mainstream, he followed
+        up with 2022\u2019s <a href=\\\"https://genius.com/albums/Machine-gun-kelly/Mainstream-sellout-life-in-pink-deluxe\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/albums/834633\\\"><em>mainstream sellout</em></a>,
+        for which he earned a <a href=\\\"https://www.etonline.com/machine-gun-kelly-finds-closure-with-first-grammy-nomination-after-10-years-exclusive-194481\\\"
+        rel=\\\"noopener nofollow\\\">Grammy nomination</a>, a first in his career.</p>\\n\\n<p>To
+        date, Machine Gun Kelly has <a href=\\\"https://www.riaa.com/gold-platinum/?tab_active=default-award&amp;se=Machine+gun+kelly#search_section\\\"
+        rel=\\\"noopener nofollow\\\">certified sales</a> of 25 million singles and
+        2.5 million albums.</p>\"},\"comment_count\":0,\"community\":true,\"created_at\":1318781509,\"custom_preview\":null,\"deleted\":false,\"embed_content\":\"<blockquote
         class='rg_standalone_container' data-src='//genius.com/annotations/6926226/standalone_embed'><a
         href='https://genius.com/6926226/Mgk/Mgk'>mgk</a><br><a href='https://genius.com/artists/Mgk'>&#8213;
         mgk</a></blockquote><script async crossorigin src='//genius.com/annotations/load_standalone_embeds.js'></script>\",\"has_voters\":true,\"id\":6926226,\"needs_exegesis\":false,\"pinned\":false,\"proposed_edit_count\":0,\"pyongs_count\":4,\"referent_id\":6926226,\"share_url\":\"https://genius.com/6926226\",\"source\":null,\"state\":\"accepted\",\"twitter_share_message\":\"\u201CInitially

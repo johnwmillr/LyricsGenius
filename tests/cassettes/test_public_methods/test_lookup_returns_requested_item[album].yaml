@@ -5,7 +5,7 @@ interactions:
       application:
       - LyricsGenius
     method: GET
-    uri: https://genius.com/api/albums/104614?text_format=plain
+    uri: https://genius.com/api/albums/104614?text_format=html
   response:
     body:
       string: "{\"meta\":{\"status\":200},\"response\":{\"album\":{\"_type\":\"album\",\"album_type\":\"album\",\"api_path\":\"/albums/104614\",\"comment_count\":1,\"cover_art_thumbnail_url\":\"https://images.genius.com/2248a5d9a3f54a412553c58f38985256.300x300x1.png\",\"cover_art_url\":\"https://images.genius.com/2248a5d9a3f54a412553c58f38985256.1000x1000x1.png\",\"custom_header_image_url\":null,\"description_preview\":\"1000
@@ -32,7 +32,7 @@ interactions:
         Edition) (artist: Sia)\",\"primary_artist_names\":\"Sia\",\"pusher_channel\":\"album-1784675\",\"release_date_components\":{\"year\":2014,\"month\":7,\"day\":4},\"release_date_for_display\":\"July
         4, 2014\",\"updated_at\":1793137028,\"url\":\"https://genius.com/albums/Sia/1000-forms-of-fear-french-edition\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"set_album_color_gradient\"]},\"artist\":{\"_type\":\"artist\",\"api_path\":\"/artists/16775\",\"header_image_url\":\"https://images.genius.com/570d01b6da3e0d9f5abc5ddaebdd6825.1000x989x1.jpg\",\"id\":16775,\"image_url\":\"https://images.genius.com/00bbce98e16a5740dc234ef6e3e9bf9e.556x556x1.jpg\",\"index_character\":\"s\",\"is_meme_verified\":false,\"is_verified\":true,\"links_config\":null,\"name\":\"Sia\",\"slug\":\"Sia\",\"url\":\"https://genius.com/artists/Sia\",\"iq\":9643},\"primary_artists\":[{\"_type\":\"artist\",\"api_path\":\"/artists/16775\",\"header_image_url\":\"https://images.genius.com/570d01b6da3e0d9f5abc5ddaebdd6825.1000x989x1.jpg\",\"id\":16775,\"image_url\":\"https://images.genius.com/00bbce98e16a5740dc234ef6e3e9bf9e.556x556x1.jpg\",\"index_character\":\"s\",\"is_meme_verified\":false,\"is_verified\":true,\"links_config\":null,\"name\":\"Sia\",\"slug\":\"Sia\",\"url\":\"https://genius.com/artists/Sia\",\"iq\":9643}]}]},{\"_type\":\"album_relationship\",\"relationship_type\":\"remix_version_of\",\"albums\":[]},{\"_type\":\"album_relationship\",\"relationship_type\":\"remixes\",\"albums\":[]}],\"artist\":{\"_type\":\"artist\",\"api_path\":\"/artists/16775\",\"header_image_url\":\"https://images.genius.com/570d01b6da3e0d9f5abc5ddaebdd6825.1000x989x1.jpg\",\"id\":16775,\"image_url\":\"https://images.genius.com/00bbce98e16a5740dc234ef6e3e9bf9e.556x556x1.jpg\",\"index_character\":\"s\",\"is_meme_verified\":false,\"is_verified\":true,\"links_config\":null,\"name\":\"Sia\",\"slug\":\"Sia\",\"url\":\"https://genius.com/artists/Sia\",\"iq\":9643},\"cover_arts\":[{\"_type\":\"cover_art\",\"annotated\":false,\"api_path\":\"/albums/104614\",\"id\":204381,\"image_url\":\"https://images.genius.com/2248a5d9a3f54a412553c58f38985256.1000x1000x1.png\",\"thumbnail_image_url\":\"https://images.genius.com/2248a5d9a3f54a412553c58f38985256.300x300x1.png\",\"url\":\"https://genius.com/album_cover_arts/204381\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"destroy\"]},\"description_annotation\":{\"_type\":\"referent\",\"annotator_id\":3628738,\"annotator_login\":\"Dev1999\",\"api_path\":\"/referents/13915999\",\"classification\":\"needs_exegesis\",\"fragment\":\"https://images.genius.com/2248a5d9a3f54a412553c58f38985256.1000x1000x1.png\",\"id\":13915999,\"ios_app_url\":\"genius://referents/13915999\",\"is_description\":true,\"is_image\":true,\"path\":\"/13915999/1000-forms-of-fear/Https-imagesgeniuscom-2248a5d9a3f54a412553c58f389852561000x1000x1png\",\"range\":{\"content\":\"https://images.genius.com/2248a5d9a3f54a412553c58f38985256.1000x1000x1.png\"},\"song_id\":null,\"url\":\"https://genius.com/13915999/1000-forms-of-fear/Https-imagesgeniuscom-2248a5d9a3f54a412553c58f389852561000x1000x1png\",\"verified_annotator_ids\":[],\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"add_pinned_annotation_to\",\"add_community_annotation_to\"],\"relationships\":{}},\"tracking_paths\":{\"aggregate\":\"/13915999/1000-forms-of-fear/Https-imagesgeniuscom-2248a5d9a3f54a412553c58f389852561000x1000x1png\",\"concurrent\":\"/albums/Sia/1000-forms-of-fear\"},\"twitter_share_message\":\"\u201C?\u201D
         \u2014@Genius\",\"annotatable\":{\"_type\":\"cover_art\",\"api_path\":\"/albums/104614\",\"context\":\"Sia\",\"id\":204381,\"image_url\":\"https://images.genius.com/2248a5d9a3f54a412553c58f38985256.300x300x1.png\",\"link_title\":\"1000
-        Forms of Fear\",\"title\":\"1000 Forms of Fear\",\"type\":\"CoverArt\",\"url\":\"https://genius.com/album_cover_arts/204381\"},\"annotations\":[{\"_type\":\"annotation\",\"api_path\":\"/annotations/13915999\",\"being_created\":false,\"body\":{\"plain\":\"\"},\"comment_count\":0,\"community\":true,\"created_at\":1519238026,\"custom_preview\":null,\"deleted\":false,\"embed_content\":\"<blockquote
+        Forms of Fear\",\"title\":\"1000 Forms of Fear\",\"type\":\"CoverArt\",\"url\":\"https://genius.com/album_cover_arts/204381\"},\"annotations\":[{\"_type\":\"annotation\",\"api_path\":\"/annotations/13915999\",\"being_created\":false,\"body\":{\"html\":\"\"},\"comment_count\":0,\"community\":true,\"created_at\":1519238026,\"custom_preview\":null,\"deleted\":false,\"embed_content\":\"<blockquote
         class='rg_standalone_container' data-src='//genius.com/annotations/13915999/standalone_embed'><a
         href='https://genius.com/13915999/1000-forms-of-fear/Https-imagesgeniuscom-2248a5d9a3f54a412553c58f389852561000x1000x1png'>https://images.genius.com/2248a5d9a3f54a412553c58f38985256.1000x1000x1.png</a><br><a
         href='https://genius.com/album_cover_arts/204381'>&#8213; 1000 Forms of Fear</a></blockquote><script
@@ -44,20 +44,23 @@ interactions:
         Forms of Fear\"},\"song_id\":null,\"url\":\"https://genius.com/7577212/1000-forms-of-fear/1000-forms-of-fear\",\"verified_annotator_ids\":[],\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"add_pinned_annotation_to\",\"add_community_annotation_to\"],\"relationships\":{}},\"tracking_paths\":{\"aggregate\":\"/7577212/1000-forms-of-fear/1000-forms-of-fear\",\"concurrent\":\"/albums/Sia/1000-forms-of-fear\"},\"twitter_share_message\":\"\u201C1000
         Forms of Fear is the sixth studio album by Australian singer-songwriter Sia
         Furler. It was \u2026\u201D \u2014@Genius\",\"annotatable\":{\"_type\":\"album\",\"api_path\":\"/albums/104614\",\"context\":\"Sia\",\"id\":104614,\"image_url\":\"https://images.genius.com/2248a5d9a3f54a412553c58f38985256.300x300x1.png\",\"link_title\":\"1000
-        Forms of Fear\",\"title\":\"1000 Forms of Fear\",\"type\":\"Album\",\"url\":\"https://genius.com/albums/Sia/1000-forms-of-fear\"},\"annotations\":[{\"_type\":\"annotation\",\"api_path\":\"/annotations/7577212\",\"being_created\":false,\"body\":{\"plain\":\"1000
-        Forms of Fear is the sixth studio album by Australian singer-songwriter Sia
-        Furler. It was released on 4 July 2014. Lyrically, the record showcases Furler
-        dealing with drug addition and bipolar disorder.\\n\\nIn an interview published
-        by NME in February 2015, Furler revealed that the album as a contractual obligation:
-        \u201CBasically, I put this out to get out of my publishing deal. I was planning
-        to be a pop song writer for other artists. But my publishing deal was as an
-        artist so I had to put one more album out. I didn\u2019t want to get famous
-        so I kept all the songs I wanted and had fun making it.\u201D\\n\\nIn an interview
-        with Dazed & Confused, Furler explained that she had decided to not show her
-        face during the promotion of 1000 Forms of Fear. Instead she focused on creating
-        visual art through her videos. Furler recruited American child dancer Maddie
-        Ziegler to be her persona on stage and performer with her back facing to the
-        camera.\"},\"comment_count\":0,\"community\":true,\"created_at\":1440627559,\"custom_preview\":null,\"deleted\":false,\"embed_content\":\"<blockquote
+        Forms of Fear\",\"title\":\"1000 Forms of Fear\",\"type\":\"Album\",\"url\":\"https://genius.com/albums/Sia/1000-forms-of-fear\"},\"annotations\":[{\"_type\":\"annotation\",\"api_path\":\"/annotations/7577212\",\"being_created\":false,\"body\":{\"html\":\"<p><em>1000
+        Forms of Fear</em> is the sixth studio album by Australian singer-songwriter
+        <a href=\\\"https://genius.com/artists/Sia\\\" rel=\\\"noopener\\\" data-api_path=\\\"/artists/16775\\\">Sia
+        Furler</a>. It was released on 4 July 2014. Lyrically, the record showcases
+        Furler dealing with drug addition and bipolar disorder.</p>\\n\\n<p>In an
+        interview published by <a href=\\\"http://www.nme.com/news/various-artists/82961\\\"
+        rel=\\\"noopener nofollow\\\">NME</a> in February 2015, Furler revealed that
+        the album as a contractual obligation: \u201CBasically, I put this out to
+        get out of my publishing deal. I was planning to be a pop song writer for
+        other artists. But my publishing deal was as an artist so I had to put one
+        more album out. I didn\u2019t want to get famous so I kept all the songs I
+        wanted and had fun making it.\u201D</p>\\n\\n<p>In an interview with <a href=\\\"http://dazeddigital.com/music.article/19982/1/sia-on-taking-performance-art-to-the-masses\\\"
+        rel=\\\"noopener nofollow\\\">Dazed &amp; Confused</a>, Furler explained that
+        she had decided to not show her face during the promotion of <em>1000 Forms
+        of Fear</em>. Instead she focused on creating visual art through her videos.
+        Furler recruited American child dancer Maddie Ziegler to be her persona on
+        stage and performer with her back facing to the camera.</p>\"},\"comment_count\":0,\"community\":true,\"created_at\":1440627559,\"custom_preview\":null,\"deleted\":false,\"embed_content\":\"<blockquote
         class='rg_standalone_container' data-src='//genius.com/annotations/7577212/standalone_embed'><a
         href='https://genius.com/7577212/1000-forms-of-fear/1000-forms-of-fear'>1000
         Forms of Fear</a><br><a href='https://genius.com/albums/Sia/1000-forms-of-fear'>&#8213;

@@ -5,7 +5,7 @@ interactions:
       application:
       - LyricsGenius
     method: GET
-    uri: https://genius.com/api/discussions
+    uri: https://genius.com/api/discussions?page=1
   response:
     body:
       string: "{\"meta\":{\"status\":200},\"response\":{\"discussions\":[{\"_type\":\"discussion\",\"id\":524671,\"latest_post_created_at\":1794547700,\"pinned\":false,\"posts_count\":2,\"preview_text\":\"https://genius.com/albums/Tay-k/Monstersundermybed\\n\\nhis

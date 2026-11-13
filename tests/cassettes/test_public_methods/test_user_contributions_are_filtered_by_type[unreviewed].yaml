@@ -5,25 +5,37 @@ interactions:
       application:
       - LyricsGenius
     method: GET
-    uri: https://genius.com/api/users/1/contributions/unreviewed_annotations?sort=popularity&text_format=plain
+    uri: https://genius.com/api/users/1/contributions/unreviewed_annotations?per_page=2&sort=popularity&text_format=html
   response:
     body:
-      string: "{\"meta\":{\"status\":200},\"response\":{\"contribution_groups\":[{\"contribution_type\":\"annotation\",\"date\":1349194678,\"contributions\":[{\"_type\":\"annotation\",\"api_path\":\"/annotations/1105132\",\"being_created\":false,\"body\":{\"plain\":\"Ancient
-        Mesopotamian isn\u2019t a language. Rather, it\u2019s an amalgamation of various
-        cultural groups across a specific geographical region who spoke (and wrote
-        in) a variety of languages \u2013 Sumerian, Semitic dialects, Akkadian, etc.
-        In fact Sumerian itself may be just an off-shoot of ancient Dravidian languages
-        from what is today southern India. So it\u2019s a little bit like saying  \u201Cas
-        comprehensible as African.\u201D\\n\\n\\n\\nFACT: Ancient Mesopotamian languages
-        were every bit as comprehensible as rap to most Ancient Mesopotamians until
-        the 2200s B.C.E., when Sargon the Great made everyone convert to a uniform,
-        syllabic Akkadian script\\n\\n\\n\\nWhen Sargon was an infant, his single
-        mother couldn\u2019t raise him. So she put him in a reed basket and floated
-        the little man down the river, where he was discovered and subsequently raised
-        by a woman who found him while drawing water. Sound familiar?\\n\\n\\n\\nIt\u2019s
-        not just Sargon and Moses though \u2013 there are many similar baby left in
-        a basket ancient birth stories, famously analyzed and compared by Otto Rank
-        in his book The Myth of the Birth of the Hero\"},\"comment_count\":0,\"community\":true,\"created_at\":1349194678,\"custom_preview\":null,\"deleted\":false,\"embed_content\":\"<blockquote
+      string: "{\"meta\":{\"status\":200},\"response\":{\"contribution_groups\":[{\"contribution_type\":\"annotation\",\"date\":1349194678,\"contributions\":[{\"_type\":\"annotation\",\"api_path\":\"/annotations/1105132\",\"being_created\":false,\"body\":{\"html\":\"<p><strong><em><a
+        href=\\\"http://en.wikipedia.org/wiki/Mesopotamia\\\" rel=\\\"noopener nofollow\\\">Ancient
+        Mesopotamian</a></em></strong> isn\u2019t a language. Rather, it\u2019s an
+        amalgamation of various cultural groups across a specific geographical region
+        who spoke (and wrote in) a variety of languages \u2013 <em>Sumerian, Semitic
+        dialects, Akkadian</em>, etc. In fact Sumerian itself may be just an off-shoot
+        of ancient Dravidian languages from what is today southern India. So it\u2019s
+        a little bit like saying  <strong><em>\u201Cas comprehensible as African.\u201D</em></strong></p>\\n\\n<p><img
+        src=\\\"https://images.rapgenius.com/e70ed2a9adf830328c04fab364046634.650x857x1.jpg\\\"
+        alt=\\\"\\\" width=\\\"650\\\" height=\\\"857\\\" data-animated=\\\"false\\\"></p>\\n\\n<p>FACT:
+        Ancient Mesopotamian languages were every bit as comprehensible as rap to
+        most <em>Ancient Mesopotamians</em> until the 2200s B.C.E., when <strong><em><a
+        href=\\\"http://en.wikipedia.org/wiki/Sargon_of_Akkad\\\" rel=\\\"noopener
+        nofollow\\\">Sargon the Great</a></em></strong> made everyone convert to a
+        uniform, syllabic Akkadian script</p>\\n\\n<p><img src=\\\"https://images.rapgenius.com/1fc008c57c4c81badace78bc9598e0fc.550x548x1.jpg\\\"
+        alt=\\\"\\\" width=\\\"550\\\" height=\\\"548\\\" data-animated=\\\"false\\\"></p>\\n\\n<p>When
+        Sargon was an infant, his single mother couldn\u2019t raise him. So she put
+        him in a reed basket and floated the little man down the river, where he was
+        discovered and subsequently raised by a woman who found him while drawing
+        water. <a href=\\\"http://ancienthistory.about.com/od/exodus/qt/051209MosesBasket.htm\\\"
+        rel=\\\"noopener nofollow\\\">Sound familiar?</a></p>\\n\\n<p><img src=\\\"https://images.rapgenius.com/4645b0b93589d23d7fb35458288a812c.669x1000x1.jpg\\\"
+        alt=\\\"\\\" width=\\\"669\\\" height=\\\"1000\\\" data-animated=\\\"false\\\"></p>\\n\\n<p>It\u2019s
+        not just Sargon and Moses though \u2013 there are many similar <strong><em>baby
+        left in a basket</em></strong> ancient birth stories, famously analyzed and
+        compared by <strong><em><a href=\\\"http://en.wikipedia.org/wiki/Otto_Rank\\\"
+        rel=\\\"noopener nofollow\\\">Otto Rank</a></em></strong> in his book <strong><em><a
+        href=\\\"http://www.sacred-texts.com/neu/mbh/mbh01.htm\\\" rel=\\\"noopener
+        nofollow\\\">The Myth of the Birth of the Hero</a></em></strong></p>\"},\"comment_count\":0,\"community\":true,\"created_at\":1349194678,\"custom_preview\":null,\"deleted\":false,\"embed_content\":\"<blockquote
         class='rg_standalone_container' data-src='//genius.com/annotations/1105132/standalone_embed'><a
         href='https://genius.com/1105132/Marc-andreessen-why-andreessen-horowitz-is-investing-in-rap-genius/As-comprehensible-as-ancient-mesopotamian'>As
         comprehensible as ancient Mesopotamian</a><br><a href='https://genius.com/Marc-andreessen-why-andreessen-horowitz-is-investing-in-rap-genius-annotated'>&#8213;
@@ -41,16 +53,16 @@ interactions:
         comprehensible as ancient Mesopotamian\"},\"song_id\":90298,\"url\":\"https://genius.com/1105132/Marc-andreessen-why-andreessen-horowitz-is-investing-in-rap-genius/As-comprehensible-as-ancient-mesopotamian\",\"verified_annotator_ids\":[],\"annotatable\":{\"_type\":\"song\",\"api_path\":\"/songs/90298\",\"context\":\"Marc
         Andreessen\",\"id\":90298,\"image_url\":\"https://images.genius.com/9d464230e7691cb41640129ce123dce5.1000x1000x1.jpg\",\"link_title\":\"Why
         Andreessen Horowitz Is Investing in Rap Genius by\_Marc\_Andreessen\",\"title\":\"Why
-        Andreessen Horowitz Is Investing in Rap Genius\",\"type\":\"Song\",\"url\":\"https://genius.com/Marc-andreessen-why-andreessen-horowitz-is-investing-in-rap-genius-annotated\"}},\"rejection_comment\":null,\"top_comment\":null,\"verified_by\":null}]},{\"contribution_type\":\"annotation\",\"date\":1400347815,\"contributions\":[{\"_type\":\"annotation\",\"api_path\":\"/annotations/3211504\",\"being_created\":false,\"body\":{\"plain\":\"THIS
+        Andreessen Horowitz Is Investing in Rap Genius\",\"type\":\"Song\",\"url\":\"https://genius.com/Marc-andreessen-why-andreessen-horowitz-is-investing-in-rap-genius-annotated\"}},\"rejection_comment\":null,\"top_comment\":null,\"verified_by\":null}]},{\"contribution_type\":\"annotation\",\"date\":1400347815,\"contributions\":[{\"_type\":\"annotation\",\"api_path\":\"/annotations/3211504\",\"being_created\":false,\"body\":{\"html\":\"<p>THIS
         IS THE GETTIER!! It is a true statement, it is justified, and yet it just
-        doesn\u2019t seem like knowledge!\\n\\nThe issue here is that although Smith
-        holds a justified belief in the sense that all propositions used to conclude
-        (e) are true, the premise propositions  within (d) do not properly refer to
-        the correct objects out in the real world when concluding (e). Namely, although
-        Smith believes (e) (and correctly so), the crux of the issue is that he does
-        not properly understand that the referent (the object that is picked out in
-        the world by a linguistic phrase) of proposition (e) is in fact himself, not
-        Jones.\"},\"comment_count\":0,\"community\":true,\"created_at\":1400347815,\"custom_preview\":null,\"deleted\":false,\"embed_content\":\"<blockquote
+        doesn\u2019t seem like knowledge!</p>\\n\\n<p>The issue here is that although
+        Smith holds a justified belief in the sense that all propositions used to
+        conclude (e) are true, the premise propositions  within (d) do not properly
+        refer to the correct objects out in the real world when concluding (e). Namely,
+        although Smith believes (e) (and correctly so), the crux of the issue is that
+        he does not properly understand that the referent (the object that is picked
+        out in the world by a linguistic phrase) of proposition (e) is in fact himself,
+        not Jones.</p>\"},\"comment_count\":0,\"community\":true,\"created_at\":1400347815,\"custom_preview\":null,\"deleted\":false,\"embed_content\":\"<blockquote
         class='rg_standalone_container' data-src='//genius.com/annotations/3211504/standalone_embed'><a
         href='https://genius.com/3211504/Edmund-gettier-is-justified-true-belief-knowledge/The-man-who-will-get-the-job-has-ten-coins-in-his-pocket'>The
         man who will get the job has ten coins in his pocket.</a><br><a href='https://genius.com/Edmund-gettier-is-justified-true-belief-knowledge-annotated'>&#8213;
@@ -67,7 +79,7 @@ interactions:
         man who will get the job has ten coins in his pocket.\"},\"song_id\":312227,\"url\":\"https://genius.com/3211504/Edmund-gettier-is-justified-true-belief-knowledge/The-man-who-will-get-the-job-has-ten-coins-in-his-pocket\",\"verified_annotator_ids\":[],\"annotatable\":{\"_type\":\"song\",\"api_path\":\"/songs/312227\",\"context\":\"Edmund
         Gettier\",\"id\":312227,\"image_url\":\"https://assets.genius.com/images/default_cover_image.png\",\"link_title\":\"Is
         Justified True Belief Knowledge? by\_Edmund\_Gettier\",\"title\":\"Is Justified
-        True Belief Knowledge?\",\"type\":\"Song\",\"url\":\"https://genius.com/Edmund-gettier-is-justified-true-belief-knowledge-annotated\"}},\"rejection_comment\":null,\"top_comment\":null,\"verified_by\":null}]}],\"next_cursor\":null}}"
+        True Belief Knowledge?\",\"type\":\"Song\",\"url\":\"https://genius.com/Edmund-gettier-is-justified-true-belief-knowledge-annotated\"}},\"rejection_comment\":null,\"top_comment\":null,\"verified_by\":null}]}],\"next_cursor\":2}}"
     headers:
       Content-Type:
       - application/json; charset=utf-8

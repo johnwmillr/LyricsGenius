@@ -5,11 +5,11 @@ interactions:
       application:
       - LyricsGenius
     method: GET
-    uri: https://genius.com/api/annotations/10225840/versions?text_format=plain
+    uri: https://genius.com/api/annotations/10225840/versions?text_format=html
   response:
     body:
-      string: "{\"meta\":{\"status\":200},\"response\":{\"versions\":[{\"body\":{\"plain\":\"For
-        example, the id of this annotation is 10225839\"},\"created_at\":1470946328,\"id\":101333150,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"[avatar
+      string: "{\"meta\":{\"status\":200},\"response\":{\"versions\":[{\"body\":{\"html\":\"<p>For
+        example, the id of this annotation is 10225839</p>\"},\"created_at\":1470946328,\"id\":101333150,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"[avatar
         credit]\\n\\n\\n\\nHi, I\u2019m nightpool. I\u2019m a editor moderator tech-head
         at Genius, and you\u2019ll find me in a bunch of different places. I love
         making 2 letter edits to lyrics that totally change their meaning! Feel free

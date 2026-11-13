@@ -5,11 +5,11 @@ interactions:
       application:
       - LyricsGenius
     method: GET
-    uri: https://genius.com/api/albums/104614/comments?text_format=plain
+    uri: https://genius.com/api/albums/104614/comments?per_page=2&page=1&text_format=html
   response:
     body:
-      string: "{\"meta\":{\"status\":200},\"response\":{\"comments\":[{\"_type\":\"comment\",\"api_path\":\"/comments/10474504\",\"body\":{\"plain\":\"Amo
-        muito este \xE1lbum.\"},\"commentable_id\":104614,\"commentable_type\":\"Album\",\"created_at\":1735672316,\"has_voters\":false,\"id\":10474504,\"pinned_role\":null,\"votes_total\":0,\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"vote\",\"accept\",\"reject\",\"mark_spam\",\"integrate\",\"archive\",\"destroy\"],\"interactions\":{\"vote\":null}},\"anonymous_author\":null,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"A
+      string: "{\"meta\":{\"status\":200},\"response\":{\"comments\":[{\"_type\":\"comment\",\"api_path\":\"/comments/10474504\",\"body\":{\"html\":\"<p>Amo
+        muito este \xE1lbum.</p>\"},\"commentable_id\":104614,\"commentable_type\":\"Album\",\"created_at\":1735672316,\"has_voters\":false,\"id\":10474504,\"pinned_role\":null,\"votes_total\":0,\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"vote\",\"accept\",\"reject\",\"mark_spam\",\"integrate\",\"archive\",\"destroy\"],\"interactions\":{\"vote\":null}},\"anonymous_author\":null,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"A
         vida tem trilha sonora\u2026 Eu s\xF3 escolho o volume. \U0001F3B5\U0001F49D\U0001F3B5\",\"api_path\":\"/users/5909153\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/a78bb3e6bfbea0f0f7d275c13d0b74b6\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/a78bb3e6bfbea0f0f7d275c13d0b74b6\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/a78bb3e6bfbea0f0f7d275c13d0b74b6\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/a78bb3e6bfbea0f0f7d275c13d0b74b6\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://filepicker-images.genius.com/831ccbc49f19bb9b9925cab23557e0b11101ede9474cec7492d83208616f791c%2Fmifmg4o022k\",\"human_readable_role_for_display\":null,\"id\":5909153,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"victor1990hugo\",\"name\":\"victor1990hugo\",\"role_for_display\":null,\"url\":\"https://genius.com/victor1990hugo\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":160},\"reason\":null}],\"total_count\":1,\"next_page\":null}}"
     headers:
       Content-Type:
