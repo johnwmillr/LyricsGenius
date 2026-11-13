@@ -100,15 +100,23 @@ def test_song_annotations_pairs_fragments_with_annotations(genius: Genius) -> No
 
 @pytest.mark.vcr
 def test_tag_returns_first_page_of_songs(genius: Genius) -> None:
-    """A tag page lists songs with their titles, artists and URLs."""
+    """A tag page's songs are split into title, artists and featured artists."""
     response: dict[str, Any] = genius.tag("pop")
 
     assert response["next_page"] == 2
-    assert response["hits"]
+    assert len(response["hits"]) == 20
     for hit in response["hits"]:
-        assert hit["title"]
-        assert hit["artists"]
         assert hit["url"].startswith("https://genius.com/")
+        assert hit["title_with_artists"].startswith(hit["title"])
+        assert "\xa0" not in hit["title_with_artists"]
+        for name in hit["artists"] + hit["featured_artists"]:
+            assert " & " not in name
+            assert name in hit["title_with_artists"]
+    by_title = {hit["title"]: hit for hit in response["hits"]}
+    assert by_title["Despacito (Remix)"]["artists"] == ["Luis Fonsi", "Daddy Yankee"]
+    assert by_title["Despacito (Remix)"]["featured_artists"] == ["Justin Bieber"]
+    assert by_title["Starboy"]["artists"] == ["The Weeknd"]
+    assert by_title["Starboy"]["featured_artists"] == ["Daft Punk"]
 
 
 def test_search_song_requires_title_or_id(genius: Genius) -> None:
