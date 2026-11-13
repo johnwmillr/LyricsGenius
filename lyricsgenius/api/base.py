@@ -40,12 +40,11 @@ class Sender(RequestCapable):
         }
         if proxy:
             self._session.proxies = proxy
-        if access_token is None:
-            access_token = os.environ["GENIUS_ACCESS_TOKEN"]
-
         if public_api_constructor:
             self.authorization_header = {}
         else:
+            if access_token is None:
+                access_token = os.environ["GENIUS_ACCESS_TOKEN"]
             if not access_token or not isinstance(access_token, str):
                 raise TypeError("Invalid token")
             self.access_token = "Bearer " + access_token
