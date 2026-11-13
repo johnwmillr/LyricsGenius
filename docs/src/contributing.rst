@@ -8,22 +8,22 @@ been implemented and try to make more sense of the parameters they take.
 If you want to fix a bug, suggest improvements, or
 add new features to the project, just `open an issue`_ on GitHub.
 
-If you want to run the tests on your machine before opening a
-PR, do the following: 
+If you want to run the checks on your machine before opening a
+PR, install `uv`_ and do the following:
 
 .. code:: bash
 
     cd LyricsGenius
-    pip install -e .[dev]
+    uv sync
 
-This will install the package in developer mode with all the packages
-necessary for running the tests. Now you can run three types of commands
-to test your changes:
+This installs the package in development mode with everything needed to
+check your changes:
 
-- ``tox -e test``: runs the unit tests.
-- ``tox -e lint``: runs flake8 (PEP8 for code), doc8 (PEP8 for docs)
-  and tests creating docs.
-- ``tox``: runs all tests (both of the ones above).
+- ``uv run pytest``: runs the unit tests.
+- ``uv run ruff check`` and ``uv run ruff format``: lint and format the code.
+- ``uv run mypy``: type checks the package.
+
+Running ``uv run pre-commit install`` once runs all of these on every commit.
 
 
 Releasing
@@ -45,3 +45,4 @@ needs to change in the repository first.
 
 
 .. _open an issue: https://github.com/johnwmillr/LyricsGenius/issues
+.. _uv: https://docs.astral.sh/uv/
