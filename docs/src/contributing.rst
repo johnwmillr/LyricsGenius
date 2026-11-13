@@ -25,6 +25,12 @@ check your changes:
 
 Running ``uv run pre-commit install`` once runs all of these on every commit.
 
+The tests never reach the network. Tests of API methods replay responses
+recorded in ``tests/cassettes``. If you add one, set ``GENIUS_ACCESS_TOKEN``
+and run ``uv run pytest --record-mode=once`` to record its cassette; the token
+is not saved in it. Tests marked ``live`` make real requests and only run with
+``uv run pytest --live``.
+
 
 Releasing
 *********
