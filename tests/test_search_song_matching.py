@@ -99,3 +99,16 @@ def test_search_song_tolerates_hit_missing_primary_artist() -> None:
         result = g.search_song("Santa", artist="Madonna", get_full_info=False)
 
     assert result is None
+
+
+def test_search_song_returns_none_for_empty_title(genius: Genius) -> None:
+    """An empty title finds nothing and makes no request."""
+    with (
+        mock.patch.object(genius, "search_all") as search_all,
+        mock.patch.object(genius, "search") as search,
+    ):
+        result = genius.search_song("")
+
+    assert result is None
+    search_all.assert_not_called()
+    search.assert_not_called()

@@ -550,6 +550,7 @@ class Genius(API, PublicAPI):
             else:
                 logger.info('Searching for "%s"...', title)
 
+        song_info: dict[str, Any] | None = None
         if song_id:
             song_info = self.song(song_id)["song"]
         elif title:
