@@ -94,12 +94,14 @@ def test_auth_from_environment_uses_none_for_missing_credentials(
         pytest.param("Sigur Rós", "sigur ros", id="accent_and_case"),
         pytest.param("ＡＢＣ", "abc", id="full_width"),
         pytest.param("방탄소년단", "방탄소년단", id="hangul_unchanged"),
+        pytest.param("Don't Stop", "Dont Stop", id="punctuation"),
+        pytest.param("  \t 99  \t \t\tProblems   ", "99 Problems", id="whitespace"),
     ],
 )
 def test_clean_str_matches_spellings_of_the_same_name(
     given: str, expected: str
 ) -> None:
-    """Names that differ only in accents, case, punctuation or width compare equal."""
+    """Names differing only in accents, case, punctuation, width or spacing match."""
     assert clean_str(given) == clean_str(expected)
 
 
