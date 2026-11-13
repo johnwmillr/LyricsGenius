@@ -86,7 +86,10 @@ def test_search_artist_finds_exact_match_on_a_later_page(genius: Genius) -> None
         artist = genius.search_artist("Radiohead", max_songs=0)
 
     search_all, artist_lookup = mocks
-    assert search_all.call_count == 2
+    assert search_all.call_args_list == [
+        mock.call("Radiohead", per_page=5, page=1),
+        mock.call("Radiohead", per_page=5, page=2),
+    ]
     artist_lookup.assert_called_once_with(99)
     assert artist is not None
     assert artist.name == "Radiohead"
@@ -151,7 +154,7 @@ def test_search_artist_stops_after_ten_pages(genius: Genius) -> None:
         genius.search_artist("Radiohead", max_songs=0)
 
     search_all, _ = mocks
-    assert search_all.call_count == 10
+    assert [c.kwargs["page"] for c in search_all.call_args_list] == list(range(1, 11))
 
 
 ARTIST_ID = 7
@@ -307,3 +310,14 @@ def test_search_artist_includes_features_only_when_asked(
 
     assert artist is not None
     assert [song.title for song in artist.songs] == titles
+
+
+def test_search_artist_searches_with_client_page_size() -> None:
+    """Artist search pages use the client's per_page setting."""
+    genius = Genius("dummy_token", sleep_time=0, per_page=3)
+
+    with _mocked_search(genius, [_search_response([])]) as mocks:
+        genius.search_artist("Radiohead", max_songs=0)
+
+    search_all, _ = mocks
+    search_all.assert_called_once_with("Radiohead", per_page=3, page=1)
