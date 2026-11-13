@@ -1,7 +1,10 @@
 import unittest
 
+import pytest
+
 from lyricsgenius.utils import (
     auth_from_environment,
+    clean_str,
     decode_js_string,
     parse_redirected_url,
     sanitize_filename,
@@ -49,3 +52,25 @@ class TestUtils(unittest.TestCase):
     def test_auth_from_environment(self):
         credentials = auth_from_environment()
         self.assertTrue(len(credentials) == 3)
+
+
+@pytest.mark.parametrize(
+    ("given", "expected"),
+    [
+        pytest.param("JAŸ-Z", "Jay-Z", id="diaeresis"),
+        pytest.param("Beyoncé", "Beyonce", id="acute_accent"),
+        pytest.param("Sigur Rós", "sigur ros", id="accent_and_case"),
+        pytest.param("ＡＢＣ", "abc", id="full_width"),
+        pytest.param("방탄소년단", "방탄소년단", id="hangul_unchanged"),
+    ],
+)
+def test_clean_str_matches_spellings_of_the_same_name(
+    given: str, expected: str
+) -> None:
+    """Names that differ only in accents, case, punctuation or width compare equal."""
+    assert clean_str(given) == clean_str(expected)
+
+
+def test_clean_str_keeps_distinct_names_distinct() -> None:
+    """Removing accents doesn't make different names compare equal."""
+    assert clean_str("Jay-Z") != clean_str("Jay Rock")
