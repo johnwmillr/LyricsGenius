@@ -101,5 +101,7 @@ warn_unused_ignores = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = ["--strict-markers"]
+# --block-network fails any test that reaches the network, except while
+# recording cassettes or running with --live.
+addopts = ["--strict-markers", "--block-network"]
 markers = ["live: makes real requests to Genius; skipped unless --live is given"]

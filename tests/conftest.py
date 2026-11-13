@@ -22,6 +22,12 @@ def pytest_addoption(parser: pytest.Parser) -> None:
     )
 
 
+def pytest_configure(config: pytest.Config) -> None:
+    """Lifts the default network block when live tests are requested."""
+    if config.getoption("--live"):
+        config.option.block_network = False
+
+
 def pytest_collection_modifyitems(
     config: pytest.Config, items: list[pytest.Item]
 ) -> None:
