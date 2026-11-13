@@ -205,3 +205,79 @@ def test_tag_requests_the_given_page(genius: Genius) -> None:
         genius.tag("pop", page=3)
 
     assert request.call_args.kwargs["params_"] == {"page": 3}
+
+
+_ANNOTATION_PAYLOAD = {
+    "annotation": {"body": {"markdown": "The annotation"}},
+    "referent": {
+        "raw_annotatable_url": "https://example.com",
+        "fragment": "illustrative examples",
+        "context_for_display": {"before_html": "<p>", "after_html": None},
+    },
+    "web_page": {"canonical_url": None, "og_url": None, "title": "test"},
+}
+
+
+def test_create_annotation_posts_annotation(genius: Genius) -> None:
+    """Creating an annotation posts its text, referent and web page."""
+    with mock.patch.object(genius, "_make_request", return_value={}) as request:
+        genius.create_annotation(
+            "The annotation",
+            "https://example.com",
+            "illustrative examples",
+            before_html="<p>",
+            title="test",
+            text_format="html",
+        )
+
+    request.assert_called_once_with(
+        path="annotations",
+        method="POST",
+        params_={"text_format": "html"},
+        json=_ANNOTATION_PAYLOAD,
+    )
+
+
+def test_update_annotation_puts_annotation(genius: Genius) -> None:
+    """Updating an annotation sends its new text, referent and web page."""
+    with mock.patch.object(genius, "_make_request", return_value={}) as request:
+        genius.update_annotation(
+            42,
+            "The annotation",
+            "https://example.com",
+            "illustrative examples",
+            before_html="<p>",
+            title="test",
+            text_format="html",
+        )
+
+    request.assert_called_once_with(
+        path="annotations/42",
+        method="PUT",
+        params_={"text_format": "html"},
+        json=_ANNOTATION_PAYLOAD,
+    )
+
+
+@pytest.mark.parametrize("method", ["create_annotation", "update_annotation"])
+def test_annotation_requires_a_web_page(genius: Genius, method: str) -> None:
+    """An annotation needs the web page's canonical URL, og:url or title."""
+    args: list[Any] = ["The annotation", "https://example.com", "fragment"]
+    if method == "update_annotation":
+        args.insert(0, 42)
+
+    with pytest.raises(AssertionError, match="canonical_url"):
+        getattr(genius, method)(*args)
+
+
+@pytest.mark.parametrize("vote", ["upvote", "downvote", "unvote"])
+def test_vote_puts_to_annotation_vote_endpoint(genius: Genius, vote: str) -> None:
+    """Each vote is a PUT to the annotation's endpoint for that vote."""
+    with mock.patch.object(genius, "_make_request", return_value={}) as request:
+        getattr(genius, f"{vote}_annotation")(42, text_format="html")
+
+    request.assert_called_once_with(
+        path=f"annotations/42/{vote}",
+        method="PUT",
+        params_={"text_format": "html"},
+    )
