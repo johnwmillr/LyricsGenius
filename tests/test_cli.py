@@ -1,3 +1,5 @@
+"""Tests for the command line Searcher, with the Genius client mocked."""
+
 from argparse import Namespace
 from typing import cast
 from unittest import mock
@@ -7,6 +9,8 @@ from lyricsgenius.__main__ import Searcher
 
 
 class _DummyAPI:
+    """A stand-in client whose search methods all return the same result."""
+
     def __init__(self, result: object | None) -> None:
         self.search_song = mock.Mock(return_value=result)
         self.search_artist = mock.Mock(return_value=result)
@@ -14,6 +18,7 @@ class _DummyAPI:
 
 
 def _args(save: bool, output_file: str | None = None) -> Namespace:
+    """Builds parsed CLI arguments for a song search."""
     return Namespace(
         terms=["Santa", "Madonna"],
         format=["json", "txt"],
@@ -25,6 +30,7 @@ def _args(save: bool, output_file: str | None = None) -> Namespace:
 
 
 def test_searcher_passes_output_file_to_save_lyrics() -> None:
+    """--output-file is used as the filename for every requested format."""
     result = mock.Mock()
     api = _DummyAPI(result)
 
@@ -40,6 +46,7 @@ def test_searcher_passes_output_file_to_save_lyrics() -> None:
 
 
 def test_searcher_uses_default_filename_when_output_file_is_none() -> None:
+    """Without --output-file, save_lyrics picks its default filename."""
     result = mock.Mock()
     api = _DummyAPI(result)
 
@@ -51,6 +58,7 @@ def test_searcher_uses_default_filename_when_output_file_is_none() -> None:
 
 
 def test_searcher_prints_when_not_saving() -> None:
+    """Without --save, each requested format is printed instead of saved."""
     result = mock.Mock()
     result.to_json.return_value = '{"ok": true}'
     result.to_text.return_value = "ok"
