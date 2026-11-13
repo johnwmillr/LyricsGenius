@@ -1,6 +1,7 @@
 """Tests for the official API methods and Genius helpers built on them."""
 
 from typing import Any
+from unittest import mock
 
 import pytest
 
@@ -159,3 +160,16 @@ def test_lyrics_scrapes_song_page(live_genius: Genius, kwargs: dict[str, Any]) -
     assert lyrics is not None
     assert lyrics.startswith("[Verse 1]")
     assert "[Outro]" in lyrics
+
+
+def test_referents_accepts_creator_alone(genius: Genius) -> None:
+    """Referents can be looked up by creator without a song or web page."""
+    with mock.patch.object(
+        genius, "_make_request", return_value={"referents": []}
+    ) as request:
+        genius.referents(created_by_id=7)
+
+    params = request.call_args.kwargs["params_"]
+    assert params["created_by_id"] == 7
+    assert params["song_id"] is None
+    assert params["web_page_id"] is None
