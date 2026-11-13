@@ -4,6 +4,26 @@
 Release notes
 =============
 
+3.16.0 (2026-11-12)
+-------------------
+
+Changed
+*******
+-  Failed requests now raise ``requests.HTTPError``. Before, a blocked or
+   failed request to a genius.com page (for example a Cloudflare 403) was
+   read as if it were a lyrics page. ``Genius.lyrics()`` and
+   ``Genius.search_song()`` then returned ``None`` and logged a misleading
+   "Couldn't find the lyrics section" warning. The error's ``args`` hold the
+   status code and a description, and its ``response`` holds the response.
+
+Fixed
+*******
+-  The ``retries`` setting now retries requests that fail with a server
+   error (5xx). Before, these were never retried.
+-  API errors now include Genius's error message.
+-  ``Genius.delete_annotation()`` returns ``204`` on success again, instead
+   of raising ``AssertionError``.
+
 3.15.0 (2026-10-08)
 -------------------
 
