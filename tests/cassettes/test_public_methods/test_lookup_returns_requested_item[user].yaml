@@ -1,0 +1,27 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/users/1?text_format=plain
+  response:
+    body:
+      string: '{"meta":{"status":200},"response":{"user":{"_type":"user","about_me":{"plain":"Run
+        into the spike."},"about_me_summary":"Run into the spike.","annotations_count":972,"api_path":"/users/1","avatar":{"tiny":{"url":"https://images.genius.com/avatars/tiny/309317b058db685d81a4013a498925d0","bounding_box":{"width":16,"height":16}},"thumb":{"url":"https://images.genius.com/avatars/thumb/309317b058db685d81a4013a498925d0","bounding_box":{"width":32,"height":32}},"small":{"url":"https://images.genius.com/avatars/small/309317b058db685d81a4013a498925d0","bounding_box":{"width":100,"height":100}},"medium":{"url":"https://images.genius.com/avatars/medium/309317b058db685d81a4013a498925d0","bounding_box":{"width":300,"height":400}}},"channel_iqs":[],"custom_header_image_url":"https://images.genius.com/3627d3d369773390525af3e3cd5a34a5.1000x333x1.jpg","followed_users_count":481,"followers_count":1030,"header_image_url":"https://images.genius.com/3627d3d369773390525af3e3cd5a34a5.1000x333x1.jpg","human_readable_role_for_display":"Staff","id":1,"is_meme_verified":false,"is_verified":false,"login":"LEMON","name":"Tom
+        Lehman","photo_url":"https://images.genius.com/69f519efd3ecd75f6c8f2974ca5f0e1e.642x642x1.jpg","pusher_channel":"private-user-1","role_for_display":"staff","roles_for_display":["staff","moderator","editor","mediator","contributor"],"show_achievements":true,"tracking_paths":{"aggregate":"/LEMON"},"url":"https://genius.com/LEMON","current_user_metadata":{"permissions":[],"excluded_permissions":["follow","edit","change_login","manage_identities","manage_accomplishments","view_admin_info","view_activity_stream","view_roles","toggle_verification_status","toggle_penalty_status","mark_spam","mark_ham","mass_delete_unreviewed_activity","mass_delete_votes","view_tracked_errors","toggle_moderator_status","toggle_editor_status","toggle_mediator_status","toggle_transcriber_status","see_short_id","send_new_message","see_messages","send_message","tweet_offsite_annotation","see_unreviewed_referents","view_spam_status"],"interactions":{"following":false},"features":[]},"iq":64821,"iq_for_display":"64,821","achievements":[{"_type":"user_achievement","id":11416,"achievement_level":{"_type":"achievement_level","display_name":"Artisan
+        Transcriber","id":4,"threshold":25,"tier_name":"artisan","achievement_type":{"_type":"achievement_type","description":"Awarded
+        for adding lyrics to songs","display_name":"Transcriber","name":"transcriber"}}},{"_type":"user_achievement","id":11442,"achievement_level":{"_type":"achievement_level","display_name":"Sage
+        Annotator","id":8,"threshold":500,"tier_name":"sage","achievement_type":{"_type":"achievement_type","description":"Awarded
+        for writing annotations that get accepted","display_name":"Annotator","name":"annotator"}}},{"_type":"user_achievement","id":11462,"achievement_level":{"_type":"achievement_level","display_name":"Prodigy
+        Approver","id":6,"threshold":100,"tier_name":"prodigy","achievement_type":{"_type":"achievement_type","description":"Awarded
+        for approving annotations","display_name":"Approver","name":"approver"}}}],"artist":{"_type":"artist","api_path":"/artists/19010","header_image_url":"https://images.genius.com/3627d3d369773390525af3e3cd5a34a5.1000x333x1.jpg","id":19010,"image_url":"https://images.genius.com/69f519efd3ecd75f6c8f2974ca5f0e1e.642x642x1.jpg","index_character":"t","is_meme_verified":false,"is_verified":false,"links_config":null,"name":"Tom
+        Lehman","slug":"Tom-lehman","url":"https://genius.com/artists/Tom-lehman","iq":64821},"stats":{"annotations_count":1021,"answers_count":4,"comments_count":854,"forum_posts_count":4023,"pyongs_count":277,"questions_count":11,"transcriptions_count":92}}}}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

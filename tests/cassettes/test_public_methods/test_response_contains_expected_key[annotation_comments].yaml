@@ -1,0 +1,18 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/annotations/10225840/comments?text_format=plain
+  response:
+    body:
+      string: '{"meta":{"status":200},"response":{"comments":[],"total_count":0,"next_page":null}}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

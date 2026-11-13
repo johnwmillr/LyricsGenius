@@ -1,0 +1,130 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/discussions
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"discussions\":[{\"_type\":\"discussion\",\"id\":524671,\"latest_post_created_at\":1794547700,\"pinned\":false,\"posts_count\":2,\"preview_text\":\"https://genius.com/albums/Tay-k/Monstersundermybed\\n\\nhis
+        first album in almost ten years following his arrest\\nwill y'all be checking
+        it out?\",\"title\":\"[NEW ALBUM] #MonstersUnderMyBed by Tay-K\",\"url\":\"https://genius.com/discussions/524671-New-album-monstersundermybed-by-tay-k\",\"vote_total\":0,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"\u201CWho\u2019s
+        that creepin' through the city in that dark ass tint?\u201D\\n\\nit\u2019s
+        sin (modelo)\\n\\n\\n\\n\u201CAt this shit daily\\n\\n\\nsipped so much Actavis\\n\\n\\nI
+        convinced Actavis that they should pay me\\\"\\n\\n\\n\\n(Aye we gotta get
+        chu in a nike jacket asap\\ngot on dat buushit my boy)\\n\\n\\n\\nMollyworld
+        droppin when gta 6 drops\\n\\n\u2014 @16yslshooters\\n\\n\u201CI don\u2019t
+        smoke crack, motherfucker, I sell it!\u201D\\n\\n\\n\\nidrc tbh. im an untouchable
+        on this site u fuckin hear me. mods. i know u read this thread. hi. have we
+        MET \U0001F602 u cant do shit to me tbh i run rg like the damn navy get back
+        to ur own threads fam i got mob ties dont fuck with me im the king of genius.
+        i know chris mench personally. oh and trappachino for presiedent i love geinisu
+        annotate!! and long walks onthe beach. looks like this user is staying uiet
+        for now.!!! lol. you need 250 FUCKING IQ TO POST MUTHAFUCKAAA\\n\\n\u2014
+        @TheSoulOfLimpBizkit\",\"api_path\":\"/users/23333717\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/2d5c8445bfbbb26d37506905ee318402\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/2d5c8445bfbbb26d37506905ee318402\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/2d5c8445bfbbb26d37506905ee318402\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/2d5c8445bfbbb26d37506905ee318402\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://filepicker-images.genius.com/a90d5254e3db86b4c8b8b7d1a082b393471548449920cf13846b0b81237bee61%2F2e7wc64wucf\",\"human_readable_role_for_display\":\"Contributor\",\"id\":23333717,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"micahulzayuh\",\"name\":\"micahulzayuh\",\"role_for_display\":\"contributor\",\"url\":\"https://genius.com/micahulzayuh\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":21744},\"group\":{\"_type\":\"group\",\"id\":213,\"image_url\":\"https://images.rapgenius.com/d96bdd3db314ac001198517705932150.40x40x1.png\",\"name\":\"Rap
+        Genius\",\"url\":\"https://genius.com/rap-genius\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[],\"interactions\":{\"following\":false}}},\"latest_post_author\":{\"_type\":\"user\",\"about_me_summary\":\"\u201CWho\u2019s
+        that creepin' through the city in that dark ass tint?\u201D\\n\\nit\u2019s
+        sin (modelo)\\n\\n\\n\\n\u201CAt this shit daily\\n\\n\\nsipped so much Actavis\\n\\n\\nI
+        convinced Actavis that they should pay me\\\"\\n\\n\\n\\n(Aye we gotta get
+        chu in a nike jacket asap\\ngot on dat buushit my boy)\\n\\n\\n\\nMollyworld
+        droppin when gta 6 drops\\n\\n\u2014 @16yslshooters\\n\\n\u201CI don\u2019t
+        smoke crack, motherfucker, I sell it!\u201D\\n\\n\\n\\nidrc tbh. im an untouchable
+        on this site u fuckin hear me. mods. i know u read this thread. hi. have we
+        MET \U0001F602 u cant do shit to me tbh i run rg like the damn navy get back
+        to ur own threads fam i got mob ties dont fuck with me im the king of genius.
+        i know chris mench personally. oh and trappachino for presiedent i love geinisu
+        annotate!! and long walks onthe beach. looks like this user is staying uiet
+        for now.!!! lol. you need 250 FUCKING IQ TO POST MUTHAFUCKAAA\\n\\n\u2014
+        @TheSoulOfLimpBizkit\",\"api_path\":\"/users/23333717\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/2d5c8445bfbbb26d37506905ee318402\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/2d5c8445bfbbb26d37506905ee318402\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/2d5c8445bfbbb26d37506905ee318402\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/2d5c8445bfbbb26d37506905ee318402\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://filepicker-images.genius.com/a90d5254e3db86b4c8b8b7d1a082b393471548449920cf13846b0b81237bee61%2F2e7wc64wucf\",\"human_readable_role_for_display\":\"Contributor\",\"id\":23333717,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"micahulzayuh\",\"name\":\"micahulzayuh\",\"role_for_display\":\"contributor\",\"url\":\"https://genius.com/micahulzayuh\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":21744}},{\"_type\":\"discussion\",\"id\":524670,\"latest_post_created_at\":1794544353,\"pinned\":false,\"posts_count\":1,\"preview_text\":\"On
+        October 19th, Jellyfish Entertainment boy-group EVNNE released their sixth
+        mini-album, on: our noise. This is the group\u2019s first full album release
+        since undergoing a member restructuring earlier this year. The current members,
+        KEITA, PARK HANBIN, LEE JEONGHYEON, MUN JUNGHYUN, and PARK JIHOO, present
+        an experimental blend of genres with this EP, all following the same theme:
+        confidence.\\n\\n\\n\\n  \\n\\n\\nThe title track, \u201CLOOK AT MA\u201D
+        is an upbeat hip-hop track that incorporates trap-like beats, making the song
+        feel light yet powerful. Within this track, EVNNE are cool, confident, and
+        collected, no doubt displaying this as an anthem for self-confidence.\\n\\nIn
+        the accompanying music video, EVNNE are pictured making their way throughout
+        multiple sets, unbothered by the obstacles around them. They work with one
+        goal: to emerge from the underground and show the people above what they are
+        capable of.\\n\\nhttps://youtu.be/xopENTTZby4?si=V05GL3VpqaouuJv7\\n\\nThe
+        very first scene pictures a speaker breaking through a manhole to play their
+        music to the world. To even reach the manhole from underground, they have
+        to stack items, creating a giant pile of discarded items. This scene, among
+        many within the music video, is a representation of struggle through the journey
+        they take to show the world their potential.\\n\\nOnce the group breaks through
+        to the world above, the scenes change from dark and robust to bright and boyish,
+        free from hurdles that hindered them before. The music video paints the picture
+        of what is to come when you persevere through struggle and maintain authenticity
+        in the face of societal pressure.\\n\\nThe lyrics are a reflection of this
+        as well, walking listeners through their daily battles when remaining unapologetically
+        themselves.\\n\\n[ENG]\\n\\nFollowing the truth, I breathe\\nThe time I spent
+        as a prodigal, flip\\nDesign it, life so quick (Quick)\\nDraw another picture,
+        draw another picture\\nThe tangled up cars\u2019 face\\nFrom the other day
+        of my pain (Yeah)\\nOne, two minute difference\\nMeantime, send the child,
+        then protect my street\\n\\nThe chorus repeats the lines \u201CLook at my
+        energy, I\u2019m looking so flawless,\u201D further speaking to the self-assurance
+        EVNNE exudes in this track. To EVNNE, nothing can get in the way of their
+        goals as long as they believe in themselves and stick together.\\n\\n[ENG]\\n\\nTwo
+        wheels rolling, bike\\nCooking pot for a helmet, design\\nPut it on and again,
+        ride\\nMy clouded self, break free, freedom\\nBurnout mind, throw it freedom\\nBless
+        it, me and my team\\nGorgeously, me and my team\\n\\nThis theme is one that
+        EVNNE has highlighted before, but what makes this track particularly special
+        is its authenticity. The EVNNE members worked on this track themselves, allowing
+        the lyrics to be almost like a memoir of their own experiences as a group.
+        The sound of this track is also unique for EVNNE, reflective of the members\u2019
+        personal styles and trending sounds within the K-pop industry. Because of
+        this, \u201CLOOK AT MA\u201D feels timely not only for the industry, but for
+        where EVNNE is in their career as a restructured group solidifying their identity.\\n\\n
+        \ \\n\\n\\n\u201CThat\u2019s OMG\u201D\\n\\nAlthough \u201CLOOK AT MA\u201D
+        is a strong title track, what makes this album a standout release for EVNNE
+        is the B-Sides. Each B-Side is cohesive with the sound of the album and coincides
+        with the theme of staying true to yourself. One B-Side in particular stands
+        out, wrapping up the album perfectly: \u201CThat\u2019s OMG.\u201D This is
+        undoubtedly the most interesting track on this album, as it combines multiple
+        genres and sounds to create a song that is engaging every second, keeping
+        listeners on their toes and waiting to know what comes next.\\n\\nThe first
+        twenty seconds of the track are breezy, almost dream-like. It resembles a
+        lot of the tropical-house pop tracks the K-pop industry is rich in. After
+        twenty seconds, the track turns into a sharp and more intense blend of R&B
+        and EDM elements, expressing the group\u2019s unapologetic personas and fearless
+        self expression.\\n\\n[ENG]\\n\\nTha-a-at\u2019s oh, my God\\nRaise the corners
+        of your mouth into a grin\\nTha-a-at\u2019s oh, my God\\nHanbin on the beat,
+        always smirking, smirking\\nS-O-S, patience\\nThrow it away like a\\nS-O-S,
+        ha-ha-ho (Yeah)\\nTha-a-at\u2019s oh, my God\\n\\nhttps://www.youtube.com/watch?v=e9xWVF3V8cI\\n\\nIn
+        \u201CThat\u2019s OMG,\u201D EVNNE urge listeners to step away from their
+        daily lives and experience something new. The composition of this track, with
+        all its layered elements and experimental genres, translates that message
+        and makes the song a very dynamic interpretation of confidence.\\n\\n[ENG]\\n\\nTell
+        me what you want\\nWanna go too far?\\nEvery day is the same\\nIt\u2019s so
+        boring\\nZero Cola, one sip, vibe so high\\nIt\u2019s alright\\nWe feel alright,
+        yeah\\nBreak it, take it, bit it by your side\\n\\nThe lyrics are lighthearted
+        and encouraging, contrasting heavily with the song\u2019s evolving sound.
+        Closing with an echoey repetition of the lines \u201CThat\u2019s oh, my god\u201D
+        and \u201CS-O-S, O-M-G,\u201D \u201CThat\u2019s OMG\u201D wraps up EVNNE\u2019s
+        album perfectly on theme with the message they are getting across. EVNNE are
+        bold, fearless, and reassuring within this album, and \u201CThat\u2019s OMG\u201D
+        is a perfect representation of that.\\n\\n  \\n\\n\\nIn the end, EVNNE does
+        something very well with this album, something they are known for: having
+        fun. on: our noise is a unique and experimental release for the group who
+        now has to shape a new identity without two members, and this five-track release
+        is a huge step in doing that. All the songs, especially \u201CLook at Ma\u201D
+        and \u201CThat\u2019s OMG,\u201D do that perfectly, developing a sound that
+        is not just more nuanced, but is undoubtedly EVNNE.\\n\\n\\n\\n  \\n\\n\\nCheck
+        out on: our noise on all music streaming platforms, and view the lyrics to
+        the songs here, on Genius now!\\n\\nFollow EVNNE on X (Twitter), Instagram,
+        and Youtube for regular updates about their music.\\n\\nFollow Genius Korea
+        on X (Twitter), Instagram, and TikTok for regular updates about Korean music,
+        dramas, and entertainment.\\n\\n  \\n\\n\\nPhoto Credits: Jellyfish Entertainment\",\"title\":\"[FRESH
+        PICK] EVNNE Uniquely Blends Genres in Sixth Mini Album \u2018on: our noise\u2019\",\"url\":\"https://genius.com/discussions/524670-Fresh-pick-evnne-uniquely-blends-genres-in-sixth-mini-album-on-our-noise\",\"vote_total\":0,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"\",\"api_path\":\"/users/23165360\",\"avatar\":{\"tiny\":{\"url\":\"https://filepicker-images.genius.com/5883f699da5e80fea20d99e1c90cc292f2322dc406aa748749f8fb258d7ba660%2Fxwqvsfjqbu\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://filepicker-images.genius.com/5883f699da5e80fea20d99e1c90cc292f2322dc406aa748749f8fb258d7ba660%2Fxwqvsfjqbu\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://filepicker-images.genius.com/5883f699da5e80fea20d99e1c90cc292f2322dc406aa748749f8fb258d7ba660%2Fxwqvsfjqbu\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://filepicker-images.genius.com/5883f699da5e80fea20d99e1c90cc292f2322dc406aa748749f8fb258d7ba660%2Fxwqvsfjqbu\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://filepicker-images.genius.com/46bacfc1a9f920d691b1b1b234f3aef3fa0180ba1c413a99a72bee313a753bdd%2Fkmmfofzuwq\",\"human_readable_role_for_display\":null,\"id\":23165360,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"samahr\",\"name\":\"samahr\",\"role_for_display\":null,\"url\":\"https://genius.com/samahr\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":203},\"group\":{\"_type\":\"group\",\"id\":259,\"image_url\":\"https://images.genius.com/c139afa744c4e6fcfe9b565af0625e0d.512x512x1.png\",\"name\":\"Genius
+        Korea\",\"url\":\"https://genius.com/genius-korea\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[],\"interactions\":{\"following\":false}}},\"latest_post_author\":{\"_type\":\"user\",\"about_me_summary\":\"\",\"api_path\":\"/users/23165360\",\"avatar\":{\"tiny\":{\"url\":\"https://filepicker-images.genius.com/5883f699da5e80fea20d99e1c90cc292f2322dc406aa748749f8fb258d7ba660%2Fxwqvsfjqbu\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://filepicker-images.genius.com/5883f699da5e80fea20d99e1c90cc292f2322dc406aa748749f8fb258d7ba660%2Fxwqvsfjqbu\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://filepicker-images.genius.com/5883f699da5e80fea20d99e1c90cc292f2322dc406aa748749f8fb258d7ba660%2Fxwqvsfjqbu\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://filepicker-images.genius.com/5883f699da5e80fea20d99e1c90cc292f2322dc406aa748749f8fb258d7ba660%2Fxwqvsfjqbu\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://filepicker-images.genius.com/46bacfc1a9f920d691b1b1b234f3aef3fa0180ba1c413a99a72bee313a753bdd%2Fkmmfofzuwq\",\"human_readable_role_for_display\":null,\"id\":23165360,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"samahr\",\"name\":\"samahr\",\"role_for_display\":null,\"url\":\"https://genius.com/samahr\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":203}}],\"next_page\":2}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

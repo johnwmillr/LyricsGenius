@@ -1,0 +1,18 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/artists/1665/songs/search?q=test&sort=popularity
+  response:
+    body:
+      string: '{"meta":{"status":200},"response":{"songs":[],"next_page":null,"total_entries":0}}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

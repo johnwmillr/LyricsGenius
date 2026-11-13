@@ -1,0 +1,180 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/artists/1665?text_format=plain
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"artist\":{\"_type\":\"artist\",\"alternate_names\":[\"Machine
+        Gun Kelly\",\"Richard Colson Baker\",\"Colson Baker\"],\"api_path\":\"/artists/1665\",\"description\":{\"plain\":\"Initially
+        emerging as a lyrical rapper before diversifying his catalog to include pop
+        realms and adding pop punk to his repertoire, a transition that led to Billboard
+        dubbing him the \u201CCrown Prince of Pop Punk\u201D, Machine Gun Kelly (born
+        Colson Baker on April 22, 1990) is an American rapper, singer, songwriter,
+        and actor from Cleveland, Ohio.\\n\\nTraveling the world because of his parents'
+        jobs before settling down in Cleveland, Machine Gun Kelly, commonly referred
+        to as MGK, earned his stage name for his lightning-fast delivery while still
+        in high school. His breakthrough came at the start of the 2010s with his party-rap
+        hit \u201CWild Boy\u201D, mixing his lightning-fast flow with hedonistic,
+        party-ready lyrics over a bass-heavy beat. He would go on to release two more
+        rap albums before making his crossover into pop.\\n\\nHis third album, bloom,
+        marked a stylistic and commercial turning point for the Ohio rapper. Led by
+        his smash hit single \u201CBad Things\u201D, a pop-rap duet with, at-the-time,
+        rising songstress Camila Cabello, the album saw his style pivot to pop and
+        his sales increase accordingly. With \u201CBad Things\u201D becoming a top
+        five hit on the Hot 100 and reaching the top spot of the pop charts, as well
+        as the album\u2019s other hit, \u201CAt My Best\u201D, nearly cracking the
+        top 20 of the pop charts, the album became the most successful of Machine
+        Gun Kelly\u2019s career.\\n\\nAfter a highly-publicized feud with Eminem and
+        a critically-acclaimed rap-rock album in 2018 and 2019, respectively, Machine
+        Gun Kelly started to become a household name in 2020 with the release of Tickets
+        To My Downfall, reviving pop punk with a uniquely hip-hop-inspired spin. The
+        approach proved successful, with the album\u2019s single my ex\u2019s best
+        friend\u201D staying on the Hot 100 chart for a full year. At the front of
+        a revival of pop-punk and rock music in the mainstream, he followed up with
+        2022\u2019s mainstream sellout, for which he earned a Grammy nomination, a
+        first in his career.\\n\\nTo date, Machine Gun Kelly has certified sales of
+        25 million singles and 2.5 million albums.\"},\"description_preview\":\"Initially
+        emerging as a lyrical rapper before diversifying his catalog to include pop
+        realms and adding pop punk to his repertoire, a transition that led to Billboard
+        dubbing him the \u201CCrown Prince of Pop Punk\u201D, Machine Gun Kelly (born
+        Colson Baker on April 22, 1990) is an American rapper, singer, songwriter,
+        and actor from Cleveland, Ohio.\\n\\nTraveling the world because of his parents'
+        jobs before settling down in Cleveland, Machine Gun Kelly, commonly referred
+        to as MGK, earned his stage name for his lightning-fast delivery while still
+        in high school. His breakthrough came at the start of the 2010s with his party-rap
+        hit \u201CWild Boy\u201D, mixing his lightning-fast flow with hedonistic,
+        party-ready lyrics over a bass-heavy beat. He would go on to release two more
+        rap albums before making his crossover into pop.\\n\\nHis third album, bloom,
+        marked a stylistic and commercial turning point for the Ohio rapper. Led by
+        his smash hit single \u201CBad Things\u201D, a pop-rap duet with, at-the-time,
+        rising songstress Camila Cabello, the album saw his style pivot to pop and
+        his sales increase accordingly. With \u201CBad Things\u201D becoming a top
+        five hit on the Hot 100 and reaching the top spot of the pop charts, as well
+        as the album\u2019s other hit, \u201CAt My Best\u201D, nearly cracking the
+        top 20 of the pop charts, the album became the most successful of Machine
+        Gun Kelly\u2019s career.\\n\\nAfter a highly-publicized feud with Eminem and
+        a critically-acclaimed rap-rock album in 2018 and 2019, respectively, Machine
+        Gun Kelly started to become a household name in 2020 with the release of Tickets
+        To My Downfall, reviving pop punk with a uniquely hip-hop-inspired spin. The
+        approach proved successful, with the album\u2019s single my ex\u2019s best
+        friend\u201D staying on the Hot 100 chart for a full year. At the front of
+        a revival of pop-punk and rock music in the mainstream, he followed up with
+        2022\u2019s mainstream sellout, for which he earned a Grammy nomination, a
+        first in his career.\\n\\nTo date, Machine Gun Kelly has certified sales of
+        25 million singles and 2.5 million albums.\",\"facebook_name\":\"machinegunkellymusic\",\"header_image_url\":\"https://images.genius.com/b53227534e0572ce2e9aff2a4e64e8c3.1000x563x1.jpg\",\"id\":1665,\"image_url\":\"https://images.genius.com/e8aa944406aeca9c8d6739651583022b.1000x1000x1.jpg\",\"index_character\":\"m\",\"instagram_name\":\"machinegunkelly\",\"is_meme_verified\":true,\"is_verified\":true,\"links_config\":null,\"name\":\"mgk\",\"name_components\":{\"base_name\":\"mgk\",\"disambiguator\":null},\"slug\":\"Mgk\",\"social_links\":{\"twitter\":\"machinegunkelly\",\"facebook\":\"machinegunkellymusic\",\"instagram\":\"machinegunkelly\"},\"tracking_paths\":{\"aggregate\":\"/artists/Mgk\",\"concurrent\":\"/artists/Mgk\"},\"translation_artist\":false,\"twitter_name\":\"machinegunkelly\",\"url\":\"https://genius.com/artists/Mgk\",\"current_user_metadata\":{\"permissions\":[\"view_activity_stream\",\"view_discography\"],\"excluded_permissions\":[\"edit\",\"edit_images\",\"edit_names\",\"edit_anything\",\"merge\",\"sort_artist_songs\",\"follow\",\"view_contribution_opportunities\",\"edit_translation_artist\",\"split\",\"sort_artist_songs_by_lyrics_edit_proposals\",\"report_as_abusive\",\"see_short_id\"],\"interactions\":{\"following\":false}},\"followers_count\":4554,\"iq\":29789,\"artist_relationships\":[{\"_type\":\"artist_relationship\",\"relationship_type\":\"member_of\",\"artists\":[{\"_type\":\"artist\",\"api_path\":\"/artists/1130126\",\"header_image_url\":\"https://images.genius.com/9b9833a6ede5d12f39592d3af1db7d06.720x234x1.jpg\",\"id\":1130126,\"image_url\":\"https://images.genius.com/e398114b4cf11057ebb633ded1c173b3.332x332x1.jpg\",\"index_character\":\"e\",\"is_meme_verified\":false,\"is_verified\":false,\"links_config\":null,\"name\":\"EST
+        19XX\",\"slug\":\"Est-19xx\",\"url\":\"https://genius.com/artists/Est-19xx\"}]}],\"description_annotation\":{\"_type\":\"referent\",\"annotator_id\":5942,\"annotator_login\":\"brod132\",\"api_path\":\"/referents/6926226\",\"classification\":\"accepted\",\"fragment\":\"mgk\",\"id\":6926226,\"ios_app_url\":\"genius://referents/6926226\",\"is_description\":true,\"is_image\":false,\"path\":\"/6926226/Mgk/Mgk\",\"range\":{\"content\":\"mgk\"},\"song_id\":null,\"url\":\"https://genius.com/6926226/Mgk/Mgk\",\"verified_annotator_ids\":[],\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"add_pinned_annotation_to\",\"add_community_annotation_to\"],\"relationships\":{}},\"tracking_paths\":{\"aggregate\":\"/6926226/Mgk/Mgk\",\"concurrent\":\"/artists/Mgk\"},\"twitter_share_message\":\"\u201CInitially
+        emerging as a lyrical rapper before diversifying his catalog to include pop
+        realms and\u2026\u201D \u2014@Genius\",\"annotatable\":{\"_type\":\"artist\",\"api_path\":\"/artists/1665\",\"context\":null,\"id\":1665,\"image_url\":\"https://images.genius.com/e8aa944406aeca9c8d6739651583022b.1000x1000x1.jpg\",\"link_title\":\"mgk\",\"title\":\"mgk\",\"type\":\"Artist\",\"url\":\"https://genius.com/artists/Mgk\"},\"annotations\":[{\"_type\":\"annotation\",\"api_path\":\"/annotations/6926226\",\"being_created\":false,\"body\":{\"plain\":\"Initially
+        emerging as a lyrical rapper before diversifying his catalog to include pop
+        realms and adding pop punk to his repertoire, a transition that led to Billboard
+        dubbing him the \u201CCrown Prince of Pop Punk\u201D, Machine Gun Kelly (born
+        Colson Baker on April 22, 1990) is an American rapper, singer, songwriter,
+        and actor from Cleveland, Ohio.\\n\\nTraveling the world because of his parents'
+        jobs before settling down in Cleveland, Machine Gun Kelly, commonly referred
+        to as MGK, earned his stage name for his lightning-fast delivery while still
+        in high school. His breakthrough came at the start of the 2010s with his party-rap
+        hit \u201CWild Boy\u201D, mixing his lightning-fast flow with hedonistic,
+        party-ready lyrics over a bass-heavy beat. He would go on to release two more
+        rap albums before making his crossover into pop.\\n\\nHis third album, bloom,
+        marked a stylistic and commercial turning point for the Ohio rapper. Led by
+        his smash hit single \u201CBad Things\u201D, a pop-rap duet with, at-the-time,
+        rising songstress Camila Cabello, the album saw his style pivot to pop and
+        his sales increase accordingly. With \u201CBad Things\u201D becoming a top
+        five hit on the Hot 100 and reaching the top spot of the pop charts, as well
+        as the album\u2019s other hit, \u201CAt My Best\u201D, nearly cracking the
+        top 20 of the pop charts, the album became the most successful of Machine
+        Gun Kelly\u2019s career.\\n\\nAfter a highly-publicized feud with Eminem and
+        a critically-acclaimed rap-rock album in 2018 and 2019, respectively, Machine
+        Gun Kelly started to become a household name in 2020 with the release of Tickets
+        To My Downfall, reviving pop punk with a uniquely hip-hop-inspired spin. The
+        approach proved successful, with the album\u2019s single my ex\u2019s best
+        friend\u201D staying on the Hot 100 chart for a full year. At the front of
+        a revival of pop-punk and rock music in the mainstream, he followed up with
+        2022\u2019s mainstream sellout, for which he earned a Grammy nomination, a
+        first in his career.\\n\\nTo date, Machine Gun Kelly has certified sales of
+        25 million singles and 2.5 million albums.\"},\"comment_count\":0,\"community\":true,\"created_at\":1318781509,\"custom_preview\":null,\"deleted\":false,\"embed_content\":\"<blockquote
+        class='rg_standalone_container' data-src='//genius.com/annotations/6926226/standalone_embed'><a
+        href='https://genius.com/6926226/Mgk/Mgk'>mgk</a><br><a href='https://genius.com/artists/Mgk'>&#8213;
+        mgk</a></blockquote><script async crossorigin src='//genius.com/annotations/load_standalone_embeds.js'></script>\",\"has_voters\":true,\"id\":6926226,\"needs_exegesis\":false,\"pinned\":false,\"proposed_edit_count\":0,\"pyongs_count\":4,\"referent_id\":6926226,\"share_url\":\"https://genius.com/6926226\",\"source\":null,\"state\":\"accepted\",\"twitter_share_message\":\"\u201CInitially
+        emerging as a lyrical rapper before diversifying his catalog to include pop
+        realms and adding \u2026\u201D \u2014@Genius\",\"url\":\"https://genius.com/6926226/Mgk/Mgk\",\"verified\":false,\"votes_total\":280,\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"vote\",\"edit\",\"cosign\",\"uncosign\",\"destroy\",\"accept\",\"reject\",\"see_unreviewed\",\"clear_votes\",\"propose_edit_to\",\"pin_to_profile\",\"unpin_from_profile\",\"update_source\",\"edit_custom_preview\",\"report_as_abusive\",\"create_comment\"],\"interactions\":{\"cosign\":false,\"pyong\":false,\"vote\":null},\"iq_by_action\":{}},\"accepted_by\":{\"_type\":\"user\",\"about_me_summary\":\"Usually
+        working on something related to Drake, Weezy or Rihanna. If not that, then
+        I\u2019m likely transcribing new releases for the Scribe Series.\\n\\nI am
+        Caribbean so if you need help with any dancehall/reggae songs, I can help.\\n\\nI
+        do live a pretty busy life outside of Genius so if you send me a message,
+        a response may take a little while. In any case where imminent help is required,
+        I would recommend messaging another moderator.\\n\\n\\n\\nIf I rejected or
+        deleted your annotation, it\u2019s nothing personal. Just doing my job and
+        keeping up with the current Genius standards. Please do not send me angry
+        messages, demanding to know why your annotation was deleted or spam dislikes.
+        Otherwise, you will be ignored and action will be taken on your account.\\n\\n\\n\\nFirst
+        activity on Genius: February 26, 2017\\n\\nMade Editor by @ewokABdevito on
+        April 4, 2017\\n\\nMade Mediator by @Drew_Harvie on June 13, 2017 (I accidentally
+        removed it at some point so I gave myself the role again on December 18, 2018)\\n\\nMade
+        Moderator by @Empath on October 23, 2017\\n\\nMade myself Transcriber on April
+        10, 2026\\n\\n\\n\\nGenius of the Month: October 2017\\n\\n\\n\\n\\n10k IQ:
+        April 6, 2017\\n20k IQ: April 24, 2017\\n25k IQ: May 3, 2017\\n50k IQ: June
+        1, 2017\\n75k IQ: July 2, 2017\\n100k IQ: August 3, 2017\\n150k IQ: October
+        4, 2017\\n200k IQ: November 18, 2017\\n300k IQ: March 4, 2018\\n400k IQ: June
+        27, 2018\\n500k IQ: December 18, 2018\\n600k IQ: May 3, 2019\\n700k IQ: June
+        26, 2019\\n800k IQ: January 19, 2020\\n900k IQ: December 29, 2020\\n1 million
+        IQ: September 12, 2021\\n\\n\\n\\n\\n7th top scholar of 2017\\n\\n9th top
+        scholar of 2018\\n\\n8th top scholar of 2019\\n\\n\\n\\n\\n2017 Genius Awards\\n\\n\\nthe
+        most involved user of the year\\n4th best rookie of the year\\n5th best annotator
+        of the year\\n7th best transcriber of the year\\n\\n\\n\\n2018 Genius Awards\\n\\n\\n2nd
+        best moderator of the year\\n5th most involved user of the year\\n5th best
+        mentor of the year\\n\\n\\n\\n2019 Genius Awards\\n\\n\\n4th best moderator
+        of the year\\n2nd smartest user of the year\\n\\n\\n\\n\\n\\n\\nAnnotation
+        shoutouts:\\n\\n2017\\n\\n\\nThis Week On Genius [9/4 \u2013 9/11]\\nThis
+        Week On Genius [9/11 \u2013 9/18]\\nEmpath\u2019s Emporium #57\\nThis Week
+        On Genius [9/18 \u2013 9/25]\\nEmpath\u2019s Emporium #59\\nEmpath\u2019s
+        Emporium #60\\nEmpath\u2019s Emporium #63\\nThis Week On Genius [12/4 \u2013
+        12/11]\\nThis Week On Genius [12/11 \u2013 12/18]\\n\\n\\n\\n2018\\n\\n\\nTates
+        of the Week [2/11]\\nThis Week On Genius [3/26 \u2013 4/9]\\nMade #5 on The
+        Best Annotations of April 2018\\nThis Week on Genius [6/11 \u2013 6/18]\\nThis
+        Week on Genius [8/6 \u2013 8/13]\\nThis Week On Genius [10/29 \u2013 11/5]\\nMade
+        #2 on The Best Annotations of November 2018\\nThis Week On Genius [12/10 \u2013
+        12/17]\\nMade #3 on The 15 Best Annotations of 2018\\n\\n\\n\\n2019\\n\\n\\nThis
+        Week On Genius [1/28 \u2013 2/4]\\n\u201CBarbie Goin Bad\u201D Annotation
+        featured in an article\\n\\nMade #1 on The Best Annotations of February 2019
+        w/ @xMERLYN\\n\\nThis Week On Genius [5/20 \u2013 6/3\u2014DOUBLE EDITION]\\nMade
+        #4 on The Best Annotations of May 2019\\nThis Week on Genius [8/5 \u2013 8/12]\\n\\nMade
+        #7 on The 15 Best Annotations of 2019 w/ @xMERLYN\\n\\n\\n\\n\\n2020\\n\\n\\nThis
+        Week On Genius [1/27 \u2013 2/3]\\nThis Week On Genius [07/12 \u2013 07/19]\\nThis
+        Week On Genius [09/27 \u2013 10/04]\\n\\n\\n\\nWent inactive after 2021 sadly
+        so no more shoutouts :(\\n\\n\\n\\nRetired ten-time winner of the Red Removal
+        Week-Long Sprint, shoutout the goat @poeticimmunity\",\"api_path\":\"/users/4335922\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/87bb20b9dbb4dc55f359d4924358a721\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/87bb20b9dbb4dc55f359d4924358a721\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/87bb20b9dbb4dc55f359d4924358a721\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/87bb20b9dbb4dc55f359d4924358a721\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Moderator\",\"id\":4335922,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"Chancelorr\",\"name\":\"chancelorr\",\"role_for_display\":\"moderator\",\"url\":\"https://genius.com/Chancelorr\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":1077079},\"authors\":[{\"_type\":\"user_attribution\",\"attribution\":0.830945558739255,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"Hey
+        all! I\u2019m a music enthusiast and editor here on Genius. If you have any
+        questions or want to talk music, just send me a message!\\n\\nQuick note:
+        if I deleted or altered any of your annotations, please don\u2019t take it
+        personally. I\u2019m just making sure we have the highest quality, well-researched
+        music information possible available on the site.\",\"api_path\":\"/users/5713170\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/2dcf2b9180f407745b0404402b9e9ebd\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/2dcf2b9180f407745b0404402b9e9ebd\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/2dcf2b9180f407745b0404402b9e9ebd\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/2dcf2b9180f407745b0404402b9e9ebd\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://filepicker-images.genius.com/pimmw47peyd\",\"human_readable_role_for_display\":\"Editor\",\"id\":5713170,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"introspection\",\"name\":\"introspection\",\"role_for_display\":\"editor\",\"url\":\"https://genius.com/introspection\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":19786}},{\"_type\":\"user_attribution\",\"attribution\":0.05444126074498567,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"If
+        I reject your annotation that means it was bad. I have that option for a reason.\\n\\nIf
+        I accept and edit your annotation that means it was okay and you should hit
+        me up for some coaching if you\u2019re interested.\",\"api_path\":\"/users/346222\",\"avatar\":{\"tiny\":{\"url\":\"https://images.rapgenius.com/avatars/tiny/fd2d22238ee864a69ce8b599ec7ad409\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.rapgenius.com/avatars/thumb/fd2d22238ee864a69ce8b599ec7ad409\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.rapgenius.com/avatars/small/fd2d22238ee864a69ce8b599ec7ad409\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.rapgenius.com/avatars/medium/fd2d22238ee864a69ce8b599ec7ad409\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Contributor\",\"id\":346222,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"RyanIsNice\",\"name\":\"RyanIsNice\",\"role_for_display\":\"contributor\",\"url\":\"https://genius.com/RyanIsNice\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":36194}},{\"_type\":\"user_attribution\",\"attribution\":0.034383954154727794,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"DJ/Producer,
+        et cetera.\\n\\nRhymes with \u201Cbooze,\u201D not \u201Cbuzz.\u201D\\n\\nHit
+        me for production and collaboration. I\u2019m nice.\\n\\nBusiness inquiries:
+        thekuzofficial@gmail.com\\n\\nBased in White Center, Seattle.\\n\\nYouTube:
+        https://www.youtube.com/channel/UCcvU6-PUX-Cb4boWhk3JVaQ\\n\\nSoundcloud:
+        https://soundcloud.com/thekuzgofficial\\n\\nBandcamp: https://thekuzgofficial.bandcamp.com/\",\"api_path\":\"/users/923739\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/ea9b6b625c739d23c95760ce89a3b2d8\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/ea9b6b625c739d23c95760ce89a3b2d8\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/ea9b6b625c739d23c95760ce89a3b2d8\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/ea9b6b625c739d23c95760ce89a3b2d8\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Editor\",\"id\":923739,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"theKuzG\",\"name\":\"The
+        Kuz Giacometti\",\"role_for_display\":\"editor\",\"url\":\"https://genius.com/theKuzG\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":114536}},{\"_type\":\"user_attribution\",\"attribution\":0.022922636103151862,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"\",\"api_path\":\"/users/1743222\",\"avatar\":{\"tiny\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Contributor\",\"id\":1743222,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"gone_11d2u_aa7b\",\"name\":\"gone_11d2u_aa7b\",\"role_for_display\":\"contributor\",\"url\":\"https://genius.com/gone_11d2u_aa7b\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":55921}},{\"_type\":\"user_attribution\",\"attribution\":0.02005730659025788,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"moon\",\"api_path\":\"/users/10255873\",\"avatar\":{\"tiny\":{\"url\":\"https://filepicker-images.genius.com/lcfahm947xd\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://filepicker-images.genius.com/lcfahm947xd\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://filepicker-images.genius.com/lcfahm947xd\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://filepicker-images.genius.com/lcfahm947xd\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://filepicker-images.genius.com/21ybwy6z6xe\",\"human_readable_role_for_display\":\"Contributor\",\"id\":10255873,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"otmoon\",\"name\":\"otmoon\",\"role_for_display\":\"contributor\",\"url\":\"https://genius.com/otmoon\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":10021}},{\"_type\":\"user_attribution\",\"attribution\":0.017191977077363897,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"one
+        love!\",\"api_path\":\"/users/306989\",\"avatar\":{\"tiny\":{\"url\":\"https://images.rapgenius.com/avatars/tiny/5bfb5b63eceb8b72c3ad04bb12251284\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.rapgenius.com/avatars/thumb/5bfb5b63eceb8b72c3ad04bb12251284\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.rapgenius.com/avatars/small/5bfb5b63eceb8b72c3ad04bb12251284\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.rapgenius.com/avatars/medium/5bfb5b63eceb8b72c3ad04bb12251284\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":null,\"id\":306989,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"r1pper\",\"name\":\"r1pper\",\"role_for_display\":null,\"url\":\"https://genius.com/r1pper\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":263}},{\"_type\":\"user_attribution\",\"attribution\":0.011461318051575931,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"https://genius.com/artists/Violent-remark\\n\\nno
+        i do not respond to dms unless necessary\",\"api_path\":\"/users/8092777\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/03f31b0214bb9e62e774ace0d1cd3eee\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/03f31b0214bb9e62e774ace0d1cd3eee\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/03f31b0214bb9e62e774ace0d1cd3eee\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/03f31b0214bb9e62e774ace0d1cd3eee\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://images.genius.com/760c0a8e1037cd845860db2a45f7c86a.1000x1000x1.png\",\"human_readable_role_for_display\":\"Editor\",\"id\":8092777,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"thedevilwalksamongstus\",\"name\":\"THEDEVILWALKSAMONGSTUS\",\"role_for_display\":\"editor\",\"url\":\"https://genius.com/thedevilwalksamongstus\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":494749}},{\"_type\":\"user_attribution\",\"attribution\":0.0028653295128939827,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"Not
+        around anymore.\",\"api_path\":\"/users/3272791\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/7e14c2a51bbaa5c9e1107f02102fb8d5\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/7e14c2a51bbaa5c9e1107f02102fb8d5\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/7e14c2a51bbaa5c9e1107f02102fb8d5\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/7e14c2a51bbaa5c9e1107f02102fb8d5\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://filepicker-images.genius.com/5sFLucU4Td6RnIlt08iY_giphy.gif\",\"human_readable_role_for_display\":\"Editor\",\"id\":3272791,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"Madkol\",\"name\":\"Madkol\",\"role_for_display\":\"editor\",\"url\":\"https://genius.com/Madkol\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":154812}},{\"_type\":\"user_attribution\",\"attribution\":0.0028653295128939827,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"no\u028E
+        \u0287\u1D09\u025F\u01DDu\u01DDq plno\u028D \u0287\u1D09 \u025F\u1D09\\n\u0183u\u1D09\u0265\u0287\u0250\u01DD\u0279q
+        do\u0287s p\u1D09 \u0279\u0250\u01DD\u028Ds \u1D09\",\"api_path\":\"/users/8315100\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/f4dc1da1ccb558f844f078eb9cd0ff5d\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/f4dc1da1ccb558f844f078eb9cd0ff5d\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/f4dc1da1ccb558f844f078eb9cd0ff5d\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/f4dc1da1ccb558f844f078eb9cd0ff5d\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://images.genius.com/a60b7740774e4636062895d57d65c4c5.667x1000x1.jpg\",\"human_readable_role_for_display\":\"Editor\",\"id\":8315100,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"glitzy\",\"name\":\"glitzy\",\"role_for_display\":\"editor\",\"url\":\"https://genius.com/glitzy\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":322233}},{\"_type\":\"user_attribution\",\"attribution\":0.0028653295128939827,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"\",\"api_path\":\"/users/10445617\",\"avatar\":{\"tiny\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Contributor\",\"id\":10445617,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"gone_67vw1_cc90\",\"name\":\"gone_67vw1_cc90\",\"role_for_display\":\"contributor\",\"url\":\"https://genius.com/gone_67vw1_cc90\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":262459}}],\"cosigned_by\":[],\"created_by\":{\"_type\":\"user\",\"about_me_summary\":\"\",\"api_path\":\"/users/5942\",\"avatar\":{\"tiny\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":null,\"id\":5942,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"brod132\",\"name\":\"brod132\",\"role_for_display\":null,\"url\":\"https://genius.com/brod132\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":37},\"rejection_comment\":null,\"top_comment\":null,\"verified_by\":null}]},\"user\":{\"_type\":\"user\",\"about_me_summary\":\"Initially
+        emerging as a lyrical rapper before diversifying his catalog to include pop
+        realms and adding pop punk to his repertoire, a transition that led to Billboard
+        dubbing him\",\"api_path\":\"/users/97526\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/ea6640fa6290de1f2912719ab781da58\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/ea6640fa6290de1f2912719ab781da58\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/ea6640fa6290de1f2912719ab781da58\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/ea6640fa6290de1f2912719ab781da58\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://images.genius.com/b53227534e0572ce2e9aff2a4e64e8c3.1000x563x1.jpg\",\"human_readable_role_for_display\":\"Verified
+        Artist\",\"id\":97526,\"is_meme_verified\":true,\"is_verified\":true,\"login\":\"MachineGunKelly\",\"name\":\"mgk\",\"role_for_display\":\"verified_artist\",\"url\":\"https://genius.com/MachineGunKelly\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":29789}}}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1
