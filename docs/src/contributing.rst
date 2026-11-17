@@ -20,6 +20,8 @@ This installs the package in development mode with everything needed to
 check your changes:
 
 - ``uv run pytest``: runs the unit tests.
+- ``uv run pytest --cov``: runs them and reports coverage. CI fails if
+  coverage of the package drops below 90%.
 - ``uv run ruff check`` and ``uv run ruff format``: lint and format the code.
 - ``uv run mypy``: type checks the package.
 
