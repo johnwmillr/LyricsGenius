@@ -1,5 +1,6 @@
 """Tests for search_artist: finding the artist and collecting their songs."""
 
+import warnings
 from collections.abc import Iterator
 from contextlib import contextmanager
 from typing import Any
@@ -321,3 +322,35 @@ def test_search_artist_searches_with_client_page_size() -> None:
 
     search_all, _ = mocks
     search_all.assert_called_once_with("Radiohead", per_page=3, page=1)
+
+
+@pytest.mark.parametrize("allow_name_change", [True, False])
+def test_search_artist_warns_that_allow_name_change_is_deprecated(
+    genius: Genius, allow_name_change: bool
+) -> None:
+    """allow_name_change warns and the name stays the one Genius gives."""
+    with (
+        _mocked_search(genius, [], _artist_info(99, "Radiohead")),
+        pytest.warns(DeprecationWarning, match="allow_name_change"),
+    ):
+        artist = genius.search_artist(
+            "radiohead",
+            artist_id=99,
+            max_songs=0,
+            allow_name_change=allow_name_change,
+        )
+
+    assert artist is not None
+    assert artist.name == "Radiohead"
+
+
+def test_search_artist_does_not_warn_without_allow_name_change(
+    genius: Genius,
+) -> None:
+    """Leaving allow_name_change out raises no warning."""
+    with (
+        _mocked_search(genius, [], _artist_info(99, "Radiohead")),
+        warnings.catch_warnings(),
+    ):
+        warnings.simplefilter("error")
+        genius.search_artist("radiohead", artist_id=99, max_songs=0)
