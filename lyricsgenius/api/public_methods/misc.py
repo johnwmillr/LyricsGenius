@@ -1,3 +1,4 @@
+import warnings
 from typing import Any
 
 from ...types.types import TextFormatT
@@ -38,6 +39,10 @@ class MiscMethods(RequestCapable, ChartsCapable):
         artist: str | None = None,
     ) -> dict[str, Any]:
         """Gets page data of an item.
+
+        .. deprecated:: 3.17.0
+            Genius no longer serves page data, so every request returns 404.
+            This method will be removed in a future version.
 
         If you want the page data of a song, you must supply
         song and artist. But if you want the page data of an album,
@@ -96,6 +101,12 @@ class MiscMethods(RequestCapable, ChartsCapable):
                     lyrics_text = BeautifulSoup(lyrics_html, 'html.parser').get_text()
 
         """
+        warnings.warn(
+            "page_data() is deprecated and will be removed in a future version: "
+            "Genius no longer serves page data.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         assert any([album, song]), "You must pass either song or album."
         if song:
             assert artist, "If you pass song, you must also pass artist."

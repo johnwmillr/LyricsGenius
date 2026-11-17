@@ -298,7 +298,8 @@ def test_referent_returns_each_requested_referent(public_api: PublicAPI) -> None
 @_PAGE_DATA_REMOVED
 def test_page_data_returns_album_page_data(genius: Genius) -> None:
     """Page data for an album path contains the album's page data."""
-    response = genius.page_data(album="/albums/Eminem/Music-to-be-murdered-by")
+    with pytest.warns(DeprecationWarning, match="page_data"):
+        response = genius.page_data(album="/albums/Eminem/Music-to-be-murdered-by")
 
     assert "page_data" in response
 
@@ -312,7 +313,8 @@ def test_page_data_returns_song_page_data(
     artist_slug = public_api.artist(ARTIST_ID)["artist"]["slug"]
     song_path = genius.song(4558484)["song"]["path"]
 
-    response = genius.page_data(artist=artist_slug, song=song_path)
+    with pytest.warns(DeprecationWarning, match="page_data"):
+        response = genius.page_data(artist=artist_slug, song=song_path)
 
     assert "page_data" in response
 
