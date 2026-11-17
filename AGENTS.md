@@ -39,6 +39,7 @@ it publishes a dev version to TestPyPI.
 ```sh
 uv sync            # install
 uv run pytest      # tests
+uv run pytest --cov  # tests with coverage; CI fails below 90%
 uv run ruff check  # lint
 ```
 

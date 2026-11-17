@@ -37,6 +37,7 @@ dev = [
     "mypy>=1.15.0",
     "pre-commit>=4.2.0",
     "pytest>=8.4.1",
+    "pytest-cov>=7.1.0",
     "pytest-recording>=0.14.1",
     "ruff>=0.11.4",
     "sphinx>=4.3.2",
@@ -109,3 +110,11 @@ testpaths = ["tests"]
 # recording cassettes or running with --live.
 addopts = ["--strict-markers", "--block-network"]
 markers = ["live: makes real requests to Genius; skipped unless --live is given"]
+
+[tool.coverage.run]
+source = ["lyricsgenius"]
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+skip_covered = true
