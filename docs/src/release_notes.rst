@@ -4,6 +4,21 @@
 Release notes
 =============
 
+3.18.0 (2026-11-17)
+-------------------
+
+Changed
+*******
+-  ``Genius.search_artist()`` no longer requests the lyrics page of
+   instrumentals when ``skip_non_songs`` is off. They get empty lyrics, as
+   they already did in ``search_song()`` and ``search_album()``.
+
+Deprecated
+**********
+-  The ``allow_name_change`` argument of ``Genius.search_artist()`` now emits
+   a ``DeprecationWarning`` and will be removed in a future version. It never
+   had an effect: the artist's name is always the one Genius gives.
+
 3.17.0 (2026-11-16)
 -------------------
 

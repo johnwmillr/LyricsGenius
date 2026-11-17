@@ -251,12 +251,23 @@ def test_search_artist_stops_at_max_songs(genius: Genius) -> None:
     assert lyrics.call_count == 1
 
 
-def test_search_artist_skips_lyrics_request_for_incomplete_songs(
-    genius: Genius,
+@pytest.mark.parametrize(
+    "song",
+    [
+        pytest.param(
+            _song(1, "Unreleased", lyrics_state="unreleased"), id="incomplete"
+        ),
+        pytest.param(
+            {**_song(1, "Interlude"), "instrumental": True}, id="instrumental"
+        ),
+    ],
+)
+def test_search_artist_skips_lyrics_request_for_songs_without_lyrics(
+    genius: Genius, song: dict[str, Any]
 ) -> None:
-    """A song whose lyrics aren't complete is kept with empty lyrics, unfetched."""
+    """A song without lyrics to fetch is kept with empty lyrics, unfetched."""
     genius.skip_non_songs = False
-    pages = [_page([_song(1, "Unreleased", lyrics_state="unreleased")], None)]
+    pages = [_page([song], None)]
 
     with _mocked_songs(genius, pages) as (_, lyrics, _):
         artist = genius.search_artist(

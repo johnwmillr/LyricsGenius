@@ -375,6 +375,34 @@ class Genius(API, PublicAPI):
         result_artist = clean_str(result.get("primary_artist", {}).get("name", ""))
         return title_is_match and result_artist == clean_str(artist)
 
+    def _build_song(
+        self, song_info: dict[str, Any], get_full_info: bool, fetch_lyrics: bool = True
+    ) -> Song:
+        """Builds a Song from a song's data, fetching its lyrics and full info.
+
+        Args:
+            song_info (:obj:`dict`): The song's data from a search or listing.
+                It's updated in place with the full info if that's fetched.
+            get_full_info (:obj:`bool`): Fetch the song's full info first.
+            fetch_lyrics (:obj:`bool`, optional): Fetch the lyrics of songs that
+                have them. Instrumentals and songs whose lyrics aren't complete
+                get empty lyrics either way.
+
+        Returns:
+            :class:`Song <types.Song>`
+
+        """
+        if get_full_info:
+            song_info.update(self.song(song_info["id"])["song"])
+        lyrics = None
+        if (
+            fetch_lyrics
+            and song_info["lyrics_state"] == "complete"
+            and not song_info.get("instrumental")
+        ):
+            lyrics = self.lyrics(song_url=song_info["url"])
+        return Song(lyrics=lyrics or "", body=song_info)
+
     def song_annotations(
         self,
         song_id: int,
@@ -497,19 +525,13 @@ class Genius(API, PublicAPI):
                 album_id=album_id, per_page=50, page=next_page, text_format=text_format
             )
             for track_data in tracks_list_response["tracks"]:
-                song_info = track_data["song"]
-                song_lyrics = None
-                if (
-                    fetch_lyrics
-                    and song_info["lyrics_state"] == "complete"
-                    and not song_info.get("instrumental")
-                ):
-                    song_lyrics = self.lyrics(song_url=song_info["url"])
-
-                if song_lyrics is None:
-                    song_lyrics = ""
-
-                tracks.append(Song(lyrics=song_lyrics, body=song_info))
+                tracks.append(
+                    self._build_song(
+                        track_data["song"],
+                        get_full_info=False,
+                        fetch_lyrics=fetch_lyrics,
+                    )
+                )
 
             next_page = tracks_list_response["next_page"]
 
@@ -624,24 +646,14 @@ class Genius(API, PublicAPI):
             logger.debug("Specified song does not contain lyrics. Rejecting.")
             return None
 
-        # Download full song info (an API call) unless told not to by user
-        if song_id is None and get_full_info:
-            song_info.update(self.song(song_info["id"])["song"])
-
-        if song_info["lyrics_state"] == "complete" and not song_info.get(
-            "instrumental"
-        ):
-            lyrics = self.lyrics(song_url=song_info["url"])
-        else:
-            lyrics = ""
+        # A song looked up by ID already has its full info
+        song = self._build_song(song_info, get_full_info and song_id is None)
 
         # Skip results when URL is a 404 or lyrics are missing
-        if self.skip_non_songs and not lyrics:
+        if self.skip_non_songs and not song.lyrics:
             logger.debug("Specified song does not have valid lyrics. Rejecting.")
             return None
 
-        # Return a Song object with lyrics if we've made it this far
-        song = Song(lyrics=lyrics if lyrics is not None else "", body=song_info)
         logger.info("Done.")
         return song
 
@@ -800,15 +812,7 @@ class Genius(API, PublicAPI):
                     )
                     continue
 
-                # Create the Song object from lyrics and metadata
-                if song_info["lyrics_state"] == "complete":
-                    lyrics = self.lyrics(song_url=song_info["url"])
-                else:
-                    lyrics = ""
-                if get_full_info:
-                    new_info = self.song(song_info["id"])["song"]
-                    song_info.update(new_info)
-                song = Song(lyrics=lyrics if lyrics is not None else "", body=song_info)
+                song = self._build_song(song_info, get_full_info)
 
                 # Attempt to add the Song to the Artist
                 result = artist.add_song(song, include_features=include_features)
