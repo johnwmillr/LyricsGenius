@@ -7,6 +7,7 @@
 import json
 import logging
 import re
+import warnings
 from typing import Any
 
 from bs4 import BeautifulSoup, NavigableString, Tag
@@ -651,7 +652,7 @@ class Genius(API, PublicAPI):
         sort: str = "popularity",
         per_page: int = 20,
         get_full_info: bool = True,
-        allow_name_change: bool = True,
+        allow_name_change: bool | None = None,
         artist_id: int | None = None,
         include_features: bool = False,
         max_pages: int = 10,
@@ -661,8 +662,7 @@ class Genius(API, PublicAPI):
         This method looks for the artist by the name or by the
         ID if it's provided in ``artist_id``. It returns an
         :class:`Artist <types.Artist>` object if the search is successful.
-        If :obj:`allow_name_change` is True, the name of the artist is changed to the
-        artist name on Genius.
+        The artist's name is always the one Genius gives.
 
         Args:
             artist_name (:obj:`str`): Name of the artist to search for.
@@ -671,8 +671,8 @@ class Genius(API, PublicAPI):
             per_page (:obj:`int`, optional): Number of results to return
                 per search page. It can't be more than 50.
             get_full_info (:obj:`bool`, optional): Get full info for each song (slower).
-            allow_name_change (:obj:`bool`, optional): If True, search attempts to
-                switch to intended artist name.
+            allow_name_change (:obj:`bool`, optional): Deprecated and ignored. It
+                will be removed in a future version.
             artist_id (:obj:`int`, optional): Allows user to pass an artist ID.
             include_features (:obj:`bool`, optional): If True, includes tracks
                 featuring the artist.
@@ -694,6 +694,14 @@ class Genius(API, PublicAPI):
 
             Visit :class:`Artist <types.Artist>` for more examples.
         """
+
+        if allow_name_change is not None:
+            warnings.warn(
+                "allow_name_change is deprecated and has no effect; it will be "
+                "removed in a future version.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
 
         def find_artist_id(search_term: str) -> int | None:
             """Finds the ID of the artist, returns the first
@@ -762,10 +770,6 @@ class Genius(API, PublicAPI):
             return None
 
         artist_info = self.artist(artist_id)["artist"]
-        found_name = artist_info["name"]
-        if found_name != artist_name and allow_name_change:
-            logger.info("Changing artist name to '%s'", safe_unicode(found_name))
-            artist_name = found_name
 
         # Create the Artist object
         artist = Artist(body=artist_info)
