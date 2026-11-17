@@ -194,19 +194,21 @@ def test_api_request_sends_authorization_header() -> None:
 
 
 @pytest.mark.parametrize(
-    "kwargs",
+    ("public_api", "web"),
     [
-        pytest.param({"public_api": True}, id="public_api"),
-        pytest.param({"web": True}, id="web_page"),
+        pytest.param(True, False, id="public_api"),
+        pytest.param(False, True, id="web_page"),
     ],
 )
-def test_public_and_web_requests_omit_authorization(kwargs: dict[str, bool]) -> None:
+def test_public_and_web_requests_omit_authorization(
+    public_api: bool, web: bool
+) -> None:
     """Requests to genius.com never carry the access token."""
     genius = _client()
     ok = _response(200, "{}", content_type="text/html")
 
     with _patch_request(genius, return_value=ok) as request:
-        genius._make_request("some-path", **kwargs)
+        genius._make_request("some-path", public_api=public_api, web=web)
 
     assert request.call_args.kwargs["headers"] is None
 
