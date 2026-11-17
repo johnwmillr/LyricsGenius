@@ -1,0 +1,19 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/search/artist?q=test&per_page=2&page=1
+  response:
+    body:
+      string: '{"meta":{"status":200},"response":{"sections":[{"type":"artist","hits":[{"highlights":[],"index":"artist","matched_words":1,"nb_exact_words":0,"nb_typos":0,"type":"artist","result":{"_type":"artist","api_path":"/artists/37578","header_image_url":"https://images.genius.com/74312a23d2172442bb3d9814eb85e9bc.1000x528x1.png","id":37578,"image_url":"https://images.genius.com/b51851b7ab1a8658323c30fbe22dffab.1000x1000x1.jpg","index_character":"t","is_meme_verified":false,"is_verified":false,"links_config":null,"name":"Testament","slug":"Testament","url":"https://genius.com/artists/Testament"}},{"highlights":[],"index":"artist","matched_words":1,"nb_exact_words":0,"nb_typos":0,"type":"artist","result":{"_type":"artist","api_path":"/artists/568124","header_image_url":"https://images.genius.com/4e491b8854903975523966647910bbe2.512x264x1.jpg","id":568124,"image_url":"https://images.genius.com/ab9b8bc209d528b8e4989aa481ec86cd.369x369x1.jpg","index_character":"t","is_meme_verified":false,"is_verified":false,"links_config":null,"name":"Teste
+        Mobili","slug":"Teste-mobili","url":"https://genius.com/artists/Teste-mobili"}}]}],"next_page":2}}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

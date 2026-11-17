@@ -1,0 +1,44 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/videos?per_page=2&page=1&song_id=378195
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"videos\":[{\"_type\":\"video\",\"api_path\":\"/videos/17256\",\"article_url\":\"https://genius.com/a/genius-dropbox-present-visual-art-exhibit-lyrics-to-life\",\"author_list_for_display\":\"Lisa
+        Brown\",\"dek\":\"The event will feature art installations inspired by iconic
+        lyrics.\",\"description\":\"Genius' mission has always been to reveal the
+        deeper meaning behind songs. Now those interpretations will be explored in
+        Lyrics to Life, an immersive visual art event presented by Genius and Dropbox.
+        The event will feature original installations\u2026\",\"dfp_kv\":[{\"name\":\"brightcove_video_id\",\"values\":[\"5729051217001\"]},{\"name\":\"topic\",\"values\":[]},{\"name\":\"has_transcript\",\"values\":[\"true\"]},{\"name\":\"song_id\",\"values\":[]},{\"name\":\"artist_id\",\"values\":[\"92\",\"16775\",\"26577\"]},{\"name\":\"primary_tag_id\",\"values\":[\"16\",\"1434\"]},{\"name\":\"video_series\",\"values\":[\"news\"]}],\"duration\":72322,\"id\":17256,\"poster_attributes\":{\"height\":720,\"width\":1280},\"poster_url\":\"https://images.genius.com/f87a15dd7b0ff08948323364f2bc595b.1000x563x1.jpg\",\"provider\":\"brightcove\",\"provider_id\":\"5729051217001\",\"provider_params\":[{\"name\":\"policy_key\",\"value\":\"BCpkADawqM1Yf2IElyF6jfI5WI9Q_UAa8Lz3mmqoN0btQzu-1LWMaRV4q6Tm7Fzh1LrovZfmf6rHqYXe_OdkLc9eTQiNrj2s_4t_gA0KfeiNKhrqNmRPrfQjTfgJRsGeyVoNA-qlxc9LBrtA\"}],\"short_title\":\"Genius
+        & Dropbox Present Lyrics To Life\",\"title\":\"Genius & Dropbox Present Visual
+        Art Exhibit \u2018Lyrics To Life\u2019\",\"type\":\"video\",\"url\":\"https://genius.com/videos/Genius-dropbox-present-lyrics-to-life\",\"video_attributes\":{\"width\":1920,\"height\":1080},\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"view_relevance_reason\"]},\"published_at\":1518119940,\"relevance\":\"medium\",\"view_count\":915616,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"Staff
+        Writer at Genius. Brooklyn native and resident cat lady.\",\"api_path\":\"/users/5506789\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/f4a7e20636cbe9b0456cae0600b9f40c\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/f4a7e20636cbe9b0456cae0600b9f40c\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/f4a7e20636cbe9b0456cae0600b9f40c\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/f4a7e20636cbe9b0456cae0600b9f40c\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Contributor\",\"id\":5506789,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"lisambrown\",\"name\":\"Lisa
+        Brown\",\"role_for_display\":\"contributor\",\"url\":\"https://genius.com/lisambrown\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":5644},\"sponsorship\":{\"_type\":\"article\",\"api_path\":\"/articles/4270\",\"sponsor_image\":\"https://images.genius.com/8e04f6a87187ed326114963a4b798825.800x158x1.png\",\"sponsor_image_style\":\"larger\",\"sponsor_link\":\"\",\"sponsor_phrase\":\"Brought
+        to you by \",\"sponsored\":true}},{\"_type\":\"video\",\"api_path\":\"/videos/152\",\"article_url\":\"https://genius.com/a/rewind-the-evolution-of-beyonce\",\"author_list_for_display\":\"John
+        Kennedy\",\"dek\":\"A time capsule of Bey's biggest moments.\",\"description\":\"Life
+        is but a dream for Beyonc\xE9. In two decades, Houston\u2019s own megastar
+        has seen music\u2019s highest highs while only taking the occasional L (where
+        is Skeleton Crew now, though?). From Destiny\u2019s Child to Jay Z\u2019s
+        wife to Blue Ivy\u2019s mom, \u2018Yonce has\u2026\",\"dfp_kv\":[{\"name\":\"brightcove_video_id\",\"values\":[\"5180940341001\"]},{\"name\":\"topic\",\"values\":[]},{\"name\":\"has_transcript\",\"values\":[\"false\"]},{\"name\":\"song_id\",\"values\":[]},{\"name\":\"artist_id\",\"values\":[\"498\"]},{\"name\":\"primary_tag_id\",\"values\":[\"16\"]},{\"name\":\"video_series\",\"values\":[]}],\"duration\":274731,\"id\":152,\"poster_attributes\":{\"height\":720,\"width\":1280},\"poster_url\":\"https://images.genius.com/0016896a67399ffdb7cd59e859f175f7.1000x563x1.jpg\",\"provider\":\"brightcove\",\"provider_id\":\"5180940341001\",\"provider_params\":[{\"name\":\"policy_key\",\"value\":\"BCpkADawqM1Yf2IElyF6jfI5WI9Q_UAa8Lz3mmqoN0btQzu-1LWMaRV4q6Tm7Fzh1LrovZfmf6rHqYXe_OdkLc9eTQiNrj2s_4t_gA0KfeiNKhrqNmRPrfQjTfgJRsGeyVoNA-qlxc9LBrtA\"}],\"short_title\":\"Rewind:
+        The Evolution of Beyonc\xE9\",\"title\":\"Rewind: The Evolution Of Beyonc\xE9\",\"type\":\"video\",\"url\":\"https://genius.com/videos/Rewind-the-evolution-of-beyonce\",\"video_attributes\":{\"width\":1280,\"height\":720},\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"view_relevance_reason\"]},\"published_at\":1477136940,\"relevance\":\"low\",\"view_count\":1131136,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"John
+        Kennedy. Real name, no gimmicks.\\n\\nJohn (@youngJFK) is former Features
+        Editor of Genius.com, where he conceived, wrote and edited articles (and infographics!).\\n\\nJFK
+        (the \u201Cf\u201D is for \u201Cphenomenal\u201D) was previously Music Editor
+        of VIBE Magazine, where he did some pretty chill things like ride roller coasters
+        with Rita Ora, learn how to make Hennessy in France with Nas, and feature
+        a certain start-up founded by some swaggy Yale dudes. NBD.\\n\\nJohn has written
+        for outlets like Complex, Billboard, XXL, BET, and Mass Appeal.\\n\\nAlthough
+        he lives in Brooklyn, he was born and bred in Queens, NY, home to the greatest
+        rappers of all time. Debate me, bro.\",\"api_path\":\"/users/117647\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/4343e6f71c0ad42df3bdb4b0a34cd472\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/4343e6f71c0ad42df3bdb4b0a34cd472\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/4343e6f71c0ad42df3bdb4b0a34cd472\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/4343e6f71c0ad42df3bdb4b0a34cd472\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Editor\",\"id\":117647,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"YoungJFK\",\"name\":\"John
+        Kennedy\",\"role_for_display\":\"editor\",\"url\":\"https://genius.com/YoungJFK\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":30967},\"sponsorship\":{\"_type\":\"article\",\"api_path\":\"/articles/880\",\"sponsor_image\":null,\"sponsor_image_style\":\"normal\",\"sponsor_link\":null,\"sponsor_phrase\":null,\"sponsored\":false}}],\"next_page\":2}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

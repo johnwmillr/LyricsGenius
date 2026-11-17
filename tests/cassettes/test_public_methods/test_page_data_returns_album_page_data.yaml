@@ -1,0 +1,18 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/page_data?page_path=%2Falbums%2Falbums%2FEminem%2FMusic-to-be-murdered-by
+  response:
+    body:
+      string: '{"meta":{"status":404,"message":"Not found"}}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 404
+      message: Not Found
+version: 1

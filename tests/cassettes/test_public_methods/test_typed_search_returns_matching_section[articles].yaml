@@ -1,0 +1,33 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/search/article?q=test&per_page=2&page=1
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"sections\":[{\"type\":\"article\",\"hits\":[{\"highlights\":[],\"index\":\"article\",\"matched_words\":1,\"nb_exact_words\":0,\"nb_typos\":0,\"type\":\"article\",\"result\":{\"_type\":\"article\",\"api_path\":\"/articles/14252\",\"article_type\":\"news\",\"author_list_for_display\":\"Ken
+        Partridge\",\"dek\":\"The Detroit rapper teams up with Lil Yachty, Cordae,
+        and Rico Nasty, among others.\",\"draft\":false,\"featured_slot\":null,\"for_homepage\":true,\"for_mobile\":true,\"generic_sponsorship\":false,\"id\":14252,\"preview_image\":\"https://images.genius.com/eb47b6ce68ac12f56ae6af0916891558.808x808x1.jpg\",\"published_at\":1673615280,\"pyongs_count\":0,\"sponsor_image\":null,\"sponsor_image_style\":\"normal\",\"sponsor_link\":\"\",\"sponsor_phrase\":\"\",\"sponsored\":false,\"title\":\"Read
+        All The Lyrics To BabyTron\u2019s New Album \u2018Bin Reaper 3: New Testament\u2019\",\"url\":\"https://genius.com/a/read-all-the-lyrics-to-babytrons-new-album-bin-reaper-3-new-testament\",\"votes_total\":2,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"A
+        music and pop-culture writer based in Brooklyn, Kenneth Partridge is into
+        making moves, starting grooves, and pretty much everything OMC sings about
+        in \u201CHow Bizarre.\u201D Peep his work at http://www.kennethpartridge.com.\",\"api_path\":\"/users/2384027\",\"avatar\":{\"tiny\":{\"url\":\"https://images.rapgenius.com/avatars/tiny/4f02be6ae2f4a9011324c44550f013e4\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.rapgenius.com/avatars/thumb/4f02be6ae2f4a9011324c44550f013e4\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.rapgenius.com/avatars/small/4f02be6ae2f4a9011324c44550f013e4\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.rapgenius.com/avatars/medium/4f02be6ae2f4a9011324c44550f013e4\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Staff\",\"id\":2384027,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"KPartridge\",\"name\":\"Ken
+        Partridge\",\"role_for_display\":\"staff\",\"url\":\"https://genius.com/KPartridge\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":42090},\"sponsorship\":{\"_type\":\"article\",\"api_path\":\"/articles/14252\",\"sponsor_image\":null,\"sponsor_image_style\":\"normal\",\"sponsor_link\":\"\",\"sponsor_phrase\":\"\",\"sponsored\":false}}},{\"highlights\":[],\"index\":\"article\",\"matched_words\":1,\"nb_exact_words\":0,\"nb_typos\":0,\"type\":\"article\",\"result\":{\"_type\":\"article\",\"api_path\":\"/articles/11734\",\"article_type\":\"news\",\"author_list_for_display\":\"Chris
+        Mench\",\"dek\":\"\u201CIt was kind of weird shooting the video in the age
+        of corona.\u201D\",\"draft\":false,\"featured_slot\":null,\"for_homepage\":true,\"for_mobile\":true,\"generic_sponsorship\":false,\"id\":11734,\"preview_image\":\"https://images.genius.com/f35eded3545e96774d4843bd4fc8e965.900x500x1.png\",\"published_at\":1597348620,\"pyongs_count\":2,\"sponsor_image\":null,\"sponsor_image_style\":\"normal\",\"sponsor_link\":\"\",\"sponsor_phrase\":\"\",\"sponsored\":false,\"title\":\"Cardi
+        B & Megan Thee Stallion Spent $100,000 On COVID-19 Tests To Shoot The \u201CWAP\u201D
+        Video\",\"url\":\"https://genius.com/a/cardi-b-megan-thee-stallion-spent-100-000-on-covid-19-tests-to-shoot-the-wap-video\",\"votes_total\":8,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"I\u2019m
+        the News Editor at Genius, currently living in NYC. One time Shia LaBeouf
+        emailed me.\\n\\nKeep up with my latest articles on my official Facebook and
+        Twitter pages.\",\"api_path\":\"/users/3019515\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/ef39c675b1b299469c8cec46c2f2b4eb\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/ef39c675b1b299469c8cec46c2f2b4eb\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/ef39c675b1b299469c8cec46c2f2b4eb\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/ef39c675b1b299469c8cec46c2f2b4eb\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Contributor\",\"id\":3019515,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"Chris_Mench\",\"name\":\"Chris
+        Mench\",\"role_for_display\":\"contributor\",\"url\":\"https://genius.com/Chris_Mench\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":72020},\"sponsorship\":{\"_type\":\"article\",\"api_path\":\"/articles/11734\",\"sponsor_image\":null,\"sponsor_image_style\":\"normal\",\"sponsor_link\":\"\",\"sponsor_phrase\":\"\",\"sponsored\":false}}}]}],\"next_page\":2}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

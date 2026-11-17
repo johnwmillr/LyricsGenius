@@ -1,0 +1,24 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/users/1/followed_users?page=1&per_page=2
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"followed_users\":[{\"_type\":\"user\",\"about_me_summary\":\"yessirre
+        wavy | last.fm\",\"api_path\":\"/users/7770942\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/c516f4379b780ec44c978b1310747742\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/c516f4379b780ec44c978b1310747742\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/c516f4379b780ec44c978b1310747742\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/c516f4379b780ec44c978b1310747742\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://images.genius.com/f233d166c592eadb309b0acd48f3e452.1000x265x1.png\",\"human_readable_role_for_display\":\"Staff\",\"id\":7770942,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"benkeller14\",\"name\":\"benkeller14\",\"role_for_display\":\"staff\",\"url\":\"https://genius.com/benkeller14\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":479840},{\"_type\":\"user\",\"about_me_summary\":\"Check
+        out Scribe Series \u2014 A weekly transcription contest where you can earn
+        real $$$ and double IQ!\\n\\nI transcribe music.\\n\\nThe most popular songs
+        I\u2019ve transcribed on Genius.\\n\\nFirst activity on Genius: December 5,
+        2011.\\n\\nMade Editor by FanaHOVA on May 18, 2014.\\n\\nMade Moderator by
+        streetlights on August 5, 2015.\\n\\nMade Staff by empath on November 8, 2018.\",\"api_path\":\"/users/54639\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/a552d37ef4dfc8c4ba1e4aba7f8d122d\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/a552d37ef4dfc8c4ba1e4aba7f8d122d\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/a552d37ef4dfc8c4ba1e4aba7f8d122d\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/a552d37ef4dfc8c4ba1e4aba7f8d122d\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Staff\",\"id\":54639,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"WriteNProppa\",\"name\":\"WriteNProppa\",\"role_for_display\":\"staff\",\"url\":\"https://genius.com/WriteNProppa\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":4824247}],\"next_page\":2}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

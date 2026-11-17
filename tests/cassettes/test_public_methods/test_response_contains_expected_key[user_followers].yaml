@@ -1,0 +1,19 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/users/1/followers?page=1&per_page=2
+  response:
+    body:
+      string: '{"meta":{"status":200},"response":{"followers":[{"_type":"user","about_me_summary":"","api_path":"/users/104344","avatar":{"tiny":{"url":"https://images.genius.com/avatars/tiny/5e582e2be00ac0aaaaed954ad98d3017","bounding_box":{"width":16,"height":16}},"thumb":{"url":"https://images.genius.com/avatars/thumb/5e582e2be00ac0aaaaed954ad98d3017","bounding_box":{"width":32,"height":32}},"small":{"url":"https://images.genius.com/avatars/small/5e582e2be00ac0aaaaed954ad98d3017","bounding_box":{"width":100,"height":100}},"medium":{"url":"https://images.genius.com/avatars/medium/5e582e2be00ac0aaaaed954ad98d3017","bounding_box":{"width":300,"height":400}}},"header_image_url":"https://images.genius.com/1adaa2b0c9123fedc8fb4f1b2d493fc0.1000x833x1.jpg","human_readable_role_for_display":"Staff","id":104344,"is_meme_verified":false,"is_verified":false,"login":"streetlights","name":"streetlights","role_for_display":"staff","url":"https://genius.com/streetlights","current_user_metadata":{"permissions":[],"excluded_permissions":["follow"],"interactions":{"following":false}},"iq":3351039},{"_type":"user","about_me_summary":"yessirre
+        wavy | last.fm","api_path":"/users/7770942","avatar":{"tiny":{"url":"https://images.genius.com/avatars/tiny/c516f4379b780ec44c978b1310747742","bounding_box":{"width":16,"height":16}},"thumb":{"url":"https://images.genius.com/avatars/thumb/c516f4379b780ec44c978b1310747742","bounding_box":{"width":32,"height":32}},"small":{"url":"https://images.genius.com/avatars/small/c516f4379b780ec44c978b1310747742","bounding_box":{"width":100,"height":100}},"medium":{"url":"https://images.genius.com/avatars/medium/c516f4379b780ec44c978b1310747742","bounding_box":{"width":300,"height":400}}},"header_image_url":"https://images.genius.com/f233d166c592eadb309b0acd48f3e452.1000x265x1.png","human_readable_role_for_display":"Staff","id":7770942,"is_meme_verified":false,"is_verified":false,"login":"benkeller14","name":"benkeller14","role_for_display":"staff","url":"https://genius.com/benkeller14","current_user_metadata":{"permissions":[],"excluded_permissions":["follow"],"interactions":{"following":false}},"iq":479840}],"next_page":2}}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

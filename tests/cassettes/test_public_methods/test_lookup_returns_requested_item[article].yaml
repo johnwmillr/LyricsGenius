@@ -1,0 +1,150 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/articles/11880?text_format=html
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"article\":{\"_type\":\"article\",\"api_path\":\"/articles/11880\",\"article_type\":\"feature\",\"author_list_for_display\":\"Chris
+        Mench\",\"body\":{\"html\":\"<p><a href=\\\"https://genius.com/artists/Cardi-b\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/artists/621678\\\">Cardi B</a> and
+        <a href=\\\"https://genius.com/artists/Megan-thee-stallion\\\" rel=\\\"noopener\\\"
+        data-api_path=\\\"/artists/1125517\\\">Megan Thee Stallion</a> earned an enduring
+        hit with <a href=\\\"https://genius.com/Cardi-b-wap-lyrics\\\" rel=\\\"noopener\\\"
+        data-api_path=\\\"/songs/5832126\\\">\u201CWAP,\u201D</a> their explicit single
+        that just returned to No. 1 on the Billboard Hot 100 chart this week. The
+        song has found success across platforms, including on Genius, where it notched
+        the biggest pageview total for a single month in the site\u2019s history.</p>\\n\\n<p>\u201CWAP\u201D
+        earned 12.47 million pageviews in August, nearly double the previous record
+        set by <a href=\\\"https://genius.com/artists/Ariana-grande\\\" rel=\\\"noopener\\\"
+        data-api_path=\\\"/artists/26507\\\">Ariana Grande</a>\u2019s <a href=\\\"https://genius.com/Ariana-grande-thank-u-next-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/4063065\\\">\u201Cthank u, next\u201D</a>
+        in November 2018. Grande\u2019s track amassed 6.45 million pageviews at the
+        time, a high watermark for nearly two years of Genius' history.</p>\\n\\n<p>Fans
+        were drawn to \u201CWAP\u201D for a variety of reasons. The song\u2019s overall
+        success attracted attention, as did viral TikTok videos using the song\u2019s
+        audio for everything from a dance challenge to comedy skits. There was also
+        an outsized backlash from conservative pundits and commentators who objected
+        to the track\u2019s raunchy lyrics. Most notably, Ben Shapiro read a portion
+        of the lyrics aloud, drawing widespread mockery on social media:</p>\\n\\n<p></p><div
+        class=\\\"embedly_preview\\\">\\n<blockquote class=\\\"twitter-tweet\\\">\\n<p
+        lang=\\\"en\\\" dir=\\\"ltr\\\">Ben Shapiro reads \\\"WAP\\\" lyrics <a href=\\\"https://t.co/bIVH1Pnwvx\\\">pic.twitter.com/bIVH1Pnwvx</a></p>\u2014
+        Jason Campbell (@JasonSCampbell) <a href=\\\"https://twitter.com/JasonSCampbell/status/1292900655464677377?ref_src=twsrc%5Etfw\\\">August
+        10, 2020</a>\\n</blockquote>\\n<script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div>\\n\\n<p>The single best day for \u201CWAP,\u201D
+        however, came just after it reached No. 1 on the Hot 100 chart for the first
+        time. The song page garnered more than 800,000 pageviews on August 18 as the
+        song\u2019s dominated the <em>Billboard</em> chart.</p>\\n\\n<p>\u201CWAP\u201D
+        now has 13.6 million pageviews on Genius, good enough to sit at No. 4 on the
+        all-time Top Songs chart. It\u2019s just above <a href=\\\"https://genius.com/artists/Kendrick-lamar\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/artists/1421\\\">Kendrick Lamar</a>\u2019s
+        <a href=\\\"https://genius.com/Kendrick-lamar-humble-lyrics\\\" rel=\\\"noopener\\\"
+        data-api_path=\\\"/songs/3039923\\\">\u201CHUMBLE.,\u201D</a> while still
+        below <a href=\\\"https://genius.com/artists/Luis-fonsi\\\" rel=\\\"noopener\\\"
+        data-api_path=\\\"/artists/344497\\\">Luis Fonsi</a> and <a href=\\\"https://genius.com/artists/Daddy-yankee\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/artists/1823\\\">Daddy Yankee</a>\u2019s
+        <a href=\\\"https://genius.com/Luis-fonsi-and-daddy-yankee-despacito-remix-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/3057010\\\">\u201CDespacito
+        (Remix),\u201D</a> <a href=\\\"https://genius.com/artists/Eminem\\\" rel=\\\"noopener\\\"
+        data-api_path=\\\"/artists/45\\\">Eminem</a>\u2019s <a href=\\\"https://genius.com/Eminem-rap-god-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/235729\\\">\u201CRap God,\u201D</a>
+        and <a href=\\\"https://genius.com/artists/Ed-sheeran\\\" rel=\\\"noopener\\\"
+        data-api_path=\\\"/artists/12418\\\">Ed Sheeran</a>\u2019s <a href=\\\"https://genius.com/Ed-sheeran-shape-of-you-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/2949128\\\">\u201CShape of You.\u201D</a>
+        Megan and Cardi\u2019s song has averaged more than 80,000 pageviews per day
+        in September, putting it on track to eclipse \u201CShape of You\u201D in the
+        coming weeks.</p>\\n\\n<p>Although no other song\u2019s one-month performance
+        measures up to \u201CWAP,\u201D there are several tracks in the past few years
+        that have posted huge pageview totals. Ariana Grande has two of the Top 10
+        weeks with \u201Cthank u, next\u201D and <a href=\\\"https://genius.com/Ariana-grande-7-rings-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/4067762\\\">\u201C7 rings,\u201D</a>
+        while Drake controls a pair of spots with <a href=\\\"https://genius.com/Drake-gods-plan-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/3315890\\\">\u201CGod\u2019s
+        Plan\u201D</a> and <a href=\\\"https://genius.com/Drake-in-my-feelings-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/3807759\\\">\u201CIn My Feelings.\u201D</a>
+        Luis Fonsi and Daddy Yankee are the chart\u2019s only three-peaters. Their
+        \u201CDespacito (Remix),\u201D the most popular song in Genius history, posted
+        three of the biggest single-month pageview totals of all time in 2017.</p>\\n\\n<p>The
+        10 biggest single-month performances of all time on Genius are as follows:</p>\\n\\n<ol>\\n<li>Cardi
+        B feat. Megan Thee Stallion, <a href=\\\"https://genius.com/Cardi-b-wap-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/5832126\\\">\u201CWAP\u201D</a>
+        (12.47 million pageviews, Aug. 2020)</li>\\n<li>Ariana Grande, <a href=\\\"https://genius.com/Ariana-grande-thank-u-next-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/4063065\\\">\u201Cthank u, next\u201D</a>
+        (6.45 million pageviews, Nov. 2018)</li>\\n<li>Luis Fonsi &amp; Daddy Yankee
+        feat. Justin Bieber, <a href=\\\"https://genius.com/Luis-fonsi-and-daddy-yankee-despacito-remix-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/3057010\\\">\u201CDespacito
+        (Remix)\u201D</a> (5.2 million pageviews, July 2017)</li>\\n<li>Luis Fonsi
+        &amp; Daddy Yankee feat. Justin Bieber, <a href=\\\"https://genius.com/Luis-fonsi-and-daddy-yankee-despacito-remix-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/3057010\\\">\u201CDespacito
+        (Remix)\u201D</a> (4.87 million pageviews, May 2017)</li>\\n<li>Drake, <a
+        href=\\\"https://genius.com/Drake-in-my-feelings-lyrics\\\" rel=\\\"noopener\\\"
+        data-api_path=\\\"/songs/3807759\\\">\u201CIn My Feelings\u201D</a> (4.67
+        million pageviews, July 2018)</li>\\n<li>Eminem, <a href=\\\"https://genius.com/Eminem-killshot-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/3958196\\\">\u201CKillshot\u201D</a>
+        (4.39 million pageviews, Sept. 2018)</li>\\n<li>Luis Fonsi &amp; Daddy Yankee
+        feat. Justin Bieber, <a href=\\\"https://genius.com/Luis-fonsi-and-daddy-yankee-despacito-remix-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/3057010\\\">\u201CDespacito
+        (Remix)\u201D</a> (3.86 million pageviews, June 2017)</li>\\n<li>Ariana Grande,
+        <a href=\\\"https://genius.com/Ariana-grande-7-rings-lyrics\\\" rel=\\\"noopener\\\"
+        data-api_path=\\\"/songs/4067762\\\">\u201C7 rings\u201D</a> (3.81 million
+        pageviews, Jan. 2019)</li>\\n<li>Kendrick Lamar, <a href=\\\"https://genius.com/Kendrick-lamar-humble-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/3039923\\\">\u201CHUMBLE.\u201D</a>
+        (3.3 million pageviews, April 2017)</li>\\n<li>Drake, <a href=\\\"https://genius.com/Drake-gods-plan-lyrics\\\"
+        rel=\\\"noopener\\\" data-api_path=\\\"/songs/3315890\\\">\u201CGod\u2019s
+        Plan\u201D</a> (2.56 million pageviews, Jan. 2018)</li>\\n</ol>\\n\\n\\n<p>\u201CWAP\u201D
+        is less than one million total pageviews away from Sheeran\u2019s \u201CShape
+        of You,\u201D and less than three million from Eminem\u2019s \u201CRap God.\u201D
+        In order to become the most popular song of all time on Genius, however, it
+        would need to almost double its current total. \u201CDespacito (Remix)\u201D
+        has racked up 23.1 million pageviews since its 2017 release. Fans will have
+        to wait and see if \u201CWAP\u201D has what it takes to earn the top spot.</p>\\n\\n<p><a
+        href=\\\"https://genius.com/Cardi-b-wap-lyrics\\\" rel=\\\"noopener\\\" data-api_path=\\\"/songs/5832126\\\">Read
+        all the lyrics to Cardi B\u2019s \u201CWAP\u201D featuring Megan Thee Stallion</a>
+        on Genius now.</p>\"},\"comment_count\":7,\"dek\":\"The song earned more than
+        12 million pageviews last month.\",\"draft\":false,\"featured\":false,\"featured_slot\":null,\"for_homepage\":true,\"for_mobile\":true,\"generic_sponsorship\":false,\"has_voters\":true,\"hero_caption\":{\"html\":\"\"},\"hero_style\":\"constrained\",\"id\":11880,\"media\":[{\"type\":\"video\",\"url\":\"https://www.youtube.com/watch?v=hsm4poTWjMs\",\"provider\":\"YouTube\",\"embed\":{\"src\":\"https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2Fhsm4poTWjMs%3Ffeature%3Doembed&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dhsm4poTWjMs&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2Fhsm4poTWjMs%2Fhqdefault.jpg&key=e898f7f22a3443a6893439149a6fb36f&type=text%2Fhtml&schema=youtube\",\"url\":\"https://www.youtube.com/watch?v=hsm4poTWjMs\",\"html\":\"<iframe
+        class=\\\"embedly-embed\\\" src=\\\"https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2Fhsm4poTWjMs%3Ffeature%3Doembed&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dhsm4poTWjMs&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2Fhsm4poTWjMs%2Fhqdefault.jpg&key=e898f7f22a3443a6893439149a6fb36f&type=text%2Fhtml&schema=youtube\\\"
+        width=\\\"854\\\" height=\\\"480\\\" scrolling=\\\"no\\\" title=\\\"YouTube
+        embed\\\" frameborder=\\\"0\\\" allow=\\\"autoplay; fullscreen\\\" allowfullscreen=\\\"true\\\"></iframe>\",\"type\":\"video\",\"title\":\"Cardi
+        B - WAP feat. Megan Thee Stallion [Official Music Video]\",\"width\":854,\"height\":480,\"version\":\"1.0\",\"author_url\":\"https://www.youtube.com/channel/UCxMAbVFmxKUVGAll0WVGpFw\",\"author_name\":\"Cardi
+        B\",\"description\":\"Cardi B - WAP feat. Megan Thee Stallion Stream/Download
+        - https://CardiB.lnk.to/WAP Subscribe for more official content from Cardi
+        B: https://CardiB.lnk.to/S...\",\"provider_url\":\"https://www.youtube.com/\",\"provider_name\":\"YouTube\",\"thumbnail_url\":\"https://i.genius.com/2412e60a4627d2cdb8f92dd31a9d217d2309e066?url=https%3A%2F%2Fi.ytimg.com%2Fvi%2Fhsm4poTWjMs%2Fhqdefault.jpg\",\"thumbnail_width\":480,\"thumbnail_height\":360}}],\"override_with_video_url\":false,\"path\":\"/a/cardi-b-megan-thee-stallion-s-wap-had-the-biggest-month-of-all-time-on-genius-in-august\",\"preview_image\":\"https://images.genius.com/d39a742ca78457a4756ecb79bd523c40.900x500x1.jpg\",\"published\":true,\"published_at\":1600117500,\"pyongs_count\":1,\"scheduled\":false,\"sponsor_image\":null,\"sponsor_image_style\":\"normal\",\"sponsor_link\":\"\",\"sponsor_phrase\":\"\",\"sponsored\":false,\"title\":\"Cardi
+        B & Megan Thee Stallion\u2019s \u201CWAP\u201D Had The Biggest Month Of All
+        Time On Genius In August\",\"twitter_share_message\":\"Cardi B & Megan Thee
+        Stallion's \\\"WAP\\\" Had The Biggest Month Of All Time On Genius In August
+        https://genius.com/a/cardi-b-megan-thee-stallion-s-wap-had-the-biggest-month-of-all-time-on-genius-in-august\",\"url\":\"https://genius.com/a/cardi-b-megan-thee-stallion-s-wap-had-the-biggest-month-of-all-time-on-genius-in-august\",\"votes_total\":8,\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"vote\",\"pyong\",\"edit\",\"destroy\",\"change_featured_slot\",\"create_comment\"],\"interactions\":{\"pyong\":false,\"vote\":null}},\"preview_url\":null,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"I\u2019m
+        the News Editor at Genius, currently living in NYC. One time Shia LaBeouf
+        emailed me.\\n\\nKeep up with my latest articles on my official Facebook and
+        Twitter pages.\",\"api_path\":\"/users/3019515\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/ef39c675b1b299469c8cec46c2f2b4eb\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/ef39c675b1b299469c8cec46c2f2b4eb\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/ef39c675b1b299469c8cec46c2f2b4eb\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/ef39c675b1b299469c8cec46c2f2b4eb\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Contributor\",\"id\":3019515,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"Chris_Mench\",\"name\":\"Chris
+        Mench\",\"role_for_display\":\"contributor\",\"url\":\"https://genius.com/Chris_Mench\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":72020},\"authors\":[{\"_type\":\"user\",\"about_me_summary\":\"I\u2019m
+        the News Editor at Genius, currently living in NYC. One time Shia LaBeouf
+        emailed me.\\n\\nKeep up with my latest articles on my official Facebook and
+        Twitter pages.\",\"api_path\":\"/users/3019515\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/ef39c675b1b299469c8cec46c2f2b4eb\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/ef39c675b1b299469c8cec46c2f2b4eb\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/ef39c675b1b299469c8cec46c2f2b4eb\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/ef39c675b1b299469c8cec46c2f2b4eb\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Contributor\",\"id\":3019515,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"Chris_Mench\",\"name\":\"Chris
+        Mench\",\"role_for_display\":\"contributor\",\"url\":\"https://genius.com/Chris_Mench\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":72020}],\"referenced_albums\":[],\"referenced_artists\":[{\"_type\":\"artist\",\"api_path\":\"/artists/621678\",\"header_image_url\":\"https://images.genius.com/504f792fd4d6e6b8e65017f8c7c5ba9e.1000x104x1.png\",\"id\":621678,\"image_url\":\"https://images.genius.com/d5bbcaf7670898ab17561293397ec48f.572x572x1.png\",\"index_character\":\"c\",\"is_meme_verified\":true,\"is_verified\":true,\"links_config\":null,\"name\":\"Cardi
+        B\",\"slug\":\"Cardi-b\",\"url\":\"https://genius.com/artists/Cardi-b\",\"iq\":1322},{\"_type\":\"artist\",\"api_path\":\"/artists/1125517\",\"header_image_url\":\"https://images.genius.com/57536d99df38568ebcf65ca463511e48.1000x333x1.jpg\",\"id\":1125517,\"image_url\":\"https://images.genius.com/ac2cbfe91af7fea0e5fc1df728978e7e.1000x1000x1.jpg\",\"index_character\":\"m\",\"is_meme_verified\":false,\"is_verified\":true,\"links_config\":null,\"name\":\"Megan
+        Thee Stallion\",\"slug\":\"Megan-thee-stallion\",\"url\":\"https://genius.com/artists/Megan-thee-stallion\",\"iq\":1648}],\"referenced_songs\":[{\"_type\":\"song\",\"annotation_count\":28,\"api_path\":\"/songs/5832126\",\"artist_names\":\"Cardi
+        B (Ft. Megan Thee Stallion)\",\"full_title\":\"WAP by\_Cardi\_B (Ft.\_Megan\_Thee
+        Stallion)\",\"header_image_thumbnail_url\":\"https://images.genius.com/0e09a7cd7e708b1a101a060d1e5f1fcf.300x300x1.png\",\"header_image_url\":\"https://images.genius.com/0e09a7cd7e708b1a101a060d1e5f1fcf.1000x1000x1.png\",\"hidden\":false,\"id\":5832126,\"instrumental\":false,\"lyrics_owner_id\":8431141,\"lyrics_state\":\"complete\",\"lyrics_updated_at\":1789673586,\"path\":\"/Cardi-b-wap-lyrics\",\"pending_lyrics_edits_count\":0,\"primary_artist_names\":\"Cardi
+        B\",\"pyongs_count\":349,\"relationships_index_url\":\"https://genius.com/Cardi-b-wap-sample\",\"release_date_components\":{\"year\":2020,\"month\":8,\"day\":7},\"release_date_for_display\":\"August
+        7, 2020\",\"release_date_with_abbreviated_month_for_display\":\"Aug. 7, 2020\",\"song_art_image_thumbnail_url\":\"https://images.genius.com/0e09a7cd7e708b1a101a060d1e5f1fcf.300x300x1.png\",\"song_art_image_url\":\"https://images.genius.com/0e09a7cd7e708b1a101a060d1e5f1fcf.1000x1000x1.png\",\"stats\":{\"unreviewed_annotations\":4,\"concurrents\":2,\"hot\":false,\"pageviews\":17238806},\"title\":\"WAP\",\"title_with_featured\":\"WAP
+        (Ft.\_Megan\_Thee Stallion)\",\"updated_at\":1794253223,\"updated_by_human_at\":1794253223,\"url\":\"https://genius.com/Cardi-b-wap-lyrics\",\"featured_artists\":[{\"_type\":\"artist\",\"api_path\":\"/artists/1125517\",\"header_image_url\":\"https://images.genius.com/57536d99df38568ebcf65ca463511e48.1000x333x1.jpg\",\"id\":1125517,\"image_url\":\"https://images.genius.com/ac2cbfe91af7fea0e5fc1df728978e7e.1000x1000x1.jpg\",\"index_character\":\"m\",\"is_meme_verified\":false,\"is_verified\":true,\"links_config\":null,\"name\":\"Megan
+        Thee Stallion\",\"slug\":\"Megan-thee-stallion\",\"url\":\"https://genius.com/artists/Megan-thee-stallion\",\"iq\":1648}],\"primary_artist\":{\"_type\":\"artist\",\"api_path\":\"/artists/621678\",\"header_image_url\":\"https://images.genius.com/504f792fd4d6e6b8e65017f8c7c5ba9e.1000x104x1.png\",\"id\":621678,\"image_url\":\"https://images.genius.com/d5bbcaf7670898ab17561293397ec48f.572x572x1.png\",\"index_character\":\"c\",\"is_meme_verified\":true,\"is_verified\":true,\"links_config\":null,\"name\":\"Cardi
+        B\",\"slug\":\"Cardi-b\",\"url\":\"https://genius.com/artists/Cardi-b\",\"iq\":1322},\"primary_artists\":[{\"_type\":\"artist\",\"api_path\":\"/artists/621678\",\"header_image_url\":\"https://images.genius.com/504f792fd4d6e6b8e65017f8c7c5ba9e.1000x104x1.png\",\"id\":621678,\"image_url\":\"https://images.genius.com/d5bbcaf7670898ab17561293397ec48f.572x572x1.png\",\"index_character\":\"c\",\"is_meme_verified\":true,\"is_verified\":true,\"links_config\":null,\"name\":\"Cardi
+        B\",\"slug\":\"Cardi-b\",\"url\":\"https://genius.com/artists/Cardi-b\",\"iq\":1322}]}],\"sponsorship\":{\"_type\":\"article\",\"api_path\":\"/articles/11880\",\"sponsor_image\":null,\"sponsor_image_style\":\"normal\",\"sponsor_link\":\"\",\"sponsor_phrase\":\"\",\"sponsored\":false},\"suggested_articles\":[],\"top_comment\":{\"_type\":\"comment\",\"api_path\":\"/comments/8020118\",\"body\":{\"html\":\"<p>We
+        all know that it would easily rack up more total views than Despacito if Google
+        wouldn\u2019t have added copy-pasted lyrics to their database.<br>\\nBefore
+        Google did, the song had 800\u20131,800 viewing over the day. Now it\u2019s
+        at 70\u2013200 over the day, which again shows the enourmous effect of Google\u2019s
+        lyrics to our views\u2026</p>\"},\"commentable_id\":11880,\"commentable_type\":\"Article\",\"created_at\":1600119977,\"has_voters\":true,\"id\":8020118,\"pinned_role\":null,\"votes_total\":17,\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"vote\",\"accept\",\"reject\",\"mark_spam\",\"integrate\",\"archive\",\"destroy\"],\"interactions\":{\"vote\":null}},\"anonymous_author\":null,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"less
+        active :) feel free to reach out, but it might take me some time to answer
+        sometimes\",\"api_path\":\"/users/2171344\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/8eb543179e5a3e9a3d1f94e4351a8c3f.555x555x1.png\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/8eb543179e5a3e9a3d1f94e4351a8c3f.555x555x1.png\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/8eb543179e5a3e9a3d1f94e4351a8c3f.555x555x1.png\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/8eb543179e5a3e9a3d1f94e4351a8c3f.555x555x1.png\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://images.genius.com/e081cc2f3d8046a74ab6c10154a25b69.667x235x1.png\",\"human_readable_role_for_display\":\"Editor\",\"id\":2171344,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"timoo\",\"name\":\"timoo\",\"role_for_display\":\"editor\",\"url\":\"https://genius.com/timoo\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":2230937},\"reason\":null}}}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

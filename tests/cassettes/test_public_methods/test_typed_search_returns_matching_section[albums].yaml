@@ -1,0 +1,29 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/search/album?q=test&per_page=2&page=1
+  response:
+    body:
+      string: '{"meta":{"status":200},"response":{"sections":[{"type":"album","hits":[{"highlights":[],"index":"album","matched_words":1,"nb_exact_words":0,"nb_typos":0,"type":"album","result":{"_type":"album","api_path":"/albums/395779","cover_art_thumbnail_url":"https://images.genius.com/7d087f87cf7a92422074baec582cb4d2.300x300x1.png","cover_art_url":"https://images.genius.com/7d087f87cf7a92422074baec582cb4d2.1000x1000x1.png","full_title":"TESTING
+        by A$AP Rocky","id":395779,"name":"TESTING","name_with_artist":"TESTING (artist:
+        A$AP Rocky)","primary_artist_names":"A$AP Rocky","pusher_channel":"album-395779","release_date_components":{"year":2018,"month":5,"day":25},"release_date_for_display":"May
+        25, 2018","updated_at":1767612446,"url":"https://genius.com/albums/A-ap-rocky/Testing","current_user_metadata":{"permissions":[],"excluded_permissions":["set_album_color_gradient"]},"artist":{"_type":"artist","api_path":"/artists/12417","header_image_url":"https://images.genius.com/db22aeb3527a734d6e92f5681580143e.667x1000x1.jpg","id":12417,"image_url":"https://images.genius.com/0dd34788eeeb949e00b5c267cb85a009.1000x1000x1.jpg","index_character":"a","is_meme_verified":false,"is_verified":true,"links_config":null,"name":"A$AP
+        Rocky","slug":"A-ap-rocky","url":"https://genius.com/artists/A-ap-rocky","iq":36972},"primary_artists":[{"_type":"artist","api_path":"/artists/12417","header_image_url":"https://images.genius.com/db22aeb3527a734d6e92f5681580143e.667x1000x1.jpg","id":12417,"image_url":"https://images.genius.com/0dd34788eeeb949e00b5c267cb85a009.1000x1000x1.jpg","index_character":"a","is_meme_verified":false,"is_verified":true,"links_config":null,"name":"A$AP
+        Rocky","slug":"A-ap-rocky","url":"https://genius.com/artists/A-ap-rocky","iq":36972}]}},{"highlights":[],"index":"album","matched_words":1,"nb_exact_words":0,"nb_typos":0,"type":"album","result":{"_type":"album","api_path":"/albums/1268840","cover_art_thumbnail_url":"https://images.genius.com/cc590caab2b15b01c799d2a6031fac11.300x300x1.png","cover_art_url":"https://images.genius.com/cc590caab2b15b01c799d2a6031fac11.1000x1000x1.png","full_title":"CHROMAKOPIA
+        (Test Pressing Version) by Tyler, The Creator","id":1268840,"name":"CHROMAKOPIA
+        (Test Pressing Version)","name_with_artist":"CHROMAKOPIA (Test Pressing Version)
+        (artist: Tyler, The Creator)","primary_artist_names":"Tyler, The Creator","pusher_channel":"album-1268840","release_date_components":{"year":2024,"month":10,"day":28},"release_date_for_display":"October
+        28, 2024","updated_at":1771014784,"url":"https://genius.com/albums/Tyler-the-creator/Chromakopia-test-pressing-version","current_user_metadata":{"permissions":[],"excluded_permissions":["set_album_color_gradient"]},"artist":{"_type":"artist","api_path":"/artists/685","header_image_url":"https://images.genius.com/9d5928cc34c6341bdc3bd0bdd12e7ff7.1000x563x1.jpg","id":685,"image_url":"https://images.genius.com/2176aa296dd5789661b3d7eb6a239bcf.720x720x1.jpg","index_character":"t","is_meme_verified":false,"is_verified":true,"links_config":null,"name":"Tyler,
+        The Creator","slug":"Tyler-the-creator","url":"https://genius.com/artists/Tyler-the-creator","iq":452},"primary_artists":[{"_type":"artist","api_path":"/artists/685","header_image_url":"https://images.genius.com/9d5928cc34c6341bdc3bd0bdd12e7ff7.1000x563x1.jpg","id":685,"image_url":"https://images.genius.com/2176aa296dd5789661b3d7eb6a239bcf.720x720x1.jpg","index_character":"t","is_meme_verified":false,"is_verified":true,"links_config":null,"name":"Tyler,
+        The Creator","slug":"Tyler-the-creator","url":"https://genius.com/artists/Tyler-the-creator","iq":452}]}}]}],"next_page":2}}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

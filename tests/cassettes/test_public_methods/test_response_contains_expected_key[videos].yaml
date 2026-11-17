@@ -1,0 +1,35 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/videos?per_page=2&page=1&video_id=18681
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"videos\":[{\"_type\":\"video\",\"api_path\":\"/videos/16677\",\"article_url\":\"https://genius.com/a/linkin-park-announce-one-more-light-world-tour-with-machine-gun-kelly\",\"author_list_for_display\":\"Lauren
+        Nostro\",\"dek\":\"It kicks off July 27 in Boston.\",\"description\":\"Genius
+        and Linkin Park team up today to announce their One More Light World Tour
+        with special guest Machine Gun Kelly. It kicks off July 27 at the Xfinity
+        Center in Boston, Mass. and ends October 22 in Los Angeles. Genius' Rob Markman
+        was\u2026\",\"dfp_kv\":[{\"name\":\"brightcove_video_id\",\"values\":[\"5418713536001\"]},{\"name\":\"topic\",\"values\":[]},{\"name\":\"has_transcript\",\"values\":[\"true\"]},{\"name\":\"song_id\",\"values\":[]},{\"name\":\"artist_id\",\"values\":[\"1581\",\"1665\"]},{\"name\":\"primary_tag_id\",\"values\":[\"567\",\"1434\"]},{\"name\":\"video_series\",\"values\":[]}],\"duration\":55680,\"id\":16677,\"poster_attributes\":{\"height\":720,\"width\":1280},\"poster_url\":\"https://images.genius.com/9d5285d51a525cbf0dd046055587c2aa.1000x563x1.jpg\",\"provider\":\"brightcove\",\"provider_id\":\"5418713536001\",\"provider_params\":[{\"name\":\"policy_key\",\"value\":\"BCpkADawqM1Yf2IElyF6jfI5WI9Q_UAa8Lz3mmqoN0btQzu-1LWMaRV4q6Tm7Fzh1LrovZfmf6rHqYXe_OdkLc9eTQiNrj2s_4t_gA0KfeiNKhrqNmRPrfQjTfgJRsGeyVoNA-qlxc9LBrtA\"}],\"short_title\":\"Breaking
+        News From Linkin Park & Machine Gun Kelly\",\"title\":\"Linkin Park Announce
+        \u2018One More Light\u2019 World Tour With Machine Gun Kelly\",\"type\":\"video\",\"url\":\"https://genius.com/videos/Breaking-news-from-linkin-park-machine-gun-kelly\",\"video_attributes\":{\"width\":1280,\"height\":720},\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"view_relevance_reason\"]},\"published_at\":1493744520,\"relevance\":\"high\",\"view_count\":207724,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"Former
+        Exec. Editor of @Genius.\",\"api_path\":\"/users/3195482\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/cdb7893ab2cfe0fb99ef3b6975b573ca\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/cdb7893ab2cfe0fb99ef3b6975b573ca\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/cdb7893ab2cfe0fb99ef3b6975b573ca\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/cdb7893ab2cfe0fb99ef3b6975b573ca\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Editor\",\"id\":3195482,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"LaurenNostro\",\"name\":\"Lauren
+        Nostro\",\"role_for_display\":\"editor\",\"url\":\"https://genius.com/LaurenNostro\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":38167},\"sponsorship\":{\"_type\":\"article\",\"api_path\":\"/articles/2188\",\"sponsor_image\":null,\"sponsor_image_style\":\"normal\",\"sponsor_link\":null,\"sponsor_phrase\":null,\"sponsored\":false}},{\"_type\":\"video\",\"api_path\":\"/videos/18601\",\"article_url\":\"https://genius.com/a/ysn-flow-breaks-down-the-meaning-of-want-beef\",\"author_list_for_display\":\"Steven
+        Reneau\",\"dek\":\"Learn about the song\u2019s lyrics on the latest episode
+        of \u2018Verified.\u2019\",\"description\":\"YSN Flow\u2019s \u201CWant Beef?\u201D
+        has found a strong audience with more than 5 million YouTube views to date.
+        The single is produced by Minor2GO and features a verse from Bae Bae Savo.
+        On the track, the 15-year-old Cleveland native raps about the lifestyle\u2026\",\"dfp_kv\":[{\"name\":\"brightcove_video_id\",\"values\":[\"6063912117001\"]},{\"name\":\"topic\",\"values\":[]},{\"name\":\"has_transcript\",\"values\":[\"true\"]},{\"name\":\"song_id\",\"values\":[\"4539513\"]},{\"name\":\"artist_id\",\"values\":[\"669466\",\"1549192\",\"1740781\"]},{\"name\":\"primary_tag_id\",\"values\":[\"1434\"]},{\"name\":\"video_series\",\"values\":[\"verified\"]}],\"duration\":324416,\"id\":18601,\"poster_attributes\":{\"height\":720,\"width\":1280},\"poster_url\":\"https://images.genius.com/96479596092f55d025f60ef2a8335599.1000x563x1.jpg\",\"provider\":\"brightcove\",\"provider_id\":\"6063912117001\",\"provider_params\":[{\"name\":\"policy_key\",\"value\":\"BCpkADawqM1Yf2IElyF6jfI5WI9Q_UAa8Lz3mmqoN0btQzu-1LWMaRV4q6Tm7Fzh1LrovZfmf6rHqYXe_OdkLc9eTQiNrj2s_4t_gA0KfeiNKhrqNmRPrfQjTfgJRsGeyVoNA-qlxc9LBrtA\"}],\"short_title\":\"YSN
+        Flow Breaks Down The Meaning Of \u201CWant Beef?\u201D\",\"title\":\"YSN Flow
+        Breaks Down The Meaning Of \u201CWant Beef?\u201D\",\"type\":\"video\",\"url\":\"https://genius.com/videos/Ysn-flow-breaks-down-the-meaning-of-want-beef\",\"video_attributes\":{\"width\":1280,\"height\":720},\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"view_relevance_reason\"]},\"published_at\":1564070280,\"relevance\":\"high\",\"view_count\":888659,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"\",\"api_path\":\"/users/6610408\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/8d718efb145c615095f0b7a589eb09e7\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/8d718efb145c615095f0b7a589eb09e7\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/8d718efb145c615095f0b7a589eb09e7\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/8d718efb145c615095f0b7a589eb09e7\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":null,\"id\":6610408,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"Steven_Reneau\",\"name\":\"Steven
+        Reneau\",\"role_for_display\":null,\"url\":\"https://genius.com/Steven_Reneau\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":201},\"sponsorship\":{\"_type\":\"article\",\"api_path\":\"/articles/8578\",\"sponsor_image\":null,\"sponsor_image_style\":\"normal\",\"sponsor_link\":\"\",\"sponsor_phrase\":\"\",\"sponsored\":false}}],\"next_page\":2}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

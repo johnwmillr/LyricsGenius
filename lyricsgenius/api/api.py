@@ -450,7 +450,7 @@ class API(Sender):
         msg = "Must supply `song_id`, `web_page_id`, or `created_by_id`."
         assert any([song_id, web_page_id, created_by_id]), msg
         msg = "Pass only one of `song_id` and `web_page_id`, not both."
-        assert bool(song_id) ^ bool(web_page_id), msg
+        assert not (song_id and web_page_id), msg
 
         # Construct the URI
         params: dict[str, Any] = {"text_format": text_format or self.response_format}

@@ -1,0 +1,26 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://api.genius.com/annotations/10225840?text_format=plain
+  response:
+    body:
+      string: '{"meta":{"status":200},"response":{"annotation":{"api_path":"/annotations/10225840","body":{"plain":"For
+        example, the id of this annotation is 10225839"},"comment_count":0,"community":false,"custom_preview":null,"has_voters":true,"id":10225840,"pinned":false,"share_url":"https://genius.com/10225840","source":null,"state":"verified","url":"https://genius.com/10225840/www.example.com","verified":true,"votes_total":7,"current_user_metadata":{"permissions":["vote","report_as_abusive","create_comment"],"excluded_permissions":["edit","cosign","uncosign","destroy","accept","reject","see_unreviewed","clear_votes","propose_edit_to","pin_to_profile","unpin_from_profile","update_source","edit_custom_preview"],"interactions":{"cosign":false,"pyong":false,"vote":null},"iq_by_action":{"accept":{"primary":{"multiplier":1,"base":10.0,"applicable":true}},"reject":{"primary":{"multiplier":1,"base":2.0,"applicable":true}},"delete":{"primary":{"multiplier":1,"base":5.0,"applicable":true}}}},"authors":[{"attribution":1.0,"pinned_role":null,"user":{"api_path":"/users/188555","avatar":{"tiny":{"url":"https://images.genius.com/503912f69fd1692084e2d55fa18839e3.900x900x1.jpg","bounding_box":{"width":16,"height":16}},"thumb":{"url":"https://images.genius.com/503912f69fd1692084e2d55fa18839e3.900x900x1.jpg","bounding_box":{"width":32,"height":32}},"small":{"url":"https://images.genius.com/503912f69fd1692084e2d55fa18839e3.900x900x1.jpg","bounding_box":{"width":100,"height":100}},"medium":{"url":"https://images.genius.com/503912f69fd1692084e2d55fa18839e3.900x900x1.jpg","bounding_box":{"width":300,"height":400}}},"header_image_url":"https://images.genius.com/16e44a62093c06e563351a1c80bcb018.500x600x5.gif","human_readable_role_for_display":"Staff","id":188555,"login":"nightpool","name":"nightpool","role_for_display":"staff","url":"https://genius.com/nightpool","current_user_metadata":{"permissions":["follow"],"excluded_permissions":[],"interactions":{"following":false}},"iq":59538}}],"cosigned_by":[],"rejection_comment":null,"verified_by":{"api_path":"/users/188555","avatar":{"tiny":{"url":"https://images.genius.com/503912f69fd1692084e2d55fa18839e3.900x900x1.jpg","bounding_box":{"width":16,"height":16}},"thumb":{"url":"https://images.genius.com/503912f69fd1692084e2d55fa18839e3.900x900x1.jpg","bounding_box":{"width":32,"height":32}},"small":{"url":"https://images.genius.com/503912f69fd1692084e2d55fa18839e3.900x900x1.jpg","bounding_box":{"width":100,"height":100}},"medium":{"url":"https://images.genius.com/503912f69fd1692084e2d55fa18839e3.900x900x1.jpg","bounding_box":{"width":300,"height":400}}},"header_image_url":"https://images.genius.com/16e44a62093c06e563351a1c80bcb018.500x600x5.gif","human_readable_role_for_display":"Staff","id":188555,"login":"nightpool","name":"nightpool","role_for_display":"staff","url":"https://genius.com/nightpool","current_user_metadata":{"permissions":["follow"],"excluded_permissions":[],"interactions":{"following":false}},"iq":59538}},"referent":{"_type":"referent","annotator_id":188555,"annotator_login":"nightpool","api_path":"/referents/10225839","classification":"accepted","featured":false,"fragment":"This
+        domain is established to be used for illustrative examples in documents","id":10225839,"is_description":false,"path":"/10225839/www.example.com","range":{"start":"/div[1]/p[1]","startOffset":"0","end":"/div[1]/p[1]","endOffset":"76","before":"d-color:
+        #fff;\n        }\n        div {\n            width: auto;\n            margin:
+        0 auto;\n            border-radius: 0;\n            padding: 1em;\n        }\n    }\n        \n\n\n\n\n    Example
+        Domain\n    ","after":". You may use this\n    domain in examples without
+        prior coordination or asking for permission.\n    More information...\n\n\n\n","content":"This
+        domain is established to be used for illustrative examples in documents"},"song_id":null,"url":"https://genius.com/10225839/www.example.com","verified_annotator_ids":[188555],"annotatable":{"api_path":"/web_pages/5301","context":"example.com","id":5301,"image_url":"https://assets.genius.com/images/default_cover_image.png","link_title":"Example
+        Domain","title":"Example Domain","type":"WebPage","url":"https://genius.com/www.example.com"}}}}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

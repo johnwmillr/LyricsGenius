@@ -1,0 +1,18 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/search/user?q=test&per_page=2&page=1
+  response:
+    body:
+      string: '{"meta":{"status":200},"response":{"sections":[{"type":"user","hits":[{"highlights":[],"index":"user","matched_words":1,"nb_exact_words":0,"nb_typos":0,"type":"user","result":{"_type":"user","about_me_summary":"","api_path":"/users/6576396","avatar":{"tiny":{"url":"https://images.genius.com/avatars/tiny/23f330ae76220166b2ac151a039338cf","bounding_box":{"width":16,"height":16}},"thumb":{"url":"https://images.genius.com/avatars/thumb/23f330ae76220166b2ac151a039338cf","bounding_box":{"width":32,"height":32}},"small":{"url":"https://images.genius.com/avatars/small/23f330ae76220166b2ac151a039338cf","bounding_box":{"width":100,"height":100}},"medium":{"url":"https://images.genius.com/avatars/medium/23f330ae76220166b2ac151a039338cf","bounding_box":{"width":300,"height":400}}},"header_image_url":"https://assets.genius.com/images/default_banner.png","human_readable_role_for_display":"Contributor","id":6576396,"is_meme_verified":false,"is_verified":false,"login":"testimonial1456","name":"testimonial1456","role_for_display":"contributor","url":"https://genius.com/testimonial1456","current_user_metadata":{"permissions":[],"excluded_permissions":["follow"],"interactions":{"following":false}},"iq":76863}},{"highlights":[],"index":"user","matched_words":1,"nb_exact_words":0,"nb_typos":0,"type":"user","result":{"_type":"user","about_me_summary":"","api_path":"/users/5738150","avatar":{"tiny":{"url":"https://filepicker-images.genius.com/9bfbd67255c0309d0dfa32f9a4cdafa66be8e5510c092bc52e551a2c6172fadc%2F6qm8ptt576j","bounding_box":{"width":16,"height":16}},"thumb":{"url":"https://filepicker-images.genius.com/9bfbd67255c0309d0dfa32f9a4cdafa66be8e5510c092bc52e551a2c6172fadc%2F6qm8ptt576j","bounding_box":{"width":32,"height":32}},"small":{"url":"https://filepicker-images.genius.com/9bfbd67255c0309d0dfa32f9a4cdafa66be8e5510c092bc52e551a2c6172fadc%2F6qm8ptt576j","bounding_box":{"width":100,"height":100}},"medium":{"url":"https://filepicker-images.genius.com/9bfbd67255c0309d0dfa32f9a4cdafa66be8e5510c092bc52e551a2c6172fadc%2F6qm8ptt576j","bounding_box":{"width":300,"height":400}}},"header_image_url":"https://filepicker-images.genius.com/9bfbd67255c0309d0dfa32f9a4cdafa66be8e5510c092bc52e551a2c6172fadc%2Fopqcc58pjbj","human_readable_role_for_display":"Contributor","id":5738150,"is_meme_verified":false,"is_verified":false,"login":"testpresstest","name":"testpresstest","role_for_display":"contributor","url":"https://genius.com/testpresstest","current_user_metadata":{"permissions":[],"excluded_permissions":["follow"],"interactions":{"following":false}},"iq":4801}}]}],"next_page":2}}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

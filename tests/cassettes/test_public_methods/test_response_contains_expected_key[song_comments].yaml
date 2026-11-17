@@ -1,0 +1,76 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/songs/378195/comments?per_page=2&page=1&text_format=html
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"comments\":[{\"_type\":\"comment\",\"api_path\":\"/comments/2303016\",\"body\":{\"html\":\"<p>I
+        think this song is about peer pressure and anxiety. It\u2019s about introverts
+        who feel pressured to \u201Cfit in\u201D not only because people tell them
+        to, but they want to stop the anxiety and fear that is holding them back from
+        enjoying themselves. That usually involves copious amounts of alcohol to subdue
+        the feelings.</p>\\n\\n<p>\u201CSwinging from the chandelier\u201D is duplicitous
+        in its meaning- she says she feels like she can do anything (while drunk)
+        but she really just wants to be able to be herself, without the fear of others
+        judging her. There is the pressure to be \u201Cfun\u201D at a party which
+        sometimes involves making a fool of yourself. Being socially awkward is seen
+        as the \u201Cworse\u201D choice.</p>\\n\\n<p>She drinks herself to oblivion
+        and wakes up with shame and regret. Was it all worth it? No. But she never
+        wanted to drink in the first place. She never wanted to \u201Cswing from the
+        chandelier.\u201D This was brought on by peer pressure and her own desire
+        to \u201Cfit in\u201D and not be socially awkward.</p>\\n\\n<p>This song is
+        not some simple party song, it shows a dark side of social interaction that
+        we all seem to overlook for some reason. It\u2019s socially-condoned alcoholism.
+        But as long as they are having fun, no one gets hurt, right?</p>\\n\\n<p>Sia
+        said she was taking drugs and alcohol to deal with the anxiety of becoming
+        famous. Who do we want to see, the unconventional Sia, or the extroverted
+        party girl Sia?</p>\\n\\n<p>This song is genius.</p>\"},\"commentable_id\":378195,\"commentable_type\":\"Song\",\"created_at\":1402105960,\"has_voters\":true,\"id\":2303016,\"pinned_role\":null,\"votes_total\":199,\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"vote\",\"accept\",\"reject\",\"mark_spam\",\"integrate\",\"archive\",\"destroy\"],\"interactions\":{\"vote\":null}},\"anonymous_author\":null,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"\",\"api_path\":\"/users/867336\",\"avatar\":{\"tiny\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":null,\"id\":867336,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"Yix\",\"name\":\"Yix\",\"role_for_display\":null,\"url\":\"https://genius.com/Yix\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":260},\"reason\":null},{\"_type\":\"comment\",\"api_path\":\"/comments/2328693\",\"body\":{\"html\":\"<p>This
+        song is about her addiction, but each line has meaning, some are easy to figure
+        out while others are fairly difficult.<br>\\nParty girls don\u2019t get hurt<br>\\nCan\u2019t
+        feel anything, when will I learn<br>\\nI push it down, push it down<br>\\nI\u2019m
+        the one \u201Cfor a good time call\u201D<br>\\nPhone\u2019s blowin' up, they\u2019re
+        ringin' my doorbell<br>\\nI feel the love, feel the love</p>\\n\\n<p>That
+        verse is obviously her explaining what it\u2019s like to be a \u2018party
+        girl\u2019. They don\u2019t get hurt because their so high, they can\u2019t
+        feel. She\u2019s popular and the life of the party.</p>\\n\\n<p>1 2 3, 1 2
+        3, drink<br>\\n1 2 3, 1 2 3, drink<br>\\n1 2 3, 1 2 3, drink<br>\\nThrow \u2018em
+        back, till I lose count</p>\\n\\n<p>This verse is about how she BECOMES the
+        party girl, by drinking until she loses count.</p>\\n\\n<p>I\u2019m gonna
+        swing from the chandelier, from the chandelier<br>\\nI\u2019m gonna live like
+        tomorrow doesn\u2019t exist, like it doesn\u2019t exist<br>\\nI\u2019m gonna
+        fly like a bird through the night, feel my tears as they dry<br>\\nI\u2019m
+        gonna swing from the chandelier, from the chandelier</p>\\n\\n<p>This is her
+        describing the high now that\u2019s she has become the party girl. She\u2019s
+        \u2018swinging\u2019 on the chandelier at the moment recklessly because she\u2019s
+        having so much fun. She\u2019s carefree (\u201CI\u2019m gonna live like tomorrow
+        doesn\u2019t exist, like it doesn\u2019t exist\u201D) and all her pain is
+        gone (\u201Cfeel my tears as they dry\u201D)</p>\\n\\n<p>And I\u2019m holding
+        on for dear life<br>\\nWon\u2019t look down won\u2019t open my eyes<br>\\nKeep
+        my glass full until morning light<br>\\nCause I\u2019m just holding on for
+        tonight<br>\\nHelp me, I\u2019m holding on for dear life<br>\\nWon\u2019t
+        look down, won\u2019t open my eyes<br>\\nKeep my glass full until morning
+        light<br>\\nCause I\u2019m just holding on for tonight<br>\\nOn for tonight</p>\\n\\n<p>This
+        verse is very important because this is when she starts coming back to reality.
+        She\u2019s saying \u201Chelp me, I\u2019m holding on for dear life\u201D because
+        she realizes she\u2019s in danger of falling. She may fall into darkness,
+        her depression, or even suicidal thoughts. She \u201Cwon\u2019t open her eyes,
+        won\u2019t look down\u201D because she doesn\u2019t want to wake up and face
+        reality.</p>\\n\\n<p>Sun is up, I\u2019m a mess<br>\\nGotta get out now, gotta
+        run from this<br>\\nHere comes the shame, here comes the shame</p>\\n\\n<p>She
+        has finally fallen from her high and is shameful for what she is (an alcoholic)
+        and tries to hide (\u201Cgotta run from this\u201D).<br>\\nWhen she says \u201CHere
+        comes the shame, here comes the shame\u201D the next verse is the \u201C1,2,3,
+        1,2,3 drink\u201D, so her escape is the alcohol and the cycle begins again.</p>\\n\\n<p>Note
+        how she ends saying she\u2019ll only \u201Chold on for tonight\u201D, meaning
+        when the evening is over, she will fall again into the shame and depression.</p>\"},\"commentable_id\":378195,\"commentable_type\":\"Song\",\"created_at\":1404781394,\"has_voters\":true,\"id\":2328693,\"pinned_role\":null,\"votes_total\":78,\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"vote\",\"accept\",\"reject\",\"mark_spam\",\"integrate\",\"archive\",\"destroy\"],\"interactions\":{\"vote\":null}},\"anonymous_author\":null,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"\",\"api_path\":\"/users/1041133\",\"avatar\":{\"tiny\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://assets.genius.com/images/default_cover_image.png\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":null,\"id\":1041133,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"lo24la\",\"name\":\"lo24la\",\"role_for_display\":null,\"url\":\"https://genius.com/lo24la\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":83},\"reason\":null}],\"total_count\":86,\"next_page\":2}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -84,8 +84,9 @@ class Artist(BaseEntity):
         )
         return None
 
-    def get_song(self, song_id: int | None = None) -> Song | None:
-        title: str | None = None
+    def get_song(
+        self, song_id: int | None = None, title: str | None = None
+    ) -> Song | None:
         """Returns a song by title or ID.
         Args:
             song_id (:obj:`int`, optional): ID of the song.

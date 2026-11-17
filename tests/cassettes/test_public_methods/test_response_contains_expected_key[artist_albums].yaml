@@ -1,0 +1,25 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/artists/1665/albums?per_page=2&page=1
+  response:
+    body:
+      string: '{"meta":{"status":200},"response":{"albums":[{"_type":"album","api_path":"/albums/1649640","cover_art_thumbnail_url":"https://images.genius.com/5569f89ac444f31c6fc08af300ad7239.300x300x1.png","cover_art_url":"https://images.genius.com/5569f89ac444f31c6fc08af300ad7239.1000x1000x1.png","full_title":"blog
+        era boyz by mgk & Wiz Khalifa","id":1649640,"name":"blog era boyz","name_with_artist":"blog
+        era boyz (artists: mgk & Wiz Khalifa)","primary_artist_names":"mgk & Wiz Khalifa","pusher_channel":"album-1649640","release_date_components":{"year":2026,"month":5,"day":22},"release_date_for_display":"May
+        22, 2026","updated_at":1790856834,"url":"https://genius.com/albums/Mgk-and-wiz-khalifa/Blog-era-boyz","current_user_metadata":{"permissions":[],"excluded_permissions":["set_album_color_gradient"]},"artist":{"_type":"artist","api_path":"/artists/1665","header_image_url":"https://images.genius.com/b53227534e0572ce2e9aff2a4e64e8c3.1000x563x1.jpg","id":1665,"image_url":"https://images.genius.com/e8aa944406aeca9c8d6739651583022b.1000x1000x1.jpg","index_character":"m","is_meme_verified":true,"is_verified":true,"links_config":null,"name":"mgk","slug":"Mgk","url":"https://genius.com/artists/Mgk","iq":29789},"primary_artists":[{"_type":"artist","api_path":"/artists/1665","header_image_url":"https://images.genius.com/b53227534e0572ce2e9aff2a4e64e8c3.1000x563x1.jpg","id":1665,"image_url":"https://images.genius.com/e8aa944406aeca9c8d6739651583022b.1000x1000x1.jpg","index_character":"m","is_meme_verified":true,"is_verified":true,"links_config":null,"name":"mgk","slug":"Mgk","url":"https://genius.com/artists/Mgk","iq":29789},{"_type":"artist","api_path":"/artists/310","header_image_url":"https://images.genius.com/203aa990f27ec74f0183e82cc5a87caf.451x451x1.png","id":310,"image_url":"https://images.genius.com/c4da3b6f3d0642c4ee111f19369a0d84.451x451x1.png","index_character":"w","is_meme_verified":true,"is_verified":true,"links_config":null,"name":"Wiz
+        Khalifa","slug":"Wiz-khalifa","url":"https://genius.com/artists/Wiz-khalifa","iq":10459}]},{"_type":"album","api_path":"/albums/1561531","cover_art_thumbnail_url":"https://images.genius.com/b92311e78fbe968e291e19a6d955c6f1.300x300x1.png","cover_art_url":"https://images.genius.com/b92311e78fbe968e291e19a6d955c6f1.1000x1000x1.png","full_title":"lost
+        americana (Reissue) by mgk","id":1561531,"name":"lost americana (Reissue)","name_with_artist":"lost
+        americana (Reissue) (artist: mgk)","primary_artist_names":"mgk","pusher_channel":"album-1561531","release_date_components":{"year":2026,"month":1,"day":10},"release_date_for_display":"January
+        10, 2026","updated_at":1789925400,"url":"https://genius.com/albums/Mgk/Lost-americana-reissue","current_user_metadata":{"permissions":[],"excluded_permissions":["set_album_color_gradient"]},"artist":{"_type":"artist","api_path":"/artists/1665","header_image_url":"https://images.genius.com/b53227534e0572ce2e9aff2a4e64e8c3.1000x563x1.jpg","id":1665,"image_url":"https://images.genius.com/e8aa944406aeca9c8d6739651583022b.1000x1000x1.jpg","index_character":"m","is_meme_verified":true,"is_verified":true,"links_config":null,"name":"mgk","slug":"Mgk","url":"https://genius.com/artists/Mgk","iq":29789},"primary_artists":[{"_type":"artist","api_path":"/artists/1665","header_image_url":"https://images.genius.com/b53227534e0572ce2e9aff2a4e64e8c3.1000x563x1.jpg","id":1665,"image_url":"https://images.genius.com/e8aa944406aeca9c8d6739651583022b.1000x1000x1.jpg","index_character":"m","is_meme_verified":true,"is_verified":true,"links_config":null,"name":"mgk","slug":"Mgk","url":"https://genius.com/artists/Mgk","iq":29789}]}],"next_page":2}}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

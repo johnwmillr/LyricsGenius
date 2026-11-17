@@ -1,0 +1,19 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/leaderboard?time_period=day&per_page=2&page=1&text_format=html
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"leaderboard\":[{\"_type\":\"user_attribution\",\"attribution_value\":5071179.1,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"\",\"api_path\":\"/users/3492882\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/981605b56878ef16a812df453300d0fc\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/981605b56878ef16a812df453300d0fc\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/981605b56878ef16a812df453300d0fc\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/981605b56878ef16a812df453300d0fc\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":\"Editor\",\"id\":3492882,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"SmashBeezy\",\"name\":\"SmashBeezy\",\"role_for_display\":\"editor\",\"url\":\"https://genius.com/SmashBeezy\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":5614030}},{\"_type\":\"user_attribution\",\"attribution_value\":4272115.2,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"\",\"api_path\":\"/users/126836\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/658334e9b7a0751e1edb7656ce397a55\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/658334e9b7a0751e1edb7656ce397a55\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/658334e9b7a0751e1edb7656ce397a55\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/658334e9b7a0751e1edb7656ce397a55\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://images.genius.com/fbd112d652ee2db7cbc6c4c7d81f2a41.1000x563x1.jpg\",\"human_readable_role_for_display\":\"Moderator\",\"id\":126836,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"Chloe\",\"name\":\"\u1D04\u029C\u029F\u1D0F\u1D07
+        (eolhC)\",\"role_for_display\":\"moderator\",\"url\":\"https://genius.com/Chloe\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":5785627}}],\"next_page\":2}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

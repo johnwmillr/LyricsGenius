@@ -1,0 +1,23 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/annotations/2941046/comments?per_page=2&page=1&text_format=html
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"comments\":[{\"_type\":\"comment\",\"api_path\":\"/comments/2380706\",\"body\":{\"html\":\"<p>Literally
+        she is talking about swinging from a chandelier but she means that she\u2019s
+        going to have a good time.</p>\"},\"commentable_id\":2941046,\"commentable_type\":\"Annotation\",\"created_at\":1410974098,\"has_voters\":true,\"id\":2380706,\"pinned_role\":null,\"votes_total\":24,\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"vote\",\"accept\",\"reject\",\"mark_spam\",\"integrate\",\"archive\",\"destroy\"],\"interactions\":{\"vote\":null}},\"anonymous_author\":null,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"\",\"api_path\":\"/users/1178550\",\"avatar\":{\"tiny\":{\"url\":\"https://images.rapgenius.com/avatars/tiny/d85f1b0985880b47ba603df4ad972319\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.rapgenius.com/avatars/thumb/d85f1b0985880b47ba603df4ad972319\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.rapgenius.com/avatars/small/d85f1b0985880b47ba603df4ad972319\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.rapgenius.com/avatars/medium/d85f1b0985880b47ba603df4ad972319\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":null,\"id\":1178550,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"Courtney08\",\"name\":\"Courtney08\",\"role_for_display\":null,\"url\":\"https://genius.com/Courtney08\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":277},\"reason\":null},{\"_type\":\"comment\",\"api_path\":\"/comments/2397064\",\"body\":{\"html\":\"<p>then
+        you\u2019ve to do that</p>\"},\"commentable_id\":2941046,\"commentable_type\":\"Annotation\",\"created_at\":1412771579,\"has_voters\":true,\"id\":2397064,\"pinned_role\":null,\"votes_total\":1,\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"vote\",\"accept\",\"reject\",\"mark_spam\",\"integrate\",\"archive\",\"destroy\"],\"interactions\":{\"vote\":null}},\"anonymous_author\":null,\"author\":{\"_type\":\"user\",\"about_me_summary\":\"Nov
+        1987, a woman cries in Pertamina hospital. Silence, then a child cries answer.
+        Some say it was divine intervention others a cruel experiment. I am born.\",\"api_path\":\"/users/1214855\",\"avatar\":{\"tiny\":{\"url\":\"https://images.rapgenius.com/avatars/tiny/a1d93e046d011dbf58222095199400c4\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.rapgenius.com/avatars/thumb/a1d93e046d011dbf58222095199400c4\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.rapgenius.com/avatars/small/a1d93e046d011dbf58222095199400c4\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.rapgenius.com/avatars/medium/a1d93e046d011dbf58222095199400c4\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://assets.genius.com/images/default_banner.png\",\"human_readable_role_for_display\":null,\"id\":1214855,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"c0mrade\",\"name\":\"c0mrade\",\"role_for_display\":null,\"url\":\"https://genius.com/c0mrade\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":100},\"reason\":null}],\"total_count\":13,\"next_page\":2}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

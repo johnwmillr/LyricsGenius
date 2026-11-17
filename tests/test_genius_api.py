@@ -1,185 +1,283 @@
-import warnings
-from typing import Any, cast
+"""Tests for the official API methods and Genius helpers built on them."""
+
+from typing import Any
+from unittest import mock
 
 import pytest
 
-from lyricsgenius.genius import Genius
-from tests import get_genius_client
+from lyricsgenius import Genius
 
-try:
-    genius = get_genius_client()
-except KeyError:
-    genius = None  # type: ignore[assignment]
-    warnings.warn(
-        "Skipping API tests because no GENIUS_ACCESS_TOKEN was found in the environment variables.",
-        stacklevel=1,
-    )
+ANNOTATION_ID = 10225840
+WEB_PAGE_ID = 10347
+SONG_ID = 1
+LYRICS_SONG_ID = 2885745
+LYRICS_SONG_URL = "https://genius.com/Andy-shauf-begin-again-lyrics"
 
 
-@pytest.fixture
-def require_genius() -> Genius:
-    """Fixture that skips tests if genius client is not available."""
-    if genius is None:
-        pytest.skip("No genius client available")
-    return genius
+# Live only: the response is the token owner's private account data.
+@pytest.mark.live
+def test_account_returns_token_owner(live_genius: Genius) -> None:
+    """The account endpoint returns the user that owns the access token."""
+    response = live_genius.account()
+
+    assert "id" in response["user"]
 
 
-@pytest.mark.skip(reason="API method tests still under development / require live API.")
-class TestAPI:  # pragma: no cover - legacy style converted
-    def test_account(self, require_genius: Genius) -> None:
-        r = require_genius.account()
-        assert "user" in r, (
-            "No user detail was returned. "
-            "Are you sure you're using a user access token?"
-        )
+@pytest.mark.vcr
+def test_annotation_returns_requested_annotation(genius: Genius) -> None:
+    """Looking up an annotation by ID returns that annotation."""
+    response = genius.annotation(ANNOTATION_ID)
 
-    def test_annotation(self, require_genius: Genius) -> None:
-        id_ = 10225840
-        r = require_genius.annotation(id_)
-        assert r["annotation"]["api_path"] == "/annotations/10225840", (
-            "Returned annotation API path is different than expected."
-        )
+    assert response["annotation"]["id"] == ANNOTATION_ID
 
-    def test_manage_annotation(self, require_genius: Genius) -> None:
-        example_text = "The annotation"
-        new_annotation = require_genius.create_annotation(
-            example_text, "https://example.com", "illustrative examples", title="test"
+
+@pytest.mark.skip(reason="creates and deletes a real annotation on the token's account")
+def test_annotation_lifecycle(genius: Genius) -> None:
+    """An annotation can be created, updated, voted on and deleted."""
+    created = genius.create_annotation(
+        "The annotation", "https://example.com", "illustrative examples", title="test"
+    )["annotation"]
+    try:
+        assert created["body"]["plain"] == "The annotation"
+
+        updated = genius.update_annotation(
+            created["id"],
+            "Updated annotation",
+            "https://example.com",
+            "illustrative examples",
+            title="test",
         )["annotation"]
-        assert new_annotation["body"]["plain"] == example_text, (
-            "Annotation text did not match the one that was passed."
-        )
+        assert updated["body"]["plain"] == "Updated annotation"
 
-        try:
-            example_text_two = "Updated annotation"
-            r = require_genius.update_annotation(
-                new_annotation["id"],
-                example_text_two,
-                "https://example.com",
-                "illustrative examples",
-                title="test",
-            )["annotation"]
-            assert r["body"]["plain"] == example_text_two, (
-                "Updated annotation text did not match the one that was passed."
-            )
-
-            r = require_genius.upvote_annotation(11828417)
-            assert r is not None, "Upvote was not registered."
-
-            r = require_genius.downvote_annotation(11828417)
-            assert r is not None, "Downvote was not registered."
-
-            r = require_genius.unvote_annotation(11828417)
-            assert r is not None, "Vote was not removed."
-        finally:
-            r = require_genius.delete_annotation(new_annotation["id"])
-            assert r == 204, "Annotation was not deleted."
-
-    def test_referents_web_page(self, require_genius: Genius) -> None:
-        id_ = 10347
-        r = require_genius.referents(web_page_id=id_)
-        assert r["referents"][0]["api_path"] == "/referents/11828416", (
-            "Returned referent API path is different than expected."
-        )
-
-    def test_referents_no_inputs(self, require_genius: Genius) -> None:
-        # Must supply `song_id`, `web_page_id`, or `created_by_id`.
-        with pytest.raises(AssertionError):
-            require_genius.referents()
-
-    def test_referents_invalid_input(self, require_genius: Genius) -> None:
-        # Method should prevent inputs for both song and web_pag ID.
-        with pytest.raises(AssertionError):
-            require_genius.referents(song_id=1, web_page_id=1)
-
-    def test_web_page(self, require_genius: Genius) -> None:
-        url = "https://docs.genius.com"
-        r = require_genius.web_page(raw_annotatable_url=url)
-        assert r["web_page"]["api_path"] == "/web_pages/10347", (
-            "Returned web page API path is different than expected."
-        )
+        assert genius.upvote_annotation(created["id"]) is not None
+        assert genius.downvote_annotation(created["id"]) is not None
+        assert genius.unvote_annotation(created["id"]) is not None
+    finally:
+        assert genius.delete_annotation(created["id"]) == 204
 
 
-@pytest.mark.skip(reason="Endpoints tests still under development / require live API.")
-class TestEndpoints:  # pragma: no cover - legacy style converted
-    search_term: str = "Ezra Furman"
-    song_title_only: str = "99 Problems"
-    tag: Any = genius.tag("pop") if genius is not None else None
+@pytest.mark.vcr
+def test_referents_returns_web_page_referents(genius: Genius) -> None:
+    """Referents for a web page all belong to that web page."""
+    response = genius.referents(web_page_id=WEB_PAGE_ID)
 
-    def test_search_song(self, require_genius: Genius) -> None:
-        artist = "Jay-Z"
-        response = require_genius.search_song("")
-        assert response is None
-        with pytest.raises(AssertionError):
-            require_genius.search_song()
-        response = require_genius.search_song(song_id=1)
-        assert response is not None
-        response = require_genius.search_song(self.song_title_only)
-        if response is not None:
-            assert response.title.lower() == self.song_title_only.lower()
-        response = require_genius.search_song(self.song_title_only, artist)
-        if response is not None:
-            assert response.title.lower() == self.song_title_only.lower()
-        response = require_genius.search_song("  \t 99  \t \t\tProblems   ", artist)
-        assert (
-            response is not None
-            and response.title.lower() == self.song_title_only.lower()
-        )
-        response = require_genius.search_song(self.song_title_only, artist="Drake")
-        if response is not None:
-            assert response.title.lower() != self.song_title_only.lower()
-
-    def test_song_annotations(self, require_genius: Genius) -> None:
-        r = sorted(require_genius.song_annotations(1))
-        real = r[0][0]
-        expected = "(I'm at bat)"
-        assert real == expected
-
-    def test_tag_results(self) -> None:
-        r = self.tag
-        if r is not None:
-            r_dict = cast(dict[str, Any], r)
-            assert r_dict["next_page"] == 2
-            assert len(cast(list[Any], r_dict["hits"])) == 20
-
-    def test_tag_first_result(self) -> None:
-        artists = ["Luis Fonsi", "Daddy Yankee"]
-        featured_artists = ["Justin Bieber"]
-        song_title = "Despacito (Remix)"
-        title_with_artists = (
-            "Despacito (Remix) by Luis Fonsi & Daddy Yankee (Ft. Justin Bieber)"
-        )
-        url = "https://genius.com/Luis-fonsi-and-daddy-yankee-despacito-remix-lyrics"
-        if self.tag is None:
-            pytest.skip("Tag request returned None")
-        first_song = cast(dict[str, Any], self.tag)["hits"][0]
-        assert artists == first_song["artists"]
-        assert featured_artists == first_song["featured_artists"]
-        assert song_title == first_song["title"]
-        assert title_with_artists == first_song["title_with_artists"]
-        assert url == first_song["url"]
+    assert response["referents"]
+    assert {r["annotatable"]["id"] for r in response["referents"]} == {WEB_PAGE_ID}
 
 
-@pytest.mark.skip(
-    reason="Lyrics scraping tests still under development / require live API."
-)
-class TestLyrics:  # pragma: no cover - legacy style converted
-    song_url = "https://genius.com/Andy-shauf-begin-again-lyrics"
-    song_id = 2885745
-    lyrics_ending = (
-        "[Outro]"
-        "\nNow I'm kicking leaves"
-        "\nCursing the one that I love and the one I don't"
-        "\nI wonder who you're thinking of"
+def test_referents_requires_an_item(genius: Genius) -> None:
+    """Referents needs a song, web page or creator to look up."""
+    with pytest.raises(AssertionError):
+        genius.referents()
+
+
+def test_referents_rejects_song_and_web_page_together(genius: Genius) -> None:
+    """Referents accepts a song or a web page, not both."""
+    with pytest.raises(AssertionError):
+        genius.referents(song_id=1, web_page_id=1)
+
+
+@pytest.mark.vcr
+def test_web_page_returns_page_for_url(genius: Genius) -> None:
+    """Looking up a web page by URL returns that page."""
+    response = genius.web_page(raw_annotatable_url="https://docs.genius.com")
+
+    assert response["web_page"]["id"] == WEB_PAGE_ID
+
+
+@pytest.mark.vcr(allow_playback_repeats=True)
+def test_song_annotations_pairs_fragments_with_annotations(genius: Genius) -> None:
+    """Each referent's fragment is paired with the bodies of all its annotations."""
+    referents = genius.referents(song_id=SONG_ID)["referents"]
+
+    annotations = genius.song_annotations(SONG_ID)
+
+    assert referents
+    assert annotations == [
+        (r["fragment"], [list(a["body"].values()) for a in r["annotations"]])
+        for r in referents
+    ]
+
+
+@pytest.mark.vcr
+def test_tag_returns_first_page_of_songs(genius: Genius) -> None:
+    """A tag page's songs are split into title, artists and featured artists."""
+    response: dict[str, Any] = genius.tag("pop")
+
+    assert response["next_page"] == 2
+    assert len(response["hits"]) == 20
+    for hit in response["hits"]:
+        assert hit["url"].startswith("https://genius.com/")
+        assert hit["title_with_artists"].startswith(hit["title"])
+        assert "\xa0" not in hit["title_with_artists"]
+        for name in hit["artists"] + hit["featured_artists"]:
+            assert " & " not in name
+            assert name in hit["title_with_artists"]
+    by_title = {hit["title"]: hit for hit in response["hits"]}
+    assert by_title["Despacito (Remix)"]["artists"] == ["Luis Fonsi", "Daddy Yankee"]
+    assert by_title["Despacito (Remix)"]["featured_artists"] == ["Justin Bieber"]
+    assert by_title["Starboy"]["artists"] == ["The Weeknd"]
+    assert by_title["Starboy"]["featured_artists"] == ["Daft Punk"]
+    assert by_title["Despacito (Remix)"]["url"] == (
+        "https://genius.com/Luis-fonsi-and-daddy-yankee-despacito-remix-lyrics"
     )
 
-    def test_lyrics_with_url(self, require_genius: Genius) -> None:
-        lyrics = require_genius.lyrics(song_url=self.song_url)
-        if lyrics is None:
-            raise AssertionError("Expected lyrics but got None")
-        assert lyrics.endswith(self.lyrics_ending)
 
-    def test_lyrics_with_id(self, require_genius: Genius) -> None:
-        lyrics = require_genius.lyrics(self.song_id)
-        if lyrics is None:
-            raise AssertionError("Expected lyrics but got None")
-        assert lyrics.endswith(self.lyrics_ending)
+def test_search_song_requires_title_or_id(genius: Genius) -> None:
+    """Searching for a song needs a title or a song ID."""
+    with pytest.raises(AssertionError):
+        genius.search_song()
+
+
+@pytest.mark.live
+def test_search_song_returns_song_with_lyrics(live_genius: Genius) -> None:
+    """Searching by title and artist returns that song with its lyrics."""
+    song = live_genius.search_song("99 Problems", "Jay-Z")
+
+    assert song is not None
+    assert song.title == "99 Problems"
+    assert song.lyrics
+
+
+@pytest.mark.live
+def test_search_song_normalizes_whitespace(live_genius: Genius) -> None:
+    """Extra whitespace in the title doesn't change which song is found."""
+    song = live_genius.search_song("  \t 99  \t \t\tProblems   ", "Jay-Z")
+
+    assert song is not None
+    assert song.title == "99 Problems"
+
+
+@pytest.mark.live
+def test_search_song_by_id(live_genius: Genius) -> None:
+    """Searching by song ID returns that song."""
+    song = live_genius.search_song(song_id=LYRICS_SONG_ID)
+
+    assert song is not None
+    assert song.api_path == f"/songs/{LYRICS_SONG_ID}"
+
+
+@pytest.mark.live
+@pytest.mark.parametrize(
+    "kwargs",
+    [
+        pytest.param({"song_url": LYRICS_SONG_URL}, id="url"),
+        pytest.param({"song_id": LYRICS_SONG_ID}, id="id"),
+    ],
+)
+def test_lyrics_scrapes_song_page(live_genius: Genius, kwargs: dict[str, Any]) -> None:
+    """Lyrics are scraped from the song page found by URL or ID."""
+    lyrics = live_genius.lyrics(**kwargs)
+
+    assert lyrics is not None
+    assert lyrics.startswith("[Verse 1]")
+    assert "[Outro]" in lyrics
+
+
+def test_referents_accepts_creator_alone(genius: Genius) -> None:
+    """Referents can be looked up by creator without a song or web page."""
+    with mock.patch.object(
+        genius, "_make_request", return_value={"referents": []}
+    ) as request:
+        genius.referents(created_by_id=7, per_page=3)
+
+    params = request.call_args.kwargs["params_"]
+    assert params["created_by_id"] == 7
+    assert params["per_page"] == 3
+    assert params["song_id"] is None
+    assert params["web_page_id"] is None
+
+
+def test_artist_songs_sends_sort_and_paging(genius: Genius) -> None:
+    """An artist's songs are requested with the given sort, page and page size."""
+    with mock.patch.object(genius, "_make_request", return_value={}) as request:
+        genius.artist_songs(1665, sort="title", per_page=7, page=2)
+
+    request.assert_called_once_with(
+        path="artists/1665/songs",
+        params_={"sort": "title", "per_page": 7, "page": 2},
+    )
+
+
+def test_tag_requests_the_given_page(genius: Genius) -> None:
+    """A later page of a tag is requested by number."""
+    with mock.patch.object(genius, "_make_request", return_value=None) as request:
+        genius.tag("pop", page=3)
+
+    assert request.call_args.kwargs["params_"] == {"page": 3}
+
+
+_ANNOTATION_PAYLOAD = {
+    "annotation": {"body": {"markdown": "The annotation"}},
+    "referent": {
+        "raw_annotatable_url": "https://example.com",
+        "fragment": "illustrative examples",
+        "context_for_display": {"before_html": "<p>", "after_html": None},
+    },
+    "web_page": {"canonical_url": None, "og_url": None, "title": "test"},
+}
+
+
+def test_create_annotation_posts_annotation(genius: Genius) -> None:
+    """Creating an annotation posts its text, referent and web page."""
+    with mock.patch.object(genius, "_make_request", return_value={}) as request:
+        genius.create_annotation(
+            "The annotation",
+            "https://example.com",
+            "illustrative examples",
+            before_html="<p>",
+            title="test",
+            text_format="html",
+        )
+
+    request.assert_called_once_with(
+        path="annotations",
+        method="POST",
+        params_={"text_format": "html"},
+        json=_ANNOTATION_PAYLOAD,
+    )
+
+
+def test_update_annotation_puts_annotation(genius: Genius) -> None:
+    """Updating an annotation sends its new text, referent and web page."""
+    with mock.patch.object(genius, "_make_request", return_value={}) as request:
+        genius.update_annotation(
+            42,
+            "The annotation",
+            "https://example.com",
+            "illustrative examples",
+            before_html="<p>",
+            title="test",
+            text_format="html",
+        )
+
+    request.assert_called_once_with(
+        path="annotations/42",
+        method="PUT",
+        params_={"text_format": "html"},
+        json=_ANNOTATION_PAYLOAD,
+    )
+
+
+@pytest.mark.parametrize("method", ["create_annotation", "update_annotation"])
+def test_annotation_requires_a_web_page(genius: Genius, method: str) -> None:
+    """An annotation needs the web page's canonical URL, og:url or title."""
+    args: list[Any] = ["The annotation", "https://example.com", "fragment"]
+    if method == "update_annotation":
+        args.insert(0, 42)
+
+    with pytest.raises(AssertionError, match="canonical_url"):
+        getattr(genius, method)(*args)
+
+
+@pytest.mark.parametrize("vote", ["upvote", "downvote", "unvote"])
+def test_vote_puts_to_annotation_vote_endpoint(genius: Genius, vote: str) -> None:
+    """Each vote is a PUT to the annotation's endpoint for that vote."""
+    with mock.patch.object(genius, "_make_request", return_value={}) as request:
+        getattr(genius, f"{vote}_annotation")(42, text_format="html")
+
+    request.assert_called_once_with(
+        path=f"annotations/42/{vote}",
+        method="PUT",
+        params_={"text_format": "html"},
+    )

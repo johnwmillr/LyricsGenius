@@ -1,0 +1,25 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://genius.com/api/artists/1665/leaderboard?per_page=2&page=1
+  response:
+    body:
+      string: "{\"meta\":{\"status\":200},\"response\":{\"leaderboard\":[{\"_type\":\"user_attribution\",\"attribution_value\":44766.7,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"english
+        & spanish\\n\\n\\n\\n\\nyou\u2019ll find me mainly in post-hardcore, metalcore
+        & alt metal.\\n\\n\\n\\n\\nif you have any questions or find any song with
+        gaps, don\u2019t hesitate to talk to me.\",\"api_path\":\"/users/11567969\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/06f39e0f626877bc30f66cc4b64bcf9d\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/06f39e0f626877bc30f66cc4b64bcf9d\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/06f39e0f626877bc30f66cc4b64bcf9d\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/06f39e0f626877bc30f66cc4b64bcf9d\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://images.genius.com/06475588525e7a9c42bb8b6e054fec65.320x180x40.gif\",\"human_readable_role_for_display\":\"Editor\",\"id\":11567969,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"Josshe\",\"name\":\"Josshe\",\"role_for_display\":\"editor\",\"url\":\"https://genius.com/Josshe\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":324328}},{\"_type\":\"user_attribution\",\"attribution_value\":30084.9,\"pinned_role\":null,\"user\":{\"_type\":\"user\",\"about_me_summary\":\"stella;
+        she/they; somewhat inactive\\n\\n\\n\\n\\n// #20 genius user of all time //\\n\\n\\n\\n\\n//
+        #13 country scholar of all time //\\n\\n\\n\\n\\n// #18 pop scholar of all
+        time //\\n\\n\\n\\n\\n// #27 rock scholar of all time //\\n\\n\\n\\n\\n//
+        last.fm: vinylzombie //\\n\\n\\n\\n\\n// discogs: vinylzombie_mcr //\\n\\n\\n\\n\\n\\n\\n\\n\\n\u2661\",\"api_path\":\"/users/1873201\",\"avatar\":{\"tiny\":{\"url\":\"https://images.genius.com/avatars/tiny/f87cf09959b1401ea9890cc6f5291188\",\"bounding_box\":{\"width\":16,\"height\":16}},\"thumb\":{\"url\":\"https://images.genius.com/avatars/thumb/f87cf09959b1401ea9890cc6f5291188\",\"bounding_box\":{\"width\":32,\"height\":32}},\"small\":{\"url\":\"https://images.genius.com/avatars/small/f87cf09959b1401ea9890cc6f5291188\",\"bounding_box\":{\"width\":100,\"height\":100}},\"medium\":{\"url\":\"https://images.genius.com/avatars/medium/f87cf09959b1401ea9890cc6f5291188\",\"bounding_box\":{\"width\":300,\"height\":400}}},\"header_image_url\":\"https://images.genius.com/dcac0ceaa601aa65e65c79c4fc17af29.640x213x1.jpg\",\"human_readable_role_for_display\":\"Editor\",\"id\":1873201,\"is_meme_verified\":false,\"is_verified\":false,\"login\":\"VinylZombie_MCR\",\"name\":\"thebreakup\",\"role_for_display\":\"editor\",\"url\":\"https://genius.com/VinylZombie_MCR\",\"current_user_metadata\":{\"permissions\":[],\"excluded_permissions\":[\"follow\"],\"interactions\":{\"following\":false}},\"iq\":1056534}}],\"next_page\":2}}"
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

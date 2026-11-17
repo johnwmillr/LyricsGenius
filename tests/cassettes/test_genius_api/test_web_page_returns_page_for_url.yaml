@@ -1,0 +1,19 @@
+interactions:
+- request:
+    body: null
+    headers:
+      application:
+      - LyricsGenius
+    method: GET
+    uri: https://api.genius.com/web_pages/lookup?raw_annotatable_url=https%3A%2F%2Fdocs.genius.com
+  response:
+    body:
+      string: '{"meta":{"status":200},"response":{"web_page":{"api_path":"/web_pages/10347","domain":"docs.genius.com","id":10347,"normalized_url":"//docs.genius.com","share_url":"http://genius.it/docs.genius.com","title":"Genius
+        API","url":"https://genius.com/docs.genius.com","annotation_count":28}}}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -42,4 +42,37 @@ uv run pytest      # tests
 uv run ruff check  # lint
 ```
 
-Tests that hit the Genius API are skipped unless `GENIUS_ACCESS_TOKEN` is set.
+No test reaches the network by default:
+
+- Tests marked `vcr` replay recorded responses from `tests/cassettes/`. To
+  record a new cassette or refresh one, set `GENIUS_ACCESS_TOKEN` and run
+  `uv run pytest --record-mode=once` (or `rewrite` to replace existing ones).
+  Cassettes drop the token, cookies, user agent and most response headers,
+  and the recorder refuses lyrics pages and the `/account` endpoint, so real
+  lyrics and the token owner's private details never land in the repo.
+- Tests marked `live` make real requests and run only with `--live` and
+  `GENIUS_ACCESS_TOKEN` set. Use them for lyrics pages and anything private.
+- Any other test that reaches the network fails (`--block-network` is on by
+  default and lifted only for `--live`).
+- Never record a test that writes to Genius (creating annotations, voting).
+
+## Test conventions
+
+- Plain pytest functions; no `unittest.TestCase` and no test classes.
+- One test module per unit under test, starting with a one-line module
+  docstring.
+- Name tests `test_<subject>_<expected behavior>`, e.g.
+  `test_lyrics_raises_on_403`.
+- Every test and public fixture has a one-line docstring stating the
+  behavior it checks or what it provides, in the present tense.
+- Fully type annotate tests, fixtures and helpers. Prefix helpers with `_`.
+- Shared fixtures (`genius`, `public_api`, `live_genius`) live in
+  `tests/conftest.py`; others stay in their module.
+- Use plain `assert`, `pytest.raises` with `match=` where the message
+  matters, and `pytest.mark.parametrize` with `pytest.param(..., id=...)`
+  for case tables.
+- Arrange, act and assert are separated by blank lines.
+- Fixture data lives in `tests/fixtures/` and uses invented lyrics.
+
+ruff enforces annotations (`ANN`), pytest style (`PT`) and test docstrings
+(`D100`, `D103`).
