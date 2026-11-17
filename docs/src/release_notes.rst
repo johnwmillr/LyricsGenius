@@ -4,6 +4,34 @@
 Release notes
 =============
 
+3.17.0 (2026-11-16)
+-------------------
+
+Changed
+*******
+-  ``PublicAPI.cover_arts()`` raises ``ValueError`` when given ``song_id``.
+   Genius only serves cover arts by album and rejected every ``song_id``
+   request with a 400. Pass the ``album_id`` of the song's album instead.
+
+Deprecated
+**********
+-  ``PublicAPI.page_data()`` now emits a ``DeprecationWarning`` and will be
+   removed in a future version. Genius no longer serves page data, and every
+   request returns 404.
+
+Fixed
+*******
+-  ``PublicAPI()`` no longer requires ``GENIUS_ACCESS_TOKEN`` to be set.
+-  ``Genius.search_song()`` matches titles and artists that differ only in
+   accents or spacing. For example, ``search_song("99 Problems", "Jay-Z")``
+   found nothing because Genius lists the artist as "JAŸ-Z".
+-  ``Genius.search_song()`` returns ``None`` for an empty title instead of
+   crashing.
+-  ``API.referents()`` accepts ``created_by_id`` on its own. Before, it always
+   failed its own argument check.
+-  ``Genius.tag()`` reads songs with more than one primary artist correctly.
+-  ``Artist.get_song()`` finds songs by ``title``.
+
 3.16.0 (2026-11-12)
 -------------------
 
