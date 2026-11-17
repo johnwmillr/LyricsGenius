@@ -35,3 +35,7 @@ build
 # GitHub Copilot config (skills, instructions)
 .github/copilot-instructions.md
 .github/skills
+
+# Coverage
+.coverage
+htmlcov/
