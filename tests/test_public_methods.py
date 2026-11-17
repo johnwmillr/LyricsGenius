@@ -154,17 +154,6 @@ def test_lookup_returns_requested_item(
             "songs",
             id="search_artist_songs",
         ),
-        pytest.param(
-            "cover_arts",
-            {"song_id": SONG_ID},
-            "cover_arts",
-            id="cover_arts_song",
-            marks=pytest.mark.xfail(
-                raises=HTTPError,
-                strict=True,
-                reason="Genius now requires album_id: 400 'must include one of: album_id'",
-            ),
-        ),
         pytest.param("discussions", {}, "discussions", id="discussions"),
         pytest.param("leaderboard", {}, "leaderboard", id="leaderboard"),
         pytest.param("charts", {}, "chart_items", id="charts"),
@@ -317,6 +306,12 @@ def test_page_data_returns_song_page_data(
         response = genius.page_data(artist=artist_slug, song=song_path)
 
     assert "page_data" in response
+
+
+def test_cover_arts_rejects_song_id(public_api: PublicAPI) -> None:
+    """Cover arts can't be looked up by song, so a song ID is refused unsent."""
+    with pytest.raises(ValueError, match="album_id"):
+        public_api.cover_arts(song_id=SONG_ID)
 
 
 @pytest.mark.parametrize(

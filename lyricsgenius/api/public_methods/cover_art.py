@@ -13,13 +13,12 @@ class CoverArtMethods(RequestCapable, CoverArtsCapable):
         album_id: int | None = None,
         text_format: TextFormatT | None = None,
     ) -> dict[str, Any]:
-        """Gets the cover arts of an album or a song.
-
-        You must supply one of :obj:`album_id` or :obj:`song_id`.
+        """Gets the cover arts of an album.
 
         Args:
-            album_id (:obj:`int`, optional): Genius album ID
-            song_id (:obj:`int`, optional): Genius song ID
+            song_id (:obj:`int`, optional): No longer supported. Genius only
+                serves cover arts by album, so passing it raises ``ValueError``.
+            album_id (:obj:`int`): Genius album ID
             text_format (:obj:`str`, optional): Text format of the results
                 ('dom', 'html', 'markdown' or 'plain'). Defines the text
                 formatting for the annotation of the cover arts,
@@ -28,16 +27,20 @@ class CoverArtMethods(RequestCapable, CoverArtsCapable):
         Returns:
             :obj:`dict`
 
+        Raises:
+            ValueError: If :obj:`song_id` is passed or :obj:`album_id` is missing.
+
         """
-        msg = "Must supply `album_id` or `song_id`."
-        assert any([album_id, song_id]), msg
-        msg = "Pass only one of `album_id` or `song_id`, not both."
-        condition = sum([bool(album_id), bool(song_id)]) == 1
-        assert condition, msg
+        if song_id is not None:
+            raise ValueError(
+                "Genius no longer serves cover arts by song. Pass the album_id of "
+                "the song's album instead."
+            )
+        if album_id is None:
+            raise ValueError("Must supply `album_id`.")
         endpoint = "cover_arts"
-        params: dict[str, Any] = {"text_format": text_format or self.response_format}
-        if album_id is not None:
-            params["album_id"] = album_id
-        else:
-            params["song_id"] = song_id
+        params: dict[str, Any] = {
+            "album_id": album_id,
+            "text_format": text_format or self.response_format,
+        }
         return self._make_request(path=endpoint, params_=params, public_api=True)
