@@ -22,9 +22,10 @@ Deprecated
 Fixed
 *******
 -  ``PublicAPI()`` no longer requires ``GENIUS_ACCESS_TOKEN`` to be set.
--  ``Genius.search_song()`` matches titles and artists that differ only in
-   accents or spacing. For example, ``search_song("99 Problems", "Jay-Z")``
-   found nothing because Genius lists the artist as "JAŸ-Z".
+-  Searches match titles and artists that differ only in case, accents,
+   punctuation, symbols or spacing. For example,
+   ``search_song("99 Problems", "Jay-Z")`` found nothing because Genius lists
+   the artist as "JAŸ-Z", and "Jay Z" didn't match "Jay-Z".
 -  ``Genius.search_song()`` returns ``None`` for an empty title instead of
    crashing.
 -  ``API.referents()`` accepts ``created_by_id`` on its own. Before, it always
