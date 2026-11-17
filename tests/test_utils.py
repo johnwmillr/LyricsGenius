@@ -92,20 +92,23 @@ def test_auth_from_environment_uses_none_for_missing_credentials(
 @pytest.mark.parametrize(
     ("given", "expected"),
     [
-        pytest.param("JAŸ-Z", "Jay-Z", id="diaeresis"),
-        pytest.param("Beyoncé", "Beyonce", id="acute_accent"),
-        pytest.param("Sigur Rós", "sigur ros", id="accent_and_case"),
+        pytest.param("JAŸ-Z", "jayz", id="diaeresis"),
+        pytest.param("Jay Z", "jayz", id="space_for_hyphen"),
+        pytest.param("Beyoncé", "beyonce", id="acute_accent"),
         pytest.param("ＡＢＣ", "abc", id="full_width"),
         pytest.param("방탄소년단", "방탄소년단", id="hangul_unchanged"),
-        pytest.param("Don't Stop", "Dont Stop", id="punctuation"),
-        pytest.param("  \t 99  \t \t\tProblems   ", "99 Problems", id="whitespace"),
+        pytest.param("Straße", "strasse", id="casefold"),
+        pytest.param("Don\u2019t Stop", "dontstop", id="curly_apostrophe"),
+        pytest.param("P!nk & Nate Ruess", "pnknateruess", id="punctuation_and_symbols"),
+        pytest.param("Lose\u200bYourself", "loseyourself", id="zero_width_space"),
+        pytest.param("  \t 99  \t \t\tProblems   ", "99problems", id="whitespace"),
     ],
 )
-def test_clean_str_matches_spellings_of_the_same_name(
+def test_clean_str_keeps_only_unaccented_lowercase_letters_and_digits(
     given: str, expected: str
 ) -> None:
-    """Names differing only in accents, case, punctuation, width or spacing match."""
-    assert clean_str(given) == clean_str(expected)
+    """Case, accents, punctuation, symbols, width and spacing are dropped."""
+    assert clean_str(given) == expected
 
 
 def test_clean_str_keeps_distinct_names_distinct() -> None:

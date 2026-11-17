@@ -5,7 +5,6 @@ import re
 import sys
 import unicodedata
 from datetime import datetime
-from string import punctuation
 from urllib.parse import parse_qs, urlparse
 
 _JS_ESCAPE = re.compile(
@@ -81,10 +80,11 @@ def convert_to_datetime(f: str | dict[str, int] | None) -> datetime | None:
 
 
 def clean_str(s: str) -> str:
-    """Cleans a string to help with string comparison.
+    """Reduces a name or title to a form for comparing it with another.
 
-    Removes punctuation and accents (so "JAŸ-Z" matches "Jay-Z"), collapses
-    whitespace and returns a stripped, NFKC normalized string in lowercase.
+    Only letters and digits are kept, without accents and in lowercase, so
+    strings that differ only in case, accents, punctuation, symbols, width or
+    spacing match: "JAŸ-Z", "Jay Z" and "jay-z" all become "jayz".
 
     Args:
         s (:obj:`str`): A string.
@@ -93,12 +93,9 @@ def clean_str(s: str) -> str:
         :obj:`str`: Cleaned string.
 
     """
-    punctuation_ = punctuation + "'" + "\u200b"
-    decomposed = unicodedata.normalize("NFKD", s)
-    unaccented = "".join(c for c in decomposed if not unicodedata.combining(c))
-    string = unaccented.translate(str.maketrans("", "", punctuation_)).lower()
-    string = " ".join(string.split())
-    return unicodedata.normalize("NFKC", string)
+    decomposed = unicodedata.normalize("NFKD", s.casefold())
+    kept = "".join(c for c in decomposed if c.isalnum())
+    return unicodedata.normalize("NFC", kept)
 
 
 def parse_redirected_url(url: str, flow: str) -> str:
