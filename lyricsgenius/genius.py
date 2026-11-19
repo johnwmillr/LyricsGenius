@@ -720,97 +720,102 @@ class Genius(API, PublicAPI):
                 stacklevel=2,
             )
 
-        def find_artist_id(search_term: str) -> int | None:
-            """Finds the ID of the artist, returns the first
-            result if none match the search term or returns
-            None if there were not results
-
-            """
-            logger.info("Searching for songs by %s...", search_term)
-
-            # Perform a Genius API search for the artist
-            found_artist = None
-            best_candidate = (
-                None  # Best fallback: first non-null result (most relevant)
-            )
-            page = 1
-            while not found_artist and page <= max_pages:
-                response = self.search_all(
-                    search_term, per_page=self.per_page, page=page
-                )
-
-                # Check artist-section hits specifically to avoid false positives
-                # from other sections (songs, albums, etc.) keeping has_more_pages True
-                artist_section = next(
-                    (s for s in response["sections"] if s["type"] == "artist"),
-                    None,
-                )
-                artist_hit_count = len(artist_section["hits"]) if artist_section else 0
-
-                if artist_hit_count == 0:
-                    break  # No artist results on this page; stop paginating
-
-                # Try to find a match on this page
-                candidate = self._get_item_from_search_response(
-                    response, search_term, type_="artist", result_type="name"
-                )
-
-                # Track the first non-null result as fallback (page 1 = most relevant)
-                if candidate and best_candidate is None:
-                    best_candidate = candidate
-
-                # Check if we got an exact match (not just a fallback)
-                if candidate and clean_str(candidate["name"]) == clean_str(search_term):
-                    found_artist = candidate
-                    break
-
-                # Only continue to next page if the artist section was full
-                if artist_hit_count < self.per_page:
-                    break  # Last page reached; no exact match found
-
-                page += 1
-
-            # Fall back to the most relevant candidate (from page 1) if no exact match
-            if not found_artist:
-                found_artist = best_candidate
-
-            # Exit the search if we couldn't find an artist by the given name
-            if not found_artist:
-                logger.warning("No results found for '%s'.", search_term)
-                return None
-            # Assume the top search result is the intended artist
-            return found_artist["id"]
-
-        # Get the artist ID (or use the one supplied)
-        artist_id = artist_id if artist_id else find_artist_id(artist_name)
+        artist_id = artist_id or self._find_artist_id(artist_name, max_pages)
         if not artist_id:
             return None
 
-        artist_info = self.artist(artist_id)["artist"]
+        artist = Artist(body=self.artist(artist_id)["artist"])
+        self._collect_artist_songs(
+            artist,
+            artist_id,
+            max_songs=max_songs,
+            sort=sort,
+            per_page=per_page,
+            get_full_info=get_full_info,
+            include_features=include_features,
+        )
+        logger.info("Done. Found %d songs.", artist.num_songs)
+        return artist
 
-        # Create the Artist object
-        artist = Artist(body=artist_info)
-        # Download each song by artist, stored as Song objects in Artist object
-        page: int | None = 1
-        reached_max_songs = True if max_songs == 0 else False
-        while not reached_max_songs:
-            songs_on_page = self.artist_songs(
-                artist_id=artist_id,
-                per_page=per_page,
-                page=page,
-                sort=sort,
+    def _find_artist_id(self, search_term: str, max_pages: int) -> int | None:
+        """Finds the ID of the artist named by the search term.
+
+        Pages through the artist results until one matches the name exactly,
+        falling back to the most relevant result on the first page.
+
+        Args:
+            search_term (:obj:`str`): The artist's name.
+            max_pages (:obj:`int`): Maximum number of result pages to check.
+
+        Returns:
+            :obj:`int` | :obj:`None`: The artist's ID, or None if there were no
+            artist results.
+
+        """
+        logger.info("Searching for songs by %s...", search_term)
+        best_candidate = None
+        for page in range(1, max_pages + 1):
+            response = self.search_all(search_term, per_page=self.per_page, page=page)
+
+            # Count only artist hits, so other sections can't keep paging going
+            artist_section = next(
+                (s for s in response["sections"] if s["type"] == "artist"), None
             )
+            artist_hit_count = len(artist_section["hits"]) if artist_section else 0
+            if artist_hit_count == 0:
+                break
 
-            # Loop through each song on page of search results
+            candidate = self._get_item_from_search_response(
+                response, search_term, type_="artist", result_type="name"
+            )
+            if candidate and clean_str(candidate["name"]) == clean_str(search_term):
+                return candidate["id"]
+            if candidate and best_candidate is None:
+                best_candidate = candidate
+
+            # A partial page is the last one
+            if artist_hit_count < self.per_page:
+                break
+
+        if best_candidate is None:
+            logger.warning("No results found for '%s'.", search_term)
+            return None
+        return best_candidate["id"]
+
+    def _collect_artist_songs(
+        self,
+        artist: Artist,
+        artist_id: int,
+        *,
+        max_songs: int | None,
+        sort: str,
+        per_page: int,
+        get_full_info: bool,
+        include_features: bool,
+    ) -> None:
+        """Adds the artist's songs to it, page by page, up to max_songs songs.
+
+        Args:
+            artist (:class:`Artist <types.Artist>`): The artist to add songs to.
+            artist_id (:obj:`int`): The artist's Genius ID.
+            max_songs (:obj:`int` | :obj:`None`): Stop once the artist has this
+                many songs. None collects them all.
+            sort (:obj:`str`): Sort order passed to :meth:`artist_songs`.
+            per_page (:obj:`int`): Page size passed to :meth:`artist_songs`.
+            get_full_info (:obj:`bool`): Fetch each song's full info.
+            include_features (:obj:`bool`): Also add songs featuring the artist.
+
+        """
+        if max_songs == 0:
+            return
+        page: int | None = 1
+        while page is not None:
+            songs_on_page = self.artist_songs(
+                artist_id=artist_id, per_page=per_page, page=page, sort=sort
+            )
             for song_info in songs_on_page["songs"]:
-                # Check if song is valid (e.g. contains lyrics)
+                # Reject non-songs (e.g. liner notes, tracklists)
                 if self.skip_non_songs and not self._result_is_lyrics(song_info):
-                    valid = False
-                else:
-                    valid = True
-
-                # Reject non-song results (e.g. Linear Notes, Tracklists, etc.)
-                if not valid:
                     logger.debug(
                         'Skipping "%s": not a valid song.',
                         safe_unicode(song_info["title"]),
@@ -818,29 +823,15 @@ class Genius(API, PublicAPI):
                     continue
 
                 song = self._build_song(song_info, get_full_info)
-
-                # Attempt to add the Song to the Artist
-                result = artist.add_song(song, include_features=include_features)
-                if result is not None:
+                added = artist.add_song(song, include_features=include_features)
+                if added is not None:
                     logger.info(
                         'Song %d: "%s"', artist.num_songs, safe_unicode(song.title)
                     )
-
-                # Exit search if the max number of songs has been met
-                reached_max_songs = (
-                    max_songs is not None and artist.num_songs >= max_songs
-                )
-                if reached_max_songs:
+                if max_songs is not None and artist.num_songs >= max_songs:
                     logger.info("Reached user-specified song limit (%d).", max_songs)
-                    break
-
-            # Move on to next page of search results
+                    return
             page = songs_on_page.get("next_page")
-            if page is None or reached_max_songs:
-                break
-
-        logger.info("Done. Found %d songs.", artist.num_songs)
-        return artist
 
     def tag(
         self, name: str, page: int | None = None

@@ -251,6 +251,18 @@ def test_search_artist_stops_at_max_songs(genius: Genius) -> None:
     assert lyrics.call_count == 1
 
 
+def test_search_artist_requests_no_songs_for_max_songs_zero(genius: Genius) -> None:
+    """With max_songs=0, the artist is returned without requesting any songs."""
+    pages = [_page([_song(1, "First")], None)]
+
+    with _mocked_songs(genius, pages) as (artist_songs, _, _):
+        artist = genius.search_artist(ARTIST_NAME, artist_id=ARTIST_ID, max_songs=0)
+
+    assert artist is not None
+    assert artist.songs == []
+    artist_songs.assert_not_called()
+
+
 @pytest.mark.parametrize(
     "song",
     [
