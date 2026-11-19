@@ -4,6 +4,15 @@
 Release notes
 =============
 
+3.18.1 (2026-11-18)
+-------------------
+
+Fixed
+*******
+-  Subclasses of ``Genius`` keep their access token. Before, a class such as
+   ``class MyGenius(Genius)`` dropped the token and sent requests to the
+   official API without authorization.
+
 3.18.0 (2026-11-17)
 -------------------
 
