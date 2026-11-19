@@ -50,6 +50,11 @@ dev = [
 [tool.hatch.version]
 source = "vcs"
 
+# Lock only for Python 3.11.5+, where soupsieve 4 (free of the 2.x CSS
+# selector DoS advisories) is available. Published metadata is unaffected.
+[tool.uv]
+environments = ["python_full_version >= '3.11.5'"]
+
 [[tool.uv.index]]
 name = "testpypi"
 url = "https://test.pypi.org/p/lyricsgenius/"
