@@ -612,17 +612,13 @@ class PublicAPI(
         user_agent: str = "",
         **kwargs: Any,
     ) -> None:
-        # If PublicAPI was instantiated directly
-        # there is no need for a token anymore
-        public_api_constructor = False if self.__class__.__name__ == "Genius" else True
-
-        # Genius PublicAPI Constructor
+        # Only a client that is also an API (such as Genius) needs a token
         super().__init__(
             response_format=response_format,
             timeout=timeout,
             sleep_time=sleep_time,
             retries=retries,
-            public_api_constructor=public_api_constructor,
+            public_api_constructor=not isinstance(self, API),
             user_agent=user_agent,
             **kwargs,
         )
