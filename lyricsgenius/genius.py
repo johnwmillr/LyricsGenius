@@ -59,6 +59,11 @@ def _span_texts(element: Tag, class_: str) -> list[str]:
 class Genius(API, PublicAPI):
     """User-level interface with the Genius.com API and public API.
 
+    Six methods exist in both APIs: ``annotation``, ``artist``,
+    ``artist_songs``, ``referents``, ``search_songs`` and ``song``. On
+    :class:`Genius` they call the official API. For the public API versions,
+    which don't need a token, use :class:`PublicAPI`.
+
     Args:
         access_token (:obj:`str`, optional): API key provided by Genius.
         response_format (:obj:`str`, optional): API response format (dom, plain, html).

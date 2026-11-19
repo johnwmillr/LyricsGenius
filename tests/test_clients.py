@@ -24,6 +24,17 @@ def test_genius_reads_token_from_environment(monkeypatch: pytest.MonkeyPatch) ->
     assert client.authorization_header == {"authorization": "Bearer env_token"}
 
 
+def test_genius_subclass_keeps_its_token() -> None:
+    """A subclass of Genius still sends its token to the official API."""
+
+    class MyGenius(Genius):
+        """A user's subclass of Genius."""
+
+    client = MyGenius("dummy_token")
+
+    assert client.authorization_header == {"authorization": "Bearer dummy_token"}
+
+
 def test_genius_requires_a_token(monkeypatch: pytest.MonkeyPatch) -> None:
     """Genius raises when no token is passed and GENIUS_ACCESS_TOKEN is unset."""
     monkeypatch.delenv("GENIUS_ACCESS_TOKEN", raising=False)
