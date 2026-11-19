@@ -87,6 +87,7 @@ Methods
 
 .. autoclass:: Album
     :members:
+    :inherited-members:
     :member-order: bysource
     :no-show-inheritance:
 
@@ -147,6 +148,7 @@ Methods
 
 .. autoclass:: Artist
     :members:
+    :inherited-members:
     :member-order: bysource
     :no-show-inheritance:
 
@@ -231,6 +233,7 @@ Methods
 
 .. autoclass:: Song
     :members:
+    :inherited-members:
     :member-order: bysource
     :no-show-inheritance:
 

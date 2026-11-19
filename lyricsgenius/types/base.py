@@ -89,7 +89,6 @@ class BaseEntity(ABC):
             return self._body.copy()
         return {}
 
-    @abstractmethod
     def to_json(
         self,
         filename: str | None = None,
@@ -140,7 +139,6 @@ class BaseEntity(ABC):
         """
         raise NotImplementedError()
 
-    @abstractmethod
     def to_text(self, filename: str | None = None, sanitize: bool = True) -> str | None:
         """Converts song(s) lyrics to a single string.
 

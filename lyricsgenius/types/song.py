@@ -61,19 +61,6 @@ class Song(BaseEntity):
         body["lyrics"] = self.lyrics
         return body
 
-    def to_json(
-        self,
-        filename: str | None = None,
-        sanitize: bool = True,
-        ensure_ascii: bool = True,
-    ) -> str | None:
-        return super().to_json(
-            filename=filename, sanitize=sanitize, ensure_ascii=ensure_ascii
-        )
-
-    def to_text(self, filename: str | None = None, sanitize: bool = True) -> str | None:
-        return super().to_text(filename=filename, sanitize=sanitize)
-
     def save_lyrics(
         self,
         filename: str | None = None,
