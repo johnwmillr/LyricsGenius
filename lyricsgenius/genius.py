@@ -8,9 +8,11 @@ import json
 import logging
 import re
 import warnings
+from collections.abc import Callable
 from typing import Any
 
 from bs4 import BeautifulSoup, NavigableString, Tag
+from requests.exceptions import HTTPError
 
 from .api import API, PublicAPI
 from .types import Album, Artist, Song
@@ -380,6 +382,86 @@ class Genius(API, PublicAPI):
         result_artist = clean_str(result.get("primary_artist", {}).get("name", ""))
         return title_is_match and result_artist == clean_str(artist)
 
+    def _song_from_hits(
+        self, hits: list[dict[str, Any]], title: str, artist: str
+    ) -> dict[str, Any] | None:
+        """Returns the best song among search hits, or `None` if none fits.
+
+        An exact title (and artist) match wins. Otherwise it's the first song
+        hit, which must be by the artist if one is given.
+        """
+        for hit in hits:
+            result = hit["result"]
+            if self._result_is_match(result, title, artist):
+                return result
+        for hit in hits:
+            result = hit["result"]
+            if "primary_artist" not in result or "url" not in result:
+                continue
+            if artist and clean_str(result["primary_artist"]["name"]) != clean_str(
+                artist
+            ):
+                continue
+            return result
+        return None
+
+    def _search_song_info(
+        self, search_term: str, title: str, artist: str
+    ) -> dict[str, Any] | None:
+        """Searches for a song, trying each search until one finds a match.
+
+        The authenticated developer API's search goes first, then the public
+        API's search/multi and plain search. A search rejected with a 4xx
+        (e.g. a Cloudflare 403) is skipped. If every search is rejected, the
+        first rejection is raised.
+
+        Returns:
+            :obj:`dict` \\| :obj:`None`: The matching song's data, or `None`.
+
+        """
+        searches: list[tuple[str, Callable[[], dict[str, Any] | None]]] = [
+            (
+                "developer API search",
+                lambda: self._song_from_hits(
+                    self.search_songs(search_term).get("hits", []), title, artist
+                ),
+            ),
+            (
+                "public search/multi",
+                lambda: self._get_item_from_search_response(
+                    self.search_all(search_term),
+                    title,
+                    type_="song",
+                    result_type="title",
+                    artist=artist,
+                ),
+            ),
+            (
+                "public search",
+                lambda: self._song_from_hits(
+                    self.search(search_term).get("hits", []), title, artist
+                ),
+            ),
+        ]
+        first_error: HTTPError | None = None
+        any_succeeded = False
+        for name, search in searches:
+            try:
+                song_info = search()
+            except HTTPError as e:
+                if e.response is None or e.response.status_code >= 500:
+                    raise
+                logger.info("The %s failed (%s).", name, e.response.status_code)
+                first_error = first_error or e
+                continue
+            if song_info is not None:
+                return song_info
+            any_succeeded = True
+            logger.debug("No match from the %s.", name)
+        if first_error is not None and not any_succeeded:
+            raise first_error
+        return None
+
     def _build_song(
         self, song_info: dict[str, Any], get_full_info: bool, fetch_lyrics: bool = True
     ) -> Song:
@@ -595,43 +677,7 @@ class Genius(API, PublicAPI):
             else:
                 search_term = "{s}".format(s=title).strip()
 
-            # Try search/multi first (the comprehensive search)
-            search_response = self.search_all(search_term)
-            song_info = self._get_item_from_search_response(
-                search_response,
-                title,
-                type_="song",
-                result_type="title",
-                artist=artist,
-            )
-
-            # If search/multi returns no results, fallback to regular /search
-            # The /search endpoint handles certain queries better (e.g., with common words like "and", "und")
-            if song_info is None:
-                logger.debug("Trying alternative search...")
-                search_response = self.search(search_term)
-
-                if "hits" in search_response and search_response["hits"]:
-                    # Try to find an exact match first
-                    for hit in search_response["hits"]:
-                        result = hit["result"]
-                        if self._result_is_match(result, title, artist):
-                            song_info = result
-                            break
-
-                    # If no exact match and we have hits, use the first one
-                    if song_info is None:
-                        # Check if it's a song result (not artist, album, etc.)
-                        for hit in search_response["hits"]:
-                            result = hit["result"]
-                            # Verify it's a song by checking for expected fields
-                            if "primary_artist" in result and "url" in result:
-                                if artist and clean_str(
-                                    result["primary_artist"]["name"]
-                                ) != clean_str(artist):
-                                    continue
-                                song_info = result
-                                break
+            song_info = self._search_song_info(search_term, title, artist)
 
         # Exit search if there were no results returned from API
         # Otherwise, move forward with processing the search results

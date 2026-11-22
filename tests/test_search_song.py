@@ -1,9 +1,12 @@
 """Tests for search_song: picking a result and building the Song, with requests mocked."""
 
+from collections.abc import Iterator
 from typing import Any
 from unittest import mock
 
 import pytest
+import requests
+from requests.exceptions import HTTPError
 
 from lyricsgenius import Genius
 
@@ -122,6 +125,20 @@ def test_search_song_returns_none_for_empty_title(genius: Genius) -> None:
 
 
 _NO_SONG_RESULTS = {"sections": [{"type": "top_hits", "hits": []}]}
+
+
+@pytest.fixture(autouse=True)
+def _no_developer_search_hits() -> Iterator[None]:
+    """Makes the developer API search find nothing unless a test patches it."""
+    with mock.patch.object(Genius, "search_songs", return_value={"hits": []}):
+        yield
+
+
+def _http_error(status_code: int) -> HTTPError:
+    """Builds an HTTPError carrying a response with the given status."""
+    response = requests.Response()
+    response.status_code = status_code
+    return HTTPError(status_code, "Mocked", response=response)
 
 
 def test_search_song_searches_title_with_artist(genius: Genius) -> None:
@@ -261,3 +278,83 @@ def test_search_song_rejects_results_that_are_not_songs(genius: Genius) -> None:
 
     assert result is None
     lyrics.assert_not_called()
+
+
+def test_search_song_tries_developer_search_first(genius: Genius) -> None:
+    """A match from the developer API search is used without public searches."""
+    genius.skip_non_songs = False
+    hits = [_song_hit(4, "Santa", "Fedez"), _song_hit(5, "Santa", "Madonna")]
+
+    with (
+        mock.patch.object(
+            genius, "search_songs", return_value={"hits": hits}
+        ) as search_songs,
+        mock.patch.object(genius, "search_all") as search_all,
+        mock.patch.object(genius, "search") as search,
+    ):
+        result = genius.search_song("Santa", artist="Madonna", get_full_info=False)
+
+    search_songs.assert_called_once_with("Santa Madonna")
+    search_all.assert_not_called()
+    search.assert_not_called()
+    assert result is not None
+    assert result._body["id"] == 5
+
+
+def test_search_song_uses_public_search_when_developer_search_is_rejected(
+    genius: Genius,
+) -> None:
+    """A 4xx from the developer API search falls back to search_all."""
+    genius.skip_non_songs = False
+    hit = _song_hit(1, "Santa", "Madonna")
+
+    with (
+        mock.patch.object(genius, "search_songs", side_effect=_http_error(403)),
+        mock.patch.object(
+            genius, "search_all", return_value=_search_all_response([hit])
+        ),
+    ):
+        result = genius.search_song("Santa", artist="Madonna", get_full_info=False)
+
+    assert result is not None
+    assert result._body["id"] == 1
+
+
+def test_search_song_returns_none_when_public_fallbacks_are_blocked(
+    genius: Genius,
+) -> None:
+    """Blocked public fallbacks after a developer search with no match give None."""
+    with (
+        mock.patch.object(genius, "search_all", side_effect=_http_error(403)),
+        mock.patch.object(genius, "search", side_effect=_http_error(403)),
+    ):
+        result = genius.search_song("Santa", artist="Madonna")
+
+    assert result is None
+
+
+def test_search_song_raises_when_every_search_is_rejected(genius: Genius) -> None:
+    """When every search gets a 4xx, the first rejection is raised."""
+    with (
+        mock.patch.object(genius, "search_songs", side_effect=_http_error(401)),
+        mock.patch.object(genius, "search_all", side_effect=_http_error(403)),
+        mock.patch.object(genius, "search", side_effect=_http_error(403)),
+        pytest.raises(HTTPError) as exc_info,
+    ):
+        genius.search_song("Santa", artist="Madonna")
+
+    assert exc_info.value.args[0] == 401
+
+
+def test_search_song_raises_server_errors_without_falling_back(
+    genius: Genius,
+) -> None:
+    """A 5xx from the developer API search is raised rather than falling back."""
+    with (
+        mock.patch.object(genius, "search_songs", side_effect=_http_error(503)),
+        mock.patch.object(genius, "search_all") as search_all,
+        pytest.raises(HTTPError),
+    ):
+        genius.search_song("Santa", artist="Madonna")
+
+    search_all.assert_not_called()
